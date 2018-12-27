@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 
 class RecipesPage extends Component {
         render() {
-            const mealsListed = this.props.recipes.map((meal)=> <li key={meal.name} onClick={this.props.showIngredients}> {meal.name} </li>);
+            const mealsListed = this.props.recipes.map((meal)=> <li key={meal.id} onClick={this.props.showIngredients}> {meal.label} </li>);
             return (
                 <div>                    
-                    <ol> {mealsListed} </ol>
+                    <ul> {mealsListed} </ul>
                 </div>
                 // <Page layout="public">
                     // <Section slot="main">

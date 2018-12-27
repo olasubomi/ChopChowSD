@@ -1,18 +1,11 @@
 import React from 'react';
-import MakeOption from './MakeOption';
-
 class IngredientsMenu extends React.Component {
     render(){
-        return(
-            <div>
-                {/* <select className="form-control" onChange={this.props.setMake} > */}
-                    {/* <option value='make'>Make...</option> */}
-                    {Object.keys(this.props.selected.ingredients).map(key => <MakeOption
-                        key={key}
-                        value={key}
-                    />)}
-                {/* </select> */}
-            </div>
+        const mealIngredients = (this.props.selectedMealIngredients).map((meal)=> <li key={meal.toString()}> {meal} </li> );
+            return (
+                <div>                    
+                    <ol> {mealIngredients} </ol>
+                </div>
         );
     }
 }
