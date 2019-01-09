@@ -1,20 +1,51 @@
 import React, { Component } from 'react'; 
-import RecipesPage from './pages/RecipesPage';
-import IngredientsMenu from './components/mealMenu/IngredientsMenu';
+import {Typeahead} from 'react-bootstrap-typeahead';
+import ListedMealsSection from './components/mealMenu/ListedMealsSection';
+import RecipeContentSection from './components/mealMenu/RecipeContentSection';
+import IngredientSection from './components/mealMenu/IngredientSection';
+
 
 
 class App extends Component {
-    Garri={
-        name: "Garri",
-        ingredients: ["Garri", "Water"],
-        display: false
-    }
 
-    Jollof_Rice={
-        name: "Red/Jollof Rice",
-        ingredients: ["Tomatoes", "Rice", "Onions", "Oil"],
-        display: true
-    } 
+    meals = [
+        {
+            id: 1,
+            label: "Garri",
+            imageSrc: "../images/Garri.jpg",
+            readTime: "2 mins read",
+            cookTime: "2 mins to prepare",
+            ingredients: ["Garri", "Water"],
+            display: false
+        },
+        {
+            id: 2,
+            label: "Jollof Rice",
+            imageSrc: "../images/Jollof.jpg",
+            readTime: "4 mins read",
+            cookTime: "45 mins to prepare",
+            ingredients: ["Rice", "Tomatoes", "Onions", "Oil"],
+            display: true
+        },
+        {
+            id: 3,
+            label: "Fried Beans",
+            imageSrc: "../images/FriedBeans.jpg",
+            readTime: "4 mins read",
+            cookTime: "60 mins to prepare",
+            ingredients: ["Black Eyed Beans", "Onions", "Palm Oil"],
+            display: true
+        },
+        {
+            id: 4,
+            label: "Roasted Potatoes",
+            imageSrc: "../images/roasted_potatoes.jpg",
+            readTime: "3 mins read",
+            cookTime: "90 mins to prepare",
+            ingredients: ["Potatoes", "Ginger",  "Thyme", "Oregano", "Basil", "Parmesan Cheese", "Oil", "Butter"],
+            display: true
+        }
+    ]
 
     state={
         showFIngreients: {
@@ -38,11 +69,9 @@ class App extends Component {
         mealsListed : false,
         mealSelected : false,
         IngredientsListed : false,
-        recipes: [this.Garri, this.Jollof_Rice],
-        selected: {
-            product: "",
-            ingredients: []
-        },
+        recipes: this.meals, //[this.Garri, this.Jollof_Rice],
+        selectedMealIngredients: this.meals[0].ingredients,
+        selectedMeal: this.meals[0],
         showFakeIngredients:{
             hidden: false
         },
@@ -57,45 +86,53 @@ class App extends Component {
         }
     }
     showIngredients=(event)=>{
-        console.log(event.target);
+        let mealString = event.target.innerText;
+        var meal;
+        for (meal in this.meals){
+            //console.log(this.meals[meal].label);
+            if (this.meals[meal].label === mealString){
+            //change selected ingredients
+                this.setState({selectedMealIngredients: this.meals[meal].ingredients});
+                this.setState({selectedMeal: this.meals[meal]});
+
+                break;
+            }
+        }
+        //console.log({meal}.name);
+        //get list of ingredients
     }
 
     render() {
-
         // Render your page inside
         // the layout provider
         return (
             <div className="container">
-                <input placeholder="Search or create meal"></input>
+                <Typeahead options={this.meals} 
+                placeholder="Find Meals (and Ingredients) here.."
+                // filterBy={['label', 'ingredients']}
+                />
+                <br></br>
                 <div className="row">
                     <div className="col-sm">
-                        Recipes List
-                        <RecipesPage 
+                        Meals
+                        <ListedMealsSection 
                         recipes={this.state.recipes} showIngredients={this.showIngredients}/>
-                     </div>
-                     
+                        <span>&#43;</span><input placeholder="Suggest Meal"></input>
+
+                     </div>                     
                     <div className="col-sm">
                         Recipe Content
+                        <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
+                        
                     </div>
 
                     <div className="col-sm">
                         Ingredients
-                        <IngredientsMenu selected = {this.state.selected}/>
+                        <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}/>
+                        <span>&#43;</span><input placeholder="Suggest Ingredient.."></input>
                     </div>
                 </div>
             </div>
-            // <div>
-            //     <Grid>
-            //         <Row className="show-grid">
-            //             <Col xs={12} md={8}>
-            //             <code>{'<Col xs={12} md={8} />'};</code>
-            //             </Col>
-            //             <Col xs={6} md={4}>
-            //             <code>{'<Col xs={6} md={4} />'}</code>
-            //             </Col>
-            //         </Row>
-            //     </Grid>
-            // </div>
         );
     }
 }

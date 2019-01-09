@@ -1,5 +1,5 @@
 import React from 'react';
-class IngredientsMenu extends React.Component {
+class IngredientSection extends React.Component {
     render(){
         const mealIngredients = (this.props.selectedMealIngredients).map((meal)=> <li key={meal.toString()}> {meal} </li> );
             return (
@@ -10,4 +10,4 @@ class IngredientsMenu extends React.Component {
     }
 }
 
-export default IngredientsMenu
+export default IngredientSection
