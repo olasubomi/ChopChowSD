@@ -4,7 +4,7 @@ class IngredientSection extends React.Component {
         const mealIngredients = (this.props.selectedMealIngredients).map((meal)=> <li key={meal.toString()}> {meal} </li> );
             return (
                 <div>                    
-                    <ol> {mealIngredients} </ol>
+                    <ul> {mealIngredients} </ul>
                 </div>
         );
     }

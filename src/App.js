@@ -12,7 +12,7 @@ class App extends Component {
         {
             id: 1,
             label: "Garri",
-            imageSrc: "../images/Garri.jpg",
+            imageSrc: '../images/Garri.jpg',
             readTime: "2 mins read",
             cookTime: "2 mins to prepare",
             ingredients: ["Garri", "Water"],
@@ -85,6 +85,7 @@ class App extends Component {
             hidden: true
         }
     }
+
     showIngredients=(event)=>{
         let mealString = event.target.innerText;
         var meal;
@@ -127,7 +128,7 @@ class App extends Component {
                     </div>
 
                     <div className="col-sm">
-                        Ingredients
+                        <b>Ingredients</b>
                         <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}/>
                         <span>&#43;</span><input placeholder="Suggest Ingredient.."></input>
                     </div>
@@ -135,7 +136,7 @@ class App extends Component {
             </div>
         );
     }
-}
+} 
 
 export default App;
 
