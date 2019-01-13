@@ -8,6 +8,10 @@
 # testing
 /coverage
 
+# hide yarn.lock to use package-lock.json
+# when installing dependencies in build
+yarn.lock:
+
 # production
 #/build
 
