@@ -15,7 +15,8 @@ class App extends Component {
             imageSrc: '../images/Garri.jpg',
             readTime: "2 mins read",
             cookTime: "2 mins to prepare",
-            ingredients: ["Garri", "Water"],
+            ingredients: ["Garri- 1 Cup", "Water- 2 Cups"],
+            instructions: ["Steps..."],
             display: false
         },
         {
@@ -24,7 +25,12 @@ class App extends Component {
             imageSrc: "../images/Jollof.jpg",
             readTime: "4 mins read",
             cookTime: "45 mins to prepare",
-            ingredients: ["Rice", "Tomatoes", "Onions", "Oil"],
+            ingredients: ["Rice- 3 Cups", "Tomatoes x 6", "Onion x 2", "Palm Oil- 2 Cups"],
+            instructions:[ "Tomato , Onion Tatashe, Rodo Blended in Blender",
+            "Vegetable Oil + Palm Oil, Low Heat in Pan",
+            "Add onions to Pan", "Add Tomato Paste", "Add Powdered Ginger, Garlic and Curry",
+            "Add Blended Tomatoes mix (If too thick, add water)","Add seasoning, Maggi (Chicken Flavor), Salt",
+        "For Jollof Rice, add Bay Leaves."],
             display: true
         },
         {
@@ -33,7 +39,8 @@ class App extends Component {
             imageSrc: "../images/FriedBeans.jpg",
             readTime: "4 mins read",
             cookTime: "60 mins to prepare",
-            ingredients: ["Black Eyed Beans", "Onions", "Palm Oil"],
+            ingredients: ["Black Eyed Beans x 1 bag(350mL)", "Onions x 2", "Palm Oil- 2 Cups"],
+            instructions: ["Steps..."],
             display: true
         },
         {
@@ -42,7 +49,8 @@ class App extends Component {
             imageSrc: "../images/roasted_potatoes.jpg",
             readTime: "3 mins read",
             cookTime: "90 mins to prepare",
-            ingredients: ["Potatoes", "Ginger",  "Thyme", "Oregano", "Basil", "Parmesan Cheese", "Oil", "Butter"],
+            ingredients: ["Potatoes x 8", "Ginger- 6 cloves",  "Thyme", "Oregano", "Basil", "Parmesan Cheese", "Oil", "Butter"],
+            instructions: ["Steps..."],
             display: true
         }
     ]
@@ -110,19 +118,23 @@ class App extends Component {
             <div className="container">
                 <Typeahead options={this.meals} 
                 placeholder="Find Meals (and Ingredients) here.."
+                // onChange={(selected) => {
+                //     // Handle selections...
+                //   }}
                 // filterBy={['label', 'ingredients']}
                 />
                 <br></br>
                 <div className="row">
                     <div className="col-sm">
-                        Meals
+                        <b>Meals</b>
                         <ListedMealsSection 
-                        recipes={this.state.recipes} showIngredients={this.showIngredients}/>
+                        recipes={this.state.recipes} showIngredients={this.showIngredients}
+                        selectedMeal={this.state.selectedMeal}/>
                         <span>&#43;</span><input placeholder="Suggest Meal"></input>
 
                      </div>                     
                     <div className="col-sm">
-                        Recipe Content
+                        <b>Recipe Content</b>
                         <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
                         
                     </div>
