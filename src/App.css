@@ -30,3 +30,8 @@
     transform: rotate(360deg);
   }
 }
+
+.payback-disclaimer{
+  font-size: 22px;
+  color: black;
+}
