@@ -6,7 +6,7 @@ class RecipeContentSection extends Component {
         const mealPrep = this.props.selectedMeal.instructions.map((step)=> <li key={step} > {step} </li>);
 
             return (
-                <div>                    
+                <div> Testing build updates                   
                     <div>{this.props.selectedMeal.label} </div>
                     <div> 
                     {/* <img src={require('./images/Garri.jpg')}/> */}
