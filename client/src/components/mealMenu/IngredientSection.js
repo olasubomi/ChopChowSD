@@ -84,7 +84,7 @@ class IngredientSection extends React.Component {
             </div></PopoverBody>
         </Popover>; */}
                     
-                    <button>ADD ALL<br></br>PRODUCTS<br></br>TO CART</button>
+                    {/* <button>ADD ALL<br></br>PRODUCTS<br></br>TO CART</button> */}
                 </div>
         );
     }
