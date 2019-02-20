@@ -1,29 +1,29 @@
 'use strict';
 
 const express = require('express');
-const session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
-const store = new MongoDBStore({
-    uri: 'mongodb://localhost:27017/db',// create a db called db
-    //databaseName: '',
-    collection: 'sessions'
-},
-function(error) {
-  // Inform if there is a failure to connect to mongo server
-  if(error){
-    console.log("Mongo Connection Err:\n" +error);
-  }else{
-      console.log("Mongo Connection successful!");
-  }
+// const session = require('express-session');
+// const MongoDBStore = require('connect-mongodb-session')(session);
+// const store = new MongoDBStore({
+//     uri: 'mongodb://localhost:27017/db',// create a db called db
+//     //databaseName: '',
+//     collection: 'sessions'
+// },
+// function(error) {
+//   // Inform if there is a failure to connect to mongo server
+//   if(error){
+//     console.log("Mongo Connection Err:\n" +error);
+//   }else{
+//       console.log("Mongo Connection successful!");
+//   }
 
-});
-// Catch  MongoDB errors
-store.on('error', function(error) {
-    console.log("MongoDB Store error: \n"+error);
-  });
+// });
+// // Catch  MongoDB errors
+// store.on('error', function(error) {
+//     console.log("MongoDB Store error: \n"+error);
+//   });
 
-const Security = require('./lib/Security');
-const Products = require('./model/Products');
+// const Security = require('./lib/Security');
+// const Products = require('./model/Products');
 const path = require('path');
 const app = express();
 
@@ -31,23 +31,25 @@ const port = process.env.PORT || 5000;
 
 app.set('view engine', 'ejs');
 
-app.use(session({
-    secret: 'keyboard cat',
-    cookie: {
-      maxAge: 1000*60 // 1 minute
-      //1000 * 60 * 60 * 24 * 7 // 1 week
-      //try using expires as well, for a month to give time for marketing retargeting
+app.use(express.static(path.join(__dirname,'client/build' )));
 
-    },
-    store: store,
-    resave: true, // look into store's touch method*
-    saveUninitialized: false,
-    genid:(req)=>{
-        return Security.generateId()
-    }
-    // unset:'destroy',*
-    // name: 'session cookie name'*
-  }));
+// app.use(session({
+//     secret: 'keyboard cat',
+//     cookie: {
+//       maxAge: 1000*60 // 1 minute
+//       //1000 * 60 * 60 * 24 * 7 // 1 week
+//       //try using expires as well, for a month to give time for marketing retargeting
+
+//     },
+//     store: store,
+//     resave: true, // look into store's touch method*
+//     saveUninitialized: false,
+//     genid:(req)=>{
+//         return Security.generateId()
+//     }
+//     // unset:'destroy',*
+//     // name: 'session cookie name'*
+//   }));
 
 // Serve static files from the React app
 //app.use('/', express.static(path.join(__dirname,'client/build')));
@@ -112,104 +114,104 @@ app.use(session({
   
 // after identifying unique  session tokens from MD5 string
 // Then we are able to compare tokens in each singular form request: 
-app.post('/test', (req, res) => {
-    let token = req.body.nonce;
-    if(Security.isValidNonce(token, req)) {
-      console.log("Post route test of valid Nonce says OK");
+// app.post('/test', (req, res) => {
+//     let token = req.body.nonce;
+//     if(Security.isValidNonce(token, req)) {
+//       console.log("Post route test of valid Nonce says OK");
       
-    } else {
-      // Reject the request
-      console.log("Post route test of valid Nonce is REJECTED!");
+//     } else {
+//       // Reject the request
+//       console.log("Post route test of valid Nonce is REJECTED!");
 
-    }
-});
+//     }
+// });
 
-app.get('/cart', (req, res) => {
-    console.log("Gets in cart route");
-    let sess = req.session;
-    console.log(sess);
-    let cart = (typeof sess.cart !== 'undefined') ? sess.cart : false;
-    res.render('cart', { 
-        pageTitle: 'Cart',
-        cart: cart,
-        nonce: Security.md5(req.sessionID + req.headers['user-agent'])
-    });
-});
+// app.get('/cart', (req, res) => {
+//     console.log("Gets in cart route");
+//     let sess = req.session;
+//     console.log(sess);
+//     let cart = (typeof sess.cart !== 'undefined') ? sess.cart : false;
+//     res.render('cart', { 
+//         pageTitle: 'Cart',
+//         cart: cart,
+//         nonce: Security.md5(req.sessionID + req.headers['user-agent'])
+//     });
+// });
 
-app.get('/cart/remove/:id/:nonce', (req, res) => {
-   let id = req.params.id;
-   if(/^\d+$/.test(id) && Security.isValidNonce(req.params.nonce, req)) {
-       Cart.removeFromCart(parseInt(id, 10), req.session.cart);
-       res.redirect('/cart');
-   } else {
-       res.redirect('/');
-   }
-});
+// app.get('/cart/remove/:id/:nonce', (req, res) => {
+//    let id = req.params.id;
+//    if(/^\d+$/.test(id) && Security.isValidNonce(req.params.nonce, req)) {
+//        Cart.removeFromCart(parseInt(id, 10), req.session.cart);
+//        res.redirect('/cart');
+//    } else {
+//        res.redirect('/');
+//    }
+// });
 
-app.get('/cart/empty/:nonce', (req, res) => {
-    if(Security.isValidNonce(req.params.nonce, req)) {
-        Cart.emptyCart(req);
-        res.redirect('/cart');
-    } else {
-        res.redirect('/');
-    }
-});
+// app.get('/cart/empty/:nonce', (req, res) => {
+//     if(Security.isValidNonce(req.params.nonce, req)) {
+//         Cart.emptyCart(req);
+//         res.redirect('/cart');
+//     } else {
+//         res.redirect('/');
+//     }
+// });
 
-app.post('/cart', (req, res) => {
-    let qty = parseInt(req.body.qty, 10);
-    let product = parseInt(req.body.product_id, 10);
-    if(qty > 0 && Security.isValidNonce(req.body.nonce, req)) {
-      Products.findOne({product_id: product}).then(prod => {
-          Cart.addToCart(prod, qty);
-          Cart.saveCart(req);
-          res.redirect('/cart');
-      }).catch(err => {
-         res.redirect('/');
-      });
-  } else {
-      res.redirect('/');
-  }
-  });
+// app.post('/cart', (req, res) => {
+//     let qty = parseInt(req.body.qty, 10);
+//     let product = parseInt(req.body.product_id, 10);
+//     if(qty > 0 && Security.isValidNonce(req.body.nonce, req)) {
+//       Products.findOne({product_id: product}).then(prod => {
+//           Cart.addToCart(prod, qty);
+//           Cart.saveCart(req);
+//           res.redirect('/cart');
+//       }).catch(err => {
+//          res.redirect('/');
+//       });
+//   } else {
+//       res.redirect('/');
+//   }
+//   });
 
-  app.post('/cart/update', (req, res) => {
-    let ids = req.body["product_id[]"];
-    let qtys = req.body["qty[]"];
-    if(Security.isValidNonce(req.body.nonce, req)) {
-        let cart = (req.session.cart) ? req.session.cart : null;
-        let i = (!Array.isArray(ids)) ? [ids] : ids;
-        let q = (!Array.isArray(qtys)) ? [qtys] : qtys;
-        Cart.updateCart(i, q, cart);
-        Cart.saveCart(req);
-        res.redirect('/cart');
-    } else {
-        res.redirect('/');
-    }
-    });
+//   app.post('/cart/update', (req, res) => {
+//     let ids = req.body["product_id[]"];
+//     let qtys = req.body["qty[]"];
+//     if(Security.isValidNonce(req.body.nonce, req)) {
+//         let cart = (req.session.cart) ? req.session.cart : null;
+//         let i = (!Array.isArray(ids)) ? [ids] : ids;
+//         let q = (!Array.isArray(qtys)) ? [qtys] : qtys;
+//         Cart.updateCart(i, q, cart);
+//         Cart.saveCart(req);
+//         res.redirect('/cart');
+//     } else {
+//         res.redirect('/');
+//     }
+//     });
 
-    app.get('/checkout', (req, res) => {
-        let sess = req.session;
-        let cart = (typeof sess.cart !== 'undefined') ? sess.cart : false;
-        res.render('checkout', {
-            pageTitle: 'Checkout',
-            cart: cart,
-            checkoutDone: false,
-            nonce: Security.md5(req.sessionID + req.headers['user-agent'])
-        });
-    });
+//     app.get('/checkout', (req, res) => {
+//         let sess = req.session;
+//         let cart = (typeof sess.cart !== 'undefined') ? sess.cart : false;
+//         res.render('checkout', {
+//             pageTitle: 'Checkout',
+//             cart: cart,
+//             checkoutDone: false,
+//             nonce: Security.md5(req.sessionID + req.headers['user-agent'])
+//         });
+//     });
     
-    app.post('/checkout', (req, res) => {
-        let sess = req.session;
-        let cart = (typeof sess.cart !== 'undefined') ? sess.cart : false;
-        if(Security.isValidNonce(req.body.nonce, req)) {
-            res.render('checkout', {
-                pageTitle: 'Checkout',
-                cart: cart,
-                checkoutDone: true
-            });
-        } else {
-            res.redirect('/');
-        }
-    });
+//     app.post('/checkout', (req, res) => {
+//         let sess = req.session;
+//         let cart = (typeof sess.cart !== 'undefined') ? sess.cart : false;
+//         if(Security.isValidNonce(req.body.nonce, req)) {
+//             res.render('checkout', {
+//                 pageTitle: 'Checkout',
+//                 cart: cart,
+//                 checkoutDone: true
+//             });
+//         } else {
+//             res.redirect('/');
+//         }
+//     });
     
 
 
