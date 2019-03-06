@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import {Typeahead} from 'react-bootstrap-typeahead';
+//import {Typeahead} from 'react-bootstrap-typeahead';
 import Popup from "reactjs-popup";
 import './RecipeContent.css';
 
-let j = 0;
 
 class RecipeContentSection extends Component {
    
@@ -41,7 +40,7 @@ class RecipeContentSection extends Component {
                                          </div>
                                         
                                             {/*<img src="../images/Arrow--NicholasJudy456.png" width="50%" height="40%" onclick="DoSomething();"/>*/}
-                                                 <button onClick="DoSomething" style={buttonStyle}>Next Page</button>
+                                                 {/* <button onClick="DoSomething" style={buttonStyle}>Next Page</button> */}
                                     </div>
                             </div>
                         </div>
