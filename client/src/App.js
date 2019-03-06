@@ -179,14 +179,123 @@ class App extends Component {
         // Render your page inside
         // the layout provider
         return (
+           
+        //     <div className="container">
+        //     <div className="row ">
+        //         <div className="col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank" >
+        //                 <img src = "images/roasted_potatoes.jpg" className="images" style={{width:"100%"}} alt="Garri" />
+        //                 <div className="caption">Roasted Potatoes</div>
+        //             </a>
+        //             </div>
+        //         </div>
+        //         <div className=" col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank" >
+        //                 <img src = "images/FriedBeans.jpg" className="images" style={{width:"100%"}} alt="Fried Beans" />
+        //                 <div className="caption">Fired Beans</div>
+        //             </a>
+        //             </div>
+        //         </div> 
+        //         <div className="col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank" >
+        //                 <img src = "images/Garri.jpg" className="images" style={{width:"100%"}} alt="Garri" />
+        //                 <div className="caption">Garri</div>
+        //             </a>
+        //             </div>
+        //         </div>
+        //         <div className="col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank">
+        //                 <img src = "images/Jollof.jpg" className="images" style={{width:"100%"}} alt="Jollof Rice" />
+        //                 <div className="caption">Jollof Rice</div>
+        //             </a>
+        //             </div>
+        //         </div>
+        //         <div className="col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank">
+        //                 <img src = "images/Jollof.jpg" className="images" style={{width:"100%"}} alt="Puff Puff" />
+        //                 <div className="caption">Jollof Rice</div>
+        //             </a>
+        //             </div>
+        //         </div> 
+
+        //         <div className="col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank">
+        //                 <img src = "images/roasted_potatoes.jpg" className="images" style={{width:"100%"}} alt="Roasted Potatoes" />
+        //                 <div className="caption">Roasted Potatoes</div>
+        //             </a>
+        //             </div>
+        //         </div>
+        //     </div>
+        // </div>
+
+
+            //     <div className="container blogThumbnails text-center">
+            //         <div className="row no-gutters">
+            //         <div className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank">
+            //                 <img src = "images/Garri.jpg"  alt="Garri" />
+            //                 <div className="caption">Garri</div>
+            //             </a>
+            //             </div>
+            //         </div>
+            //         <div className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank">
+            //                 <img src = "images/Jollof.jpg"  alt="Fried Beans" />
+            //                 <div className="caption">Jollof Rice</div>
+            //             </a>
+            //             </div>
+            //         </div> 
+            //         <div className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank">
+            //                 <img src = "images/Garri.jpg"  alt="Garri" />
+            //                 <div className="caption">Garri</div>
+            //             </a>
+            //             </div>
+            //         </div>
+            //         <div className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank">
+            //                 <img src = "images/Jollof.jpg"   alt="Jollof Rice" />
+            //                 <div className="caption">Jollof Rice</div>
+            //             </a>
+            //             </div>
+            //         </div>
+            //         <div className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank" rel="noopener noreferrer" className="viewFoodContent">
+            //                 <img src = "images/Jollof.jpg"  alt="Puff Puff" />
+            //                 <div className="caption">Jollof Rice</div>
+            //             </a>
+            //             </div>
+            //         </div> 
+            //         <section className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank" rel="noopener noreferrer" className="viewFoodContent">
+            //                 <img src = "images/roasted_potatoes.jpg"  alt="Roasted Potatoes" />
+            //                 <div className="caption">Roasted Potatoes</div>
+            //             </a>
+            //             </div>
+            //       </section>
+            //     </div>
+            //   </div>
+           
             <div className="container">
-                <Typeahead options={this.meals} 
+                {/* <Typeahead options={this.meals} 
                 placeholder="Find Meals (and Ingredients) here.."
                 // onChange={(selected) => {
                 //     // Handle selections...
                 //   }}
                 // filterBy={['label', 'ingredients']}
-                />
+                /> */}
                 <br></br>
                 <div className="row">
                     <div className="col-sm">
