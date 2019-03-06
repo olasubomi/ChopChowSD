@@ -150,9 +150,6 @@ class App extends Component {
         }
     }
 
-
-    
-
     showIngredients=(event)=>{
         let mealString = event.target.innerText;
         var meal;
@@ -174,6 +171,7 @@ class App extends Component {
             suggestMealPopOver: !this.state.suggestMealPopOver
         });
     }
+
 
     render() {
         // Render your page inside

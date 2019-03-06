@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
+import {Typeahead} from 'react-bootstrap-typeahead';
+import Popup from "reactjs-popup";
+import './RecipeContent.css';
+
+let j = 0;
 
 class RecipeContentSection extends Component {
+   
     render(){
         //var imgsrc = this.props.selectedMeal.imageSrc;
         const mealPrep = this.props.selectedMeal.instructions.map((step)=> <li key={step} > {step} </li>);
@@ -16,11 +22,72 @@ class RecipeContentSection extends Component {
                     </div>
                     <div>{this.props.selectedMeal.readTime} </div>
                     <div> {this.props.selectedMeal.cookTime}</div>
-                    <ol> {mealPrep}</ol>
+                    <Popup trigger={<a href="#">Click here to read steps</a>} modal 
+                        contentStyle={contentStyle}>
+                        {close => (
+                            <div>
+                                <a className="close" onClick={close}>&times;</a>
+                                <div className="container" style={containerStyle} id="bigContainer">
+                                    <div className="row" width="80%">
+                                     <div className="container"> {/*Trying to create a new sub container*/}
+                                        <div className = "row">
+                                            <div className="col-sm">
+                                                <div className="row align-items-center">
+                                                    <img src={this.props.selectedMeal.imageSrc} alt='info' style={{width:'350px', height:'350px'}}></img>
+                                             </div>
+                                            </div>
+                                         <div className="col-sm"><ol style={listStyle}>{mealPrep}</ol></div>
+                                            </div>
+                                         </div>
+                                        
+                                            {/*<img src="../images/Arrow--NicholasJudy456.png" width="50%" height="40%" onclick="DoSomething();"/>*/}
+                                                 <button onClick="DoSomething" style={buttonStyle}>Next Page</button>
+                                    </div>
+                            </div>
+                        </div>
+                        )}           
+                    </Popup>
+                    {/* <ol> {mealPrep}</ol> {/*trigger={<a href="#">Click hear to read steps</a>}*/}
 
                 </div>
         );
-    }
+            
+    } 
+
+   
+    
 }
+
+const containerStyle = {
+        font: "50px",
+        display: "inline-block",
+        width: "70%",
+        height: "100%"
+}
+
+const contentStyle = {
+    borderRadius: "25px",
+    maxWidth: "1200px",
+    maxHeight: "1200px",
+    width: "90%",
+    height: "50%",
+   
+};
+
+const listStyle = {
+   
+}
+
+const buttonStyle={
+    display:"inline-block"
+}
+
+const arrowPic = {
+    width: "50%",
+    height: "40%"
+}
+
+
+
 
 export default RecipeContentSection;
