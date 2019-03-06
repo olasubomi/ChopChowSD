@@ -6,8 +6,6 @@ import IngredientSection from './components/mealMenu/IngredientSection';
 import { Popover, PopoverBody } from 'reactstrap';
 
 
-
-
 class App extends Component {
 
     meals = [
@@ -44,6 +42,47 @@ class App extends Component {
         },
         {
             id: 2,
+            label: "Puff Puff",
+            imageSrc: '../images/puff_puff.jpg',
+            readTime: "4 mins read",
+            cookTime: "80  mins to prepare",
+            ingredients: ["Water- 2 Cups", "Yeast - 2 and 1/4 teaspoons(1 packet)", "Flour- 3 and 1/2 Cups", "Sugar- 3/4 Cup"],
+            new_ingredient:{
+                "Garri":{
+                servings:{
+                    quantitiy: 1,
+                    measurements: "Cup(s)"
+                }},
+                "Water":{
+                servings:{
+                    quantitiy: 1,
+                    measurements: "Cup(s)"
+                }},
+                "Sugar":{
+                    servings:{
+                        quantitiy: 1,
+                        measurements: "Spoon(s)"
+                    }}
+              
+            },
+            quantity:[1,2,1],
+            measurements:["Cup(s)","Cup(s)","Spoon(s)"],
+            instructions: ["Mix salt, sugar, water, and yeast . Set aside for 5 minutes.",
+"Add flour and mix.",
+"Let the mixture rise for approximately 1- 2 hours",
+"In a large,sauce pan pour vegetable oil into a pot, until it is at least 3 inches (or about 5 centimeters) high (too little will result in flatter balls), and place on low heat.",
+"Test to make sure the oil is hot enough by putting a ‘drop’ of batter into the oil. If it is not hot enough, the batter will stay at the bottom of the pot rather than rising to the top.",
+"Using your hands grab a little bit of mixture at time and drop in the oil.",
+"When the oil is hot enough, use a spoon to dish up the batter, and another spoon or spatula to drop it in the oil, sort of in the shape of a ball.",
+"Fry for a few minutes until the bottom side is golden brown.",
+"Turn the ball over and fry for a few more minutes until the other side is golden brown.",
+"Use a large spoon or something like that to take it out of the oil. I usually place them on napkins right away to soak up some of the excess oil.",
+"If desired, you can roll the finished product in table sugar or powdered sugar to make it sweeter"],
+            servings: 4,
+            display: false
+        },
+        {
+            id: 3,
             label: "Jollof Rice",
             imageSrc: "../images/Jollof.jpg",
             readTime: "4 mins read",
@@ -57,7 +96,7 @@ class App extends Component {
             display: true
         },
         {
-            id: 3,
+            id: 4,
             label: "Fried Beans",
             imageSrc: "../images/FriedBeans.jpg",
             readTime: "4 mins read",
@@ -72,7 +111,7 @@ class App extends Component {
             display: true
         },
         {
-            id: 4,
+            id: 5,
             label: "Roasted Potatoes",
             imageSrc: "../images/roasted_potatoes.jpg",
             readTime: "3 mins read",
@@ -138,14 +177,123 @@ class App extends Component {
         // Render your page inside
         // the layout provider
         return (
+           
+        //     <div className="container">
+        //     <div className="row ">
+        //         <div className="col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank" >
+        //                 <img src = "images/roasted_potatoes.jpg" className="images" style={{width:"100%"}} alt="Garri" />
+        //                 <div className="caption">Roasted Potatoes</div>
+        //             </a>
+        //             </div>
+        //         </div>
+        //         <div className=" col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank" >
+        //                 <img src = "images/FriedBeans.jpg" className="images" style={{width:"100%"}} alt="Fried Beans" />
+        //                 <div className="caption">Fired Beans</div>
+        //             </a>
+        //             </div>
+        //         </div> 
+        //         <div className="col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank" >
+        //                 <img src = "images/Garri.jpg" className="images" style={{width:"100%"}} alt="Garri" />
+        //                 <div className="caption">Garri</div>
+        //             </a>
+        //             </div>
+        //         </div>
+        //         <div className="col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank">
+        //                 <img src = "images/Jollof.jpg" className="images" style={{width:"100%"}} alt="Jollof Rice" />
+        //                 <div className="caption">Jollof Rice</div>
+        //             </a>
+        //             </div>
+        //         </div>
+        //         <div className="col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank">
+        //                 <img src = "images/Jollof.jpg" className="images" style={{width:"100%"}} alt="Puff Puff" />
+        //                 <div className="caption">Jollof Rice</div>
+        //             </a>
+        //             </div>
+        //         </div> 
+
+        //         <div className="col-sm-12 col-md-6 col-lg-4">
+        //             <div className="mealContainer">
+        //             <a href="#" target="_blank">
+        //                 <img src = "images/roasted_potatoes.jpg" className="images" style={{width:"100%"}} alt="Roasted Potatoes" />
+        //                 <div className="caption">Roasted Potatoes</div>
+        //             </a>
+        //             </div>
+        //         </div>
+        //     </div>
+        // </div>
+
+
+            //     <div className="container blogThumbnails text-center">
+            //         <div className="row no-gutters">
+            //         <div className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank">
+            //                 <img src = "images/Garri.jpg"  alt="Garri" />
+            //                 <div className="caption">Garri</div>
+            //             </a>
+            //             </div>
+            //         </div>
+            //         <div className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank">
+            //                 <img src = "images/Jollof.jpg"  alt="Fried Beans" />
+            //                 <div className="caption">Jollof Rice</div>
+            //             </a>
+            //             </div>
+            //         </div> 
+            //         <div className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank">
+            //                 <img src = "images/Garri.jpg"  alt="Garri" />
+            //                 <div className="caption">Garri</div>
+            //             </a>
+            //             </div>
+            //         </div>
+            //         <div className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank">
+            //                 <img src = "images/Jollof.jpg"   alt="Jollof Rice" />
+            //                 <div className="caption">Jollof Rice</div>
+            //             </a>
+            //             </div>
+            //         </div>
+            //         <div className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank" rel="noopener noreferrer" className="viewFoodContent">
+            //                 <img src = "images/Jollof.jpg"  alt="Puff Puff" />
+            //                 <div className="caption">Jollof Rice</div>
+            //             </a>
+            //             </div>
+            //         </div> 
+            //         <section className="col-sm-12 col-md-6 col-lg-4">
+            //             <div className="thumbnail">
+            //             <a href="#" target="_blank" rel="noopener noreferrer" className="viewFoodContent">
+            //                 <img src = "images/roasted_potatoes.jpg"  alt="Roasted Potatoes" />
+            //                 <div className="caption">Roasted Potatoes</div>
+            //             </a>
+            //             </div>
+            //       </section>
+            //     </div>
+            //   </div>
+           
             <div className="container">
-                <Typeahead options={this.meals} 
+                {/* <Typeahead options={this.meals} 
                 placeholder="Find Meals (and Ingredients) here.."
                 // onChange={(selected) => {
                 //     // Handle selections...
                 //   }}
                 // filterBy={['label', 'ingredients']}
-                />
+                /> */}
                 <br></br>
                 <div className="row">
                     <div className="col-sm">
@@ -160,7 +308,7 @@ class App extends Component {
                       {/* onClick={this.suggestMealToggle} */}
                      </div>                     
                     <div className="col-sm">
-                        <b>Recipe Content</b>
+                        <b>Recipe Contents</b>
                         <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
                         
                     </div>
