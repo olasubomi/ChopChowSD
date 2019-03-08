@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import {Typeahead} from 'react-bootstrap-typeahead';
+// import {Typeahead} from 'react-bootstrap-typeahead';
 import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 import IngredientSection from './components/mealMenu/IngredientSection';
@@ -12,7 +12,7 @@ class App2 extends Component {
         {
             id: 1,
             label: "Garri",
-            imageSrc: '../images/Garri.jpg',
+            imageSrc: '/images/Garri.jpg',
             readTime: "2 mins read",
             cookTime: "2 mins to prepare",
             ingredients: ["Garri", "Water", "Sugar"],
@@ -43,7 +43,7 @@ class App2 extends Component {
         {
             id: 2,
             label: "Puff Puff",
-            imageSrc: '../images/puff_puff.jpg',
+            imageSrc: '/images/puff_puff.jpg',
             readTime: "4 mins read",
             cookTime: "80  mins to prepare",
             ingredients: ["Water- 2 Cups", "Yeast - 2 and 1/4 teaspoons(1 packet)", "Flour- 3 and 1/2 Cups", "Sugar- 3/4 Cup"],
@@ -84,7 +84,7 @@ class App2 extends Component {
         {
             id: 3,
             label: "Jollof Rice",
-            imageSrc: "../images/Jollof.jpg",
+            imageSrc: "/images/Jollof.jpg",
             readTime: "4 mins read",
             cookTime: "45 mins to prepare",
             ingredients: ["Rice- 3 Cups", "Tomatoes x 6", "Onion x 2", "Palm Oil- 2 Cups"],
@@ -98,7 +98,7 @@ class App2 extends Component {
         {
             id: 4,
             label: "Fried Beans",
-            imageSrc: "../images/FriedBeans.jpg",
+            imageSrc: "/images/FriedBeans.jpg",
             readTime: "4 mins read",
             cookTime: "60 mins to prepare",
             ingredients: ["Black Eyed Beans x 1 bag(350mL)", "Onions x 2", "Palm Oil- 2 Cups"],
@@ -113,7 +113,7 @@ class App2 extends Component {
         {
             id: 5,
             label: "Roasted Potatoes",
-            imageSrc: "../images/roasted_potatoes.jpg",
+            imageSrc: "/images/roasted_potatoes.jpg",
             readTime: "3 mins read",
             cookTime: "90 mins to prepare",
             ingredients: ["Potatoes - 8", "Garlic- 6 cloves",  "Thyme", "Oregano", "Basil", "Parmesan Cheese", "Oil", "Butter"],
@@ -146,7 +146,9 @@ class App2 extends Component {
             },
             showProducts:{
                 hidden: true
-            }
+            },
+
+            mealsLength : this.meals.length
         }
     }
 
@@ -176,62 +178,33 @@ class App2 extends Component {
     render() {
         // Render your page inside
         // the layout provider
+        //const elements = ['one', 'two', 'three'];
+
+        const items = []
+
+        for (const [index, value] of this.meals.entries()) {
+            //console.log();
+            items.push(
+                <div className="col-sm-12 col-md-6 col-lg-4 mealContainer" key = {value.id}>
+                    <a href="#" target="_blank" >
+                        <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id}></img>
+                        <div className="caption" style={{position:"center"}}  >{value.label}</div>
+                    </a>
+                </div>
+            )
+        }
+
         return (
             <div>
-           
             <div className="container">
                 <div className="row ">
-                    <div className="col-sm-12 col-md-6 col-lg-4">
-                        <div className="mealContainer">
-                        <a href="#" target="_blank" >
-                            <img src = "images/roasted_potatoes.jpg" className="images" style={{width:"100%"}} alt="Garri" />
-                            <div className="caption">Roasted Potatoes</div>
-                        </a>
-                        </div>
-                    </div>
-                    <div className=" col-sm-12 col-md-6 col-lg-4">
-                        <div className="mealContainer">
-                        <a href="#" target="_blank" >
-                            <img src = "images/FriedBeans.jpg" className="images" style={{width:"100%"}} alt="Fried Beans" />
-                            <div className="caption">Fired Beans</div>
-                        </a>
-                        </div>
-                    </div> 
-                    <div className="col-sm-12 col-md-6 col-lg-4">
-                        <div className="mealContainer">
-                        <a href="#" target="_blank" >
-                            <img src = "images/Garri.jpg" className="images" style={{width:"100%"}} alt="Garri" />
-                            <div className="caption">Garri</div>
-                        </a>
-                        </div>
-                    </div>
-                    <div className="col-sm-12 col-md-6 col-lg-4">
-                        <div className="mealContainer">
-                        <a href="#" target="_blank">
-                            <img src = "images/Jollof.jpg" className="images" style={{width:"100%"}} alt="Jollof Rice" />
-                            <div className="caption">Jollof Rice</div>
-                        </a>
-                        </div>
-                    </div>
-                    <div className="col-sm-12 col-md-6 col-lg-4">
-                        <div className="mealContainer">
-                        <a href="#" target="_blank">
-                            <img src = "images/Jollof.jpg" className="images" style={{width:"100%"}} alt="Puff Puff" />
-                            <div className="caption">Jollof Rice</div>
-                        </a>
-                        </div>
-                    </div> 
-
-                    <div className="col-sm-12 col-md-6 col-lg-4">
-                        <div className="mealContainer">
-                        <a href="#" target="_blank">
-                            <img src = "images/roasted_potatoes.jpg" className="images" style={{width:"100%"}} alt="Roasted Potatoes" />
-                            <div className="caption">Roasted Potatoes</div>
-                        </a>
-                        </div>
-                    </div>
+                {items} 
                 </div>
              </div>
+
+             &nbsp;&nbsp; <span>&#43;</span><input placeholder="Suggest Meal"></input> 
+             &nbsp;<button>Submit <span id="Popover1" onMouseOver={this.suggestMealToggle} onMouseOut={this.suggestMealToggle} >
+            <img src="/images/info_icon.png" alt="info" style={{width:'13px', height:'13px'}}/> </span></button>
            
             <div className="container">
                 {/* <Typeahead options={this.meals} 
@@ -248,11 +221,9 @@ class App2 extends Component {
                         <ListedMealsSection 
                         recipes={this.state.recipes} showIngredients={this.showIngredients}
                         selectedMeal={this.state.selectedMeal}/>
-                        <span>&#43;</span><input placeholder="Suggest Meal"></input> 
                         
-                      &nbsp;<button>Submit <span id="Popover1" onMouseOver={this.suggestMealToggle} onMouseOut={this.suggestMealToggle} >
-                      <img src="/images/info_icon.png" alt="info" style={{width:'13px', height:'13px'}}/> </span></button>
-                      {/* onClick={this.suggestMealToggle} */}
+                        
+                
                      </div>                     
                     <div className="col-sm">
                         <b>Recipe Contents</b>
