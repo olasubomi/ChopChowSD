@@ -11,7 +11,7 @@ class RecipeContentSection extends Component {
         const mealPrep = this.props.selectedMeal.instructions.map((step)=> <li key={step} > {step} </li>);
 
             return (
-                <div> Testing build updates                   
+                <div>                  
                     <div>{this.props.selectedMeal.label} </div>
                     <div> 
                     {/* <img src={require('./images/Garri.jpg')}/> */}
@@ -21,26 +21,27 @@ class RecipeContentSection extends Component {
                     </div>
                     <div>{this.props.selectedMeal.readTime} </div>
                     <div> {this.props.selectedMeal.cookTime}</div>
-                    <Popup trigger={<a href="#">Click here to read steps</a>} modal 
+                    <Popup trigger={<u>Click here to read steps</u>} modal 
                         contentStyle={contentStyle}>
                         {close => (
                             <div>
                                 <a className="close" onClick={close}>&times;</a>
                                 <div className="container" style={containerStyle} id="bigContainer">
-                                    <div className="row" width="80%">
+                                <div className="row align-items-center">
+                                    <img src={this.props.selectedMeal.imageSrc} alt='info' style={{width:'35%', height:'35%'}}></img>
+                                    <div className="col-sm"><ol style={listStyle}>{mealPrep}</ol></div>
+                                </div>
+                                    <div className="row" >
                                      <div className="container"> {/*Trying to create a new sub container*/}
                                         <div className = "row">
                                             <div className="col-sm">
-                                                <div className="row align-items-center">
-                                                    <img src={this.props.selectedMeal.imageSrc} alt='info' style={{width:'350px', height:'350px'}}></img>
-                                             </div>
+                                                
                                             </div>
-                                         <div className="col-sm"><ol style={listStyle}>{mealPrep}</ol></div>
-                                            </div>
+                                        </div>
                                          </div>
                                         
-                                            {/*<img src="../images/Arrow--NicholasJudy456.png" width="50%" height="40%" onclick="DoSomething();"/>*/}
-                                                 {/* <button onClick="DoSomething" style={buttonStyle}>Next Page</button> */}
+        {/*<img src="../images/Arrow--NicholasJudy456.png" width="50%" height="40%" onclick="DoSomething();"/>*/}
+        {/* <button onClick="DoSomething" style={buttonStyle}>Next Page</button> */}
                                     </div>
                             </div>
                         </div>
@@ -58,18 +59,18 @@ class RecipeContentSection extends Component {
 }
 
 const containerStyle = {
-        font: "50px",
+        //font: "50px",
         display: "inline-block",
-        width: "70%",
+        width: "100%",
         height: "100%"
 }
 
 const contentStyle = {
-    borderRadius: "25px",
-    maxWidth: "1200px",
-    maxHeight: "1200px",
-    width: "90%",
-    height: "50%",
+    // borderRadius: "25px",
+    maxWidth: "100%",
+    maxHeight: "100%",
+    // width: "90%",
+    // height: "50%",
    
 };
 
@@ -77,14 +78,14 @@ const listStyle = {
    
 }
 
-const buttonStyle={
-    display:"inline-block"
-}
+// const buttonStyle={
+//     display:"inline-block"
+// }
 
-const arrowPic = {
-    width: "50%",
-    height: "40%"
-}
+// const arrowPic = {
+//     width: "50%",
+//     height: "40%"
+// }
 
 
 
