@@ -21,7 +21,7 @@ class RecipeContentSection extends Component {
                     </div>
                     <div>{this.props.selectedMeal.readTime} </div>
                     <div> {this.props.selectedMeal.cookTime}</div>
-                    <Popup trigger={<a href="#">Click here to read steps</a>} modal 
+                    <Popup trigger={<u>Click here to read steps</u>} modal 
                         contentStyle={contentStyle}>
                         {close => (
                             <div>
@@ -78,14 +78,14 @@ const listStyle = {
    
 }
 
-const buttonStyle={
-    display:"inline-block"
-}
+// const buttonStyle={
+//     display:"inline-block"
+// }
 
-const arrowPic = {
-    width: "50%",
-    height: "40%"
-}
+// const arrowPic = {
+//     width: "50%",
+//     height: "40%"
+// }
 
 
 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'; 
-// import {Typeahead} from 'react-bootstrap-typeahead';
-import ListedMealsSection from './components/mealMenu/ListedMealsSection';
-import RecipeContentSection from './components/mealMenu/RecipeContentSection';
-import IngredientSection from './components/mealMenu/IngredientSection';
+import {Typeahead} from 'react-bootstrap-typeahead';
+// import ListedMealsSection from './components/mealMenu/ListedMealsSection';
+// import RecipeContentSection from './components/mealMenu/RecipeContentSection';
+// import IngredientSection from './components/mealMenu/IngredientSection';
 import { Popover, PopoverBody } from 'reactstrap';
+import Popup from "reactjs-popup";
 
 
 class App2 extends Component {
@@ -181,41 +182,84 @@ class App2 extends Component {
         //const elements = ['one', 'two', 'three'];
 
         const items = []
+        //const popOverInfo = []
 
         for (const [index, value] of this.meals.entries()) {
             //console.log();
+            const mealPrep = value.instructions.map((step)=> <li key={step} > {step} </li>);
+            //console.log(value);
+            //const ingredients ;
+            const ingredientsList = value.ingredients.map((step)=> <li key={step} > {step} </li>);
+
             items.push(
-                <div className="col-sm-12 col-md-6 col-lg-4 mealContainer" key = {value.id}>
-                    <a href="#" target="_blank" >
-                        <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id}></img>
-                        <div className="caption" style={{position:"center"}}  >{value.label}</div>
-                    </a>
+                <div className="col-sm-12 col-md-6 col-lg-4 mealContainer"  key = {value.id} >
+                
+                <Popup 
+                    trigger={
+                        <div>
+                        <div style={containerStyle}>
+                            <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id}></img>
+                        </div>
+                        <div style={{color: "blue"}}> {value.label}</div>
+                        </div>
+                    } modal closeOnDocumentClick contentStyle={contentStyle}>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col">
+                                <div className="col align-items-center">{value.readTime}</div>
+                                <div className="col align-items-center">{value.cookTime}</div>
+                                <div><b>Ingredients</b></div>
+                                <div className="col align-items-center"><ol>{ingredientsList}</ol></div>
+                                <div><img src={value.imageSrc} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img></div>
+
+                            </div>
+               
+                            <div className="col">
+                                <div className="col align-items-center"><ol>{mealPrep}</ol></div>
+                            </div>
+                        </div>
+                        </div>
+                    {/* <div>
+                    <div className="col align-items-left">
+                        <img src={value.imageSrc} alt='info'  style={{width:'35%', height:'35%', align:"center"}}></img>
+                    </div>
+                    <div>                            
+                        <div className="col align-items-center"><ol>{mealPrep}</ol></div>
+                    </div>
+                    </div>
+                    */}
+                 </Popup>
+                    
                 </div>
             )
         }
 
         return (
             <div>
-            <div className="container">
-                <div className="row ">
-                {items} 
-                </div>
-             </div>
-
-             &nbsp;&nbsp; <span>&#43;</span><input placeholder="Suggest Meal"></input> 
-             &nbsp;<button>Submit <span id="Popover1" onMouseOver={this.suggestMealToggle} onMouseOut={this.suggestMealToggle} >
-            <img src="/images/info_icon.png" alt="info" style={{width:'13px', height:'13px'}}/> </span></button>
-           
-            <div className="container">
-                {/* <Typeahead options={this.meals} 
+                <Typeahead options={this.meals} 
                 placeholder="Find Meals (and Ingredients) here.."
+                id="typeahead"
                 // onChange={(selected) => {
                 //     // Handle selections...
                 //   }}
                 // filterBy={['label', 'ingredients']}
-                /> */}
-                <br></br>
-                <div className="row">
+                />
+                &nbsp; <span>&#43;</span><input placeholder="Suggest Meal"></input> 
+             &nbsp;<button>Submit <span id="Popover1" onMouseOver={this.suggestMealToggle} onMouseOut={this.suggestMealToggle} >
+            <img src="/images/info_icon.png" alt="info" style={{width:'13px', height:'13px'}}/> </span></button>
+                
+                <Popover placement="auto" isOpen={this.state.suggestMealPopOver} target="Popover1" toggle={this.suggestMealToggle}>
+                        <PopoverBody><div className="payback-disclaimer">
+                        Suggestions by Guest Users are recorded, but do not change the publicly displayed Meals.
+                        </div></PopoverBody>
+                </Popover>
+            <div className="container">
+                <div className="row ">
+                    {items} 
+                </div>
+            </div>
+    
+                {/* <div className="row">
                     <div className="col-sm">
                         <b>Meals</b>
                         <ListedMealsSection 
@@ -235,20 +279,33 @@ class App2 extends Component {
                         <b>Ingredients</b>
                         <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}
                         selectedMeal= {this.state.selectedMeal}/>
-                        {/* <span>&#43;</span><input placeholder="Suggest Ingredient.."></input> */}
                     </div>
                     
-                    <Popover placement="auto" isOpen={this.state.suggestMealPopOver} target="Popover1" toggle={this.suggestMealToggle}>
-                        <PopoverBody><div className="payback-disclaimer">
-                        Suggestions by Guest Users are recorded, but do not change the publicly displayed Meals.
-                        </div></PopoverBody>
-                    </Popover>
-                </div>
-            </div>
+                    
+                </div> */}
             </div>
         );
     }
 } 
+
+const containerStyle = {
+    //font: "50px",
+    display: "inline-block",
+    width: "100%",
+    height: "100%",
+    
+}
+
+const contentStyle = {
+// borderRadius: "25px",
+maxWidth: "100vw",
+maxHeight: "100vh",
+overflow: "scroll"
+// width: "90%",
+// height: "50%",
+
+};
+
 
 export default App2;
 
