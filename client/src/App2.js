@@ -3,8 +3,11 @@ import {Typeahead} from 'react-bootstrap-typeahead';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
+import {Nav, Navbar, NavDropdown, Form, FormControl, Button} from 'react-bootstrap'
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
+//import Collapse from 'react-bootstrap/Collapse';
+// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 
 class App2 extends Component {
@@ -124,9 +127,12 @@ class App2 extends Component {
             display: true
         }
     ]
+
+
     constructor(props){
         super(props);
         this.suggestMealToggle = this.suggestMealToggle.bind(this);
+        //this.showIngredient = this.showIngredient.bind(this);
 
         this.state={
             suggestMealPopOver: false,
@@ -136,22 +142,19 @@ class App2 extends Component {
             recipes: this.meals, //[this.Garri, this.Jollof_Rice],
             selectedMealIngredients: this.meals[0].new_ingredients,
             selectedMeal: this.meals[0],
-            showFakeIngredients:{
-                hidden: false
-            },
             showIngredients:{
                 hidden: true
-            },
-            showFakeProducts:{
-                hidden: false
             },
             showProducts:{
                 hidden: true
             },
+            //open: false,
 
             mealsLength : this.meals.length
         }
     }
+
+    meal_popups  = [];
 
     showIngredients=(event)=>{
         let mealString = event.target.innerText;
@@ -175,6 +178,11 @@ class App2 extends Component {
         });
     }
 
+    showIngredient(index){
+        console.log("updating popup boolean");
+        this.meal_popups[index] = !this.meal_popups[index]
+    }
+
 
     render() {
         // Render your page inside
@@ -182,27 +190,48 @@ class App2 extends Component {
         //const elements = ['one', 'two', 'three'];
 
         const items = []
+        
         //const popOverInfo = []
 
         for (const [index, value] of this.meals.entries()) {
             //console.log();
             const mealPrep = value.instructions.map((step)=> <li key={step} > {step} </li>);
             //console.log(value);
-            //const ingredients ;
+            var mealIngredient = value.ingredients ;
             const ingredientsList = value.ingredients.map((step)=> <li key={step} > {step} </li>);
-
+            this.meal_popups.push(false);
+            console.log(this.meal_popups);
+            console.log(index);
             items.push(
                 <div className="col-sm-12 col-md-6 col-lg-4 mealContainer"  key = {value.id} >
-                
-                <Popup 
-                    trigger={
-                        <div>
+                    <div>
                         <div style={containerStyle}>
-                            <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id}></img>
+                            <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={()=>{
+                                this.meal_popups[index] = !this.meal_popups[index];
+                                console.log(this.meal_popups);
+                                var x = document.getElementById(value.ingredients);
+                                if(this.meal_popups[index]){
+                                    x.style.display = "block";
+                                }
+                                else{
+                                    x.style.display = "none";
+                                }
+                                }}></img>
+                            {/* <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={this.showIngredient(index)}></img> */}
+
                         </div>
                         <div style={{color: "blue"}}> {value.label}</div>
-                        </div>
+                    </div>
+                <Popup 
+                    trigger={
+                        <div id = {value.ingredients} style={{ display:"none"}}>
+                        {value.ingredients}   
+                        <Button>View Steps</Button>     
+                        </div> 
+
+   
                     } modal closeOnDocumentClick contentStyle={contentStyle}>
+
                     <div className="container">
                         <div className="row">
                             <div className="col">
@@ -218,7 +247,7 @@ class App2 extends Component {
                                 <div className="col align-items-center"><ol>{mealPrep}</ol></div>
                             </div>
                         </div>
-                        </div>
+                    </div>
                     {/* <div>
                     <div className="col align-items-left">
                         <img src={value.imageSrc} alt='info'  style={{width:'35%', height:'35%', align:"center"}}></img>
@@ -236,6 +265,38 @@ class App2 extends Component {
 
         return (
             <div>
+                {/* <div> */}
+                    {/* <Router> */}
+
+                    <Navbar bg="light" expand="lg">
+                    <Navbar.Brand href="#home">CC app menu bar</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Navbar.Text>
+                            text1
+                        </Navbar.Text>
+                        <Navbar.Text>
+                            text2 <a href="#login">Chop Chow Tech Team</a>
+                        </Navbar.Text>
+                        {/* <Nav className="mr-auto">
+                        <Nav.Link href="#home">Home</Nav.Link>
+                        <Nav.Link href="#link">Link</Nav.Link> */}
+                        {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                        </NavDropdown> */}
+                        {/* </Nav> */}
+                        <Form inline>
+                        <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                        <Button variant="outline-success">Search</Button>
+                        </Form>
+                    </Navbar.Collapse>
+                    </Navbar>
+                    {/* </Router> */}
+                {/* </div> */}
                 <Typeahead options={this.meals} 
                 placeholder="Find Meals (and Ingredients) here.."
                 id="typeahead"
