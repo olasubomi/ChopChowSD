@@ -19,6 +19,8 @@ class App2 extends Component {
             imageSrc: '/images/Garri.jpg',
             readTime: "2 mins read",
             cookTime: "2 mins to prepare",
+            intro: "Garri (African cereal) is a populous snack-meal in Western African region. "+
+            "It is made from cassava and can be drink by soaking in cold water or eaten as meal by soaking in hot water till its solid.",
             ingredients: ["Garri", "Water", "Sugar"],
             new_ingredient:{
                 "Garri":{
@@ -38,6 +40,7 @@ class App2 extends Component {
                     }}
               
             },
+            products: ["Garri ", "Sugar ", "Water " ],
             quantity:[1,2,1],
             measurements:["Cup(s)","Cup(s)","Spoon(s)"],
             instructions: ["Mix Garri and Sugar in a bowl", "Add ice, water and groundnuts as preffered", "Enjoy!"],
@@ -50,6 +53,8 @@ class App2 extends Component {
             imageSrc: '/images/puff_puff.jpg',
             readTime: "4 mins read",
             cookTime: "80  mins to prepare",
+            intro: " Puff Puff -- A very popular West African street food that's quick and easy to make with different variations."+
+            " Dangerously delicious and addicting!",
             ingredients: ["Water- 2 Cups", "Yeast - 2 and 1/4 teaspoons(1 packet)", "Flour- 3 and 1/2 Cups", "Sugar- 3/4 Cup"],
             new_ingredient:{
                 "Garri":{
@@ -69,6 +74,7 @@ class App2 extends Component {
                     }}
               
             },
+            products: ["Flour ", "Sugar ", "Yeast ", "Water "],
             quantity:[1,2,1],
             measurements:["Cup(s)","Cup(s)","Spoon(s)"],
             instructions: ["Mix salt, sugar, water, and yeast . Set aside for 5 minutes.",
@@ -91,7 +97,13 @@ class App2 extends Component {
             imageSrc: "/images/Jollof.jpg",
             readTime: "4 mins read",
             cookTime: "45 mins to prepare",
-            ingredients: ["Rice- 3 Cups", "Tomatoes x 6", "Onion x 2", "Palm Oil- 2 Cups"],
+            intro: "Jollof rice is a common delicacy that is enjoyed in the Western Africa region."+
+            "Jollof rice a.k.a “One pot” in Benachin, is a delicious delicacy that can be enjoyed without the need of a side-dish. "+
+            " Jollof rice is a good source for carbohydrate, starch, fibers and traces of protein depending on the in the ingredients. "+
+            "Cooking jollof rice is often considered as a work of art due to the many styles and techniques and taste as good as next day left-over. "+
+            "Chop-Chow guarantees one of the best methods in Cooking Jollof rice. Chow!",
+            ingredients: ["Rice- 3 Cups", "Tomatoes x 6", "Onion x 2"],
+            products: ["Rice ", "Tomatoes ", "Onions "],
             instructions:[ "Tomato , Onion Tatashe, Rodo Blended in Blender",
             "Vegetable Oil + Palm Oil, Low Heat in Pan",
             "Add onions to Pan", "Add Tomato Paste", "Add Powdered Ginger, Garlic and Curry",
@@ -105,7 +117,10 @@ class App2 extends Component {
             imageSrc: "/images/FriedBeans.jpg",
             readTime: "4 mins read",
             cookTime: "60 mins to prepare",
+            intro: "Fried beans is a delicious meal rich in protein, vitamins and fiber."+
+            " It can serves as alternative for those trying to reduce the intake of meat and animal protein.",
             ingredients: ["Black Eyed Beans x 1 bag(350mL)", "Onions x 2", "Palm Oil- 2 Cups"],
+            products: ["Black Eyed Beans ", "Onions ", "Palm Oil "],
             instructions: ["Soak beans in water overnight","The next day, chop 1 onion into thin slices, cut the other one into 4 big chunks then pound/grind the pepper.",
         "Rinse the beans and put in a sizeable pot. I rinse it twice.",
      "Pre-cook the sliced onions with a few drops of water to soften them a bit.","When the beans is done, add salt, leave to dry up all the water and transfer the beans to another container.",
@@ -120,7 +135,9 @@ class App2 extends Component {
             imageSrc: "/images/roasted_potatoes.jpg",
             readTime: "3 mins read",
             cookTime: "90 mins to prepare",
+            intro: "Delicious Red Roasted Potatoes. Popular in European dishes",
             ingredients: ["Potatoes - 8", "Garlic- 6 cloves",  "Thyme", "Oregano", "Basil", "Parmesan Cheese", "Oil", "Butter"],
+            products: ["Red Potatoes ", "Parmesan Cheese ", "Thyme ", "Oregano ", "Basil ", "Vegetable Oil ", "Butter "],
             instructions: ["Adjust oven rack to lowest position and heat oven to 450 degrees. ", "Cut potatoes into quarter chunks",
         "Toss potatoes with oil, salt and pepper chopped garlic, Thyme, Oregano, Basil and then Parmesan Cheese", 
     "Arrange, cut side down, on a large lipped cookie sheet or jellyroll pan.", "Roast until tender and golden brown, or until desired crispiness about 30-45 minutes","Add butter in between roasting for a savory taste, Transfer to a serving dish when ready."],
@@ -190,64 +207,88 @@ class App2 extends Component {
         //const elements = ['one', 'two', 'three'];
 
         const items = []
-        
         //const popOverInfo = []
+
 
         for (const [index, value] of this.meals.entries()) {
             //console.log();
             const mealPrep = value.instructions.map((step)=> <li key={step} > {step} </li>);
-            //console.log(value);
-            var mealIngredient = value.ingredients ;
+            console.log(mealPrep[2]);
+
+            // const instructionsLength = value.instructions.length;
+
+            // var mealIngredient = value.ingredients ;
             const ingredientsList = value.ingredients.map((step)=> <li key={step} > {step} </li>);
             this.meal_popups.push(false);
-            console.log(this.meal_popups);
-            console.log(index);
+            // console.log(this.meal_popups);
+            // console.log(index);
             items.push(
                 <div className="col-sm-12 col-md-6 col-lg-4 mealContainer"  key = {value.id} >
                     <div>
-                        <div style={containerStyle}>
-                            <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={()=>{
+                        <div style={containerStyle} onClick={()=>{
                                 this.meal_popups[index] = !this.meal_popups[index];
-                                console.log(this.meal_popups);
-                                var x = document.getElementById(value.ingredients);
+                                // console.log(this.meal_popups);
+                                var x = document.getElementById(value.id);
+                                var y = document.getElementById(value.id+"products")
                                 if(this.meal_popups[index]){
                                     x.style.display = "block";
+                                    y.style.display = "block";
+
                                 }
                                 else{
                                     x.style.display = "none";
+                                    y.style.display = "none";
                                 }
-                                }}></img>
+                                }}>
+                            <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id}></img>
                             {/* <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={this.showIngredient(index)}></img> */}
-
+                            <div style={{color: "black"}}> <b> {value.label} | {value.cookTime}  </b>| <span style={{color:"grey"}}> View Details</span></div>
                         </div>
-                        <div style={{color: "blue"}}> {value.label}</div>
                     </div>
                 <Popup 
                     trigger={
-                        <div id = {value.ingredients} style={{ display:"none"}}>
-                        {value.ingredients}   
-                        <Button>View Steps</Button>     
+                        <div id = {value.id} style={{ display:"none"}}>
+                        {value.intro}
+                        <br></br>
+                        <br></br>
+                        <button style={{backgroundColor: "orange" }}>View Steps</button>  
+                        <br></br>                           
                         </div> 
-
-   
                     } modal closeOnDocumentClick contentStyle={contentStyle}>
-
+                    {/* Inside Pop - up */}
                     <div className="container">
                         <div className="row">
-                            <div className="col">
-                                <div className="col align-items-center">{value.readTime}</div>
-                                <div className="col align-items-center">{value.cookTime}</div>
+                            <div className="col-sm-6">
                                 <div><b>Ingredients</b></div>
                                 <div className="col align-items-center"><ol>{ingredientsList}</ol></div>
-                                <div><img src={value.imageSrc} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img></div>
-
                             </div>
-               
-                            <div className="col">
-                                <div className="col align-items-center"><ol>{mealPrep}</ol></div>
-                            </div>
+                            <div className="col-sm-6"><b>
+                                <div className="col">{value.readTime}<br></br>{value.cookTime}</div>
+                                {/* <div className="col"></div> */}
+                                </b>
+                            </div> 
+                            {mealPrep}
                         </div>
+                        <br></br>
+                        {/* <div className="row">
+                            <div className="col-sm-12">
+                                <img src={value.imageSrc} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img>
+                            </div>
+                        </div> */}
                     </div>
+                    <hr></hr>
+
+                    <span>Overview</span>&nbsp;|&nbsp;<span>Kitchen accessories for this meal</span>&nbsp;|&nbsp;<span>Add To Cart..</span>
+
+                    <img src={value.imageSrc} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img>
+                    <hr></hr>
+                    {/* <div className="col">
+                        <div className="col align-items-center"><ol>{mealPrep}</ol></div>
+                    </div> */}
+                            
+                    {/* </div> */}
+                        
+                    {/* </div> */}
                     {/* <div>
                     <div className="col align-items-left">
                         <img src={value.imageSrc} alt='info'  style={{width:'35%', height:'35%', align:"center"}}></img>
@@ -258,6 +299,12 @@ class App2 extends Component {
                     </div>
                     */}
                  </Popup>
+                 <div id = {value.id+"products"} style={{ display:"none"}}>
+                 <b>Ingredients</b>
+                        <br></br>
+                        {value.products}
+                 </div>
+                
                     
                 </div>
             )
