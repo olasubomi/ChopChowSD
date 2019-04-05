@@ -149,6 +149,7 @@ class App2 extends Component {
     constructor(props){
         super(props);
         this.suggestMealToggle = this.suggestMealToggle.bind(this);
+        this.updateInstructionsDisplayBaseIndex = this.updateInstructionsDisplayBaseIndex.bind(this);
         //this.showIngredient = this.showIngredient.bind(this);
 
         this.state={
@@ -167,7 +168,8 @@ class App2 extends Component {
             },
             //open: false,
 
-            mealsLength : this.meals.length
+            mealsLength : this.meals.length,
+            base_index : 0
         }
     }
 
@@ -200,25 +202,46 @@ class App2 extends Component {
         this.meal_popups[index] = !this.meal_popups[index]
     }
 
+    updateInstructionsDisplayBaseIndex(event){
+        //console.log(event.target.innerText);
+        var button = event.target.innerText;
+        var regExp = '/^\w+[ ]/d  $/';
+        var slide_index = button.match(regExp);
+        //console.log(slide_index);
+        var last_chars = button.slice(6,7);
+
+        var slide_num = Number(last_chars);
+
+        this.setState({base_index: slide_num*3})
+        //var base_index = slide_num*3;
+        //console.log("Updating base index on click to: " +this.state.base_index);
+    }
+
 
     render() {
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
-
-        const items = []
         //const popOverInfo = []
+        const items = []
+
 
 
         for (const [index, value] of this.meals.entries()) {
             //console.log();
+            var base_index = 0;
             const mealPrep = value.instructions.map((step)=> <li key={step} > {step} </li>);
-            console.log(mealPrep[2]);
+            var popUpSlides = [];
 
-            // const instructionsLength = value.instructions.length;
+             const instructionsLength = value.instructions.length;
+             //console.log(instructionsLength);
 
             // var mealIngredient = value.ingredients ;
             const ingredientsList = value.ingredients.map((step)=> <li key={step} > {step} </li>);
+            var i;
+            for (i = 0; i < instructionsLength/3; i++) { 
+                popUpSlides.push(<button onClick={this.updateInstructionsDisplayBaseIndex}>Slide {i}  </button>)
+              }
             this.meal_popups.push(false);
             // console.log(this.meal_popups);
             // console.log(index);
@@ -267,7 +290,11 @@ class App2 extends Component {
                                 {/* <div className="col"></div> */}
                                 </b>
                             </div> 
-                            {mealPrep}
+                            <div id= "mealPrepChunk">
+                            {mealPrep[this.state.base_index+0]}
+                            {mealPrep[this.state.base_index+1]}
+                            {mealPrep[this.state.base_index+2]}
+                            </div>
                         </div>
                         <br></br>
                         {/* <div className="row">
@@ -279,7 +306,8 @@ class App2 extends Component {
                     <hr></hr>
 
                     <span>Overview</span>&nbsp;|&nbsp;<span>Kitchen accessories for this meal</span>&nbsp;|&nbsp;<span>Add To Cart..</span>
-
+                    <br></br>
+                    {popUpSlides}
                     <img src={value.imageSrc} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img>
                     <hr></hr>
                     {/* <div className="col">
