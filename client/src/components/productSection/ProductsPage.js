@@ -1,76 +1,283 @@
 import React, { Component } from 'react';
+import Popup from "reactjs-popup";
 
 
 
 
 class ProductSection extends Component {
 
-    meals = [
-        {
-            id: 1,
-            store: "Lizy Gidy",
-            imageSrc: '/images/Garri.jpg',
-            readTime: "2 mins read",
-            cookTime: "2 mins to prepare",
-            intro: "Garri (African cereal) is a populous snack-meal in Western African region. "+
-            "It is made from cassava and can be drink by soaking in cold water or eaten as meal by soaking in hot water till its solid.",
-            ingredients: ["Garri", "Water", "Sugar"],
-            new_ingredient:{
-                "Garri":{
-                servings:{
-                    quantitiy: 1,
-                    measurements: "Cup(s)"
-                }},
-                "Water":{
-                servings:{
-                    quantitiy: 1,
-                    measurements: "Cup(s)"
-                }},
-                "Sugar":{
-                    servings:{
-                        quantitiy: 1,
-                        measurements: "Spoon(s)"
-                    }}
-              
-            },
-            products: ["Garri ", "Sugar ", "Water " ],
-            quantity:[1,2,1],
-            measurements:["Cup(s)","Cup(s)","Spoon(s)"],
-            instructions: ["Mix Garri and Sugar in a bowl", "Add ice, water and groundnuts as preffered", "Enjoy!"],
-            servings: 1,
-            display: false
-        },
-        {
-            id: 2,
-            label: "Jollof Rice",
-            imageSrc: "/images/Jollof.jpg",
-            readTime: "4 mins read",
-            cookTime: "45 mins to prepare",
-            intro: "Jollof rice is a common delicacy that is enjoyed in the Western Africa region."+
-            "Jollof rice a.k.a “One pot” in Benachin, is a delicious delicacy that can be enjoyed without the need of a side-dish. "+
-            " Jollof rice is a good source for carbohydrate, starch, fibers and traces of protein depending on the in the ingredients. "+
-            "Cooking jollof rice is often considered as a work of art due to the many styles and techniques and taste as good as next day left-over. "+
-            "Chop-Chow guarantees one of the best methods in Cooking Jollof rice. Chow!",
-            ingredients: ["Rice- 3 Cups", "Tomatoes x 6", "Onion x 2"],
-            products: ["Rice ", "Tomatoes ", "Onions "],
-            instructions:[ "Tomato , Onion Tatashe, Rodo Blended in Blender",
-            "Vegetable Oil + Palm Oil, Low Heat in Pan",
-            "Add onions to Pan", "Add Tomato Paste", "Add Powdered Ginger, Garlic and Curry",
-            "Add Blended Tomatoes mix (If too thick, add water)","Add seasoning, Maggi (Chicken Flavor), Salt",
-        "For Jollof Rice, add Bay Leaves."],
-            display: true
+    stores = [
+    {
+        store_name: "Lizy Gidy",
+        store_image: '/images/store_pics/lizy_gidy.jpg',
+        products:[{
+            product_name: "Garri",
+            product_image: '/images/products/garri.jpg',
+            product_price: 8.99,
+            variations:{
+                "Ijebu Garri":{
+                    sizes:{
+                        "50lbs": 8.99
+                    }
+                },
+                "Ghana Garri":{
+                    sizes:{
+                        "50lbs": 8.99
+                    }
+                },
+                "Yellow Garri":{
+                    sizes:{
+                        "50lbs": 8.99
+                    }
+                }
+            }
+        },{
+        product_name:"Palm Oil",
+        product_image: '/images/products/ola_ola_palm_oil.jpg',
+        product_price: 8.99,
+        sizes:{
+            "64 oz": 19.99,
+            "32 oz": 10.99,
+            "17.6 choleterol free": 7.99,
+            "35.2":13.99,
+            "105.60":29.00
         }
-    ]
+        },{
+        product_name:"Beans",
+        product_image: '/images/products/beans.jpeg',
+        product_price: 12.00,
+        variations:{
+            "Brown Beans":{
+                sizes:{
+                    "2 lbs":12.00
+                }
+            },
+            "Honey Beans":{
+                sizes:{
+                    "2 lbs":12.00
+                }
+            }
+        }              
+        }
+        ]},
+    {
+        store_name:"African Carribean Market",
+        store_image: '/images/store_pics/african_carribean_storefront_people.jpg',
+        products:[{
+            product_name:"Palm Oil",
+            product_image: '/images/products/ola_ola_palm_oil.jpg',
+            product_price: 8.99,
+            variations:{
+                "Ola-Ola Palm Oil":{
+                    sizes:{
+                        "1.32 Gallons": 8.99,
+                        "0.9 Gallons": 5.99
+                    }
+                },
+                "Omni Red Palm Oil 100% unrefined":{
+                    sizes:{
+                        "50lbs": 8.99
+                    }
+                }
+            }
+        },{
+            product_name:"Beans",
+            product_image: '/images/products/beans.jpg',
+            product_price: 2.25,
+            variations:{
+                "Black Eyes Peas":{
+                    sizes:{
+                        "0.5 L":2.25
+                    }
+                },
+                "Whole Green Peas":{
+                    sizes:{
+                        "0.5 L":2.25
+                    }
+                },
+                "Pinto Beans":{
+                    sizes:{
+                        "0.5 L":2.25
+                    }
+                },
+                "Red Kidney Beans":{
+                    sizes:{
+                        "0.5 L":2.25
+                    }
+                },
+                "Large Lime Beans":{
+                    sizes:{
+                        "0.5 L":2.25
+                    }
+                },
+            }         
+        },{
+            product_name:"Egusi",
+            product_image: '/images/products/egusi.jpg',
+            product_price: 9.95,
+            sizes:{
+                "5 Lbs": 9.95
+            }
+        },{
+        product_name:"Garri",
+        product_image: '/images/products/garri.jpg',
+        product_price: 8.99,
+            variations:{
+                "Ijebu Garri":{
+                    sizes:{
+                        "50lbs": 8.99
+                    }
+                },
+                "Ghana Garri":{
+                    sizes:{
+                        "50lbs": 8.99
+                    }
+                },
+                "Yellow Garri":{
+                    sizes:{
+                        "50lbs": 8.99
+                    }
+                }
+            }
+        }]
+    }     
+]
+
         render() {
+            var store_products = []
+            for (const  [index, value] of this.stores.entries()){
+                var productsMenu = []
+                console.log(index);
+                console.log(value);
+
+                for (const [storeProductsIndex, productValue] of value.products.entries()) {
+                    console.log("Inner for loop");
+                    //const element = array[index];
+                    console.log(storeProductsIndex);
+                    console.log(productValue.product_name);
+                    //productsMenu.push(productValue.product_name)
+                    // check for if product has variations
+
+                    //productsMenu.push(productValue.product_name)
+                    var key = value.store_name+productValue.product_name
+                    productsMenu.push(
+                        <div className="col-sm-12 col-md-6 col-lg-4 mealContainer"  key = {key} >
+                            <div>
+                                <div style={containerStyle}>
+                                    
+                                       
+                                        <Popup 
+                    trigger={
+                        <div id = {productValue.id} style={containerStyle}>
+                        <img src={productValue.product_image} className="images" style={{width:"100%"}} alt={productValue.id}></img>
+                                    <div id="textbox">
+                                        <p className="alignleft">{productValue.product_name}</p>
+                                        <p className="alignright"  style={{color: "green"}}>${productValue.product_price}</p>
+                                    </div>
+                        {/* <button style={{backgroundColor: "orange" }}>View Steps</button>   */}
+ 
+                        </div> 
+                    } modal closeOnDocumentClick contentStyle={contentStyle}>
+                    {/* Inside Pop - up */}
+                    <div>
+                    {productValue.product_name}
+                    <br></br>
+                    Availability
+                    </div>
+
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-sm-6"><b>
+                            <img src={productValue.product_image} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img>
+                                {/* <div className="col"></div> */}
+                                </b>
+                            </div> 
+                            <div className="col-sm-6"><b>
+                                {/* <div className="col">{productValue.product_price}</div> */}
+                                {/* <div className="col">{productValue.sizes}</div> */}
+                                Availabile<br></br>
+                                Variations:<br></br>
+                                Price:
+                                </b>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <span>View Product</span>&nbsp;|&nbsp;<span>Update Product</span>&nbsp;|&nbsp;<span>Add To Cart..</span>
+                    <hr></hr>
+                    {/* <div className="col">
+                        <div className="col align-items-center"><ol>{mealPrep}</ol></div>
+                    </div> */}
+                            
+                    {/* </div> */}
+                        
+                    {/* </div> */}
+                    {/* <div>
+                    <div className="col align-items-left">
+                        <img src={value.imageSrc} alt='info'  style={{width:'35%', height:'35%', align:"center"}}></img>
+                    </div>
+                    <div>                            
+                        <div className="col align-items-center"><ol>{mealPrep}</ol></div>
+                    </div>
+                    </div>
+                    */}
+                 </Popup>
+                                    </div>
+                                </div>
+                            </div>
+                    )
+
+                }
+
+                store_products.push(
+                    <div key={value.store_name}>
+                        <hr></hr>
+                        <img src={value.store_image} className="images" style={{width:"10%"}} alt={value.id}></img>
+                        <b>{value.store_name}</b>
+
+                            <br></br>
+                        <div className="container">
+                            
+                           <div className="row ">
+                           {productsMenu}
+                           </div>
+                       </div>
+                        <hr></hr>
+                    </div>
+                )
+
+
+            }
+
+
 
             return (
                 <div>                    
                     <div id="title"><b>Our Products</b></div>
-
-
+                    {store_products}
                 </div>
             );
         }
 }
+
+const containerStyle = {
+    //font: "50px",
+    display: "inline-block",
+    width: "100%",
+    height: "100%",
+    
+}
+
+const contentStyle = {
+    // borderRadius: "25px",
+    maxWidth: "100vw",
+    maxHeight: "100vh",
+    overflow: "scroll"
+    // width: "90%",
+    // height: "50%",
+    
+    };
+
+
 
 export default ProductSection;

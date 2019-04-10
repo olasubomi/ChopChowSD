@@ -91,3 +91,12 @@ code {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+
+/* PRoducts page alignment */
+.alignleft {
+	float: left;
+}
+.alignright {
+	float: right;
+}

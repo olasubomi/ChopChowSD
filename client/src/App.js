@@ -210,7 +210,7 @@ class App extends Component {
     updateInstructionsDisplayBaseIndex(event){
         //console.log(event.target.innerText);
         var button = event.target.innerText;
-        var regExp = '/^\w+[ ]/d  $/';
+        var regExp = '/^w+[ ]/d  $/';
         var slide_index = button.match(regExp);
         //console.log(slide_index);
         var last_chars = button.slice(6,7);
