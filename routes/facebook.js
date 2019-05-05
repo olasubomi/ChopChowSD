@@ -4,7 +4,6 @@ const router = express.Router();
 var passport = require('passport')
   , FacebookStrategy = require('passport-facebook').Strategy;
 
-console.log("Use fb route");
 
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,

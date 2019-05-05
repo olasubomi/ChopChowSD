@@ -1,5 +1,6 @@
 'use strict';
-
+require('dotenv').config();
+  
 const express = require('express');
 // const session = require('express-session');
 // const MongoDBStore = require('connect-mongodb-session')(session);
@@ -24,12 +25,12 @@ const express = require('express');
 
 // const Security = require('./lib/Security');
 // const Products = require('./model/Products');
-const path = require('path');
 const app = express();
-
+const path = require('path');
 const port = process.env.PORT || 5000;
 
 app.set('view engine', 'ejs');
+
 const facebook = require("./routes/facebook");
 app.use('/facebook', facebook);
 
@@ -55,9 +56,45 @@ app.use(express.static(path.join(__dirname,'client/build' )));
 
 // Serve static files from the React app
 app.use('/', express.static(path.join(__dirname,'client/public')));
+  
+  app.get('/test', (req, res) => {
+    console.log("To test page");
+    res.send(JSON.stringify(req.session));
+
+  });
+
+  app.get('/redirect', (req, res) => {
+    console.log("To redirect page");
+    res.sendFile(path.join(__dirname+'/client/public/'));
+  });
+
+
+  app.get('/renderEJS', (req, res) => {
+    console.log("To render ");
+    res.render('index');
+  });
+
+  app.get('/privacy-policy', (req, res) => {
+    console.log("To render ");
+    res.render('pages/privacy-policy');
+  });
+
+  app.get('/terms-of-service', (req, res) => {
+    console.log("To render ");
+    res.render('pages/terms-of-service');
+  });
+
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+// app.get('*', (req, res) => {
+//     console.log("Gets in client builds index");
+//     res.sendFile(path.join(__dirname+'/client/build/'));
+//   });
+  
 
 // on enetering landing page
- app.get('/find', function (req, res) {
+app.get('/find', function (req, res) {
     console.log("Gets in get");
     if(!req.session.cart) {
         console.log("Creates a cart session")
@@ -99,33 +136,6 @@ app.use('/', express.static(path.join(__dirname,'client/public')));
     console.log("ends db search")
  }
 );
-
-  
-  app.get('/test', (req, res) => {
-    console.log("To test page");
-    res.send(JSON.stringify(req.session));
-
-  });
-
-  app.get('/redirect', (req, res) => {
-    console.log("To redirect page");
-    res.sendFile(path.join(__dirname+'/client/public/'));
-  });
-
-
-  app.get('/renderEJS', (req, res) => {
-    console.log("To render ");
-    res.render('index');
-
-    // res.render('/index');
-  });
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-// app.get('*', (req, res) => {
-//     console.log("Gets in client builds index");
-//     res.sendFile(path.join(__dirname+'/client/build/'));
-//   });
-  
 // after identifying unique  session tokens from MD5 string
 // Then we are able to compare tokens in each singular form request: 
 // app.post('/test', (req, res) => {
