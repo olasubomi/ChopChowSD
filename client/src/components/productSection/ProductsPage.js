@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import Popup from "reactjs-popup";
 
-
-
-
 class ProductSection extends Component {
 
-    stores = [
+    storeCollection = [
     {
         store_name: "Lizy Gidy",
         store_image: '/images/store_pics/lizy_gidy.jpg',
@@ -14,52 +11,23 @@ class ProductSection extends Component {
             product_name: "Garri",
             product_image: '/images/products/garri.jpg',
             product_price: 8.99,
-            variations:{
-                "Ijebu Garri":{
-                    sizes:{
-                        "50lbs": 8.99
-                    }
-                },
-                "Ghana Garri":{
-                    sizes:{
-                        "50lbs": 8.99
-                    }
-                },
-                "Yellow Garri":{
-                    sizes:{
-                        "50lbs": 8.99
-                    }
-                }
-            }
+            variations:["Ijebu Garri", "Ghana Garri","Yellow Garri"],
+            sizes:["50lbs"]
         },{
         product_name:"Palm Oil",
         product_image: '/images/products/ola_ola_palm_oil.jpg',
         product_price: 8.99,
-        sizes:{
-            "64 oz": 19.99,
-            "32 oz": 10.99,
-            "17.6 choleterol free": 7.99,
-            "35.2":13.99,
-            "105.60":29.00
-        }
+        sizes:["64 oz","32 oz","17.6 choleterol free", "35.2","105.60"],
+        respective_prices:[ 19.99,10.99,7.99,13.99,29.00]
         },{
         product_name:"Beans",
         product_image: '/images/products/beans.jpeg',
         product_price: 12.00,
-        variations:{
-            "Brown Beans":{
-                sizes:{
-                    "2 lbs":12.00
-                }
-            },
-            "Honey Beans":{
-                sizes:{
-                    "2 lbs":12.00
-                }
-            }
-        }              
+        variations:["Brown Beans","Honey Beans"],
+        sizes:["2 lbs"],
+        price_per_ounce: 3.2
         }
-        ]},
+    ]},
     {
         store_name:"African Carribean Market",
         store_image: '/images/store_pics/african_carribean_storefront_people.jpg',
@@ -67,94 +35,44 @@ class ProductSection extends Component {
             product_name:"Palm Oil",
             product_image: '/images/products/ola_ola_palm_oil.jpg',
             product_price: 8.99,
-            variations:{
-                "Ola-Ola Palm Oil":{
-                    sizes:{
-                        "1.32 Gallons": 8.99,
-                        "0.9 Gallons": 5.99
-                    }
-                },
-                "Omni Red Palm Oil 100% unrefined":{
-                    sizes:{
-                        "50lbs": 8.99
-                    }
-                }
-            }
+            variations:["Ola-Ola Palm Oil","Omni Red Palm Oil 100% unrefined"],
+            sizes:["1.32 Gallons","0.9 Gallons","50lbs" ],
+            price_per_gallon: 3.00,
+            price_per_pound: 0.30
+
         },{
             product_name:"Beans",
             product_image: '/images/products/beans.jpg',
             product_price: 2.25,
-            variations:{
-                "Black Eyes Peas":{
-                    sizes:{
-                        "0.5 L":2.25
-                    }
-                },
-                "Whole Green Peas":{
-                    sizes:{
-                        "0.5 L":2.25
-                    }
-                },
-                "Pinto Beans":{
-                    sizes:{
-                        "0.5 L":2.25
-                    }
-                },
-                "Red Kidney Beans":{
-                    sizes:{
-                        "0.5 L":2.25
-                    }
-                },
-                "Large Lime Beans":{
-                    sizes:{
-                        "0.5 L":2.25
-                    }
-                },
-            }         
+            variations:[ "Black Eyes Peas","Whole Green Peas","Pinto Beans","Red Kidney Beans","Large Lime Beans"],
+            sizes: "0.5 L"       
         },{
             product_name:"Egusi",
             product_image: '/images/products/egusi.jpg',
             product_price: 9.95,
-            sizes:{
-                "5 Lbs": 9.95
-            }
+            sizes:"5 Lbs"
         },{
         product_name:"Garri",
         product_image: '/images/products/garri.jpg',
         product_price: 8.99,
-            variations:{
-                "Ijebu Garri":{
-                    sizes:{
-                        "50lbs": 8.99
-                    }
-                },
-                "Ghana Garri":{
-                    sizes:{
-                        "50lbs": 8.99
-                    }
-                },
-                "Yellow Garri":{
-                    sizes:{
-                        "50lbs": 8.99
-                    }
-                }
-            }
+        variations:["Ijebu Garri","Ghana Garri","Yellow Garri"],
+        sizes:"50lbs"
         }]
     }     
 ]
 
         render() {
             var store_products = []
-            for (const  [index, value] of this.stores.entries()){
+            for (const  [index, value] of this.storeCollection.entries()){
                 var productsMenu = []
-                console.log(index);
-                console.log(value);
+                // console.log(index);
+                // console.log(value);
 
                 for (const [storeProductsIndex, productValue] of value.products.entries()) {
-                    console.log("Inner for loop");
+                    // console.log("Inner for loop");
                     //const element = array[index];
-                    console.log(storeProductsIndex);
-                    console.log(productValue.product_name);
+                    // console.log(storeProductsIndex);
+                    // console.log(productValue.product_name);
                     //productsMenu.push(productValue.product_name)
                     // check for if product has variations
 

@@ -9,7 +9,9 @@
     "express": "^4.15.3",
     "express-session": "^1.15.6",
     "mongodb": "^3.1.13",
-    "mongoose": "^5.4.11"
+    "mongoose": "^5.4.11",
+    "passport": "^0.4.0",
+    "passport-facebook": "^3.0.0"
   },
   "scripts": {
     "start": "node server.js"

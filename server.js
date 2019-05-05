@@ -30,6 +30,8 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.set('view engine', 'ejs');
+const facebook = require("./routes/facebook");
+app.use('/facebook', facebook);
 
 app.use(express.static(path.join(__dirname,'client/build' )));
 
@@ -52,7 +54,7 @@ app.use(express.static(path.join(__dirname,'client/build' )));
 //   }));
 
 // Serve static files from the React app
-//app.use('/', express.static(path.join(__dirname,'client/build')));
+app.use('/', express.static(path.join(__dirname,'client/public')));
 
 // on enetering landing page
  app.get('/find', function (req, res) {
@@ -100,11 +102,23 @@ app.use(express.static(path.join(__dirname,'client/build' )));
 
   
   app.get('/test', (req, res) => {
-    // res.send(req.session.test); // 'OK'
+    console.log("To test page");
     res.send(JSON.stringify(req.session));
 
   });
 
+  app.get('/redirect', (req, res) => {
+    console.log("To redirect page");
+    res.sendFile(path.join(__dirname+'/client/public/'));
+  });
+
+
+  app.get('/renderEJS', (req, res) => {
+    console.log("To render ");
+    res.render('index');
+
+    // res.render('/index');
+  });
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 // app.get('*', (req, res) => {

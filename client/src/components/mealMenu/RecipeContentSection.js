@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 //import {Typeahead} from 'react-bootstrap-typeahead';
 import Popup from "reactjs-popup";
-import './RecipeContent.css';
 
 
 class RecipeContentSection extends Component {

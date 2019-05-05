@@ -43,6 +43,33 @@
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
+
+  <!-- Facebook SDK For JS Login -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '300185864007066',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v3.2'
+    });
+      
+    FB.AppEvents.logPageView();   
+      
+  };
+// secret: 024686ef64f05e21908f5fdad57e1bf3
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+  <!-- End Facebook SDK For JS Login -->
+
+
     <!-- add navbar -->
     <div id="root"></div>
     <!--

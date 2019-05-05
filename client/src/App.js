@@ -7,6 +7,8 @@ import {Nav, Navbar, NavDropdown, Form, FormControl, Button} from 'react-bootstr
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
 import { Link, Route, Switch } from "react-router-dom";
+import InfiniteCarousel from 'react-leaf-carousel';
+
 import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 import IngredientSection from './components/mealMenu/IngredientSection';
@@ -110,7 +112,7 @@ class App extends Component {
             ingredients: ["Rice- 3 Cups", "Tomatoes x 6", "Onion x 2"],
             products: ["Rice ", "Tomatoes ", "Onions "],
             instructions:[ "Tomato , Onion Tatashe, Rodo Blended in Blender",
-            "Vegetable Oil + Palm Oil, Low Heat in Pan",
+            "Vegetable Oil, Low Heat in Pan",
             "Add onions to Pan", "Add Tomato Paste", "Add Powdered Ginger, Garlic and Curry",
             "Add Blended Tomatoes mix (If too thick, add water)","Add seasoning, Maggi (Chicken Flavor), Salt",
         "For Jollof Rice, add Bay Leaves."],
@@ -147,6 +149,37 @@ class App extends Component {
         "Toss potatoes with oil, salt and pepper chopped garlic, Thyme, Oregano, Basil and then Parmesan Cheese", 
     "Arrange, cut side down, on a large lipped cookie sheet or jellyroll pan.", "Roast until tender and golden brown, or until desired crispiness about 30-45 minutes","Add butter in between roasting for a savory taste, Transfer to a serving dish when ready."],
             display: true
+        },
+        {
+            id: 6,
+            label: "Egusi Stew",
+            imageSrc: "/images/meal_pics/egusi_and_yam.JPG",
+            readTime: "5 mins read",
+            cookTime: "40 mins to prepare",
+            intro: "A classic west African delicious stew that can be customized to your taste. Egusi can be eaten with varieties of meal like rice, amala and eba.",
+            ingredients: ["Melon Seeds - 3 Cups", "Palm Oil", "Chicken/Beef", "Spinach - 1", "Bell Pepper - 1", "Tomatoes - 3", "Onion - 1", "Maggi", "Salt", "Stockfish", "Crayfish", "Assorted meats"],
+            products: ["Melon Seeds", "Palm Oil", "Chicken/Beef", "Spinach", "Bell Pepper", "Tomatoes", "Onion", "Maggi", "Salt", "Stockfish", "Crayfish", "Assorted meats"],
+            instructions: ["Boil chicken/meat and keep aside the liquid broth for later use", "Pour 3 cups of powder melon seed into a bowl", "Pour 2 cups of water and mix into a thick paste",
+            "Pour desired amount of stock fish and crayfish into a bowl and add hot water to soften", "Add 1 bell pepper, 3 tomatoes and half onion into blender and blend", "Pour a small amount of palm oil and half onion diced into a cooking pot",
+        "Let it sizzle for a minute, then add the blended mixture"," Cook for 10 minutes, then add chicken or meat broth", "Cook for additional 5 minutes ",
+    "Add the powdered melon seed in paste form and stir continuously (Reduce the heat to avoid burning)", "Add 2 maggi and a sprinkle of salt, then cook for 7 mins","Add a box of chopped spinach and stir",
+"Add the stock fish and crayfish", "Add 1 maggi (Taste often for desired level of seasoning)","Cook for additional 10 minutes" ],
+            display: true
+        },
+        {
+            id: 7,
+            label: "Egg Stew",
+            imageSrc: "/images/meal_pics/image_coming_soon.png",
+            readTime: "5 mins read",
+            cookTime: "30 mins to prepare",
+            intro: "Egg stew is a creative modern style of frying eggs and insanely delicious, easy to make. Watch out, you might find this meal addictive.",
+            ingredients: ["Eggs -3 uncooked", "Tomatoes - 3", "Onions - 1", "Oil", "Maggi - 2 cubes", "Salt", "Shrimp", "Sardine"],
+            products: ["Eggs", "Tomatoes", "Onions", "Oil", "Maggi", "Salt", "Shrimp", "Sardine"],
+            instructions: ["Add 3 tomatoes and ½ onion into blender and blend", "Crack 3 eggs into a bowl, plus 1 maggi and a little sprinkle of salt, then mix well ", "Add a small amount of cooking oil into frying pan",
+            "Add ½ diced onion and let it fry for about a minute ","Add your choice of secondary ingredients","Let it cook for 5 mins"," Add the blended mixture, plus 1 maggi","Let it cook for another 5 mins (Taste often for desired level of seasoning",
+            "Pour the egg mixture into the fry pan and stir often ","Let it cook for about 7 mins (stir often)"
+            ],
+            display: true
         }
     ]
 
@@ -155,7 +188,7 @@ class App extends Component {
         super(props);
         this.suggestMealToggle = this.suggestMealToggle.bind(this);
         this.updateInstructionsDisplayBaseIndex = this.updateInstructionsDisplayBaseIndex.bind(this);
-        //this.showIngredient = this.showIngredient.bind(this);
+        // this.myFunction = this.myFunction.bind(this);
 
         this.state={
             suggestMealPopOver: false,
@@ -174,7 +207,8 @@ class App extends Component {
             //open: false,
 
             mealsLength : this.meals.length,
-            base_index : 0
+            base_index : 0,
+            topNav_className: "w3-bar w3-dark-grey w3-green topnav"
         }
     }
 
@@ -182,6 +216,8 @@ class App extends Component {
 
     showIngredients=(event)=>{
         let mealString = event.target.innerText;
+        console.log(mealString);
+
         var meal;
         for (meal in this.meals){
             //console.log(this.meals[meal].label);
@@ -192,7 +228,6 @@ class App extends Component {
                 break;
             }
         }
-        //console.log({meal}.name);
         //get list of ingredients
     }
 
@@ -208,7 +243,7 @@ class App extends Component {
     }
 
     updateInstructionsDisplayBaseIndex(event){
-        //console.log(event.target.innerText);
+        console.log(event.target.innerText);
         var button = event.target.innerText;
         var regExp = '/^w+[ ]/d  $/';
         var slide_index = button.match(regExp);
@@ -221,6 +256,21 @@ class App extends Component {
         //var base_index = slide_num*3;
         //console.log("Updating base index on click to: " +this.state.base_index);
     }
+
+    /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+    myFunction() {
+        //var x = document.getElementById("myTopnav");
+        console.log("Comes in here");
+        if (this.state.topNav_className === "w3-bar w3-dark-grey w3-green topnav responsive") {
+            console.log("initial state");
+        //  this.setState({topNav_className: "w3-bar w3-dark-grey w3-green topnav responsive"})
+        } else {
+            console.log("ever comes in here");
+        //  this.setState({topNav_className: "w3-bar w3-dark-grey w3-green topnav"})
+        }
+
+    }
+  
 
 
     render() {
@@ -336,35 +386,135 @@ class App extends Component {
                  <b>Ingredients</b>
                         <br></br>
                         {value.products}
+                        <InfiniteCarousel
+    breakpoints={[
+      {
+        breakpoint: 375,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ]}
+    dots={true}
+    showSides={false}
+    // sidesOpacity={0.1}
+    // sideSize={.1}
+    slidesToScroll={1}
+    slidesToShow={1}
+    scrollOnDevice={true}
+  >
+    <div>
+      <img
+        src="/images/products/sugar.jpeg"
+        alt="Pic unavailable"
+        style={{width:"200px", height:"200px"}}
+      />
+    </div>
+    <div>
+      <img
+        src="/images/products/thyme.jpg"
+        alt="Pic unavailable"
+        style={{width:"200px", height:"200px"}}
+      />
+    </div>
+    <div>
+      <img
+        src="/images/products/tomato.jpg"
+        alt="Pic unavailable"
+        style={{width:"200px", height:"200px"}}
+      />
+    </div>
+    <div>
+      <img
+        src="/images/products/water.jpeg"
+        alt="Pic unavailable"
+        style={{width:"200px", height:"200px"}}
+      />
+    </div>
+    <div>
+      <img
+        src="/images/products/yeast.jpg"
+        alt="Pic unavailable"
+        style={{width:"200px", height:"200px"}}
+      />
+    </div>
+    </InfiniteCarousel>
+
                  </div>
                 
                     
                 </div>
             )
         }
+    
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        console.log("Hello World 2");
+        console.log(x);
+        // console.log({this.state.topNav_className});
+        var x = document.getElementById("myTopnav");
+        if (x.className === "w3-bar w3-dark-grey w3-green topnav") {
+          x.className += " responsive";
+        } else {
+          x.className = "w3-bar w3-dark-grey w3-green topnav";
+        }
+
+        // if (this.state.topNav_className === "w3-bar w3-dark-grey w3-green topnav responsive") {
+        //     console.log("initial state");
+        // //  this.setState({topNav_className: "w3-bar w3-dark-grey w3-green topnav responsive"})
+        // } else {
+        //     console.log("ever comes in here");
+        // //  this.setState({topNav_className: "w3-bar w3-dark-grey w3-green topnav"})
+        // }
+    }
 
         return (
             <div>
                 {/* <div> */}
                
-<div className="w3-bar w3-dark-grey w3-green ">
-        <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
-        <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
-        <Link to="/grocery" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
-    <div className="w3-dropdown-hover w3-mobile">
+{/* <div className={this.state.topNav_className} id="myTopnav"> */}
+<div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
+    <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile link">CC</Link>
+    <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile link">Recipes</Link>
+    <Link to="/grocery" className="w3-bar-item w3-button w3-hover-orange w3-mobile link">Grocery List</Link>
+    <div className="w3-dropdown-hover w3-mobile link">
         <button className="w3-button w3-hover-orange w3-mobile"> Shop <i className="fa fa-caret-down"></i></button>
         <div className="w3-dropdown-content w3-bar-block w3-card-4 ">
-            <Link to="/products" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Food Products</Link>
-            <Link to="/products" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Kitchen Products</Link>
-            <Link to="/products" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Other Household Items</Link>
+            <Link to="/products" className="w3-bar-item w3-button w3-hover-orange w3-mobile link">Food Products</Link>
+            <Link to="/products" className="w3-bar-item w3-button w3-hover-orange w3-mobile link">Kitchen Products</Link>
+            <Link to="/products" className="w3-bar-item w3-button w3-hover-orange w3-mobile link">Other Household Items</Link>
         </div>
     </div>
-    <span className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile"> Stats</span>
+    <span className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile link"> Stats</span>
+    {/* <a href="javascript:void(0);" className="icon" onClick= {this.myFunction()}>
+    <i className="fa fa-bars"></i>
+    </a> */}
+    <span onClick={()=>{console.log("Not thru here");myFunction()}} className="icon">
+    <i className="fa fa-bars"></i>
+    </span>
 
 </div>
 
+<div className="topnav" id="myTopnav">
+  <a href="#home" className="active">Home</a>
+  <a href="#news">News</a>
+  <a href="#contact">Contact</a>
+  <a href="#about">About</a>
+  <a href="javascript:void(0);" className="icon" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
+    <i className="fa fa-bars"></i>
+  </a>
+</div>
+
                 {/* </div> */}
-                <Typeahead options={this.meals} 
+                <Typeahead options={this.meals}
                 placeholder="Find Meals (and Ingredients) here.."
                 id="typeahead"
                 // onChange={(selected) => {
@@ -377,11 +527,17 @@ class App extends Component {
                     
                 <Switch>
                     <Route exact path="/" render={(props)=>(
+                        <div>
+                        <div id="title">
+                            <b>Meals</b>
+                         </div>
+
                         <div className="container">
-                            <div className="row ">
+                            <div className="row">
                                 {items} 
                             </div>
                         </div>
+                    </div>
                     )}/>
 
                     <Route path="/v1" render={(props)=>(
@@ -428,9 +584,7 @@ class App extends Component {
                          </div>
 
                         <div className="container">
-                           
-
-                            <div className="row ">
+                            <div className="row">
                                 {items} 
                             </div>
                         </div>
@@ -494,6 +648,17 @@ overflow: "scroll"
 // height: "50%",
 
 };
+
+/* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+// function myFunction() {
+//     var x = document.getElementById("myTopnav");
+//     console.log("Hello World 2");
+//     // if (x.className === "topnav") {
+//     //   x.className += " responsive";
+//     // } else {
+//     //   x.className = "topnav";
+//     // }
+//   }
   
 
 export default App;
