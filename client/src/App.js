@@ -152,8 +152,26 @@ class App extends Component {
         },
         {
             id: 6,
+            label: "Beans Burger",
+            imageSrc: "/images/meal_pics/bean_burger.jpg",
+            readTime: "8 mins read",
+            cookTime: "40 mins to prepare",
+            intro: "A healthy replacement for beef burgers, Beans burgers is just as filling and can be even more delicious.",
+            ingredients: ["2 cans black beans","1/2 bell pepper","1 large onion","6 garlic cloves","1 cup breadcrumbs","3 eggs (or more)", "Paprika","Cumin","Garlic powder","½ cup cheese","1 tbsp worcestershire sauce","2 tbsp ketchup or bbq sauce"],
+            products: ["Black Beans", "Vegetable Oil", "BreadCrumbs", "Paprika", "Cheese", "Worcestershire Wauce", "BBQ Sauce", "Heinz Ketchup"],
+            instructions: ["Drain and rinse beans and lay out on a baking tray in a single layer. Bake 325F for 15 min, while you set up the rest.",
+                "Dice the onion, garlic and pepper as finely as you can. Fry them together with a very small amount of oil, until onions start to go clear.",
+                "Blot the onion mix with a paper towel to remove excess oil and moisture. Add to a large mixing bowl with the beans and all other ingredients.",
+                "Mix ingredients together and mash with a fork. If the mix does not form solid patties, add more eggs and breadcrumbs until it is more solid. These 2 ingredients are the binding agents.",
+                "Form patties with the mix. I typically make them ½ cup size each. For a more tasty version, try adding a layer of cheese in between 2 smaller patties.",
+                "Cook by frying around 5 mins on each side, or grill or bake at medium heat for about 10 minutes on each side. Any remaining burgers can be frozen in sandwich bags and cooked another time without any loss of flavour. You don’t need to wait for the burgers to thaw before cooking.",
+                "Serve in a bun with toppings and sauces of your choice."],
+            display: true
+        },
+        {
+            id: 7,
             label: "Egusi Stew",
-            imageSrc: "/images/meal_pics/egusi_and_yam.JPG",
+            imageSrc: "/images/meal_pics/image_coming_soon.png",
             readTime: "5 mins read",
             cookTime: "40 mins to prepare",
             intro: "A classic west African delicious stew that can be customized to your taste. Egusi can be eaten with varieties of meal like rice, amala and eba.",
@@ -167,7 +185,7 @@ class App extends Component {
             display: true
         },
         {
-            id: 7,
+            id: 8,
             label: "Egg Stew",
             imageSrc: "/images/meal_pics/image_coming_soon.png",
             readTime: "5 mins read",
@@ -180,7 +198,8 @@ class App extends Component {
             "Pour the egg mixture into the fry pan and stir often ","Let it cook for about 7 mins (stir often)"
             ],
             display: true
-        }
+        },
+        
     ]
 
 
@@ -331,8 +350,15 @@ class App extends Component {
                         <br></br>
                         <button style={{backgroundColor: "orange" }}>View Steps</button>  
                         <br></br>                           
-                        </div> 
+                        
+                        <div id = {value.id+"products"} style={{ display:"none"}}>
+                        <b>Ingredients</b>
+                               <br></br>
+                               {value.products}
+                       </div>
+           </div> 
                     } modal closeOnDocumentClick contentStyle={contentStyle}>
+
                     {/* Inside Pop - up */}
                     <div className="container">
                         <div className="row">
@@ -386,6 +412,7 @@ class App extends Component {
                  <b>Ingredients</b>
                         <br></br>
                         {value.products}
+                </div>
                         <InfiniteCarousel
     breakpoints={[
       {
@@ -448,7 +475,7 @@ class App extends Component {
     </div>
     </InfiniteCarousel>
 
-                 </div>
+                
                 
                     
                 </div>
