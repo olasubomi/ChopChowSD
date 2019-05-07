@@ -1,6 +1,7 @@
 'use strict';
+// allow to store local env variables in nodejs process event environment(env) object
 require('dotenv').config();
-  
+var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 // const session = require('express-session');
 // const MongoDBStore = require('connect-mongodb-session')(session);
@@ -28,14 +29,16 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const port = process.env.PORT || 5000;
+const facebook = require("./routes/facebook");
+const login = require("./routes/manual_login");
 
 app.set('view engine', 'ejs');
 
-const facebook = require("./routes/facebook");
+// enable ssl redirect
+app.use(sslRedirect());
+
 app.use('/facebook', facebook);
-
-app.use(express.static(path.join(__dirname,'client/build' )));
-
+app.use('/login', login);
 // app.use(session({
 //     secret: 'keyboard cat',
 //     cookie: {
@@ -55,34 +58,35 @@ app.use(express.static(path.join(__dirname,'client/build' )));
 //   }));
 
 // Serve static files from the React app
+app.use(express.static(path.join(__dirname,'client/build' )));
 app.use('/', express.static(path.join(__dirname,'client/public')));
   
-  app.get('/test', (req, res) => {
-    console.log("To test page");
-    res.send(JSON.stringify(req.session));
+app.get('/test', (req, res) => {
+console.log("To test page");
+res.send(JSON.stringify(req.session));
 
-  });
+});
 
-  app.get('/redirect', (req, res) => {
-    console.log("To redirect page");
-    res.sendFile(path.join(__dirname+'/client/public/'));
-  });
+app.get('/redirect', (req, res) => {
+console.log("To redirect page");
+res.sendFile(path.join(__dirname+'/client/public/'));
+});
 
 
-  app.get('/renderEJS', (req, res) => {
-    console.log("To render ");
-    res.render('index');
-  });
+app.get('/renderEJS', (req, res) => {
+console.log("To render ");
+res.render('index');
+});
 
-  app.get('/privacy-policy', (req, res) => {
-    console.log("To render ");
-    res.render('pages/privacy-policy');
-  });
+app.get('/privacy-policy', (req, res) => {
+console.log("To render ");
+res.render('pages/privacy-policy');
+});
 
-  app.get('/terms-of-service', (req, res) => {
-    console.log("To render ");
-    res.render('pages/terms-of-service');
-  });
+app.get('/terms-of-service', (req, res) => {
+console.log("To render ");
+res.render('pages/terms-of-service');
+});
 
 
 // The "catchall" handler: for any request that doesn't

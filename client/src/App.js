@@ -414,22 +414,22 @@ class App extends Component {
                         {value.products}
                 </div>
                         <InfiniteCarousel
-    breakpoints={[
-      {
-        breakpoint: 375,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ]}
+    // breakpoints={[
+    //   {
+    //     breakpoint: 375,
+    //     settings: {
+    //       slidesToShow: 1,
+    //       slidesToScroll: 1,
+    //     },
+    //   },
+    //   {
+    //     breakpoint: 768,
+    //     settings: {
+    //       slidesToShow: 1,
+    //       slidesToScroll: 1,
+    //     },
+    //   },
+    // ]}
     dots={true}
     showSides={false}
     // sidesOpacity={0.1}
@@ -475,10 +475,7 @@ class App extends Component {
     </div>
     </InfiniteCarousel>
 
-                
-                
-                    
-                </div>
+</div>
             )
         }
     
