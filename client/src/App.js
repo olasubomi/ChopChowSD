@@ -448,7 +448,7 @@ class App extends Component {
     {/* <span onClick={()=>{console.log("Or thru here");myFunction()}} className="icon">
     <i className="fa fa-bars"> an option</i>
     </span> */}
-    <Link to="javascript:void(0);" className="icon" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
+    <Link to="#" className="icon" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
     <i className="fa fa-bars" ></i>
     </Link>
 
