@@ -8,6 +8,7 @@ import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
 import { Link, Route, Switch } from "react-router-dom";
 import InfiniteCarousel from 'react-leaf-carousel';
+import Slider from './components/product_slider/slider';
 
 import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 import ListedMealsSection from './components/mealMenu/ListedMealsSection';
@@ -57,7 +58,7 @@ class App extends Component {
         {
             id: 2,
             label: "Puff Puff",
-            imageSrc: '/images/meal_pics/puff_puff.jpg',
+            imageSrc: '/images/meal_pics/puff_puff1.jpg',
             readTime: "4 mins read",
             cookTime: "80  mins to prepare",
             intro: " Puff Puff -- A very popular West African street food that's quick and easy to make with different variations."+
@@ -275,20 +276,6 @@ class App extends Component {
         //var base_index = slide_num*3;
         //console.log("Updating base index on click to: " +this.state.base_index);
     }
-
-    /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
-    myFunction() {
-        //var x = document.getElementById("myTopnav");
-        console.log("Comes in here");
-        if (this.state.topNav_className === "w3-bar w3-dark-grey w3-green topnav responsive") {
-            console.log("initial state");
-        //  this.setState({topNav_className: "w3-bar w3-dark-grey w3-green topnav responsive"})
-        } else {
-            console.log("ever comes in here");
-        //  this.setState({topNav_className: "w3-bar w3-dark-grey w3-green topnav"})
-        }
-
-    }
   
 
 
@@ -351,11 +338,6 @@ class App extends Component {
                         <button style={{backgroundColor: "orange" }}>View Steps</button>  
                         <br></br>                           
                         
-                        <div id = {value.id+"products"} style={{ display:"none"}}>
-                        <b>Ingredients</b>
-                               <br></br>
-                               {value.products}
-                       </div>
            </div> 
                     } modal closeOnDocumentClick contentStyle={contentStyle}>
 
@@ -408,97 +390,38 @@ class App extends Component {
                     </div>
                     */}
                  </Popup>
-                 <div id = {value.id+"products"} style={{ display:"none"}}>
-                 <b>Ingredients</b>
+                 <div id = {value.id+"products"} style={{ display:"none"}}> 
+                 <b>Ingredients 1</b>
                         <br></br>
                         {value.products}
+                        <Slider products={value.products}/>
                 </div>
-                        <InfiniteCarousel
-    // breakpoints={[
-    //   {
-    //     breakpoint: 375,
-    //     settings: {
-    //       slidesToShow: 1,
-    //       slidesToScroll: 1,
-    //     },
-    //   },
-    //   {
-    //     breakpoint: 768,
-    //     settings: {
-    //       slidesToShow: 1,
-    //       slidesToScroll: 1,
-    //     },
-    //   },
-    // ]}
-    dots={true}
-    showSides={false}
-    // sidesOpacity={0.1}
-    // sideSize={.1}
-    slidesToScroll={1}
-    slidesToShow={1}
-    scrollOnDevice={true}
-  >
-    <div>
-      <img
-        src="/images/products/sugar.jpeg"
-        alt="Pic unavailable"
-        style={{width:"200px", height:"200px"}}
-      />
-    </div>
-    <div>
-      <img
-        src="/images/products/thyme.jpg"
-        alt="Pic unavailable"
-        style={{width:"200px", height:"200px"}}
-      />
-    </div>
-    <div>
-      <img
-        src="/images/products/tomato.jpg"
-        alt="Pic unavailable"
-        style={{width:"200px", height:"200px"}}
-      />
-    </div>
-    <div>
-      <img
-        src="/images/products/water.jpeg"
-        alt="Pic unavailable"
-        style={{width:"200px", height:"200px"}}
-      />
-    </div>
-    <div>
-      <img
-        src="/images/products/yeast.jpg"
-        alt="Pic unavailable"
-        style={{width:"200px", height:"200px"}}
-      />
-    </div>
-    </InfiniteCarousel>
-
 </div>
             )
         }
     
+/* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
     function myFunction() {
         var x = document.getElementById("myTopnav");
-        console.log("Hello World 2");
         console.log(x);
         // console.log({this.state.topNav_className});
-        var x = document.getElementById("myTopnav");
-        if (x.className === "w3-bar w3-dark-grey w3-green topnav") {
+        if (x.className === "w3-bar w3-dark-grey w3-green topnav" ){
           x.className += " responsive";
-        } else {
+        }
+        else {
           x.className = "w3-bar w3-dark-grey w3-green topnav";
         }
 
-        // if (this.state.topNav_className === "w3-bar w3-dark-grey w3-green topnav responsive") {
-        //     console.log("initial state");
-        // //  this.setState({topNav_className: "w3-bar w3-dark-grey w3-green topnav responsive"})
-        // } else {
-        //     console.log("ever comes in here");
-        // //  this.setState({topNav_className: "w3-bar w3-dark-grey w3-green topnav"})
-        // }
+        // var y = document.getElementById("myTopnav2");
+        // if (y.className === "topnav"){
+        //     y.className += " responsive";
+        //   }
+        //   else{
+        //       //sync test nav bar as well
+        //       y.className = "topnav";
+        //   }
     }
+
 
         return (
             <div>
@@ -506,151 +429,169 @@ class App extends Component {
                
 {/* <div className={this.state.topNav_className} id="myTopnav"> */}
 <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
-    <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile link">CC</Link>
-    <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile link">Recipes</Link>
-    <Link to="/grocery" className="w3-bar-item w3-button w3-hover-orange w3-mobile link">Grocery List</Link>
-    <div className="w3-dropdown-hover w3-mobile link">
-        <button className="w3-button w3-hover-orange w3-mobile"> Shop <i className="fa fa-caret-down"></i></button>
+    {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
+    <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
+    <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
+    <Link to="/grocery" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
+
+    <div className="w3-dropdown-hover w3-mobile">
+        <button className="w3-button w3-hover-orange w3-mobile"> 
+            Shop <i className="fa fa-caret-down"></i>
+        </button>
         <div className="w3-dropdown-content w3-bar-block w3-card-4 ">
-            <Link to="/products" className="w3-bar-item w3-button w3-hover-orange w3-mobile link">Food Products</Link>
-            <Link to="/products" className="w3-bar-item w3-button w3-hover-orange w3-mobile link">Kitchen Products</Link>
-            <Link to="/products" className="w3-bar-item w3-button w3-hover-orange w3-mobile link">Other Household Items</Link>
+            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Food Products</Link>
+            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Kitchen Products</Link>
+            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Other Household Items</Link>
         </div>
     </div>
-    <span className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile link"> Stats</span>
-    {/* <a href="javascript:void(0);" className="icon" onClick= {this.myFunction()}>
-    <i className="fa fa-bars"></i>
-    </a> */}
-    <span onClick={()=>{console.log("Not thru here");myFunction()}} className="icon">
-    <i className="fa fa-bars"></i>
-    </span>
+    <Link to="/" className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile"> Stats</Link>
+    {/* <span onClick={()=>{console.log("Or thru here");myFunction()}} className="icon">
+    <i className="fa fa-bars"> an option</i>
+    </span> */}
+    <Link to="javascript:void(0);" className="icon" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
+    <i className="fa fa-bars" ></i>
+    </Link>
 
 </div>
 
-<div className="topnav" id="myTopnav">
-  <a href="#home" className="active">Home</a>
-  <a href="#news">News</a>
-  <a href="#contact">Contact</a>
-  <a href="#about">About</a>
-  <a href="javascript:void(0);" className="icon" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
-    <i className="fa fa-bars"></i>
-  </a>
-</div>
+{/* <div className="topnav" id="myTopnav2">
+    <Link to="/">CC</Link>
+    <Link to="/">Recipes</Link>
 
-                {/* </div> */}
-                <Typeahead options={this.meals}
-                placeholder="Find Meals (and Ingredients) here.."
-                id="typeahead"
-                // onChange={(selected) => {
-                //     // Handle selections...
-                //   }}
-                // filterBy={['label', 'ingredients']}
-                />
+    <div className="dropdown">
+        <button className="dropbtn"> 
+            Shop <i className="fa fa-caret-down"></i>
+        </button>
+        <div className="dropdown-content">
+            <Link to="/products">Food Products</Link>
+            <Link to="/products">Kitchen Products</Link>
+            <Link to="/products">Other Household Items</Link>
+        </div>
+    </div>
 
+    <Link to="/v1">Stats</Link>
+    <Link to="javascript:void(0);" className="icon" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
+    <i className="fa fa-bars" ></i>
+    </Link>
+</div> */}
 
-                    
-                <Switch>
-                    <Route exact path="/" render={(props)=>(
-                        <div>
-                        <div id="title">
-                            <b>Meals</b>
-                         </div>
+<Typeahead options={this.meals}
+placeholder="Find Meals (and Ingredients) here.."
+id="typeahead"
+// onChange={(selected) => {
+//     // Handle selections...
+//   }}
+// filterBy={['label', 'ingredients']}
+/>
 
-                        <div className="container">
-                            <div className="row">
-                                {items} 
-                            </div>
-                        </div>
-                    </div>
-                    )}/>
-
-                    <Route path="/v1" render={(props)=>(
-                        <div className="container">
-                        <br></br>
-                        <div className="row">
-                            <div className="col-sm">
-                                <b>Meals</b>
-                                <ListedMealsSection 
-                                recipes={this.state.recipes} showIngredients={this.showIngredients}
-                                selectedMeal={this.state.selectedMeal}/>
-                                <span>&#43;</span><input placeholder="Suggest Meal"></input> 
-                                
-                              &nbsp;<button>Submit <span id="Popover1" onMouseOver={this.suggestMealToggle} onMouseOut={this.suggestMealToggle} >
-                              <img src="/images/info_icon.png" alt="info" style={{width:'13px', height:'13px'}}/> </span></button>
-                              {/* onClick={this.suggestMealToggle} */}
-                             </div>                     
-                            <div className="col-sm">
-                                <b>Recipe Contents</b>
-                                <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
-                                
-                            </div>
-        
-                            <div className="col-sm">
-                                <b>Ingredients</b>
-                                <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}
-                                selectedMeal= {this.state.selectedMeal}/>
-                                {/* <span>&#43;</span><input placeholder="Suggest Ingredient.."></input> */}
-                            </div>
-                            
-                            <Popover placement="auto" isOpen={this.state.suggestMealPopOver} target="Popover1" toggle={this.suggestMealToggle}>
-                                <PopoverBody><div className="payback-disclaimer">
-                                Suggestions by Guest Users are recorded, but do not change the publicly displayed Meals.
-                                </div></PopoverBody>
-                            </Popover>
-                        </div>
-                    </div>
-                    )}/>
-
-                    <Route path="/v2" render={(props)=>(
-                    <div>
-                        <div id="title">
-                            <b>Meals</b>
-                         </div>
-
-                        <div className="container">
-                            <div className="row">
-                                {items} 
-                            </div>
-                        </div>
-                    </div>
-                    )}/>
-
-                    <Route path="/grocery" render={(props)=>(
-                        // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
-                        <span><b>Your Grocery List</b></span>
-                    )}/>
-
-                    <Route path="/products" render={(props)=>(
-                         <ProductsSection /> 
-                    )}/>
-                    </Switch>
 
     
-                {/* <div className="row">
-                    <div className="col-sm">
-                        <b>Meals</b>
-                        <ListedMealsSection 
-                        recipes={this.state.recipes} showIngredients={this.showIngredients}
-                        selectedMeal={this.state.selectedMeal}/>
-                        
-                        
-                
-                     </div>                     
-                    <div className="col-sm">
-                        <b>Recipe Contents</b>
-                        <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
-                        
-                    </div>
-
-                    <div className="col-sm">
-                        <b>Ingredients</b>
-                        <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}
-                        selectedMeal= {this.state.selectedMeal}/>
-                    </div>
-                    
-                    
-                </div> */}
+<Switch>
+    <Route exact path="/" render={(props)=>(
+        <div>
+        <div id="title">
+            <b>Meals</b>
             </div>
+
+        <div className="container">
+            <div className="row">
+                {items} 
+            </div>
+        </div>
+    </div>
+    )}/>
+
+    <Route path="/v1" render={(props)=>(
+        <div className="container">
+        <br></br>
+        <div className="row">
+            <div className="col-sm">
+                <b>Meals</b>
+                <ListedMealsSection 
+                recipes={this.state.recipes} showIngredients={this.showIngredients}
+                selectedMeal={this.state.selectedMeal}/>
+                <span>&#43;</span><input placeholder="Suggest Meal"></input> 
+                
+                &nbsp;<button>Submit <span id="Popover1" onMouseOver={this.suggestMealToggle} onMouseOut={this.suggestMealToggle} >
+                <img src="/images/info_icon.png" alt="info" style={{width:'13px', height:'13px'}}/> </span></button>
+                {/* onClick={this.suggestMealToggle} */}
+                </div>                     
+            <div className="col-sm">
+                <b>Recipe Contents</b>
+                <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
+                
+            </div>
+
+            <div className="col-sm">
+                <b>Ingredients</b>
+                <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}
+                selectedMeal= {this.state.selectedMeal}/>
+                {/* <span>&#43;</span><input placeholder="Suggest Ingredient.."></input> */}
+            </div>
+            
+            <Popover placement="auto" isOpen={this.state.suggestMealPopOver} target="Popover1" toggle={this.suggestMealToggle}>
+                <PopoverBody><div className="payback-disclaimer">
+                Suggestions by Guest Users are recorded, but do not change the publicly displayed Meals.
+                </div></PopoverBody>
+            </Popover>
+        </div>
+    </div>
+    )}/>
+
+    <Route path="/v2" render={(props)=>(
+    <div>
+        <div id="title">
+            <b>Meals</b>
+            </div>
+
+        <div className="container">
+            <div className="row">
+                {items} 
+            </div>
+        </div>
+    </div>
+    )}/>
+
+    <Route path="/grocery" render={(props)=>(
+        // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
+        <div>
+            <span><b>Your Grocery List</b></span>
+            <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+        </div>
+        
+    )}/>
+
+    <Route path="/products" render={(props)=>(
+            <ProductsSection /> 
+    )}/>
+    </Switch>
+
+
+{/* <div className="row">
+    <div className="col-sm">
+        <b>Meals</b>
+        <ListedMealsSection 
+        recipes={this.state.recipes} showIngredients={this.showIngredients}
+        selectedMeal={this.state.selectedMeal}/>
+        
+        
+
+        </div>                     
+    <div className="col-sm">
+        <b>Recipe Contents</b>
+        <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
+        
+    </div>
+
+    <div className="col-sm">
+        <b>Ingredients</b>
+        <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}
+        selectedMeal= {this.state.selectedMeal}/>
+    </div>
+    
+    
+</div> */}
+</div>
         );
     }
 } 
