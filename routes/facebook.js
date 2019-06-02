@@ -11,7 +11,7 @@ passport.use(new FacebookStrategy({
     callbackURL: "https://www.chopchowsd.herokuapp.com/renderEJS"
   },
   function(accessToken, refreshToken, profile, done) {
-      console.log("Gets in fb init");
+      console.log("Gets in fb init; checks if logged in user exists");
     User.findOrCreate(function(err, user) {
       if (err) { return done(err); }
       done(null, user);

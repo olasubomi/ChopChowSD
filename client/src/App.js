@@ -122,7 +122,7 @@ class App extends Component {
         {
             id: 4,
             label: "Fried Beans",
-            imageSrc: "/images/meal_pics/FriedBeans.jpg",
+            imageSrc: "/images/meal_pics/Fried_beans_w_red_oil_plate.jpg",
             readTime: "4 mins read",
             cookTime: "60 mins to prepare",
             intro: "Fried beans is a delicious meal rich in protein, vitamins and fiber."+
@@ -555,7 +555,7 @@ id="typeahead"
     <Route path="/grocery" render={(props)=>(
         // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
         <div>
-            <span><b>Your Grocery List</b></span>
+            <div><b>Your Grocery List</b></div>
             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
         </div>
         

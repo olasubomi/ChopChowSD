@@ -58,18 +58,17 @@ app.use('/login', login);
 //   }));
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname,'client/build' )));
-app.use('/', express.static(path.join(__dirname,'client/public')));
+// app.use(express.static(path.join(__dirname,'client/build' )));
+app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
   
 app.get('/test', (req, res) => {
 console.log("To test page");
 res.send(JSON.stringify(req.session));
-
 });
 
 app.get('/redirect', (req, res) => {
 console.log("To redirect page");
-res.sendFile(path.join(__dirname+'/client/public/'));
+res.sendFile(path.join(__dirname+'/client','public', 'index.html'));
 });
 
 
