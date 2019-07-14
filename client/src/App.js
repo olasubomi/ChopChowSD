@@ -203,6 +203,8 @@ class App extends Component {
         
     ]
 
+    // Mongo 
+    products = [];
 
     constructor(props){
         super(props);
@@ -233,6 +235,21 @@ class App extends Component {
     }
 
     meal_popups  = [];
+
+    componentDidMount(){
+        console.log("Comes in component did mount")
+        var url = "http://localhost:5000/get_products"
+         fetch(url)
+            .then(res => res.text())
+            .then(body => {
+                var productsList = JSON.parse(body);
+
+                 for(var i = 0 ; i < productsList.length; i++){
+                    this.products.push(productsList[i].product_name);
+                    console.log(productsList[i].product_name)
+                }
+            });
+    }
 
     showIngredients=(event)=>{
         let mealString = event.target.innerText;
@@ -475,13 +492,13 @@ class App extends Component {
     </Link>
 </div> */}
 
-<Typeahead options={this.meals}
+<Typeahead options={this.products}
 placeholder="Find Meals (and Ingredients) here.."
 id="typeahead"
 // onChange={(selected) => {
 //     // Handle selections...
 //   }}
-// filterBy={['label', 'ingredients']}
+filterBy={['product_name']}
 />
 
 

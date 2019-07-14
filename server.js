@@ -1,31 +1,13 @@
 'use strict';
 // allow to store local env variables in nodejs process event environment(env) object
-require('dotenv').config();
 var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
-// const session = require('express-session');
-// const MongoDBStore = require('connect-mongodb-session')(session);
-// const store = new MongoDBStore({
-//     uri: 'mongodb://localhost:27017/db',// create a db called db
-//     //databaseName: '',
-//     collection: 'sessions'
-// },
-// function(error) {
-//   // Inform if there is a failure to connect to mongo server
-//   if(error){
-//     console.log("Mongo Connection Err:\n" +error);
-//   }else{
-//       console.log("Mongo Connection successful!");
-//   }
+const cors = require('cors');
+const MongoClient = require('mongodb').MongoClient;
+require('dotenv').config();
+const pw = process.env.MongoPassword;
+const uri = "mongodb+srv://Olasubomi:"+pw+"@cluster0-sqg7f.mongodb.net/test?retryWrites=true&w=majority";
 
-// });
-// // Catch  MongoDB errors
-// store.on('error', function(error) {
-//     console.log("MongoDB Store error: \n"+error);
-//   });
-
-// const Security = require('./lib/Security');
-// const Products = require('./model/Products');
 const app = express();
 const path = require('path');
 const port = process.env.PORT || 5000;
@@ -34,33 +16,40 @@ const login = require("./routes/manual_login");
 
 app.set('view engine', 'ejs');
 
+
 // enable ssl redirect
 app.use(sslRedirect());
-
+app.use(cors());
 app.use('/facebook', facebook);
 app.use('/login', login);
-// app.use(session({
-//     secret: 'keyboard cat',
-//     cookie: {
-//       maxAge: 1000*60 // 1 minute
-//       //1000 * 60 * 60 * 24 * 7 // 1 week
-//       //try using expires as well, for a month to give time for marketing retargeting
-
-//     },
-//     store: store,
-//     resave: true, // look into store's touch method*
-//     saveUninitialized: false,
-//     genid:(req)=>{
-//         return Security.generateId()
-//     }
-//     // unset:'destroy',*
-//     // name: 'session cookie name'*
-//   }));
 
 // Serve static files from the React app
-// app.use(express.static(path.join(__dirname,'client/build' )));
-app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
+app.use(express.static(path.join(__dirname,'client/build' )));
+// app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
   
+app.get('/get_products', (req, res)=>{
+    console.log("Calling all Mongo products");
+    var collection ;
+    const client = new MongoClient(uri, { useNewUrlParser: true });
+    console.log(uri);
+    //const opts  = {db:{authSource: 'users'}};
+    // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+    MongoClient.connect(uri,  { useNewUrlParser: true },function(err,db){
+        if(err) throw err;
+        // console.log(JSON.stringify(collection));
+        // store = JSON.stringify(collection);
+        // res.send(store);
+        var dbo = db.db("Product_Supply");
+        dbo.collection("all_products").find({}).toArray(function(err, result){
+            if (err) throw err;
+            console.log(result);
+            res.send(result);
+            // perform actions on the collection object
+            db.close();
+        });
+});
+});
+
 app.get('/test', (req, res) => {
 console.log("To test page");
 res.send(JSON.stringify(req.session));
