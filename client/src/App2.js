@@ -124,6 +124,10 @@ class App2 extends Component {
             display: true
         }
     ]
+
+    // Mongo 
+    products = [];
+
     constructor(props){
         super(props);
         this.suggestMealToggle = this.suggestMealToggle.bind(this);
@@ -173,6 +177,22 @@ class App2 extends Component {
         this.setState({
             suggestMealPopOver: !this.state.suggestMealPopOver
         });
+    }
+
+    componentDidMount(){
+        console.log("Comes in component did mount")
+        var url = "http://localhost:5000/get_products"
+
+        fetch(url)
+            .then(res => res.text())
+            .then(body => {
+                var productsList = JSON.parse(body);
+                
+                for(var i = 0 ; i < productsList.length; i++){
+                    this.products.push(productsList[i].product_name);
+                    console.log(productsList[i].product_name)
+                }
+            });
     }
 
 
@@ -236,7 +256,7 @@ class App2 extends Component {
 
         return (
             <div>
-                <Typeahead options={this.meals} 
+                <Typeahead options={this.products} 
                 placeholder="Find Meals (and Ingredients) here.."
                 id="typeahead"
                 // onChange={(selected) => {
