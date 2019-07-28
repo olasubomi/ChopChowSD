@@ -60,13 +60,30 @@ class ProductSection extends Component {
         }]
     }     
 ]
+storeCollection = []
+
+componentDidMount(){
+    console.log("Comes in product pages component did mount")
+    var url = "http://localhost:5000/get_store_products"
+     fetch(url)
+        .then(res => res.text())
+        .then(body => {
+            var storeList = JSON.parse(body);
+
+             for(var i = 0 ; i < storeList.length; i++){
+                 console.log(storeList[i]);
+                this.storeCollection.push(storeList[i].store_name);
+                console.log(storeList[i].store_name)
+            }
+        });
+}
 
         render() {
             var store_products = []
             for (const  [index, value] of this.storeCollection.entries()){
                 var productsMenu = []
                 // console.log(index);
-                // console.log(value);
+                console.log(value);
 
                 for (const [storeProductsIndex, productValue] of value.products.entries()) {
                     // console.log("Inner for loop");

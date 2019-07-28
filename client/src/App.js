@@ -237,7 +237,7 @@ class App extends Component {
     meal_popups  = [];
 
     componentDidMount(){
-        console.log("Comes in component did mount")
+        console.log("Comes in apps component did mount")
         var url = "http://localhost:5000/get_products"
          fetch(url)
             .then(res => res.text())
@@ -246,7 +246,7 @@ class App extends Component {
 
                  for(var i = 0 ; i < productsList.length; i++){
                     this.products.push(productsList[i].product_name);
-                    console.log(productsList[i].product_name)
+                    // console.log(productsList[i].product_name)
                 }
             });
     }

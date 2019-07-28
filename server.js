@@ -6,7 +6,7 @@ const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
 const pw = process.env.MongoPassword;
-const uri = "mongodb+srv://Olasubomi:"+pw+"@cluster0-sqg7f.mongodb.net/test?retryWrites=true&w=majority";
+const uri = "mongodb+srv://Olasubomi:"+pw+"@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 
 const app = express();
 const path = require('path');
@@ -42,11 +42,35 @@ app.get('/get_products', (req, res)=>{
         var dbo = db.db("Product_Supply");
         dbo.collection("all_products").find({}).toArray(function(err, result){
             if (err) throw err;
-            console.log(result);
+            // console.log(result);
             res.send(result);
             // perform actions on the collection object
             db.close();
         });
+});
+});
+
+app.get('/get_store_products', (req, res)=>{
+
+console.log("Calling all Mongo meals");
+var collection ;
+const client = new MongoClient(uri, { useNewUrlParser: true });
+console.log(uri);
+//const opts  = {db:{authSource: 'users'}};
+// uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+MongoClient.connect(uri,  { useNewUrlParser: true },function(err,db){
+    if(err) throw err;
+    // console.log(JSON.stringify(collection));
+    // store = JSON.stringify(collection);
+    // res.send(store);
+    var dbo = db.db("Product_Supply");
+    dbo.collection("Store_Products").find({}).toArray(function(err, result){
+        if (err) throw err;
+        console.log(result);
+        res.send(result);
+        // perform actions on the collection object
+        db.close();
+    });
 });
 });
 
