@@ -248,6 +248,9 @@ class App extends Component {
                     this.products.push(productsList[i].product_name);
                     // console.log(productsList[i].product_name)
                 }
+            })
+            .catch(err =>{
+                console.log(err);
             });
     }
 
