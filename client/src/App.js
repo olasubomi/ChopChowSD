@@ -1,13 +1,21 @@
 import React, { Component } from 'react'; 
 import {Typeahead} from 'react-bootstrap-typeahead';
+// import ListedMealsSection from './components/mealMenu/ListedMealsSection';
+// import RecipeContentSection from './components/mealMenu/RecipeContentSection';
+// import IngredientSection from './components/mealMenu/IngredientSection';
+import {Nav, Navbar, NavDropdown, Form, FormControl, Button} from 'react-bootstrap'
+import { Popover, PopoverBody } from 'reactstrap';
+import Popup from "reactjs-popup";
+import { Link, Route, Switch } from "react-router-dom";
+import InfiniteCarousel from 'react-leaf-carousel';
+import Slider from './components/product_slider/slider';
+
 import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 import IngredientSection from './components/mealMenu/IngredientSection';
-import ProductSection from './components/productSection/ProductsPage';
-import { Popover, PopoverBody } from 'reactstrap';
-import { Link, Route, Switch } from "react-router-dom";
-import Popup from "reactjs-popup";
-import Slider from './components/product_slider/slider';
+import ProductsSection from './components/productSection/ProductsPage';
+//import Collapse from 'react-bootstrap/Collapse';
+// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 
 class App extends Component {
@@ -269,31 +277,9 @@ class App extends Component {
         });
     }
 
-    meal_popups  = [];
-    
-    componentDidMount(){
-        console.log("Comes in component did mount")
-        var url = "http://localhost:5000/get_products"
-        // var url = "https://chopchowsd.herokuapp.com/get_products" // call in production
-
-        fetch(url)
-            .then(res => res.text())
-            .then(body => {
-                console.log()
-                var productsList = JSON.parse(body)
-                for(var i = 0 ; i < productsList.length; i++){
-                    this.products.push(productsList[i].product_name);
-                    console.log(productsList[i].product_name)
-                }
-            })
-            .catch(error =>{
-                console.log(error);
-            });
-      
     showIngredient(index){
         console.log("updating popup boolean");
         this.meal_popups[index] = !this.meal_popups[index]
-
     }
 
     updateInstructionsDisplayBaseIndex(event){
@@ -310,6 +296,7 @@ class App extends Component {
         //var base_index = slide_num*3;
         //console.log("Updating base index on click to: " +this.state.base_index);
     }
+  
 
 
     render() {
@@ -337,7 +324,6 @@ class App extends Component {
                 popUpSlides.push(<button key={i} onClick={this.updateInstructionsDisplayBaseIndex}>Slide {i}  </button>)
               }
             this.meal_popups.push(false);
-
             // console.log(this.meal_popups);
             // console.log(index);
             items.push(
@@ -370,24 +356,15 @@ class App extends Component {
                         <br></br>
                         <br></br>
                         <button style={{backgroundColor: "orange" }}>View Steps</button>  
-                        <br></br>   
-                        </div>
+                        <br></br>                           
+                        
+           </div> 
                     } modal closeOnDocumentClick contentStyle={contentStyle}>
+
+                    {/* Inside Pop - up */}
                     <div className="container">
                         <div className="row">
-                            {/* <div className="col">
-                                <div className="col align-items-center">{value.readTime}</div>
-                                <div className="col align-items-center">{value.cookTime}</div>
-                                <div><b>Ingredients</b></div>
-                                <div className="col align-items-center"><ol>{ingredientsList}</ol></div>
-                                <div><img src={value.imageSrc} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img></div>
-
-                            </div>
-                
-                            <div className="col">
-                                <div className="col align-items-center"><ol>{mealPrep}</ol></div>
-                            </div> */}
-                                <div className="col-sm-6">
+                            <div className="col-sm-6">
                                 <div><b>Ingredients</b></div>
                                 <div className="col align-items-center"><ol>{ingredientsList}</ol></div>
                             </div>
@@ -403,16 +380,35 @@ class App extends Component {
                             </div>
                         </div>
                         <br></br>
+                        {/* <div className="row">
+                            <div className="col-sm-12">
+                                <img src={value.imageSrc} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img>
+                            </div>
+                        </div> */}
+                    </div>
+                    <hr></hr>
 
-                        </div>
-                        <hr></hr>
-
-                        <span>Overview</span>&nbsp;|&nbsp;<span>Kitchen accessories for this meal</span>&nbsp;|&nbsp;<span>Add To Cart..</span>
-                        <br></br>
-                        {popUpSlides}
-                        <img src={value.imageSrc} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img>
-                        <hr></hr>
-
+                    <span>Overview</span>&nbsp;|&nbsp;<span>Kitchen accessories for this meal</span>&nbsp;|&nbsp;<span>Add To Cart..</span>
+                    <br></br>
+                    {popUpSlides}
+                    <img src={value.imageSrc} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img>
+                    <hr></hr>
+                    {/* <div className="col">
+                        <div className="col align-items-center"><ol>{mealPrep}</ol></div>
+                    </div> */}
+                            
+                    {/* </div> */}
+                        
+                    {/* </div> */}
+                    {/* <div>
+                    <div className="col align-items-left">
+                        <img src={value.imageSrc} alt='info'  style={{width:'35%', height:'35%', align:"center"}}></img>
+                    </div>
+                    <div>                            
+                        <div className="col align-items-center"><ol>{mealPrep}</ol></div>
+                    </div>
+                    </div>
+                    */}
                  </Popup>
                  <div id = {value.id+"products"} style={{ display:"none"}}> 
                  <b>Ingredients 1</b>
@@ -420,7 +416,6 @@ class App extends Component {
                         {value.products}
                         <Slider products={value.products}/>
                 </div>
-
 </div>
             )
         }
@@ -447,55 +442,71 @@ class App extends Component {
         //   }
     }
 
+
         return (
             <div>
                 {/* <div> */}
-                <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
-                {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
-                <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
-                <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
-                <Link to="/grocery" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
+               
+{/* <div className={this.state.topNav_className} id="myTopnav"> */}
+<div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
+    {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
+    <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
+    <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
+    <Link to="/grocery" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
 
-                <div className="w3-dropdown-hover w3-mobile">
-                    <button className="w3-button w3-hover-orange w3-mobile"> 
-                        Shop <i className="fa fa-caret-down"></i>
-                    </button>
-                    <div className="w3-dropdown-content w3-bar-block w3-card-4 ">
-                        <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Food Products</Link>
-                        <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Kitchen Products</Link>
-                        <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Other Household Items</Link>
-                    </div>
-                </div>
-                <Link to="/" className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile"> Stats</Link>
-                {/* <span onClick={()=>{console.log("Or thru here");myFunction()}} className="icon">
-                <i className="fa fa-bars"> an option</i>
-                </span> */}
-                <Link to="#" className="icon" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
-                <i className="fa fa-bars" ></i>
-                </Link>
+    <div className="w3-dropdown-hover w3-mobile">
+        <button className="w3-button w3-hover-orange w3-mobile"> 
+            Shop <i className="fa fa-caret-down"></i>
+        </button>
+        <div className="w3-dropdown-content w3-bar-block w3-card-4 ">
+            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Food Products</Link>
+            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Kitchen Products</Link>
+            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Other Household Items</Link>
+        </div>
+    </div>
+    <Link to="/" className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile"> Stats</Link>
+    {/* <span onClick={()=>{console.log("Or thru here");myFunction()}} className="icon">
+    <i className="fa fa-bars"> an option</i>
+    </span> */}
+    <Link to="#" className="icon" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
+    <i className="fa fa-bars" ></i>
+    </Link>
 
-            </div>
-            {/* <div> */}
-                <Typeahead options={this.products} 
-                placeholder="Find Meals (and Ingredients) here.."
-                id="typeahead"
-                // onChange={(selected) => {
-                //     // Handle selections...
-                //   }}
-                filterBy={['product_mame']}
-                />
-                {/*  Suggest meal feature */}
-                {/* &nbsp; <span>&#43;</span><input placeholder="Suggest Meal"></input> 
-             &nbsp;<button>Submit <span id="Popover1" onMouseOver={this.suggestMealToggle} onMouseOut={this.suggestMealToggle} >
-            <img src="/images/info_icon.png" alt="info" style={{width:'13px', height:'13px'}}/> </span></button>
-                
-                <Popover placement="auto" isOpen={this.state.suggestMealPopOver} target="Popover1" toggle={this.suggestMealToggle}>
-                        <PopoverBody><div className="payback-disclaimer">
-                        Suggestions by Guest Users are recorded, but do not change the publicly displayed Meals.
-                        </div></PopoverBody>
-                </Popover> */}
+</div>
 
-            <Switch>
+{/* <div className="topnav" id="myTopnav2">
+    <Link to="/">CC</Link>
+    <Link to="/">Recipes</Link>
+
+    <div className="dropdown">
+        <button className="dropbtn"> 
+            Shop <i className="fa fa-caret-down"></i>
+        </button>
+        <div className="dropdown-content">
+            <Link to="/products">Food Products</Link>
+            <Link to="/products">Kitchen Products</Link>
+            <Link to="/products">Other Household Items</Link>
+        </div>
+    </div>
+
+    <Link to="/v1">Stats</Link>
+    <Link to="javascript:void(0);" className="icon" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
+    <i className="fa fa-bars" ></i>
+    </Link>
+</div> */}
+
+<Typeahead options={this.products}
+placeholder="Find Meals (and Ingredients) here.."
+id="typeahead"
+// onChange={(selected) => {
+//     // Handle selections...
+//   }}
+filterBy={['product_name']}
+/>
+
+
+    
+<Switch>
     <Route exact path="/" render={(props)=>(
         <div>
         <div id="title">
@@ -571,10 +582,36 @@ class App extends Component {
     )}/>
 
     <Route path="/products" render={(props)=>(
-            <ProductSection /> 
+            <ProductsSection /> 
     )}/>
     </Switch>
-            </div>
+
+
+{/* <div className="row">
+    <div className="col-sm">
+        <b>Meals</b>
+        <ListedMealsSection 
+        recipes={this.state.recipes} showIngredients={this.showIngredients}
+        selectedMeal={this.state.selectedMeal}/>
+        
+        
+
+        </div>                     
+    <div className="col-sm">
+        <b>Recipe Contents</b>
+        <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
+        
+    </div>
+
+    <div className="col-sm">
+        <b>Ingredients</b>
+        <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}
+        selectedMeal= {this.state.selectedMeal}/>
+    </div>
+    
+    
+</div> */}
+</div>
         );
     }
 } 
