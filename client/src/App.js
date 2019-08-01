@@ -289,6 +289,7 @@ class App extends Component {
             .catch(error =>{
                 console.log(error);
             });
+    }
       
     showIngredient(index){
         console.log("updating popup boolean");
