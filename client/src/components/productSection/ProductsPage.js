@@ -77,7 +77,10 @@ componentDidMount(){
                 this.storeCollection.push(storeList[i].store_name);
                 console.log(storeList[i].store_name)
             }
-        });
+        })
+        .catch(error=>{
+            console.log(error);
+        })
 }
 
         render() {
