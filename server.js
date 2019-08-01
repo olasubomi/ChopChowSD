@@ -1,5 +1,6 @@
 'use strict';
-
+// allow to store local env variables in nodejs process event environment(env) object
+var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
@@ -28,38 +29,110 @@ const uri = "mongodb+srv://Olasubomi:"+pw+"@cluster0-sqg7f.mongodb.net/Product_S
 //     console.log("MongoDB Store error: \n"+error);
 //   });
 
-// const Security = require('./lib/Security');
-// const Products = require('./model/Products');
-const path = require('path');
 const app = express();
-
+const path = require('path');
 const port = process.env.PORT || 5000;
+const facebook = require("./routes/facebook");
+const login = require("./routes/manual_login");
 
 app.set('view engine', 'ejs');
+
 
 app.use(cors());
 app.use(express.static(path.join(__dirname,'client/build' )));
 
-// app.use(session({
-//     secret: 'keyboard cat',
-//     cookie: {
-//       maxAge: 1000*60 // 1 minute
-//       //1000 * 60 * 60 * 24 * 7 // 1 week
-//       //try using expires as well, for a month to give time for marketing retargeting
 
-//     },
-//     store: store,
-//     resave: true, // look into store's touch method*
-//     saveUninitialized: false,
-//     genid:(req)=>{
-//         return Security.generateId()
-//     }
-//     // unset:'destroy',*
-//     // name: 'session cookie name'*
-//   }));
+// enable ssl redirect
+app.use(sslRedirect());
+app.use(cors());
+app.use('/facebook', facebook);
+app.use('/login', login);
 
 // Serve static files from the React app
-//app.use('/', express.static(path.join(__dirname,'client/build')));
+app.use(express.static(path.join(__dirname,'client/build' )));
+// app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
+  
+app.get('/get_products', (req, res)=>{
+    console.log("Calling all Mongo products");
+    var collection ;
+    const client = new MongoClient(uri, { useNewUrlParser: true });
+    console.log(uri);
+    //const opts  = {db:{authSource: 'users'}};
+    // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+    MongoClient.connect(uri,  { useNewUrlParser: true },function(err,db){
+        if(err) throw err;
+        // console.log(JSON.stringify(collection));
+        // store = JSON.stringify(collection);
+        // res.send(store);
+        var dbo = db.db("Product_Supply");
+        dbo.collection("all_products").find({}).toArray(function(err, result){
+            if (err) throw err;
+            // console.log(result);
+            res.send(result);
+            // perform actions on the collection object
+            db.close();
+        });
+});
+});
+
+app.get('/get_store_products', (req, res)=>{
+
+console.log("Calling all Mongo meals");
+var collection ;
+const client = new MongoClient(uri, { useNewUrlParser: true });
+console.log(uri);
+//const opts  = {db:{authSource: 'users'}};
+// uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+MongoClient.connect(uri,  { useNewUrlParser: true },function(err,db){
+    if(err) throw err;
+    // console.log(JSON.stringify(collection));
+    // store = JSON.stringify(collection);
+    // res.send(store);
+    var dbo = db.db("Product_Supply");
+    dbo.collection("Store_Products").find({}).toArray(function(err, result){
+        if (err) throw err;
+        console.log(result);
+        res.send(result);
+        // perform actions on the collection object
+        db.close();
+    });
+});
+});
+
+app.get('/test', (req, res) => {
+console.log("To test page");
+res.send(JSON.stringify(req.session));
+});
+
+app.get('/redirect', (req, res) => {
+console.log("To redirect page");
+res.sendFile(path.join(__dirname+'/client','public', 'index.html'));
+});
+
+
+app.get('/renderEJS', (req, res) => {
+console.log("To render ");
+res.render('index');
+});
+
+app.get('/privacy-policy', (req, res) => {
+console.log("To render ");
+res.render('pages/privacy-policy');
+});
+
+app.get('/terms-of-service', (req, res) => {
+console.log("To render ");
+res.render('pages/terms-of-service');
+});
+
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+// app.get('*', (req, res) => {
+//     console.log("Gets in client builds index");
+//     res.sendFile(path.join(__dirname+'/client/build/'));
+//   });
+  
 
 app.get('/get_products', (req, res)=>{
     console.log("Calling all Mongo products");
@@ -119,7 +192,7 @@ app.get('/get_store_products', (req, res)=>{
     
 
 // on enetering landing page
- app.get('/find', function (req, res) {
+app.get('/find', function (req, res) {
     console.log("Gets in get");
     if(!req.session.cart) {
         console.log("Creates a cart session")
@@ -161,21 +234,6 @@ app.get('/get_store_products', (req, res)=>{
     console.log("ends db search")
  }
 );
-
-  
-  app.get('/test', (req, res) => {
-    // res.send(req.session.test); // 'OK'
-    res.send(JSON.stringify(req.session));
-
-  });
-
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-// app.get('*', (req, res) => {
-//     console.log("Gets in client builds index");
-//     res.sendFile(path.join(__dirname+'/client/build/'));
-//   });
-  
 // after identifying unique  session tokens from MD5 string
 // Then we are able to compare tokens in each singular form request: 
 // app.post('/test', (req, res) => {

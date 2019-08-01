@@ -201,6 +201,8 @@ class App extends Component {
     constructor(props){
         super(props);
         this.suggestMealToggle = this.suggestMealToggle.bind(this);
+        this.updateInstructionsDisplayBaseIndex = this.updateInstructionsDisplayBaseIndex.bind(this);
+        // this.myFunction = this.myFunction.bind(this);
 
         this.state={
             suggestMealPopOver: false,
@@ -210,25 +212,44 @@ class App extends Component {
             recipes: this.meals, //[this.Garri, this.Jollof_Rice],
             selectedMealIngredients: this.meals[0].new_ingredients,
             selectedMeal: this.meals[0],
-            showFakeIngredients:{
-                hidden: false
-            },
             showIngredients:{
                 hidden: true
-            },
-            showFakeProducts:{
-                hidden: false
             },
             showProducts:{
                 hidden: true
             },
+            //open: false,
 
-            mealsLength : this.meals.length
+            mealsLength : this.meals.length,
+            base_index : 0,
+            topNav_className: "w3-bar w3-dark-grey w3-green topnav"
         }
+    }
+
+    meal_popups  = [];
+
+    componentDidMount(){
+        console.log("Comes in apps component did mount")
+        var url = "http://localhost:5000/get_products"
+         fetch(url)
+            .then(res => res.text())
+            .then(body => {
+                var productsList = JSON.parse(body);
+
+                 for(var i = 0 ; i < productsList.length; i++){
+                    this.products.push(productsList[i].product_name);
+                    // console.log(productsList[i].product_name)
+                }
+            })
+            .catch(err =>{
+                console.log(err);
+            });
     }
 
     showIngredients=(event)=>{
         let mealString = event.target.innerText;
+        console.log(mealString);
+
         var meal;
         for (meal in this.meals){
             //console.log(this.meals[meal].label);
@@ -239,7 +260,6 @@ class App extends Component {
                 break;
             }
         }
-        //console.log({meal}.name);
         //get list of ingredients
     }
 
@@ -269,6 +289,11 @@ class App extends Component {
             .catch(error =>{
                 console.log(error);
             });
+      
+    showIngredient(index){
+        console.log("updating popup boolean");
+        this.meal_popups[index] = !this.meal_popups[index]
+
     }
 
     updateInstructionsDisplayBaseIndex(event){
@@ -291,14 +316,21 @@ class App extends Component {
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
-
-        const items = []
         //const popOverInfo = []
+        const items = []
+
+
 
         for (const [index, value] of this.meals.entries()) {
+            //console.log();
+            var base_index = 0;
             const mealPrep = value.instructions.map((step)=> <li key={step} > {step} </li>);
             var popUpSlides = [];
-            const instructionsLength = value.instructions.length;
+
+             const instructionsLength = value.instructions.length;
+             //console.log(instructionsLength);
+
+            // var mealIngredient = value.ingredients ;
             const ingredientsList = value.ingredients.map((step)=> <li key={step} > {step} </li>);
             var i;
             for (i = 0; i < instructionsLength/3; i++) { 
@@ -306,9 +338,11 @@ class App extends Component {
               }
             this.meal_popups.push(false);
 
+            // console.log(this.meal_popups);
+            // console.log(index);
             items.push(
                 <div className="col-sm-12 col-md-6 col-lg-4 mealContainer"  key = {value.id} >
-                     <div>
+                    <div>
                         <div style={containerStyle} onClick={()=>{
                                 this.meal_popups[index] = !this.meal_popups[index];
                                 // console.log(this.meal_popups);
@@ -369,6 +403,7 @@ class App extends Component {
                             </div>
                         </div>
                         <br></br>
+
                         </div>
                         <hr></hr>
 
@@ -377,6 +412,7 @@ class App extends Component {
                         {popUpSlides}
                         <img src={value.imageSrc} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img>
                         <hr></hr>
+
                  </Popup>
                  <div id = {value.id+"products"} style={{ display:"none"}}> 
                  <b>Ingredients 1</b>
@@ -384,21 +420,32 @@ class App extends Component {
                         {value.products}
                         <Slider products={value.products}/>
                 </div>
-                </div>
+
+</div>
             )
         }
-
-        function myFunction() {
-            var x = document.getElementById("myTopnav");
-            console.log(x);
-            // console.log({this.state.topNav_className});
-            if (x.className === "w3-bar w3-dark-grey w3-green topnav" ){
-              x.className += " responsive";
-            }
-            else {
-              x.className = "w3-bar w3-dark-grey w3-green topnav";
-            }
+    
+/* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        console.log(x);
+        // console.log({this.state.topNav_className});
+        if (x.className === "w3-bar w3-dark-grey w3-green topnav" ){
+          x.className += " responsive";
         }
+        else {
+          x.className = "w3-bar w3-dark-grey w3-green topnav";
+        }
+
+        // var y = document.getElementById("myTopnav2");
+        // if (y.className === "topnav"){
+        //     y.className += " responsive";
+        //   }
+        //   else{
+        //       //sync test nav bar as well
+        //       y.className = "topnav";
+        //   }
+    }
 
         return (
             <div>
@@ -550,6 +597,17 @@ overflow: "scroll"
 
 };
 
+/* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+// function myFunction() {
+//     var x = document.getElementById("myTopnav");
+//     console.log("Hello World 2");
+//     // if (x.className === "topnav") {
+//     //   x.className += " responsive";
+//     // } else {
+//     //   x.className = "topnav";
+//     // }
+//   }
+  
 
 export default App;
 

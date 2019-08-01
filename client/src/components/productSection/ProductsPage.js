@@ -60,11 +60,13 @@ class ProductSection extends Component {
         }]
     }     
 ]
+
 storeCollection = []
 
 componentDidMount(){
     console.log("Comes in product pages component did mount")
     var url = "http://localhost:5000/get_store_products"
+
      fetch(url)
         .then(res => res.text())
         .then(body => {

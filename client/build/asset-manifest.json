@@ -1,4 +1,5 @@
 {
+
   "main.css": "/static/css/main.dd1e0c23.chunk.css",
   "main.js": "/static/js/main.519e0fc1.chunk.js",
   "main.js.map": "/static/js/main.519e0fc1.chunk.js.map",
@@ -10,4 +11,5 @@
   "precache-manifest.d50fea67e9385f22bc634448d6e2bc72.js": "/precache-manifest.d50fea67e9385f22bc634448d6e2bc72.js",
   "service-worker.js": "/service-worker.js",
   "static/css/main.dd1e0c23.chunk.css.map": "/static/css/main.dd1e0c23.chunk.css.map"
+
 }
