@@ -1,23 +1,30 @@
-
-DROP TABLE public.customer;
-
-CREATE TABLE public.customer
-(
-first_name text COLLATE pg_catalog."default",
-last_name text COLLATE pg_catalog."default",
-email text COLLATE pg_catalog."default",
-phone_number text COLLATE pg_catalog."default",
-street text COLLATE pg_catalog."default",
-city text COLLATE pg_catalog."default",
-zip_code numeric,
-id numeric,
-ips_id numeric,
-grocery_list_id numeric
+BEGIN;
+DROP TABLE IF EXISTS customer , admin , supplier, grocery_listItem;
+CREATE TABLE grocery_listItem (
+  id  SERIAL PRIMARY KEY,
+  name_grocery TEXT NOT NULL
+);
+CREATE TABLE customer(
+    id  SERIAL PRIMARY KEY,
+    first_name TEXT,
+    last_name TEXT,
+    email TEXT,
+    phone_number INTEGER,
+    street TEXT,
+    city TEXT,
+    zip_code INTEGER,
+    ips_id INTEGER,
+    grocery_listItem_id INTEGER REFERENCES grocery_listItem(id)
+);
+CREATE TABLE admin(
+    id  INTEGER,
+    name SERIAL PRIMARY KEY    
 )
 WITH (
-OIDS = FALSE
-)
-TABLESPACE pg_default;
-
-ALTER TABLE public.customer
-OWNER to pvahqtecafcvqh;
+  OIDS=FALSE
+);
+CREATE TABLE supplier (
+  id  SERIAL PRIMARY KEY,
+  store_name TEXT NOT NULL
+);
+COMMIT;

@@ -1,15 +1,26 @@
 const { Pool } = require('pg');
+const { parse } = require('url');
 require('dotenv').config();
 
-let connectionString = '';
+let { DATABASE_URL: dbUrl } = process.env;
 
-switch (process.env.NODE_ENV) {
-  case 'testing': connectionString = process.env.TESTING_DB; break;
-  case 'production': connectionString = process.env.DATABASE_HEROCU; break;
-  case 'development': connectionString = process.env.DATABASE_URL; break;
-  default: throw new Error('Database url is not found!!!');
-}
+const params = parse(dbUrl);
+const {
+  hostname: host, port, pathname, auth,
+} = params;
 
-module.exports = new Pool({
-  connectionString,
-});
+const [user, password] = auth.split(':');
+
+const options = {
+  host,
+  port,
+  user,
+  password,
+  database: pathname.split('/')[1],
+  max: process.env.MAX_DB_CONNECTION || 2,
+  ssl:process.env.hostname !== 'localhost',
+};
+
+const pool = new Pool(options);
+module.exports = pool;
+
