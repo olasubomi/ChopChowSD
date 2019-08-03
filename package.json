@@ -29,6 +29,5 @@
     "client": "npm start --prefix client",
     "kill": "fuser -k 5000/tcp; fuser -k 3000/tcp;",
     "dev": "run-p server client"
-
   }
 }
