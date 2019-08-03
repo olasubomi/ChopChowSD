@@ -248,6 +248,9 @@ class App extends Component {
                     this.products.push(productsList[i].product_name);
                     // console.log(productsList[i].product_name)
                 }
+            })
+            .catch(err =>{
+                console.log(err);
             });
     }
 
@@ -274,6 +277,28 @@ class App extends Component {
         });
     }
 
+    meal_popups  = [];
+    
+    componentDidMount(){
+        console.log("Comes in component did mount")
+        var url = "http://localhost:5000/get_products"
+        // var url = "https://chopchowsd.herokuapp.com/get_products" // call in production
+
+        fetch(url)
+            .then(res => res.text())
+            .then(body => {
+                console.log()
+                var productsList = JSON.parse(body)
+                for(var i = 0 ; i < productsList.length; i++){
+                    this.products.push(productsList[i].product_name);
+                    console.log(productsList[i].product_name)
+                }
+            })
+            .catch(error =>{
+                console.log(error);
+            });
+    }
+      
     showIngredient(index){
         console.log("updating popup boolean");
         this.meal_popups[index] = !this.meal_popups[index]

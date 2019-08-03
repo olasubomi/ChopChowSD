@@ -60,11 +60,13 @@ class ProductSection extends Component {
         }]
     }     
 ]
-storeCollection = []
+// storeCollection = []
 
 componentDidMount(){
     console.log("Comes in product pages component did mount")
+    // var url = "https://chopchowsd.herokuapp.com/get_store_products" // for production
     var url = "http://localhost:5000/get_store_products"
+
      fetch(url)
         .then(res => res.text())
         .then(body => {
@@ -75,7 +77,10 @@ componentDidMount(){
                 this.storeCollection.push(storeList[i].store_name);
                 console.log(storeList[i].store_name)
             }
-        });
+        })
+        .catch(error=>{
+            console.log(error);
+        })
 }
 
         render() {
