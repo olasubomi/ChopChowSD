@@ -11,8 +11,8 @@ const uri = "mongodb+srv://Olasubomi:"+pw+"@cluster0-sqg7f.mongodb.net/Product_S
 const app = express();
 const path = require('path');
 const port = process.env.PORT || 5000;
-const facebook = require("../routes/facebook");
-const login = require("../routes/manual_login");
+const facebook = require("./routes/facebook");
+const login = require("./routes/manual_login");
 
 app.set('view engine', 'ejs');
 
