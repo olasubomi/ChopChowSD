@@ -8,7 +8,7 @@ import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
 import { Link, Route, Switch } from "react-router-dom";
 import InfiniteCarousel from 'react-leaf-carousel';
-import Slider from './components/product_slider/slider';
+import CarouselSlider from './components/product_slider/carousel_slider';
 
 import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 import ListedMealsSection from './components/mealMenu/ListedMealsSection';
@@ -411,7 +411,10 @@ class App extends Component {
                  <b>Ingredients 1</b>
                         <br></br>
                         {value.products}
-                        <Slider products={value.products}/>
+
+                        <CarouselSlider/>
+                        <br/>
+                        
                 </div>
 </div>
             )

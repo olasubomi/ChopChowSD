@@ -6,6 +6,7 @@
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.0",
     "passport-facebook": "^3.0.0",
+    "pure-react-carousel": "^1.21.1",
     "react": "^16.8.4",
     "react-bootstrap": "^0.32.4",
     "react-bootstrap-typeahead": "^3.4.1",
