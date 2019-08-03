@@ -24,10 +24,9 @@
   },
   "scripts": {
     "start": "node ./server/index.js",
-    "heroku-postbuild": "NODE_ENV=production cd client && npm install && npm run build",
     "server": "NODE_ENV=development nodemon server/index.js",
     "client": "npm start --prefix client",
-    "kill": "fuser -k 5000/tcp; fuser -k 3000/tcp;",
-    "dev": "run-p server client"
+    "kill": "fuser -k 5000/tcp; fuser -k 3000/tcp;"
+
   }
 }
