@@ -18,7 +18,7 @@ CREATE TABLE customer(
 );
 CREATE TABLE admin(
     id  INTEGER,
-    name SERIAL PRIMARY KEY    
+    name TEXT PRIMARY KEY    
 )
 WITH (
   OIDS=FALSE
