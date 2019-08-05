@@ -13,7 +13,7 @@ const path = require('path');
 const port = process.env.PORT || 5000;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
-
+const {list} = require('./controllers/list')
 app.set('view engine', 'ejs');
 
 
@@ -252,6 +252,7 @@ app.get('/find', function (req, res) {
 //             res.redirect('/');
 //         }
 //     });
+app.get('/get-list',list.getList)
     
 
 
