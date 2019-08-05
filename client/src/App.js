@@ -20,6 +20,10 @@ import ProductsSection from './components/productSection/ProductsPage';
 
 class App extends Component {
 
+    state = {
+        valueData= [],
+        dataInpageGrocry = []
+    };
     meals = [
         {
             id: 1,
@@ -202,7 +206,6 @@ class App extends Component {
         },
         
     ]
-
     // Mongo 
     products = [];
 
@@ -317,6 +320,29 @@ class App extends Component {
         this.setState({base_index: slide_num*3})
         //var base_index = slide_num*3;
         //console.log("Updating base index on click to: " +this.state.base_index);
+    }
+
+    handleGetList = e => {
+        e.preventDefault();
+        fetch('/get-list',{
+            method:'GET',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+
+        })
+        .then(res=>res.json())
+        .then(response=>{
+            if(response){
+                // put this data in this list typeahead
+                this.setState({valueData:response})
+//put this  list in page user 
+                // const {history} = this.props;
+                // hist
+                this.setState({dataInpageGrocry: response})
+            }
+        })
     }
   
 
@@ -518,11 +544,13 @@ class App extends Component {
 </div> */}
 
 <Typeahead options={this.products}
+valueData={this.state.valueData}
 placeholder="Find Meals (and Ingredients) here.."
 id="typeahead"
 // onChange={(selected) => {
 //     // Handle selections...
 //   }}
+onChange={this.handleGetList(e,valueData)}
 filterBy={['product_name']}
 />
 
@@ -598,6 +626,19 @@ filterBy={['product_name']}
         // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
         <div>
             <div><b>Your Grocery List</b></div>
+            <Row>
+                {dataInpageGrocry?(
+                    dataInpageGrocry.map(item=>{
+                        return(
+                            <Col>
+                            <>
+                          <div key = {item.id}>{item}</div> 
+                          </>
+                            </Col>
+                        )
+                    })
+                ):null}
+            </Row>
             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
         </div>
         
