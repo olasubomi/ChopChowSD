@@ -12,6 +12,7 @@
     "react-bootstrap-typeahead": "^3.4.6",
     "react-dom": "^16.8.6",
     "react-leaf-carousel": "^1.2.2",
+    "react-multi-carousel": "^2.2.2",
     "react-page-layout": "^0.9.8",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^2.1.8",
