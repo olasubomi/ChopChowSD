@@ -1,5 +1,12 @@
-let db = mongoose.connection;
-const db_connection = require('../../dbPostgress/config/db_connection');
+let data = {};
+let dbMongo = mongoose.connection;
 const {getDataCustomer} = require('../../dbPostgress/queries/getDataCustomer')
-let customerResult = db_connection().query(getDataCustomer)
-db.grocery_listItem.find({_id: customerResult.grocery_listItem_id});
+getDataCustomer.then((result) => {
+    console.log(result);
+    data = result.rows;
+}).catch((err) => {
+    console.log(err);
+    
+});
+console.log(data);
+dbMongo.grocery_listItem.find({_id: data.grocery_listItem_id});
