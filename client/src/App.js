@@ -21,8 +21,8 @@ import ProductsSection from './components/productSection/ProductsPage';
 class App extends Component {
 
     state = {
-        valueData= [],
-        dataInpageGrocry = []
+       
+        valueData= []
     };
     meals = [
         {
@@ -335,12 +335,8 @@ class App extends Component {
         .then(res=>res.json())
         .then(response=>{
             if(response){
-                // put this data in this list typeahead
+                // put this data in this list typeahead //put this  list in page user 
                 this.setState({valueData:response})
-//put this  list in page user 
-                // const {history} = this.props;
-                // hist
-                this.setState({dataInpageGrocry: response})
             }
         })
     }
@@ -544,7 +540,7 @@ class App extends Component {
 </div> */}
 
 <Typeahead options={this.products}
-valueData={this.state.valueData}
+value={this.state.valueData}
 placeholder="Find Meals (and Ingredients) here.."
 id="typeahead"
 // onChange={(selected) => {
@@ -627,8 +623,8 @@ filterBy={['product_name']}
         <div>
             <div><b>Your Grocery List</b></div>
             <Row>
-                {dataInpageGrocry?(
-                    dataInpageGrocry.map(item=>{
+                {valueData?(
+                    valueData.map(item=>{
                         return(
                             <Col>
                             <>
