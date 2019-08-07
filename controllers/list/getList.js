@@ -1,9 +1,10 @@
-const getTableCustomer = require('../../dbPostgress/queries/getDataCustomer')
+const {grocery_listItem} = require('../../dbMongo/queries/getDataList')
+
 module.exports=(req,res)=>{
-    getTableCustomer()
-    .then((result)=>{
+    grocery_listItem()
+    .then((resList)=>{
         res.send({
-            data:result.rows
+            data:resList.rows
         })
         .catch(()=>next({code: 500 , msg:'internal server error'}))
     })
