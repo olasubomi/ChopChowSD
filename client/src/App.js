@@ -202,7 +202,7 @@ class App extends Component {
         },
         
     ]
-
+   
     // Mongo 
     products = [];
 
@@ -230,7 +230,9 @@ class App extends Component {
 
             mealsLength : this.meals.length,
             base_index : 0,
-            topNav_className: "w3-bar w3-dark-grey w3-green topnav"
+            topNav_className: "w3-bar w3-dark-grey w3-green topnav",
+            item:null,
+            responseAppend:null
         }
     }
 
@@ -298,10 +300,30 @@ class App extends Component {
                 console.log(error);
             });
     }
-      
+    handleChange = ({ target: { value, name } }) =>
+    this.setState({ [name]: value, message: '' });//here put value from input user into item in state
+ 
     showIngredient(index){
         console.log("updating popup boolean");
         this.meal_popups[index] = !this.meal_popups[index]
+    }
+    componentDidMount(){
+        fetch('/append-item',{
+            method"'POST",
+            credentials: 'same-origin',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body:JSON.stringify({
+            item
+        })
+
+                })
+                .then(res=>res.json)
+                .then(response=>{
+                    //HERE RESPONSE WILL PUT IN STATE AFTER THAT I WILL TAKE FROM THIS STTAE TO RENDER 
+                    this.setState({responseAppend:response})
+                })
     }
 
     updateInstructionsDisplayBaseIndex(event){
@@ -598,6 +620,11 @@ filterBy={['product_name']}
         // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
         <div>
             <div><b>Your Grocery List</b></div>
+            <input type="text" name="item" value={item} placeholder="enter your item" onChange={this.handleChange}/>
+            {responseAppend?(
+
+                <div {this.state.responseAppend} />
+            ):null}
             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
         </div>
         
