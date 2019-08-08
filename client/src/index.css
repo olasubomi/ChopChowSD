@@ -255,3 +255,9 @@ Show the link that contains should open and close the topnav (.icon) */
   transition: 0.5s;
 }
 /* ============================================================================== */
+
+
+.slide {
+  background: #ffffff!important;
+  color: #000!important;
+}

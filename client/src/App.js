@@ -439,8 +439,7 @@ class App extends Component {
                  <b>Ingredients 1</b>
                         <br></br>
                         {value.products}
-                        
-                        <WithScrollbar/>
+                        <WithScrollbar products={value.products} ingredients={[{"name": "sugar","image": "/images/products/sugar.jpeg"}, {"name": "onion","image": "/images/products/onion.jpg"}, {"name": "tomato","image": "/images/products/tomato.jpg"}, {"name": "water","image": "/images/products/water.jpeg"}, {"name": "vegetable oil","image": "/images/products/vegetable_oil.jpg"}]}/>
                         <br/>
                         
                 </div>
