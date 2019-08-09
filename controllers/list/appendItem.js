@@ -8,3 +8,4 @@ module.exports=(req,res)=>{
         .catch(()=>next({code:500,msg:'internal server error'}))
     })
 }
+
