@@ -239,7 +239,9 @@ class App extends Component {
             topNav_className: "w3-bar w3-dark-grey w3-green topnav",
             item: null,
             responseAppend: null
-            ,message:null
+            ,message:null,
+            valueItem:null,
+            deleteItemId:null
         }
     }
 
@@ -314,28 +316,12 @@ class App extends Component {
         console.log("updating popup boolean");
         this.meal_popups[index] = !this.meal_popups[index]
     }
-    componentDidMount() {
-        fetch('/append-item', {
-            method"'POST",
-            credentials: 'same-origin',
-            headers: {
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify({
-                item
-            })
-
-        })
-            .then(res => res.json)
-            .then(response => {
-                //HERE RESPONSE WILL PUT IN STATE AFTER THAT I WILL TAKE FROM THIS STTAE TO RENDER 
-                this.setState({ responseAppend: response })
-            })
-    }
-
-    componentDidMount() {
-        fetch('/delete-item', {
-            method: "POST"
+    
+handleClick=(e)=>{
+    const {deleteItemId}= this.state;
+    
+        fetch(`item/${deleteItemId}`, {
+            method: "DELETE"
             , credentials: 'same-origin',
             headers: {
                 'Content-type': 'application/json',
@@ -350,6 +336,8 @@ class App extends Component {
                 this.setState({ message: "delete successfully" })
             })
     }
+}
+    
 
     updateInstructionsDisplayBaseIndex(event) {
         console.log(event.target.innerText);
@@ -645,11 +633,6 @@ class App extends Component {
                         // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
                         <div>
                             <div><b>Your Grocery List</b></div>
-                            <input type="text" name="item" value={item} placeholder="enter your item" onChange={this.handleChange} />
-                            {responseAppend ? (
-
-                                <div {this.state.responseAppend} />
-                            ) : null}
                             <Button onClick={this.handleClick}>delete Item</Button>
                             <div>{this.state.message}</div>
                             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
