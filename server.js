@@ -13,7 +13,7 @@ const path = require('path');
 const port = process.env.PORT || 5000;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
-
+const appendItem = require('./controllers/list/appendItem')
 app.set('view engine', 'ejs');
 
 
@@ -152,6 +152,8 @@ app.get('/find', function (req, res) {
     console.log("ends db search")
  }
 );
+
+app.post('/append-item',appendItem)
 // after identifying unique  session tokens from MD5 string
 // Then we are able to compare tokens in each singular form request: 
 // app.post('/test', (req, res) => {
