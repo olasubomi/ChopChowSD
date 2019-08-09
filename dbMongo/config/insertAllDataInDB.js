@@ -4,7 +4,6 @@ module.exports = (req, res) => {
    new list(allData)
       .save()
       .then(response => {
-         console.log(211111111, response);
 
          res.json.bind({ response: response, status: "ok" })
 
