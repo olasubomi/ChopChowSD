@@ -1,8 +1,11 @@
 const insertItem = require('./insertItem');
 const deleteItem = require('./deleteItem');
-const createItem = require('./createList')
+const createList = require('./createList');
+const removeList = require('./removeList')
+
 module.exports = {
     insertItem,
     deleteItem,
-    createItem
+    createList,
+    removeList
 }
