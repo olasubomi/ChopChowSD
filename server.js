@@ -16,7 +16,7 @@ const login = require("./routes/manual_login");
 const appendItem = require('./controllers/list/appendItem')
 const deleteItem = require('./controllers/list/deleteItem');
 const createList = require('./controllers/list/')
-
+const removeList = require('./controllers/list/removeList')
 app.set('view engine', 'ejs');
 
 
@@ -156,9 +156,10 @@ app.get('/find', function (req, res) {
  }
 );
 
-app.post('/append-item',appendItem)
-app.post('/delete-item',deleteItem)
-app.post('/create-list',createList)
+app.post('/append-item',appendItem);
+app.post('/delete-item',deleteItem);
+app.post('/create-list',createList);
+app.post('/remove-list',removeList);
 
 // after identifying unique  session tokens from MD5 string
 // Then we are able to compare tokens in each singular form request: 

@@ -1,6 +1,6 @@
-const {createItem } = require('../../dbMongo/queries/createList');
+const {createList} = require('../../dbMongo/queries/createList');
 module.exports=(req,res)=>{
-    createItem()
+    createList()
     .then((result)=>{
         res.send({
             data:result.rows
