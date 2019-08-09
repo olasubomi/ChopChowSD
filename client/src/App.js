@@ -309,11 +309,8 @@ class App extends Component {
     }
     componentDidMount(){
         fetch('/append-item',{
-            method"'POST",
-            credentials: 'same-origin',
-        headers: {
-          'Content-type': 'application/json',
-        },
+            method:'POST',
+            
         body:JSON.stringify({
             item
         })
@@ -350,7 +347,7 @@ class App extends Component {
         //const popOverInfo = []
         const items = []
 
-
+        const {item,responseAppend} = this.state;
 
         for (const [index, value] of this.meals.entries()) {
             //console.log();
@@ -623,7 +620,7 @@ filterBy={['product_name']}
             <input type="text" name="item" value={item} placeholder="enter your item" onChange={this.handleChange}/>
             {responseAppend?(
 
-                <div {this.state.responseAppend} />
+                <div >{responseAppend} </div>
             ):null}
             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
         </div>
