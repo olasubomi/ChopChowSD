@@ -22,7 +22,7 @@ class App extends Component {
 
     state = {
        
-        valueData= []
+        valueData : []
     };
     meals = [
         {
@@ -324,7 +324,7 @@ class App extends Component {
 
     handleGetList = e => {
         e.preventDefault();
-        fetch('/get-list',{
+        fetch('/getLists',{
             method:'GET',
             credentials: 'same-origin',
             headers: {
@@ -344,6 +344,7 @@ class App extends Component {
 
 
     render() {
+       const {valueData} =this.state
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -546,7 +547,7 @@ id="typeahead"
 // onChange={(selected) => {
 //     // Handle selections...
 //   }}
-onChange={this.handleGetList(e,valueData)}
+onChange={this.handleGetList()}
 filterBy={['product_name']}
 />
 
@@ -621,20 +622,24 @@ filterBy={['product_name']}
     <Route path="/grocery" render={(props)=>(
         // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
         <div>
+        <>
             <div><b>Your Grocery List</b></div>
-            <Row>
+        
                 {valueData?(
                     valueData.map(item=>{
                         return(
-                            <Col>
+                        <>
+                            
                             <>
                           <div key = {item.id}>{item}</div> 
                           </>
-                            </Col>
+                            
+                        </>
                         )
                     })
                 ):null}
-            </Row>
+          
+            </>
             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
         </div>
         
