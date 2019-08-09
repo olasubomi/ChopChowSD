@@ -1,4 +1,4 @@
-const {insertItem } = require('../../dbMongo/queries/inserItem');
+const {insertItem } = require('../../dbMongo/queries/insertItem');
 module.exports=(req,res)=>{
     insertItem()
     .then((result)=>{
