@@ -1,4 +1,4 @@
-const {createItem } = require('../../dbMongo/queries/createItem');
+const {createItem } = require('../../dbMongo/queries/createList');
 module.exports=(req,res)=>{
     createItem()
     .then((result)=>{
