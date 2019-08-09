@@ -1,11 +1,23 @@
-const {grocery_listItem} = require('../../dbMongo/queries/getDataList')
+const { list } = require('../../dbMongo/config/db_buildSchema')
 
-module.exports=(req,res)=>{
-    grocery_listItem()
-    .then((resList)=>{
-        res.send({
-            data:resList.rows
+const { getDataCustomer } = require('../../dbPostgress/queries/getDataCustomer')
+const { getDataCustomerId } = require('../../dbPostgress/queries/getDataCustomerId')
+
+exports.getList = (req, res) => {
+
+    getDataCustomer().then(resultCustomer => {
+        getDataCustomerId(resultCustomer.rows[0].listid).then((result) => {
+            let data = {};
+            data = result.rows[0];
+            return list.find({ id: data.listid })
+                .then(resList => {
+                    res.send({
+                        data: resList
+                    })
+
+                })// data from list that it spcail of this customer
         })
-        .catch(()=>next({code: 500 , msg:'internal server error'}))
     })
+        .catch(err => console.log(err))
 }
+
