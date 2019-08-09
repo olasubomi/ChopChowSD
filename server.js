@@ -3,7 +3,7 @@
 var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 const cors = require('cors');
-const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;  
 require('dotenv').config();
 const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:"+pw+"@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
