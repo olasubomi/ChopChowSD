@@ -1,5 +1,7 @@
 const getList = require('./getList')
+const appendItem = require('./appendItem');
 module.exports = {
-    getList
+    getList,
+    appendItem
 }
 

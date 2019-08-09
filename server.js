@@ -9,6 +9,7 @@ const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:"+pw+"@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 require('./dbMongo/config/db_connection');
 require('./dbMongo/config/AllData')();
+const appendItem = require('./controllers/list/appendItem')
 const app = express();
 
 const path = require('path');
@@ -113,7 +114,7 @@ res.render('pages/terms-of-service');
 
 app.get('/getLists',getList)
 
-
+app.post('/append-item',appendItem)
 
 // on enetering landing page
 app.get('/find', function (req, res) {
