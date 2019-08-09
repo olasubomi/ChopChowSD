@@ -7,7 +7,9 @@ const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
 const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:"+pw+"@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
-
+const connDB = require('./dbMongo/config/db_connection')
+require('./dbMongo/config/db_connection')();
+require('./dbMongo/config/insertAllDataInDB')();
 const app = express();
 
 const path = require('path');
@@ -15,7 +17,7 @@ const port = process.env.PORT || 5000;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 
-const {list} = require("./controllers");
+const {getList}= require("./controllers/list/getList");
 app.set('view engine', 'ejs');
 
 // enable ssl redirect
@@ -110,8 +112,16 @@ res.render('pages/terms-of-service');
 //   });
   
 
+app.get('/getLists',getList)
+
+
+
 // on enetering landing page
 app.get('/find', function (req, res) {
+
+
+
+
     console.log("Gets in get");
     if(!req.session.cart) {
         console.log("Creates a cart session")
@@ -257,6 +267,5 @@ app.get('/find', function (req, res) {
     
 
 
-app.get('/get-list',list.getList)
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
