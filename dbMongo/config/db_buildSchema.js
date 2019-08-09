@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-exports.list = mongoose.model('list', new Schema({
+const list = mongoose.model('list', new Schema({
     id: Number,
     product_name: String,
     product_image:String,
@@ -33,3 +33,4 @@ exports.supplier = mongoose.model('supplier', new Schema({
     storeName: String,
 }))
 
+module.exports = {list}
