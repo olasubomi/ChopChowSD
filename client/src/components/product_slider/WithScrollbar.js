@@ -10,7 +10,7 @@ export default class WithScrollbar extends Component {
   }
     render() {
         return (
-            <Carousel showThumbs={false} centerMode={true} centerSlidePercentage={100 / 2}>
+            <Carousel showThumbs={false} infiniteLoop={true} centerMode={true} centerSlidePercentage={100 / 2}>
               {this.props.ingredients.map(ingredient => (
                 <div>
                     <p className="">{ingredient.name}</p>
