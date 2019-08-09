@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 
 exports.list = mongoose.model('list', new Schema({
     id: Number,
-    groceryname: String
+    product_name: String,
+    product_image:String,
+    product_price:String,
+    sizes:String
 }))
 
 exports.Customer = mongoose.model('Customer', new Schema({
