@@ -18,9 +18,27 @@
     "passport-facebook": "^3.0.0",
     "passport-google-oauth": "^2.0.0",
     "passport-local": "^1.0.0",
-    "pg": "^7.10.0"
+    "pg": "^7.10.0",
+    "concurrently": "^4.1.0"
   },
   "scripts": {
-    "start": "node server.js"
-  }
+    "server": "node server.js",
+    "client": "npm start --prefix client",
+    "start": " concurrently \"npm run server\" \"npm run client\" "
+  },
+  "description": "This project was bootstrapped with Create React App.",
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olasubomi/ChopChowSD.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/olasubomi/ChopChowSD/issues"
+  },
+  "homepage": "https://github.com/olasubomi/ChopChowSD#readme"
 }
