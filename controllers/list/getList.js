@@ -3,11 +3,16 @@ const { getDataCustomerId } = require('../../dbPostgress/queries/getDataCustomer
 const {sign} = require('jsonwebtoken')
 exports.getList = (req, res) => {
     const { customerId } = req.params
-    const tokenCustomer =   sign(customerId,process.env.SECRET);
+    if(customerId){
+     const tokenCustomer =   sign(customerId,process.env.SECRET);
     res.cookie('JWTcustomerId',tokenCustomer,{
         maxAge: 60 * 60 * 24 * 30,
         httpOnly: true,
-      });
+      });   
+    }else{
+        res.status(401).send(JSON.stringify({msg:'you not authrized in this page'}))
+    }
+    
 
     getDataCustomerId(customerId).then((result) => {
         let data = {};
