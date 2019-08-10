@@ -5,7 +5,11 @@ supplier,
 list;
 CREATE TABLE list (
   id SERIAL PRIMARY KEY,
-  groceryname TEXT NOT NULL
+   product_name TEXT NOT NULL,
+    product_image TEXT NOT NULL,
+    product_price NUMERIC,
+    sizes TEXT NOT NULL,
+    price_per_ounce NUMERIC
 );
 CREATE TABLE customer(
   id SERIAL PRIMARY KEY,

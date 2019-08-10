@@ -1,7 +1,105 @@
 INSERT INTO
-  list (id, groceryname)
+  list (
+    id,
+    product_name,
+    product_image,
+    product_price,
+    sizes,
+    price_per_ounce
+  )
 VALUES
-  (1, 'pizza');
+  (
+    1,
+    'Ijebu Garri',
+    '/images/products/garri.jpg',
+    8.99,
+    '50lbs',
+    null
+  ),(
+    2,
+    'Brown Beans',
+    '/images/products/beans.jpeg',
+    12.00,
+    '2 lbs',
+    3.2
+  ),(
+    3,
+    'Honey Beans',
+    '/images/products/beans.jpeg',
+    12.00,
+    '2 lbs',
+    3.2
+  ),(
+    4,
+    'Spinach',
+    '/images/products/garri.jpg',
+    2.99,
+    '0.5lbs',
+    null
+  ),(
+    5,
+    'Kale',
+    '/images/products/garri.jpg',
+    2.99,
+    '0.5lbs',
+    null
+  ),(
+    6,
+    'Blueberries',
+    '/images/products/blueberries.jpg',
+    1.00,
+    '1lbs',
+    null
+  ),(
+    7,
+    'Squash Potatoes',
+    '/images/products/potatoes.jpg',
+    8.99,
+    '50lbs',
+    null
+  ),(
+    8,
+    'Water',
+    '/images/products/garri.jpg',
+    8.99,
+    '50lbs',
+    null
+  ),(
+    9,
+    'Plantain Chips',
+    '/images/products/beans.jpeg',
+    12.00,
+    '2 lbs',
+    3.2
+  ),(
+    10,
+    'Cashews',
+    '/images/products/beans.jpeg',
+    12.00,
+    '2 lbs',
+    3.2
+  ),(
+    11,
+    'Peanuts',
+    '/images/products/garri.jpg',
+    8.99,
+    '50lbs',
+    null
+  ),(
+    12,
+    'Watermelon',
+    '/images/products/beans.jpeg',
+    12.00,
+    '2 lbs',
+    3.2
+  ),(
+    13,
+    'Pineapple',
+    '/images/products/beans.jpeg',
+    12.00,
+    '2 lbs',
+    3.2
+  );
 INSERT INTO
   customer (
     id,
@@ -27,32 +125,179 @@ VALUES
     12334,
     4566,
     1
-  );
-INSERT INTO
-  customer (
-    id,
-    firstname,
-    lastname,
-    email,
-    phonenumber,
-    street,
-    city,
-    zipcode,
-    ipsid,
-    listid
-  )
-VALUES
+  ),
   (
     2,
-    'bbnn',
-    'mmjjll',
-    'im,ll',
-    25354482,
-    'hhhj',
-    'gaza',
+    'ala',
+    'tare',
+    'aa@hotmail.com',
+    12224,
+    'areha',
+    'american',
     12334,
     4566,
     1
+  ),  (
+    3,
+    'alaa',
+    'badra',
+    'alaabadra4@gmail.com',
+    25354482,
+    'salah',
+    'gaza',
+    12334,
+    4566,
+    2
+  ),
+  (
+    4,
+    'ala',
+    'tare',
+    'aa@hotmail.com',
+    12224,
+    'areha',
+    'american',
+    12334,
+    4566,
+    2
+  ) , (
+    5,
+    'alaa',
+    'badra',
+    'alaabadra4@gmail.com',
+    25354482,
+    'salah',
+    'gaza',
+    12334,
+    4566,
+    3
+  ),
+  (
+    6,
+    'ala',
+    'tare',
+    'aa@hotmail.com',
+    12224,
+    'areha',
+    'american',
+    12334,
+    4566,
+    3
+  ) , (
+    7,
+    'alaa',
+    'badra',
+    'alaabadra4@gmail.com',
+    25354482,
+    'salah',
+    'gaza',
+    12334,
+    4566,
+    5
+  ),
+  (
+    8,
+    'ala',
+    'tare',
+    'aa@hotmail.com',
+    12224,
+    'areha',
+    'american',
+    12334,
+    4566,
+    5
+  ),  (
+    9,
+    'alaa',
+    'badra',
+    'alaabadra4@gmail.com',
+    25354482,
+    'salah',
+    'gaza',
+    12334,
+    4566,
+    6
+  ),
+  (
+    10,
+    'ala',
+    'tare',
+    'aa@hotmail.com',
+    12224,
+    'areha',
+    'american',
+    12334,
+    4566,
+    6
+  ),  (
+    11,
+    'alaa',
+    'badra',
+    'alaabadra4@gmail.com',
+    25354482,
+    'salah',
+    'gaza',
+    12334,
+    4566,
+    8
+  ),
+  (
+    12,
+    'ala',
+    'tare',
+    'aa@hotmail.com',
+    12224,
+    'areha',
+    'american',
+    12334,
+    4566,
+    8
+  ) , (
+    13,
+    'alaa',
+    'badra',
+    'alaabadra4@gmail.com',
+    25354482,
+    'salah',
+    'gaza',
+    12334,
+    4566,
+    11
+  ),
+  (
+    14,
+    'ala',
+    'tare',
+    'aa@hotmail.com',
+    12224,
+    'areha',
+    'american',
+    12334,
+    4566,
+    12
+  ),  (
+    15,
+    'alaa',
+    'badra',
+    'alaabadra4@gmail.com',
+    25354482,
+    'salah',
+    'gaza',
+    12334,
+    4566,
+    8
+  ),
+  (
+    16,
+    'ala',
+    'tare',
+    'aa@hotmail.com',
+    12224,
+    'areha',
+    'american',
+    12334,
+    4566,
+    2
   );
 INSERT INTO
   admin (id, name)
@@ -62,4 +307,3 @@ INSERT INTO
   supplier (id, storename)
 VALUES
   (1, 'Dima');
-  
