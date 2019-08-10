@@ -111,7 +111,7 @@ res.render('pages/terms-of-service');
 //   });
   
 
-app.get('/getLists',getList)
+app.get('/getLists/:customerId',getList)
 
 
 
