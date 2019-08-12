@@ -4,7 +4,7 @@ import './style.css';
 import { Form, Button, Container } from 'react-bootstrap';
 
 import { Link, Redirect } from 'react-router-dom';
-import auth from '../../auth/fetchIsAuthunticated';
+import auth from '../../auth/fetchIsAuthunticatedGrocry';
 
 export default class Login extends React.Component {
   state = {
@@ -26,33 +26,31 @@ export default class Login extends React.Component {
         },
         body: JSON.stringify({
           email,
-          password: password,
+          password,
         }),
       })
         .then(response => {
+          console.log(54545454545);
+          
           if (response.status !== 200) {
             this.setState({ message: 'Bad Request , Check username or password ... !!' });
           }
-          return response.json();
+          this.setState({ message: 'login sucessfully ' });
+
+          // return response.json();
+          const {
+            history: {
+              push
+              
+            },
+          } = this.props;
+         console.log('ppppppp',this.props);
+         
+          return push('/grocery');
+
         })
-        .then(({ data }) => {
-          if (data) {
-            auth.setUserInfo(data);
-            auth.isAuthenticated = true;
-            // setUserInfo(data);
-            const {
-              history: {
-                push
-                
-              },
-            } = this.props;
-           
-            return push('/home');
-          }
-        })
-        .catch(err => {
-          auth.error = err;
-        });
+       
+  
     } else {
       this.setState({ message: 'Please enter all fields' });
     }
