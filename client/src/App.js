@@ -16,14 +16,11 @@ import IngredientSection from './components/mealMenu/IngredientSection';
 import ProductsSection from './components/productSection/ProductsPage';
 //import Collapse from 'react-bootstrap/Collapse';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import auth from './auth/fetchIsAuthunticated'
+// import auth from './auth/fetchIsAuthunticatedGrocry'
 import Login from './components/Login'
 class App extends Component {
 
-    state = {
-       
-        valueData : []
-    };
+    
     meals = [
         {
             id: 1,
@@ -233,29 +230,32 @@ class App extends Component {
 
             mealsLength : this.meals.length,
             base_index : 0,
-            topNav_className: "w3-bar w3-dark-grey w3-green topnav"
+            topNav_className: "w3-bar w3-dark-grey w3-green topnav",
+            valueData:null,
+            isAuthenticated:false,
+            customerId:null
         }
     }
 
     meal_popups  = [];
 
-    componentDidMount(){
-        console.log("Comes in apps component did mount")
-        var url = "http://localhost:5000/get_products"
-         fetch(url)
-            .then(res => res.text())
-            .then(body => {
-                var productsList = JSON.parse(body);
+    // componentDidMount(){
+    //     console.log("Comes in apps component did mount")
+    //     var url = "http://localhost:5000/get_products"
+    //      fetch(url)
+    //         .then(res => res.text())
+    //         .then(body => {
+    //             var productsList = JSON.parse(body);
 
-                 for(var i = 0 ; i < productsList.length; i++){
-                    this.products.push(productsList[i].product_name);
-                    // console.log(productsList[i].product_name)
-                }
-            })
-            .catch(err =>{
-                console.log(err);
-            });
-    }
+    //              for(var i = 0 ; i < productsList.length; i++){
+    //                 this.products.push(productsList[i].product_name);
+    //                 // console.log(productsList[i].product_name)
+    //             }
+    //         })
+    //         .catch(err =>{
+    //             console.log(err);
+    //         });
+    // }
 
     showIngredients=(event)=>{
         let mealString = event.target.innerText;
@@ -282,25 +282,25 @@ class App extends Component {
 
     meal_popups  = [];
     
-    componentDidMount(){
-        console.log("Comes in component did mount")
-        var url = "http://localhost:5000/get_products"
+    // componentDidMount(){
+        // console.log("Comes in component did mount")
+        // var url = "http://localhost:5000/get_products"
         // var url = "https://chopchowsd.herokuapp.com/get_products" // call in production
 
-        fetch(url)
-            .then(res => res.text())
-            .then(body => {
-                console.log()
-                var productsList = JSON.parse(body)
-                for(var i = 0 ; i < productsList.length; i++){
-                    this.products.push(productsList[i].product_name);
-                    console.log(productsList[i].product_name)
-                }
-            })
-            .catch(error =>{
-                console.log(error);
-            });
-    }
+        // fetch(url)
+        //     .then(res => res.text())
+        //     .then(body => {
+        //         console.log()
+        //         var productsList = JSON.parse(body)
+        //         for(var i = 0 ; i < productsList.length; i++){
+        //             this.products.push(productsList[i].product_name);
+        //             console.log(productsList[i].product_name)
+        //         }
+        //     })
+        //     .catch(error =>{
+        //         console.log(error);
+        //     });
+    // }
       
     showIngredient(index){
         console.log("updating popup boolean");
@@ -323,10 +323,58 @@ class App extends Component {
     }
 
     
-    componentDidMount(){
-        const { id } = auth.getUserInfo();
-        this.setState({customerId:id})
-        fetch(`/getLists/${this.state.customerId}`,{
+    // componentDidMount(){
+    //     const { id } = auth.getUserInfo();
+    //     this.setState({customerId:id})
+    //     fetch(`/getLists/${this.state.customerId}`,{
+    //         method:'GET',
+    //         credentials: 'same-origin',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+            
+    //     })
+    //     .then(res=>res.json())
+    //     .then(response=>{
+    //         {console.log('dddddddd',this.state)}
+    //         console.log('ressdssss',response);
+            
+    //         if(response){
+    //             // put this data in this list typeahead //put this  list in page user 
+    //             this.setState({valueData:response})
+    //         }
+    //     }).catch(err=>console.log(err)
+    //     )
+    // }
+//   componentDidMount(){
+   onGrocery=(e)=>{
+    fetch('/grocery',{
+            method:'GET',
+            credentials: 'same-origin',
+            headers: {
+              'Content-type': 'application/json',
+            },
+        })
+        
+        .then(res=>res.json())
+        .then(res=>{
+            console.log('resssssss',res);
+            if( res.success &&res.data){
+                this.setState({isAuthenticated:true})
+                this.setState({customerId:res.data})
+               
+            }else{
+                this.setState({isAuthenticated:false})
+                
+               
+            }
+            
+    })
+  }
+
+  onGetList=(e)=>{
+const {customerId}= this.state;
+        fetch(`/getLists/${customerId}`,{
             method:'GET',
             credentials: 'same-origin',
             headers: {
@@ -345,9 +393,7 @@ class App extends Component {
             }
         }).catch(err=>console.log(err)
         )
-    }
-  
-
+  }
 
     render() {
        const {valueData} =this.state
@@ -638,6 +684,8 @@ filterBy={['product_name']}
         <div>
         <>
             <div><b>Your Grocery List</b></div>
+        <button onClick={this.onGrocery} >grocery</button>
+        <button onClick={this.onGetList} >get list</button>
         
                 {valueData?(
                     valueData.map(item=>{
