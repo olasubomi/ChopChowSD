@@ -15,6 +15,7 @@ exports.Customer = mongoose.model('Customer', new Schema({
     firstname: String,
     lastname: String,
     email: String,
+    password: String,
     phoneNumber: Number,
     street: String,
     city: String,

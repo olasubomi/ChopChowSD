@@ -16,6 +16,7 @@ CREATE TABLE customer(
   firstname TEXT,
   lastname TEXT,
   email TEXT,
+  password TEXT,
   phoneNumber INTEGER,
   street TEXT,
   city TEXT,
