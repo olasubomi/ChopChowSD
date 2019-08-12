@@ -16,8 +16,8 @@ import IngredientSection from './components/mealMenu/IngredientSection';
 import ProductsSection from './components/productSection/ProductsPage';
 //import Collapse from 'react-bootstrap/Collapse';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
-
+import auth from './auth/fetchIsAuthunticated'
+import Login from './components/Login'
 class App extends Component {
 
     state = {
@@ -322,23 +322,29 @@ class App extends Component {
         //console.log("Updating base index on click to: " +this.state.base_index);
     }
 
-    handleGetList = e => {
-        e.preventDefault();
-        fetch('/getLists',{
+    
+    componentDidMount(){
+        const { id } = auth.getUserInfo();
+        this.setState({customerId:id})
+        fetch(`/getLists/${this.state.customerId}`,{
             method:'GET',
             credentials: 'same-origin',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
-
+            
         })
         .then(res=>res.json())
         .then(response=>{
+            {console.log('dddddddd',this.state)}
+            console.log('ressdssss',response);
+            
             if(response){
                 // put this data in this list typeahead //put this  list in page user 
                 this.setState({valueData:response})
             }
-        })
+        }).catch(err=>console.log(err)
+        )
     }
   
 
@@ -547,13 +553,21 @@ id="typeahead"
 // onChange={(selected) => {
 //     // Handle selections...
 //   }}
-onChange={this.handleGetList()}
+// onChange={this.handleGetList()}
 filterBy={['product_name']}
 />
 
 
     
 <Switch>
+<Route
+                  exact
+                  path="/login"
+                  setUserInfo={this.setUserInfo}
+                  render={props => (
+                    <Login {...props} setUserInfo={this.setUserInfo} />
+                  )}
+                />
     <Route exact path="/" render={(props)=>(
         <div>
         <div id="title">
