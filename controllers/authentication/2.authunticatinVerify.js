@@ -1,19 +1,18 @@
 const { verify } = require('jsonwebtoken');
 module.exports = (req, res, next) => {
-  res.send('Auth');	
 const { jwt } = req.cookies;
   const secret = process.env.SECRET;
   if (jwt && secret) {
     verify(jwt, secret, (err, decoded) => {
       if (decoded) {
-        req.userInfoDec = decoded;//add into req
+        req.userInfoDec = decoded;//add into request
         next();
       } else {
         res.clearCookie('jwt');
-        next({ code: 401, msg: 'you are not authenticated ' });
+        res.status(401).send(JSON.stringify({ msg: 'you not authrized in this page' }))
       }
     });
-  } else next({ code: 401, msg: 'you are not authenticated ' });
+  } else res.status(401).send(JSON.stringify({ msg: 'you not authrized in this page' }))
 };
 
 
