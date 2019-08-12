@@ -3,78 +3,93 @@
 var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 const cors = require('cors');
+const cookie = require('cookie-parser');
 const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
 const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:"+pw+"@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 require('./dbMongo/config/db_connection');
 require('./dbMongo/config/AllData')();
+const {isAuthenticated} = require('./controllers/authentication/3.isAuthenticated')
+const {authenticationLogin}= require('./controllers/authentication/1.authunticationLogin')
+const authenticationVerify = require('./controllers/authentication/2.authunticatinVerify')
 const app = express();
 
 const path = require('path');
 const port = process.env.PORT || 5000;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
-
+var bodyParser = require('body-parser');
 const {getList}= require("./controllers/list/getList");
 app.set('view engine', 'ejs');
-
-// enable ssl redirect
+app.use(express.json());
+app.use(cookie());
 app.use(sslRedirect());
 app.use(cors());
 app.use('/facebook', facebook);
-app.use('/login', login);
+
+// app.use('/login', login);
+// app.post('/login',(req, res, next) => {
+
+//     console.log(999999999999999,req.body);
+    
+//   res.json( req.body);
+// });
+app.post('/login',authenticationLogin);
+
+// app.get('/auth',authenticationVerify);
+// app.get('/isAuthenticated', isAuthenticated);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname,'client/build' )));
 // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
   
-app.get('/get_products', (req, res)=>{
-    console.log("Calling all Mongo products");
-    var collection ;
-    const client = new MongoClient(uri, { useNewUrlParser: true });
-    console.log(uri);
-    //const opts  = {db:{authSource: 'users'}};
-    // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
-    MongoClient.connect(uri,  { useNewUrlParser: true },function(err,db){
-        if(err) throw err;
-        // console.log(JSON.stringify(collection));
-        // store = JSON.stringify(collection);
-        // res.send(store);
-        var dbo = db.db("Product_Supply");
-        dbo.collection("all_products").find({}).toArray(function(err, result){
-            if (err) throw err;
-            // console.log(result);
-            res.send(result);
-            // perform actions on the collection object
-            db.close();
-        });
-});
-});
+// app.get('/get_products', (req, res)=>{
+//     console.log("Calling all Mongo products");
+//     var collection ;
+//     const client = new MongoClient(uri, { useNewUrlParser: true });
+//     console.log(uri);
+//     //const opts  = {db:{authSource: 'users'}};
+//     // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+//     MongoClient.connect(uri,  { useNewUrlParser: true },function(err,db){
+//         if(err) throw err;
+//         // console.log(JSON.stringify(collection));
+//         // store = JSON.stringify(collection);
+//         // res.send(store);
+//         var dbo = db.db("Product_Supply");
+//         dbo.collection("all_products").find({}).toArray(function(err, result){
+//             if (err) throw err;
+//             // console.log(result);
+//             res.send(result);
+//             // perform actions on the collection object
+//             db.close();
+//         });
+// });
+// });
 
-app.get('/get_store_products', (req, res)=>{
+// app.get('/get_store_products', (req, res)=>{
 
-console.log("Calling all Mongo meals");
-var collection ;
-const client = new MongoClient(uri, { useNewUrlParser: true });
-console.log(uri);
-//const opts  = {db:{authSource: 'users'}};
-// uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
-MongoClient.connect(uri,  { useNewUrlParser: true },function(err,db){
-    if(err) throw err;
-    // console.log(JSON.stringify(collection));
-    // store = JSON.stringify(collection);
-    // res.send(store);
-    var dbo = db.db("Product_Supply");
-    dbo.collection("Store_Products").find({}).toArray(function(err, result){
-        if (err) throw err;
-        console.log(result);
-        res.send(result);
-        // perform actions on the collection object
-        db.close();
-    });
-});
-});
+// console.log("Calling all Mongo meals");
+// var collection ;
+// const client = new MongoClient(uri, { useNewUrlParser: true });
+// console.log(uri);
+// //const opts  = {db:{authSource: 'users'}};
+// // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+// MongoClient.connect(uri,  { useNewUrlParser: true },function(err,db){
+//     if(err) throw err;
+//     // console.log(JSON.stringify(collection));
+//     // store = JSON.stringify(collection);
+//     // res.send(store);
+//     var dbo = db.db("Product_Supply");
+//     dbo.collection("Store_Products").find({}).toArray(function(err, result){
+//         if (err) throw err;
+//         console.log(result);
+//         res.send(result);
+//         // perform actions on the collection object
+//         db.close();
+//     });
+// });
+// });
 
 app.get('/test', (req, res) => {
 console.log("To test page");
@@ -110,7 +125,6 @@ res.render('pages/terms-of-service');
 //     res.sendFile(path.join(__dirname+'/client/build/'));
 //   });
   
-
 app.get('/getLists/:customerId',getList)
 
 
