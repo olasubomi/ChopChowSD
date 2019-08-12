@@ -15,8 +15,7 @@ import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 import IngredientSection from './components/mealMenu/IngredientSection';
 import ProductsSection from './components/productSection/ProductsPage';
 //import Collapse from 'react-bootstrap/Collapse';
-// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-// import auth from './auth/fetchIsAuthunticatedGrocry'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Login from './components/Login'
 class App extends Component {
 
@@ -239,23 +238,23 @@ class App extends Component {
 
     meal_popups  = [];
 
-    // componentDidMount(){
-    //     console.log("Comes in apps component did mount")
-    //     var url = "http://localhost:5000/get_products"
-    //      fetch(url)
-    //         .then(res => res.text())
-    //         .then(body => {
-    //             var productsList = JSON.parse(body);
+    componentDidMount(){
+        console.log("Comes in apps component did mount")
+        var url = "http://localhost:5000/get_products"
+         fetch(url)
+            .then(res => res.text())
+            .then(body => {
+                var productsList = JSON.parse(body);
 
-    //              for(var i = 0 ; i < productsList.length; i++){
-    //                 this.products.push(productsList[i].product_name);
-    //                 // console.log(productsList[i].product_name)
-    //             }
-    //         })
-    //         .catch(err =>{
-    //             console.log(err);
-    //         });
-    // }
+                 for(var i = 0 ; i < productsList.length; i++){
+                    this.products.push(productsList[i].product_name);
+                    // console.log(productsList[i].product_name)
+                }
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+    }
 
     showIngredients=(event)=>{
         let mealString = event.target.innerText;
@@ -282,25 +281,25 @@ class App extends Component {
 
     meal_popups  = [];
     
-    // componentDidMount(){
-        // console.log("Comes in component did mount")
-        // var url = "http://localhost:5000/get_products"
-        // var url = "https://chopchowsd.herokuapp.com/get_products" // call in production
+    componentDidMount(){
+        console.log("Comes in component did mount")
+        var url = "http://localhost:5000/get_products"
+        var url = "https://chopchowsd.herokuapp.com/get_products" // call in production
 
-        // fetch(url)
-        //     .then(res => res.text())
-        //     .then(body => {
-        //         console.log()
-        //         var productsList = JSON.parse(body)
-        //         for(var i = 0 ; i < productsList.length; i++){
-        //             this.products.push(productsList[i].product_name);
-        //             console.log(productsList[i].product_name)
-        //         }
-        //     })
-        //     .catch(error =>{
-        //         console.log(error);
-        //     });
-    // }
+        fetch(url)
+            .then(res => res.text())
+            .then(body => {
+                console.log()
+                var productsList = JSON.parse(body)
+                for(var i = 0 ; i < productsList.length; i++){
+                    this.products.push(productsList[i].product_name);
+                    console.log(productsList[i].product_name)
+                }
+            })
+            .catch(error =>{
+                console.log(error);
+            });
+    }
       
     showIngredient(index){
         console.log("updating popup boolean");
@@ -322,31 +321,7 @@ class App extends Component {
         //console.log("Updating base index on click to: " +this.state.base_index);
     }
 
-    
-    // componentDidMount(){
-    //     const { id } = auth.getUserInfo();
-    //     this.setState({customerId:id})
-    //     fetch(`/getLists/${this.state.customerId}`,{
-    //         method:'GET',
-    //         credentials: 'same-origin',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-            
-    //     })
-    //     .then(res=>res.json())
-    //     .then(response=>{
-    //         {console.log('dddddddd',this.state)}
-    //         console.log('ressdssss',response);
-            
-    //         if(response){
-    //             // put this data in this list typeahead //put this  list in page user 
-    //             this.setState({valueData:response})
-    //         }
-    //     }).catch(err=>console.log(err)
-    //     )
-    // }
-//   componentDidMount(){
+
    onGrocery=(e)=>{
     fetch('/grocery',{
             method:'GET',
@@ -355,7 +330,7 @@ class App extends Component {
               'Content-type': 'application/json',
             },
         })
-        
+
         .then(res=>res.json())
         .then(res=>{
             console.log('resssssss',res);
