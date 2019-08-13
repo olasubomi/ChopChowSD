@@ -343,7 +343,7 @@ class App extends Component {
 
                     console.log('eeeee', response.success)
                     if (response.success && response.data) {
-                        console.log('daaaata', response.success);
+                        console.log('daaaata', response.data);
                         this.setState({ isAuthenticated: true })
                         this.setState({ customerId: response.data })
 
@@ -372,7 +372,7 @@ class App extends Component {
     // })
 }
 
-onGetList = () => {
+onGetList = (e) => {
     const { customerId } = this.state;
     console.log(customerId);
     
@@ -390,8 +390,10 @@ onGetList = () => {
             console.log('ressdssss', response);
 
             if (response) {
+                console.log(44444,response.data);
+                
                 // put this data in this list typeahead //put this  list in page user 
-                this.setState({ valueData: response })
+                this.setState({ valueData: response.data })
             }
         }).catch(err => console.log(err)
         )
@@ -689,8 +691,10 @@ render() {
                         <>
                             <div><b>Your Grocery List</b></div>
                             {/* <button onClick={this.onGrocery} >grocery</button> */}
-                            <button onClick={this.onGetList} >get list</button>
-
+                            <button  type="button"
+            className="grocery-button"onClick={this.onGetList} >get list</button>
+{console.log('wfwfwfw',valueData)
+}
                             {valueData ? (
                                 valueData.map(item => {
                                     return (
