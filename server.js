@@ -28,9 +28,9 @@ app.use(cookie());
 app.use(sslRedirect());
 app.use(cors());
 app.use('/facebook', facebook);
-app.post('/login', authenticationLogin);
+app.post('/api/login', authenticationLogin);
 app.use(authenticationVerify);
-app.get('/grocery', isAuthenticated);
+app.use('/api/grocery', isAuthenticated);
 app.get('/hash', hashPassword);
 
 // Serve static files from the React app
