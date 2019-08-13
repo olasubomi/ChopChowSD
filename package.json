@@ -28,7 +28,7 @@
   "scripts": {
     "server": "node server.js",
     "client": "npm start --prefix client",
-    "start": " concurrently \"npm run server\" \"npm run client\" "
+    "start": " concurrently \"npm run server\" \"npm run client\" --proxy.config.json"
   },
   "description": "This project was bootstrapped with Create React App.",
   "directories": {

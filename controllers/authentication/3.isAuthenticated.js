@@ -1,4 +1,6 @@
 exports.isAuthenticated = (req, res, next) => {
+  console.log(888888,req);
+  
   const { id } = req.userInfoDec;
   if (id) {
     res.send({ success: true, data: id });

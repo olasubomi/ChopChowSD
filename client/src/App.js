@@ -15,7 +15,7 @@ import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 import IngredientSection from './components/mealMenu/IngredientSection';
 import ProductsSection from './components/productSection/ProductsPage';
 //import Collapse from 'react-bootstrap/Collapse';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Login from './components/Login'
 class App extends Component {
 
@@ -321,9 +321,9 @@ class App extends Component {
         //console.log("Updating base index on click to: " +this.state.base_index);
     }
 
+componentDidMount(){
 
-   onGrocery=(e)=>{
-    fetch('/grocery',{
+    fetch('/api/grocery',{
             method:'GET',
             credentials: 'same-origin',
             headers: {
@@ -331,7 +331,7 @@ class App extends Component {
             },
         })
 
-        .then(res=>res.json())
+        // .then(res=>res.json())
         .then(res=>{
             console.log('resssssss',res);
             if( res.success &&res.data){
@@ -345,7 +345,7 @@ class App extends Component {
             }
             
     })
-  }
+}
 
   onGetList=(e)=>{
 const {customerId}= this.state;
@@ -654,12 +654,12 @@ filterBy={['product_name']}
     </div>
     )}/>
 
-    <Route path="/grocery" render={(props)=>(
+    <Route path="/api/grocery" render={(props)=>(
         // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
         <div>
         <>
             <div><b>Your Grocery List</b></div>
-        <button onClick={this.onGrocery} >grocery</button>
+        {/* <button onClick={this.onGrocery} >grocery</button> */}
         <button onClick={this.onGetList} >get list</button>
         
                 {valueData?(

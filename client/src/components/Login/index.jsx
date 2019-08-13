@@ -1,10 +1,9 @@
 
 import React from 'react';
 import './style.css';
-import { Form, Button, Container } from 'react-bootstrap';
+// import { Form, Button, Container } from 'react-bootstrap';
 
 import { Link, Redirect } from 'react-router-dom';
-import auth from '../../auth/fetchIsAuthunticatedGrocry';
 
 export default class Login extends React.Component {
   state = {
@@ -18,7 +17,7 @@ export default class Login extends React.Component {
     // const { setUserInfo } = this.props;
     if (email && password) {
       // make a requset to the back with method post and data{email , password}
-      fetch('/login', {
+      fetch('/api/login', {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
@@ -30,23 +29,28 @@ export default class Login extends React.Component {
         }),
       })
         .then(response => {
-          console.log(54545454545);
+          console.log(54545454545, response.status);
           
-          if (response.status !== 200) {
+          if (response.status === 400 || response.status === 401 ||response.status === 404  ) {
             this.setState({ message: 'Bad Request , Check username or password ... !!' });
-          }
-          this.setState({ message: 'login sucessfully ' });
+          }else if( response.status === 500){
+            this.setState({message:'sorry , internal server error'})
+          }else{
 
-          // return response.json();
-          const {
-            history: {
-              push
-              
-            },
+            this.setState({ message: 'login sucessfully ', });
+            // return response.json();
+            const {
+              history: {
+                push
+                
+              },
           } = this.props;
          console.log('ppppppp',this.props);
          
-          return push('/grocery');
+          return push('/api/grocery');
+          }
+
+          
 
         })
        
@@ -62,15 +66,7 @@ export default class Login extends React.Component {
   render() {
     const { location } = this.props;
     const { email, password, message } = this.state;
-    if (auth.isAuthenticated) {
-      return (
-        <Redirect
-          to={{
-            pathname: '/home',
-          }}
-        />
-      );
-    }
+    
     return (
       // <Container>
       //   <Form className="login__form">
