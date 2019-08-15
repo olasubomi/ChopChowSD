@@ -3,11 +3,11 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
-import { Nav, Navbar, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { Nav, Navbar, NavDropdown, Form, FormControl, Button, Row } from 'react-bootstrap'
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
 import { Link, Route, Switch } from "react-router-dom";
-import {Spinner} from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 import InfiniteCarousel from 'react-leaf-carousel';
 import Slider from './components/product_slider/slider';
 
@@ -239,7 +239,8 @@ class App extends Component {
             topNav_className: "w3-bar w3-dark-grey w3-green topnav",
             valueData: null,
             isAuthenticated: false,
-            customerId: null
+            customerId: null,
+            valueAllDataLists: null
         }
     }
 
@@ -328,6 +329,7 @@ class App extends Component {
         //console.log("Updating base index on click to: " +this.state.base_index);
     }
 
+
     componentDidMount() {
 
         fetch('/api/grocery', {
@@ -340,16 +342,12 @@ class App extends Component {
 
             .then(res => {
 
-                const aa = res.json().then(response => {
-
-                    console.log('eeeee', response.success)
+                res.json().then(response => {
                     if (response.success && response.data) {
                         console.log('daaaata', response.data);
                         this.setState({ isAuthenticated: true })
                         this.setState({ customerId: response.data })
                         const { customerId } = this.state;
-                        console.log(customerId);
-
                         fetch(`/getLists/${customerId}`, {
                             method: 'GET',
                             credentials: 'same-origin',
@@ -360,21 +358,13 @@ class App extends Component {
                         })
                             .then(res => res.json())
                             .then(response => {
-                                { console.log('dddddddd', this.state) }
-                                console.log('ressdssss', response);
-
                                 if (response) {
-                                    console.log(44444, response.data);
-
-                                    // put this data in this list typeahead //put this  list in page user 
                                     this.setState({ valueData: response.data })
                                 }
-                            }).catch(err => console.log(err)
-                            )
+                            }).catch(err => console.log(err))
+
                     } else {
                         this.setState({ isAuthenticated: false })
-
-
                     }
                 })
             })
@@ -384,11 +374,9 @@ class App extends Component {
 
     }
 
-    
+
 
     render() {
-        console.log('nnnnnnnn', this.state);
-
         const { valueData } = this.state
         // Render your page inside
         // the layout provider
@@ -586,6 +574,7 @@ class App extends Component {
 </div> */}
 
                 <Typeahead options={this.products}
+                    // onInputChange={this.handleInputChange}
                     value={this.state.valueData}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
@@ -595,6 +584,7 @@ class App extends Component {
                     // onChange={this.handleGetList()}
                     filterBy={['product_name']}
                 />
+
 
 
 
@@ -664,6 +654,7 @@ class App extends Component {
                                 <b>Meals</b>
                             </div>
 
+
                             <div className="container">
                                 <div className="row">
                                     {items}
@@ -673,31 +664,27 @@ class App extends Component {
                     )} />
 
                     <Route path="/api/grocery" render={(props) => (
-                            <>
-                            {valueData[0]&&valueData[0].length?(
-                                <div>
-                                {valueData[0] ? (
-                                    valueData[0].map(item => {
-                                        return (
-                                            <>
+                        <>
 
-                                                <>
-                                                    <div key={item.id}>{item}</div>
-                                                </>
+                            <div>
+                                {valueData ? (
+                                    <>
 
-                                            </>
-                                        )
-                                    })
-                                ) : null}    
-                                </div>
-                            ):(
-                                <div>looooading !!!</div>
-                            )}
-                                
+                                        <div key={valueData.id}>{valueData.id}</div>
+
+                                        <div key={valueData.id}>{valueData.product_name}</div>
+                                        <div key={valueData.id}>{valueData.product_image}</div>
+
+                                        <div key={valueData.id}>{valueData.sizes}</div>
+
+                                    </>
+                                ) : <div>looooading !!!</div>}
+                            </div>
                             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
-                            </>
+                        </>
 
                     )} />
+
 
                     <Route path="/products" render={(props) => (
                         <ProductsSection />
