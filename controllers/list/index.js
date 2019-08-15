@@ -1,5 +1,7 @@
-const getList = require('./getList')
+const getList = require('./getList');
+const getAllDataLists = require('./getAllDataLists')
 module.exports = {
-    getList
+    getList,
+    getAllDataLists
 }
 
