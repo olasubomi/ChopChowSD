@@ -22,6 +22,8 @@ const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
 const { getList } = require("./controllers/list/getList");
+const { getAllDataLists } = require("./controllers/list/getAllDataLists");
+
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(cookie());
@@ -119,11 +121,13 @@ app.get('/terms-of-service', (req, res) => {
 //   });
 
 app.get('/getLists/:customerId', getList)
+app.get('/api/get-all-data-lists', getAllDataLists)
 
 
 
 // on enetering landing page
 app.get('/find', function (req, res) {
+    app.get('/api/get-all-lists', getAllLists)
 
 
 
