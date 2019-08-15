@@ -5,7 +5,7 @@ exports.getList = (req, res) => {
     getDataCustomerId(customerId).then((result) => {
         let data = {};
         data = result.rows[0];
-        return list.find({ id: data.listid })
+        return list.findOne({ id: data.listid })
             .then(resList => {
                 res.send({
                     data: resList
