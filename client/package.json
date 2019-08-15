@@ -6,12 +6,15 @@
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.1",
     "passport-facebook": "^3.0.0",
+    "pure-react-carousel": "^1.21.1",
     "react": "^16.8.6",
     "react-bootstrap": "^0.32.4",
     "react-bootstrap-typeahead": "^3.4.6",
     "react-dom": "^16.8.6",
     "react-leaf-carousel": "^1.2.2",
+    "react-multi-carousel": "^2.2.2",
     "react-page-layout": "^0.9.8",
+    "react-responsive-carousel": "^3.1.49",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^2.1.8",
     "reactjs-popup": "^1.4.2",
@@ -43,6 +46,6 @@
     "@storybook/addon-links": "^5.1.10",
     "@storybook/addons": "^5.1.10",
     "@storybook/react": "^5.1.10",
-    "babel-loader": "^8.0.6"
+    "babel-loader": "^8.0.5"
   }
 }
