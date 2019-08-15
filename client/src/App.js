@@ -330,8 +330,8 @@ class App extends Component {
     }
 
 
-    componentDidMount() {
 
+    componentDidMount(){
         fetch('/api/grocery', {
             method: 'GET',
             credentials: 'same-origin',
@@ -367,17 +367,30 @@ class App extends Component {
                         this.setState({ isAuthenticated: false })
                     }
                 })
-            })
-
-
-
-
+            });
+        fetch('/api/get-all-data-lists', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            
+        })
+        .then(res => res.json())
+        .then(response => {
+            if (response) {
+                response.data .map(element=>{
+                    this.setState({ valueAllDataLists: element.product_name })
+                    })                        
+                    // put this data in this list typeahead 
+                }
+            }).catch(err => console.log(err)
+            )
     }
 
 
-
     render() {
-        const { valueData } = this.state
+        const { valueData ,valueAllDataLists} = this.state
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -573,15 +586,11 @@ class App extends Component {
     </Link>
 </div> */}
 
-                <Typeahead options={this.products}
-                    // onInputChange={this.handleInputChange}
-                    value={this.state.valueData}
+                <Typeahead
+                     options={this.products}
+                    value={this.state.valueAllDataLists}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
-                    // onChange={(selected) => {
-                    //     // Handle selections...
-                    //   }}
-                    // onChange={this.handleGetList()}
                     filterBy={['product_name']}
                 />
 
