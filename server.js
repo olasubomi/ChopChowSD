@@ -17,13 +17,13 @@ const { hashPassword } = require('./controllers/hashPassword')
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 4400;
+const port = process.env.PORT || 5000;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
 const { getList } = require("./controllers/list/getList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
-
+ 
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(cookie());
