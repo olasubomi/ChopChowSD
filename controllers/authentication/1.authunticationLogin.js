@@ -1,34 +1,30 @@
-const {checkEmail} = require('../../dbPostgress/queries/athuntication/checkEmail');
-const {sign} = require('jsonwebtoken')
+const { checkEmail } = require('../../dbPostgress/queries/athuntication/checkEmail');
+const { sign } = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-exports.authenticationLogin = (req, res,next) => {
-    const memberInfo = { ...req.body}
-    if(memberInfo){
+exports.authenticationLogin = (req, res, next) => {
+    const memberInfo = { ...req.body }
+    if (memberInfo) {
         checkEmail(memberInfo.email)
-        .then((result)=>{
-            console.log('result password from database',result.rows[0].password);           
-            if(result.rows[0]){
-                bcrypt.compare(memberInfo.password,result.rows[0].password,(err,valid)=>{
-                    if(err) console.log(err);
-                    // if(valid){
-                        console.log(333333333);                        
-                        const {id, email}={...result.rows[0]}
-                        const userInfoEnc = {id, email};                        
-                        const tokenCustomer =   sign(userInfoEnc,process.env.SECRET);
-                        console.log(tokenCustomer);                        
-                        const coookie = res.cookie('JWTcustomerId',tokenCustomer,{
+            .then((result) => {
+                if (result.rows[0]) {
+                    bcrypt.compare(memberInfo.password, result.rows[0].password, (err, valid) => {
+                        if (!valid) res.status(400).send(JSON.stringify({ msg: 'check your password' }))
+                        const { id, email } = { ...result.rows[0] }
+                        const userInfoEnc = { id, email };
+                        const tokenCustomer = sign(userInfoEnc, process.env.SECRET);
+                        console.log(tokenCustomer);
+                        res.cookie('JWTcustomerId', tokenCustomer, {
                             maxAge: 60 * 60 * 24 * 30,
                             httpOnly: true,
-                          });  
-                          console.log(coookie);
-                          
-                          res.status(200).send({ error: null, data: tokenCustomer }); 
-                          next()
-                })
-            }else next({ code: 400, msg: 'email does not exist ' });
-        })
-        .catch(()=>   next  ({ code: 400, msg: 'Ensure you enter validly data in your email ' }))
-    }else{
-        res.status(401).send(JSON.stringify({msg:'you not authrized in this page'}))
+                        });
+                        res.status(200).send({ error: null, data: tokenCustomer });
+                        next()
+                    })
+                } else res.status(400).send({ msg: 'email does not exist ' });
+            })
+            .catch(() => res.status(400).send(JSON.stringify({ msg: 'Ensure you enter validly data in your email ' })))
+    } else {
+        res.status(401).send(JSON.stringify({ msg: 'you not authrized in this page' }))
     }
 }
+
