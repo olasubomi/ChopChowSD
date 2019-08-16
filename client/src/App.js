@@ -704,7 +704,8 @@ class App extends Component {
                                         
 
                                     </>
-                                ) : <div>looooading !!!</div>}
+                                ) :<Spinner animation="border" variant="info" />
+                                }
                     </Container>
    
                    

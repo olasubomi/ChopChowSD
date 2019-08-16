@@ -13,6 +13,7 @@ export default class Login extends React.Component {
   };
 
   handleClick = () => {
+    const {location} = this.props
     const { email, password } = this.state;
     // const { setUserInfo } = this.props;
     if (email && password) {
@@ -42,6 +43,8 @@ export default class Login extends React.Component {
                 push
               },
           } = this.props;
+          console.log(777777,this.props);
+          
           return push('/api/grocery');
           }
         })
