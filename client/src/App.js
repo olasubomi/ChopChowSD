@@ -396,8 +396,6 @@ class App extends Component {
 
     render() {
         const { valueData, valueAllDataLists, message } = this.state;
-        console.log(99999, valueData);
-        console.log(555555565656, valueAllDataLists);
 
 
         // Render your page inside
@@ -686,8 +684,6 @@ class App extends Component {
                                 {message && <Alert variant="danger">{message}</Alert>}
                                 {valueData ? (
                                     <>
-                                    {console.log(11111,valueData)}
-                                        {/* <div>{valueData}</div> */}
                                         <Card className="card-image">
                                             {valueData.product_image}
                                         </Card>
