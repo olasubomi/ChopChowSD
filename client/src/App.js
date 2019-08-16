@@ -241,7 +241,7 @@ class App extends Component {
             valueData: null,
             isAuthenticated: false,
             customerId: null,
-            valueAllDataLists: null,
+            valueAllDataLists: [],
             message: null
         }
     }
@@ -381,8 +381,10 @@ class App extends Component {
             .then(res => res.json())
             .then(response => {
                 if (response) {
+                    let arrAllData =[];
                     for (let i = 15; i <= 29; i++) {
-                        this.setState({ valueAllDataLists: response.data[i].product_name })
+                        arrAllData.push(response.data[i].product_name);
+                        this.setState({ valueAllDataLists: arrAllData })
                     }
                 }
             }).catch(() => {
@@ -395,6 +397,8 @@ class App extends Component {
     render() {
         const { valueData, valueAllDataLists, message } = this.state;
         console.log(99999, valueData);
+        console.log(555555565656, valueAllDataLists);
+
 
         // Render your page inside
         // the layout provider
@@ -595,7 +599,7 @@ class App extends Component {
                     options={this.products}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
-                    filterBy={['product_name']}
+                    filterBy={this.state.valueAllDataLists}
                 />
 
 
