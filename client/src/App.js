@@ -240,7 +240,8 @@ class App extends Component {
             valueData: null,
             isAuthenticated: false,
             customerId: null,
-            valueAllDataLists: null
+            valueAllDataLists: null,
+            message:null
         }
     }
 
@@ -331,68 +332,67 @@ class App extends Component {
 
 
 
-    // componentDidMount(){
-    //     fetch('/api/grocery', {
-    //         method: 'GET',
-    //         credentials: 'same-origin',
-    //         headers: {
-    //             'Content-type': 'application/json',
-    //         },
-    //     })
+    componentDidMount() {
+        fetch('/api/grocery', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json',
+            },
+        })
 
-    //         .then(res => {
+            .then(res => {
 
-    //             res.json().then(response => {
-    //                 if (response.success && response.data) {
-    //                     console.log('daaaata', response.data);
-    //                     this.setState({ isAuthenticated: true })
-    //                     this.setState({ customerId: response.data })
-    //                     const { customerId } = this.state;
-    //                     fetch(`/getLists/${customerId}`, {
-    //                         method: 'GET',
-    //                         credentials: 'same-origin',
-    //                         headers: {
-    //                             'Content-Type': 'application/json',
-    //                         },
+                res.json().then(response => {
+                    if (response.success && response.data) {
+                        this.setState({ isAuthenticated: true })
+                        this.setState({ customerId: response.data })
+                        const { customerId } = this.state;
+                        fetch(`/getLists/${customerId}`, {
+                            method: 'GET',
+                            credentials: 'same-origin',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
 
-    //                     })
-    //                         .then(res => res.json())
-    //                         .then(response => {
-    //                             if (response) {
-    //                                 this.setState({ valueData: response.data })
-    //                             }
-    //                         }).catch(err => console.log(err))
-
-    //                 } else {
-    //                     this.setState({ isAuthenticated: false })
-    //                 }
-    //             })
-    //         });
-    componentDidMount(){
+                        })
+                            .then(res => res.json())
+                            .then(response => {
+                                if (response) {
+                                    this.setState({ valueData: response.data })
+                                }
+                            }).catch(()=>{
+                                this.setState({message:'sorry , internal server error'})
+                            })
+                    } else {
+                        this.setState({ isAuthenticated: false })
+                    }
+                })
+            });
         fetch('/api/get-all-data-lists', {
             method: 'GET',
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
             },
-            
+
         })
-        .then(res => res.json())
-        .then(response => {
-            if (response) {
-                for(let i = 15; i<=29;i++){
-                    this.setState({valueAllDataLists:response.data[i].product_name})
+            .then(res => res.json())
+            .then(response => {
+                if (response) {
+                    for (let i = 15; i <= 29; i++) {
+                        this.setState({ valueAllDataLists: response.data[i].product_name })
+                    }
                 }
-                }
-            }).catch(err => console.log(err)
-            )
+            }).catch(()=>{
+                this.setState({message:'sorry , internal server error'})
+            })
+            
     }
 
 
     render() {
-        const { valueData ,valueAllDataLists} = this.state
-        
-        
+        const { valueData, valueAllDataLists } = this.state
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -589,8 +589,7 @@ class App extends Component {
 </div> */}
 
                 <Typeahead
-                     options={this.products}
-                    value={this.state.valueAllDataLists}
+                    options={this.products}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
                     filterBy={['product_name']}
@@ -677,7 +676,7 @@ class App extends Component {
                     <Route path="/api/grocery" render={(props) => (
                         <>
 
-                            {/* <div>
+                            <div>
                                 {valueData ? (
                                     <>
 
@@ -690,7 +689,7 @@ class App extends Component {
 
                                     </>
                                 ) : <div>looooading !!!</div>}
-                            </div> */}
+                            </div>
                             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
                         </>
 
