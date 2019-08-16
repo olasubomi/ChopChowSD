@@ -596,10 +596,9 @@ class App extends Component {
 </div> */}
 
                 <Typeahead
-                    options={this.products}
+                    options={valueAllDataLists}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
-                    filterBy={this.state.valueAllDataLists}
                 />
 
 
