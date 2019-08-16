@@ -331,43 +331,44 @@ class App extends Component {
 
 
 
+    // componentDidMount(){
+    //     fetch('/api/grocery', {
+    //         method: 'GET',
+    //         credentials: 'same-origin',
+    //         headers: {
+    //             'Content-type': 'application/json',
+    //         },
+    //     })
+
+    //         .then(res => {
+
+    //             res.json().then(response => {
+    //                 if (response.success && response.data) {
+    //                     console.log('daaaata', response.data);
+    //                     this.setState({ isAuthenticated: true })
+    //                     this.setState({ customerId: response.data })
+    //                     const { customerId } = this.state;
+    //                     fetch(`/getLists/${customerId}`, {
+    //                         method: 'GET',
+    //                         credentials: 'same-origin',
+    //                         headers: {
+    //                             'Content-Type': 'application/json',
+    //                         },
+
+    //                     })
+    //                         .then(res => res.json())
+    //                         .then(response => {
+    //                             if (response) {
+    //                                 this.setState({ valueData: response.data })
+    //                             }
+    //                         }).catch(err => console.log(err))
+
+    //                 } else {
+    //                     this.setState({ isAuthenticated: false })
+    //                 }
+    //             })
+    //         });
     componentDidMount(){
-        fetch('/api/grocery', {
-            method: 'GET',
-            credentials: 'same-origin',
-            headers: {
-                'Content-type': 'application/json',
-            },
-        })
-
-            .then(res => {
-
-                res.json().then(response => {
-                    if (response.success && response.data) {
-                        console.log('daaaata', response.data);
-                        this.setState({ isAuthenticated: true })
-                        this.setState({ customerId: response.data })
-                        const { customerId } = this.state;
-                        fetch(`/getLists/${customerId}`, {
-                            method: 'GET',
-                            credentials: 'same-origin',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-
-                        })
-                            .then(res => res.json())
-                            .then(response => {
-                                if (response) {
-                                    this.setState({ valueData: response.data })
-                                }
-                            }).catch(err => console.log(err))
-
-                    } else {
-                        this.setState({ isAuthenticated: false })
-                    }
-                })
-            });
         fetch('/api/get-all-data-lists', {
             method: 'GET',
             credentials: 'same-origin',
@@ -379,10 +380,9 @@ class App extends Component {
         .then(res => res.json())
         .then(response => {
             if (response) {
-                response.data .map(element=>{
-                    this.setState({ valueAllDataLists: element.product_name })
-                    })                        
-                    // put this data in this list typeahead 
+                for(let i = 15; i<=29;i++){
+                    this.setState({valueAllDataLists:response.data[i].product_name})
+                }
                 }
             }).catch(err => console.log(err)
             )
@@ -391,6 +391,8 @@ class App extends Component {
 
     render() {
         const { valueData ,valueAllDataLists} = this.state
+        
+        
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -675,7 +677,7 @@ class App extends Component {
                     <Route path="/api/grocery" render={(props) => (
                         <>
 
-                            <div>
+                            {/* <div>
                                 {valueData ? (
                                     <>
 
@@ -688,7 +690,7 @@ class App extends Component {
 
                                     </>
                                 ) : <div>looooading !!!</div>}
-                            </div>
+                            </div> */}
                             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
                         </>
 
