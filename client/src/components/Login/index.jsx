@@ -35,7 +35,7 @@ export default class Login extends React.Component {
           }else if( response.status === 401){
             this.setState({ message: 'you are UnAuthorized' });
           }else if( response.status === 500){
-            this.setState({message:'sorry , internal server error'})
+            this.setState({message:'Sorry , Internal Server ERROR'})
           }else{
             this.setState({ message: 'login sucessfully ', });
             const {
@@ -43,8 +43,6 @@ export default class Login extends React.Component {
                 push
               },
           } = this.props;
-          console.log(777777,this.props);
-          
           return push('/api/grocery');
           }
         })

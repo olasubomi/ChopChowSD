@@ -8,8 +8,8 @@ const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
 const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
-require('./dbMongo/config/db_connection');
-require('./dbMongo/config/AllData')();
+require('./db/dbMongo/config/db_connection');
+require('./db/dbMongo/config/AllData')();
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
 const authenticationVerify = require('./controllers/authentication/2.authunticatinVerify')

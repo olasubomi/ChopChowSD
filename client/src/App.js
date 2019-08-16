@@ -363,7 +363,7 @@ class App extends Component {
                                     this.setState({ valueData: response.data })
                                 }
                             }).catch(() => {
-                                this.setState({ message: 'sorry , internal server error' })
+                                this.setState({ message: 'Sorry , Internal Server ERROR' })
                             })
                     } else {
                         this.setState({ isAuthenticated: false })
@@ -388,7 +388,7 @@ class App extends Component {
                     }
                 }
             }).catch(() => {
-                this.setState({ message: 'sorry , internal server error' })
+                this.setState({ message: 'Sorry , Internal Server ERROR' })
             })
 
     }

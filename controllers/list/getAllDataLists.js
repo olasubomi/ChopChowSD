@@ -1,4 +1,4 @@
-const { list } = require('../../dbMongo/config/db_buildSchema')
+const { list } = require('../../db/dbMongo/config/db_buildSchema')
 exports.getAllDataLists = (req, res) => {
     return list.find()
         .then(resAllLists => {
