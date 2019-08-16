@@ -3,12 +3,13 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
-import { Nav, Navbar, NavDropdown, Form, FormControl, Button, Row } from 'react-bootstrap'
+import { Nav, Navbar, NavDropdown, Form, FormControl, Button, Row , Container,Alert, Card,Col } from 'react-bootstrap'
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
 import { Link, Route, Switch } from "react-router-dom";
 import { Spinner } from 'react-bootstrap'
 import InfiniteCarousel from 'react-leaf-carousel';
+import PageTitle from './components/CommonComponents/PageTitle'
 import Slider from './components/product_slider/slider';
 
 import RecipeContentSection from './components/mealMenu/RecipeContentSection';
@@ -392,7 +393,9 @@ class App extends Component {
 
 
     render() {
-        const { valueData, valueAllDataLists } = this.state
+        const { valueData, valueAllDataLists , message} = this.state;
+        console.log(99999,valueData);
+        
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -545,7 +548,7 @@ class App extends Component {
                     {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
                     <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
                     <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
-                    <Link to="/grocery" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
+                    <Link to="/api/grocery" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
 
                     <div className="w3-dropdown-hover w3-mobile">
                         <button className="w3-button w3-hover-orange w3-mobile">
@@ -675,24 +678,38 @@ class App extends Component {
 
                     <Route path="/api/grocery" render={(props) => (
                         <>
-
-                            <div>
+                            <PageTitle title="My List in Progcery Page" />
+                        <Container className="page__container">
+                            {message && <Alert variant="danger">{message}</Alert>}
                                 {valueData ? (
                                     <>
+                                                <Card className="card-image">
+                                                    {valueData.product_image}
+                                                </Card>
+                                        <Col xs={12} md={6} lg={3} key={valueData.id}>
+                                            <Card className="yourlist__card" key={valueData.id} >
+                                                <Card.Header className="yourlist__card-header">
+                                                    {valueData.product_name}
+                                                </Card.Header>
+                                                <Card.Text className="yourlist__card-text">
+                                                    {valueData.product_price}
+                                                </Card.Text>
+                                                <Card.Text className="yourlist__card-text">
+                                                    {valueData.sizes}
+                                                </Card.Text>
+                                            </Card>
 
-                                        <div key={valueData.id}>{valueData.id}</div>
+                                        </Col>
 
-                                        <div key={valueData.id}>{valueData.product_name}</div>
-                                        <div key={valueData.id}>{valueData.product_image}</div>
-
-                                        <div key={valueData.id}>{valueData.sizes}</div>
+                                        
 
                                     </>
                                 ) : <div>looooading !!!</div>}
-                            </div>
-                            <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                    </Container>
+   
+                   
+                    <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
                         </>
-
                     )} />
 
 
