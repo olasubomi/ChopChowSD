@@ -3,7 +3,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
-import { Nav, Navbar, NavDropdown, Form, FormControl, Button, Row , Container,Alert, Card,Col } from 'react-bootstrap'
+import { Nav, Navbar, NavDropdown, Form, FormControl, Button, Row, Container, Alert, Card, Col } from 'react-bootstrap'
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
 import { Link, Route, Switch } from "react-router-dom";
@@ -242,7 +242,7 @@ class App extends Component {
             isAuthenticated: false,
             customerId: null,
             valueAllDataLists: null,
-            message:null
+            message: null
         }
     }
 
@@ -362,8 +362,8 @@ class App extends Component {
                                 if (response) {
                                     this.setState({ valueData: response.data })
                                 }
-                            }).catch(()=>{
-                                this.setState({message:'sorry , internal server error'})
+                            }).catch(() => {
+                                this.setState({ message: 'sorry , internal server error' })
                             })
                     } else {
                         this.setState({ isAuthenticated: false })
@@ -385,17 +385,17 @@ class App extends Component {
                         this.setState({ valueAllDataLists: response.data[i].product_name })
                     }
                 }
-            }).catch(()=>{
-                this.setState({message:'sorry , internal server error'})
+            }).catch(() => {
+                this.setState({ message: 'sorry , internal server error' })
             })
-            
+
     }
 
 
     render() {
-        const { valueData, valueAllDataLists , message} = this.state;
-        console.log(99999,valueData);
-        
+        const { valueData, valueAllDataLists, message } = this.state;
+        console.log(99999, valueData);
+
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -679,13 +679,13 @@ class App extends Component {
                     <Route path="/api/grocery" render={(props) => (
                         <>
                             <PageTitle title="My List in Progcery Page" />
-                        <Container className="page__container">
-                            {message && <Alert variant="danger">{message}</Alert>}
+                            <Container className="page__container">
+                                {message && <Alert variant="danger">{message}</Alert>}
                                 {valueData ? (
                                     <>
-                                                <Card className="card-image">
-                                                    {valueData.product_image}
-                                                </Card>
+                                        <Card className="card-image">
+                                            {valueData.product_image}
+                                        </Card>
                                         <Col xs={12} md={6} lg={3} key={valueData.id}>
                                             <Card className="yourlist__card" key={valueData.id} >
                                                 <Card.Header className="yourlist__card-header">
@@ -701,15 +701,15 @@ class App extends Component {
 
                                         </Col>
 
-                                        
+
 
                                     </>
-                                ) :<Spinner animation="border" variant="info" />
+                                ) : <Spinner animation="border" variant="info" />
                                 }
-                    </Container>
-   
-                   
-                    <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                            </Container>
+
+
+                            <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
                         </>
                     )} />
 
