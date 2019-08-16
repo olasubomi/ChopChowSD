@@ -269,9 +269,11 @@ Show the link that contains should open and close the topnav (.icon) */
   border: 1px solid rgba(234, 234, 234, 0.9) !important;
   border-radius: 0.3rem !important;
   cursor: pointer;
+  margin-left: -98px;
   margin-top: 79px;
   margin-bottom: 1rem;
   padding: 44px;
+  width: 307px;
 }
 .yourlist__card:hover{
 
@@ -285,9 +287,11 @@ Show the link that contains should open and close the topnav (.icon) */
 .yourlist__card-header{
   border-bottom: none !important;
   background: rgba(255, 167, 5, 0.47) !important;
-  margin-left: -27px;
+  margin-left: -19px;
   margin-top: -30px;
-  width: 273px;
+  padding-left: 19px;
+  width: 257px;
+
 }
 
 .yourlist__card-text{

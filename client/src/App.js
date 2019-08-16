@@ -683,19 +683,22 @@ class App extends Component {
                                 {message && <Alert variant="danger">{message}</Alert>}
                                 {valueData ? (
                                     <>
+                                    {console.log(11111,valueData)}
+                                        {/* <div>{valueData}</div> */}
                                         <Card className="card-image">
                                             {valueData.product_image}
                                         </Card>
                                         <Col xs={12} md={6} lg={3} key={valueData.id}>
                                             <Card className="yourlist__card" key={valueData.id} >
                                                 <Card.Header className="yourlist__card-header">
-                                                    {valueData.product_name}
+                                                    <div>No.List>>{valueData.id}>></div>
+                                                   Name Product > {valueData.product_name}>
                                                 </Card.Header>
                                                 <Card.Text className="yourlist__card-text">
-                                                    {valueData.product_price}
+                                                  Product Price >>  {valueData.product_price}>>
                                                 </Card.Text>
                                                 <Card.Text className="yourlist__card-text">
-                                                    {valueData.sizes}
+                                                Product Size >> {valueData.sizes} >>
                                                 </Card.Text>
                                             </Card>
 
