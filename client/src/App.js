@@ -3,13 +3,12 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
-import { Nav, Navbar, NavDropdown, Form, FormControl, Button, Row, Container, Alert, Card, Col } from 'react-bootstrap'
+import { Nav, Navbar, NavDropdown, Form, FormControl } from 'react-bootstrap'
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
 import { Link, Route, Switch } from "react-router-dom";
 import { Spinner } from 'react-bootstrap'
 import InfiniteCarousel from 'react-leaf-carousel';
-import PageTitle from './components/CommonComponents/PageTitle'
 import Slider from './components/product_slider/slider';
 
 import RecipeContentSection from './components/mealMenu/RecipeContentSection';
@@ -18,7 +17,8 @@ import IngredientSection from './components/mealMenu/IngredientSection';
 import ProductsSection from './components/productSection/ProductsPage';
 //import Collapse from 'react-bootstrap/Collapse';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Login from './components/Login'
+import Login from './components/Login';
+import GroceryPage from './components/GroceryPage';
 class App extends Component {
 
 
@@ -238,11 +238,11 @@ class App extends Component {
             mealsLength: this.meals.length,
             base_index: 0,
             topNav_className: "w3-bar w3-dark-grey w3-green topnav",
-            valueData: null,
-            isAuthenticated: false,
-            customerId: null,
+            
             valueAllDataLists: [],
-            message: null
+            message: null,
+            userInfo:null,
+            isAuthenticated:false
         }
     }
 
@@ -334,42 +334,7 @@ class App extends Component {
 
 
     componentDidMount() {
-        fetch('/api/grocery', {
-            method: 'GET',
-            credentials: 'same-origin',
-            headers: {
-                'Content-type': 'application/json',
-            },
-        })
-
-            .then(res => {
-
-                res.json().then(response => {
-                    if (response.success && response.data) {
-                        this.setState({ isAuthenticated: true })
-                        this.setState({ customerId: response.data })
-                        const { customerId } = this.state;
-                        fetch(`/getLists/${customerId}`, {
-                            method: 'GET',
-                            credentials: 'same-origin',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-
-                        })
-                            .then(res => res.json())
-                            .then(response => {
-                                if (response) {
-                                    this.setState({ valueData: response.data })
-                                }
-                            }).catch(() => {
-                                this.setState({ message: 'Sorry , Internal Server ERROR' })
-                            })
-                    } else {
-                        this.setState({ isAuthenticated: false })
-                    }
-                })
-            });
+    
         fetch('/api/get-all-data-lists', {
             method: 'GET',
             credentials: 'same-origin',
@@ -391,13 +356,21 @@ class App extends Component {
                 this.setState({ message: 'Sorry , Internal Server ERROR' })
             })
 
+        
     }
 
+    // isLoggedOut=()=>{
+    //             this.state.isAuthenticated = false;
+    //             this.state.userInfo=null;
+    //             // this.setState({isLogged:false})
+    //         }
+   
 
     render() {
-        const { valueData, valueAllDataLists, message } = this.state;
-
-
+        const { valueData, valueAllDataLists, message,isLogged,isAuthenticated} = this.state;
+        
+        console.log(266666,isAuthenticated);
+        
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -549,10 +522,11 @@ class App extends Component {
                 <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
                     {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
                     <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
-                     <Link to="/login">Login</Link> 
+                    
+                     <Link to="/login"  >Login</Link>
+                     
                     <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
-                    {/* <Link to="/api/grocery" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link> */}
-
+                    
 
                     <div className="w3-dropdown-hover w3-mobile">
                         <button className="w3-button w3-hover-orange w3-mobile">
@@ -608,9 +582,8 @@ class App extends Component {
                     <Route
                         exact
                         path="/login"
-                        setUserInfo={this.setUserInfo}
                         render={props => (
-                            <Login {...props} setUserInfo={this.setUserInfo} />
+                            <Login {...props} />
                         )}
                     />
                     <Route exact path="/" render={(props) => (
@@ -679,50 +652,26 @@ class App extends Component {
                         </div>
                     )} />
 
-                    <Route path="/api/grocery" render={(props) => (
-                        <>
-                            <PageTitle title="My List in Progcery Page" />
-                            <Container className="page__container">
-                                {message && <Alert variant="danger">{message}</Alert>}
-                                {valueData ? (
-                                    <>
-                                        <Card className="card-image">
-                                            {valueData.product_image}
-                                        </Card>
-                                        <Col xs={12} md={6} lg={3} key={valueData.id}>
-                                            <Card className="yourlist__card" key={valueData.id} >
-                                                <Card.Header className="yourlist__card-header">
-                                                    <div>No.List>>{valueData.id}>></div>
-                                                   Name Product > {valueData.product_name}>
-                                                </Card.Header>
-                                                <Card.Text className="yourlist__card-text">
-                                                  Product Price >>  {valueData.product_price}>>
-                                                </Card.Text>
-                                                <Card.Text className="yourlist__card-text">
-                                                Product Size >> {valueData.sizes} >>
-                                                </Card.Text>
-                                            </Card>
-
-                                        </Col>
-
-
-
-                                    </>
-                                ) : <Spinner animation="border" variant="info" />
-                                }
-                            </Container>
-
-
-                            <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
-                        </>
-                    )} />
-
+                    <Route 
+                    exact 
+                    path="/api/grocery" 
+                    render={props=>(
+                        <GroceryPage auth ={this.state.isAuthenticated}
+                        
+                        />  
+                        
+                        )}
+                        
+                        />
+                            {/* {auth?(
+                                this.setState({isAuthenticated:true})
+                            ):this.setState({isAuthenticated:false})} */}
+                        
 
                     <Route path="/products" render={(props) => (
                         <ProductsSection />
                     )} />
                 </Switch>
-
 
                 {/* <div className="row">
     <div className="col-sm">
