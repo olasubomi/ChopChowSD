@@ -30,10 +30,15 @@
     border-radius: 3px;
   }
   
-  .message {
+  .msg-err {
     text-align: center;
     padding: 0 22px;
     color: red;
+  }
+  .msg-success{
+    text-align: center;
+    padding: 0 22px;
+    color: green;
   }
   
   .login__form {

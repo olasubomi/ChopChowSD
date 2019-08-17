@@ -1,0 +1,43 @@
+/* grocery page */
+.page__container{
+    background: linear-gradient(to right, #f2994a, #f2c94c);
+    box-shadow: 0 0 3px rgba(0,0,0,.25);
+    padding: 20px;
+    margin-left: 69px;
+    margin-top: 2rem;
+    height: 361px;
+  }
+  .yourlist__card{
+    border: 1px solid rgba(234, 234, 234, 0.9) !important;
+    border-radius: 0.3rem !important;
+    cursor: pointer;
+    margin-left: -98px;
+    margin-top: 79px;
+    margin-bottom: 1rem;
+    padding: 44px;
+    width: 307px;
+  }
+  .yourlist__card:hover{
+  
+    box-shadow:  0 0 30px -15px rgba(0, 0, 0, 0.3);
+  }
+  .card-image{
+    margin-top: 17px;
+    margin-bottom: 17px;
+    margin-left: 16px;
+  }
+  .yourlist__card-header{
+    border-bottom: none !important;
+    background: rgba(255, 167, 5, 0.47) !important;
+    margin-left: -19px;
+    margin-top: -30px;
+    padding-left: 19px;
+    width: 257px;
+  
+  }
+  
+  .yourlist__card-text{
+    float: left;
+    text-transform: capitalize;
+  }
+  
