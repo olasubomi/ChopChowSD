@@ -32,7 +32,7 @@ app.use(cors());
 app.use('/facebook', facebook);
 app.post('/api/login', authenticationLogin);
 app.use(authenticationVerify);
-app.use('/api/grocery', isAuthenticated);
+app.get('/api/grocery', isAuthenticated);
 app.get('/hash', hashPassword);
 
 // Serve static files from the React app
