@@ -6,19 +6,22 @@ exports.authenticationLogin = (req, res, next) => {
     if (memberInfo) {
         checkEmail(memberInfo.email)
             .then((result) => {
-
                 if (result.rows[0]) {
                     bcrypt.compare(memberInfo.password, result.rows[0].password, (err, valid) => {
-                        if (!valid) res.status(400).send(JSON.stringify({ msg: 'check your password' }))
-                        const { id, email } = { ...result.rows[0] }
-                        const userInfoEnc = { id, email };
-                        const tokenCustomer = sign(userInfoEnc, process.env.SECRET);
-                        const ccc= res.cookie('JWTcustomerId', tokenCustomer, {
-                            maxAge: 60 * 60 * 24 * 30,
-                            httpOnly: true,
-                        });
-                        res.status(200).send({ error: null, data: tokenCustomer });
-                        next()
+                        if (valid) {
+                            const { id, email } = { ...result.rows[0] }
+                            const userInfoEnc = { id, email };
+                            const tokenCustomer = sign(userInfoEnc, process.env.SECRET);
+                            const cc = res.cookie('JWTcustomerId', tokenCustomer, {
+                                maxAge: 60 * 60 * 24 * 30,
+                                httpOnly: true,
+                            });
+                            res.status(200).send({ error: null, data: tokenCustomer });
+                        }
+                        else {
+                            res.status(400).send(JSON.stringify({ msg: 'check your password' }))
+                        }
+
                     })
                 } else res.status(400).send({ msg: 'email does not exist ' });
             })
