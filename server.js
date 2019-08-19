@@ -14,6 +14,7 @@ const { isAuthenticated } = require('./controllers/authentication/3.isAuthentica
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
 const authenticationVerify = require('./controllers/authentication/2.authunticatinVerify')
 const { hashPassword } = require('./controllers/hashPassword')
+const authunticationLogout = require('./controllers/authentication/authunticationLogout')
 const app = express();
 
 const path = require('path');
@@ -34,7 +35,7 @@ app.post('/api/login', authenticationLogin);
 app.use(authenticationVerify);
 app.get('/api/grocery', isAuthenticated);
 app.get('/hash', hashPassword);
-
+app.get('/api/logout',authunticationLogout)
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));

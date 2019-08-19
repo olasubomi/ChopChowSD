@@ -249,6 +249,7 @@ class App extends Component {
     meal_popups = [];
 
     componentDidMount() {
+        this.auth();
         console.log("Comes in apps component did mount")
         var url = "http://localhost:5000/get_products"
         fetch(url)
@@ -334,7 +335,7 @@ class App extends Component {
 
 
     componentDidMount() {
-    
+         this.auth()
         fetch('/api/get-all-data-lists', {
             method: 'GET',
             credentials: 'same-origin',
@@ -359,12 +360,47 @@ class App extends Component {
         
     }
 
-    // isLoggedOut=()=>{
-    //             this.state.isAuthenticated = false;
-    //             this.state.userInfo=null;
-    //             // this.setState({isLogged:false})
-    //         }
    
+auth(){
+    fetch('/api/grocery', {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+            'Content-type': 'application/json',
+        },
+    })
+    .then(res => res.json())
+    .then(res => {
+        console.log(res.success);
+        if (res.success) {
+            this.setState({isAuthenticated: true})
+        }
+    }).catch(er => console.log(er))
+    
+}
+
+handleLogout = () => {
+   fetch('/api/logout',{
+       method:"GET",
+       credentials:'same-origin',
+       headers:{
+        'Content-type': 'application/json',
+        
+       }
+   }).then(res=>{
+       
+    res.json()
+   .then(response=>{
+       if(response.data){
+           this.setState({isAuthenticated:false})
+       }
+   })
+})
+   .catch(()=>{
+    this.setState({ message: 'Sorry , Internal Server ERROR' })
+
+   })
+}
 
     render() {
         const { valueData, valueAllDataLists, message,isLogged,isAuthenticated} = this.state;
@@ -522,8 +558,10 @@ class App extends Component {
                 <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
                     {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
                     <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
-                    
-                     <Link to="/login"  >Login</Link>
+                    {!isAuthenticated?(
+                        <Link to="/login"  >Login</Link>
+                        ):<Link to = "/api/grocery">GroceryPage</Link>}
+                     
                      
                     <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
                     
@@ -545,6 +583,10 @@ class App extends Component {
                     <Link to="#" className="icon" onClick={() => { console.log("Comes thru here"); myFunction() }} >
                         <i className="fa fa-bars" ></i>
                     </Link>
+                    {isAuthenticated?(
+
+                        <Link to='/logout' onClick={this.handleLogout}>Logout</Link>
+                    ):null}
 
                 </div>
 
@@ -656,7 +698,7 @@ class App extends Component {
                     exact 
                     path="/api/grocery" 
                     render={props=>(
-                        <GroceryPage auth ={this.state.isAuthenticated}
+                        <GroceryPage
                         
                         />  
                         
