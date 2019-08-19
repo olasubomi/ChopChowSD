@@ -11,7 +11,7 @@ export default class Login extends React.Component {
     password: '',
     messageErr:false,
     messageSuccess:false,
-    isLogged: false,
+    isAuthenticated: false,
   };
 
   handleClick = () => {
@@ -38,6 +38,7 @@ export default class Login extends React.Component {
             this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
           } else {
             this.setState({messageErr:''});
+            this.setState({isAuthenticated:true})
             this.setState({ messageSuccess: 'login sucessfully '});
             return window.location.href = '/api/grocery'
           }

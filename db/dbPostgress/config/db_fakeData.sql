@@ -11,91 +11,91 @@ VALUES
   (
     1,
     'Ijebu Garri',
-    '../../client/build/images/products/garri.jpg',
+    '../../../client/build/images/products/garri.jpg',
     8.99,
     '50lbs',
     null
   ),(
     2,
     'Brown Beans',
-    '../../client/build/images/products/beans.jpeg',
+    '../../../client/build/images/products/beans.jpeg',
     12.00,
     '2 lbs',
     3.2
   ),(
     3,
     'Honey Beans',
-    '../../client/build/images/products/beans.jpeg',
+    '../../../client/build/images/products/beans.jpeg',
     12.00,
     '2 lbs',
     3.2
   ),(
     4,
     'Spinach',
-    '../../client/build/images/products/garri.jpg',
+    '../../../client/build/images/products/garri.jpg',
     2.99,
     '0.5lbs',
     null
   ),(
     5,
     'Kale',
-    '../../client/build/images/products/garri.jpg',
+    '../../../client/build/images/products/garri.jpg',
     2.99,
     '0.5lbs',
     null
   ),(
     6,
     'Blueberries',
-    '../../client/build/images/products/beans.jpeg',
+    '../../../client/build/images/products/beans.jpeg',
     1.00,
     '1lbs',
     null
   ),(
     7,
     'Squash Potatoes',
-    '../../client/build/images/products/potatoes.jpg',
+    '../../../client/build/images/products/potatoes.jpg',
     8.99,
     '50lbs',
     null
   ),(
     8,
     'Water',
-    '../../client/build/images/products/garri.jpg',
+    '../../../client/build/images/products/garri.jpg',
     8.99,
     '50lbs',
     null
   ),(
     9,
     'Plantain Chips',
-    '../../client/build/images/products/beans.jpeg',
+    '../../../client/build/images/products/beans.jpeg',
     12.00,
     '2 lbs',
     3.2
   ),(
     10,
     'Cashews',
-    '../../client/build/images/products/beans.jpeg',
+    '../../../client/build/images/products/beans.jpeg',
     12.00,
     '2 lbs',
     3.2
   ),(
     11,
     'Peanuts',
-    '../../client/build/images/products/garri.jpg',
+    '../../../client/build/images/products/garri.jpg',
     8.99,
     '50lbs',
     null
   ),(
     12,
     'Watermelon',
-    '../../client/build/images/products/beans.jpeg',
+    '../../../client/build/images/products/beans.jpeg',
     12.00,
     '2 lbs',
     3.2
   ),(
     13,
     'Pineapple',
-    '../../client/build/images/products/beans.jpeg',
+    '../../../client/build/images/products/beans.jpeg',
     12.00,
     '2 lbs',
     3.2

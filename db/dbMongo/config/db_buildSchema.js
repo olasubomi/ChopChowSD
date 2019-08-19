@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const list = mongoose.model('list', new Schema({
+exports.list = mongoose.model('list', new Schema({
     id: Number,
     product_name: String,
     product_image:String,
@@ -33,5 +33,3 @@ exports.supplier = mongoose.model('supplier', new Schema({
     id: Schema.Types.ObjectId,
     storeName: String,
 }))
-
-module.exports = {list}
