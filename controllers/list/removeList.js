@@ -1,12 +1,11 @@
-const {removeList } = require('../../dbMongo/queries/removeList');
-module.exports=(req,res)=>{
-    removeList()
-    .then((result)=>{
+const { list } = require('../../db/dbMongo/config/db_buildSchema')
+
+ module.exports=(req,res)=>{
+    list.collection.drop()
+    .then(()=>{
         res.send({
-            data:result.rows
+            data:'delete table list successfully'
         })
         .catch(()=>next({code:500,msg:'internal server error'}))
     })
 }
-
-
