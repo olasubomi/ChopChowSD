@@ -27,7 +27,7 @@ const { getAllDataLists } = require("./controllers/list/getAllDataLists");
  
 const appendItem = require('./controllers/list/appendItem')
 const deleteItem = require('./controllers/list/deleteItem');
-const createList = require('./controllers/list/')
+const createList = require('./controllers/list/createList')
 const removeList = require('./controllers/list/removeList')
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -36,14 +36,17 @@ app.use(sslRedirect());
 app.use(cors());
 app.use('/facebook', facebook);
 app.post('/api/login', authenticationLogin);
-app.use(authenticationVerify);
+// app.use(authenticationVerify);
 app.get('/api/grocery', isAuthenticated);
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
-
+app.post('/api/append-item',appendItem);
+app.post('/api/delete-item/:itemId',deleteItem);
+app.post('/api/create-list',createList);
+app.post('/api/remove-list',removeList);
 app.get('/get_products', (req, res) => {
     console.log("Calling all Mongo products");
     var collection;
@@ -179,10 +182,7 @@ app.get('/find', function (req, res) {
 }
 );
 
-app.post('/append-item',appendItem);
-app.post('/delete-item',deleteItem);
-app.post('/create-list',createList);
-app.post('/remove-list',removeList);
+
 
 // after identifying unique  session tokens from MD5 string
 // Then we are able to compare tokens in each singular form request: 

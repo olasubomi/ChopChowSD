@@ -1,9 +1,10 @@
-const {createList} = require('../../dbMongo/queries/createList');
+const { list } = require('../../db/dbMongo/config/db_buildSchema')
+
 module.exports=(req,res)=>{
-    createList()
-    .then((result)=>{
+    list.createCollection({id:Number,product_name:String,product_image:String,product_price:String,sizes:String})
+    .then(()=>{
         res.send({
-            data:result.rows
+            data:'create table list successfully'
         })
         .catch(()=>next({code:500,msg:'internal server error'}))
     })

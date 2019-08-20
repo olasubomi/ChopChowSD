@@ -1,12 +1,13 @@
-const { deleteItem } = require('../../dbMongo/queries/index');
-module.exports = (req, res) => {
-    deleteItem()
-        .then((result) => {
-            res.send({
-                data: result.rows
-            })
-                .catch(() => next({ code: 500, msg: 'internal server error' }))
-        })
-}
+const { list } = require('../../db/dbMongo/config/db_buildSchema')
 
+module.exports=(req,res)=>{
+    const {itemId} = req.params;
+    list.remove({id:itemId})
+    .then(()=>{
+        res.send({
+            data:'delete successfully'
+        })
+        .catch(()=>next({code:500,msg:'internal server error'}))
+    })
+}
 
