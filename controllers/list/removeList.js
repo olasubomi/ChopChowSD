@@ -1,10 +1,13 @@
 const { list } = require('../../db/dbMongo/config/db_buildSchema')
+const { getDataCustomerId } = require('../../db/dbPostgress/queries/getDataCustomerId')
 
 module.exports=(req,res)=>{
-    list.collection.drop()
+    const { customerId } = req.params   
+
+    list.remove({id:customerId})
     .then(()=>{
         res.send({
-            data:'delete table list successfully'
+            data:'delete successfully'
         })
         .catch(()=>next({code:500,msg:'internal server error'}))
     })

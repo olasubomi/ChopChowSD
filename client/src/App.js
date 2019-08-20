@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
-import { Nav, Navbar, NavDropdown, Form, FormControl } from 'react-bootstrap'
+import { Nav, Navbar, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
 import { Link, Route, Switch } from "react-router-dom";
@@ -242,7 +243,16 @@ class App extends Component {
             valueAllDataLists: [],
             message: null,
             userInfo:null,
-            isAuthenticated:false
+            isAuthenticated:false,
+            isInsert:false,
+            idProduct:'',
+            nameProduct:'',
+            priceProduct:'',
+            imageProduct:'',
+            sizeProduct:'',
+            messageAlert:'',
+            showAlert:false,
+            varaint:''
         }
     }
 
@@ -401,11 +411,85 @@ handleLogout = () => {
 
    })
 }
+handleInsertButton=()=>{
+    this.setState({isInsert:true});
 
-    render() {
-        const { valueData, valueAllDataLists, message,isLogged,isAuthenticated} = this.state;
+}
+handleOkInsertButton=()=>{
+    const {idProduct,nameProduct,priceProduct,imageProduct,sizeProduct} = this.state;
+    fetch('/api/append-item',{
+        method: 'POST',
+          body: JSON.stringify({
+            idProduct,
+            nameProduct,
+            priceProduct,
+            imageProduct,
+            sizeProduct,
+          }),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+
+    })
+    .then(res=>res.json)
+    .then(response=>{
+        console.log(33333,response);
         
-        console.log(266666,isAuthenticated);
+        // if(response.data){
+            // console.log(22222,response.data);
+            
+    //         // eslint-disable-next-line no-unused-expressions
+    //         this.setState({
+
+    //             messageAlert:'Added successfully',
+    //             showAlert:true,
+    //             varaint:'success'
+    //         }),
+    //         ()=>
+    //         setTimeout(()=>{
+    //             // const productId= response.data.id;
+                // const productName= response.data.product_name;
+    //             // const productImage= response.data.product_image;
+    //             // const productPrice= response.data.product_price;
+    //             // const productSize= response.data.sizes;
+
+                // this.setState({valueAllDataLists:productName})
+
+    //             this.setState({messageAlert:'',showAlert:false})
+    //         },1000)
+        // }
+    })
+}
+
+handleId= ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
+}
+handleName= ({ target: { name, value } }) => {
+    this.setState({ [name]: value, errMsg: '' });
+}
+handlePrice= ({ target: { name, value } }) => {
+    this.setState({ [name]: value, errMsg: '' });
+}
+handleImage= ({ target: { name, value } }) => {
+    this.setState({ [name]: value, errMsg: '' });
+}
+handleSize= ({ target: { name, value } }) => {
+    this.setState({ [name]: value, errMsg: '' });
+}
+    render() {
+        const { valueData, valueAllDataLists, message,isLogged,isAuthenticated,isInsert,idProduct,nameProduct,priceProduct,sizeProduct, } = this.state;
+        console.log('1id',idProduct);
+        console.log('2name',nameProduct);
+        console.log('3price',priceProduct);
+        console.log('4size',sizeProduct);
+        console.log('typeahead',valueAllDataLists);
+        
+        
+        
+        
+        
+        // console.log(266666,isInsert);
         
         // Render your page inside
         // the layout provider
@@ -617,8 +701,21 @@ handleLogout = () => {
                     id="typeahead"
                 />
 
+    <Button onClick={this.handleInsertButton}>Add item</Button>
+    {isInsert?(
+        <>
+        <Popup>
+         <input placeholder="enter your id product" name="idProduct" onChange={this.handleId}/>
+        <input placeholder="enter your name product" name="nameProduct" onChange={this.handleName}/>
+        <input placeholder="enter your price product" name="priceProduct" onChange={this.handlePrice}/>
+        <input placeholder="enter your image product" name="priceImage" onChange={this.handleImage}/>
 
-
+        <input placeholder="enter your size product" name="sizeProduct" onChange={this.handleSize}/>
+        <Button onClick={this.handleOkInsertButton}>ok Insert</Button>   
+        </Popup>
+        
+        </>
+    ):null}
 
                 <Switch>
                     <Route

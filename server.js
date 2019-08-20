@@ -36,7 +36,7 @@ app.use(sslRedirect());
 app.use(cors());
 app.use('/facebook', facebook);
 app.post('/api/login', authenticationLogin);
-// app.use(authenticationVerify);
+app.use(authenticationVerify);
 app.get('/api/grocery', isAuthenticated);
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
@@ -46,53 +46,53 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.post('/api/append-item',appendItem);
 app.post('/api/delete-item/:itemId',deleteItem);
 app.post('/api/create-list',createList);
-app.post('/api/remove-list',removeList);
-app.get('/get_products', (req, res) => {
-    console.log("Calling all Mongo products");
-    var collection;
-    const client = new MongoClient(uri, { useNewUrlParser: true });
-    console.log(uri);
-    //const opts  = {db:{authSource: 'users'}};
-    // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
-    MongoClient.connect(uri, { useNewUrlParser: true }, function (err, db) {
-        if (err) throw err;
-        // console.log(JSON.stringify(collection));
-        // store = JSON.stringify(collection);
-        // res.send(store);
-        var dbo = db.db("Product_Supply");
-        dbo.collection("all_products").find({}).toArray(function (err, result) {
-            if (err) throw err;
-            // console.log(result);
-            res.send(result);
-            // perform actions on the collection object
-            db.close();
-        });
-    });
-});
+app.post('/api/remove-list/:customerId',removeList);
+// app.get('/get_products', (req, res) => {
+//     console.log("Calling all Mongo products");
+//     var collection;
+//     const client = new MongoClient(uri, { useNewUrlParser: true });
+//     console.log(uri);
+//     //const opts  = {db:{authSource: 'users'}};
+//     // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+//     MongoClient.connect(uri, { useNewUrlParser: true }, function (err, db) {
+//         if (err) throw err;
+//         // console.log(JSON.stringify(collection));
+//         // store = JSON.stringify(collection);
+//         // res.send(store);
+//         var dbo = db.db("Product_Supply");
+//         dbo.collection("all_products").find({}).toArray(function (err, result) {
+//             if (err) throw err;
+//             // console.log(result);
+//             res.send(result);
+//             // perform actions on the collection object
+//             db.close();
+//         });
+//     });
+// });
 
-app.get('/get_store_products', (req, res) => {
+// app.get('/get_store_products', (req, res) => {
 
-    console.log("Calling all Mongo meals");
-    var collection;
-    const client = new MongoClient(uri, { useNewUrlParser: true });
-    console.log(uri);
-    //const opts  = {db:{authSource: 'users'}};
-    // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
-    MongoClient.connect(uri, { useNewUrlParser: true }, function (err, db) {
-        if (err) throw err;
-        // console.log(JSON.stringify(collection));
-        // store = JSON.stringify(collection);
-        // res.send(store);
-        var dbo = db.db("Product_Supply");
-        dbo.collection("Store_Products").find({}).toArray(function (err, result) {
-            if (err) throw err;
-            console.log(result);
-            res.send(result);
-            // perform actions on the collection object
-            db.close();
-        });
-    });
-});
+//     console.log("Calling all Mongo meals");
+//     var collection;
+//     const client = new MongoClient(uri, { useNewUrlParser: true });
+//     console.log(uri);
+//     //const opts  = {db:{authSource: 'users'}};
+//     // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+//     MongoClient.connect(uri, { useNewUrlParser: true }, function (err, db) {
+//         if (err) throw err;
+//         // console.log(JSON.stringify(collection));
+//         // store = JSON.stringify(collection);
+//         // res.send(store);
+//         var dbo = db.db("Product_Supply");
+//         dbo.collection("Store_Products").find({}).toArray(function (err, result) {
+//             if (err) throw err;
+//             console.log(result);
+//             res.send(result);
+//             // perform actions on the collection object
+//             db.close();
+//         });
+//     });
+// });
 
 app.get('/test', (req, res) => {
     console.log("To test page");
