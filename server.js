@@ -25,6 +25,10 @@ var bodyParser = require('body-parser');
 const { getList } = require("./controllers/list/getList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
  
+const appendItem = require('./controllers/list/appendItem')
+const deleteItem = require('./controllers/list/deleteItem');
+const createList = require('./controllers/list/')
+const removeList = require('./controllers/list/removeList')
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(cookie());
@@ -174,6 +178,12 @@ app.get('/find', function (req, res) {
     console.log("ends db search")
 }
 );
+
+app.post('/append-item',appendItem);
+app.post('/delete-item',deleteItem);
+app.post('/create-list',createList);
+app.post('/remove-list',removeList);
+
 // after identifying unique  session tokens from MD5 string
 // Then we are able to compare tokens in each singular form request: 
 // app.post('/test', (req, res) => {
