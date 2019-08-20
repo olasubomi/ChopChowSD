@@ -15,9 +15,10 @@ const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 const appendItem = require('./controllers/list/appendItem')
 const deleteItem = require('./controllers/list/deleteItem');
-const createList = require('./controllers/list/')
+const createList = require('./controllers/list/createList')
 const removeList = require('./controllers/list/removeList')
 app.set('view engine', 'ejs');
+
 
 
 // enable ssl redirect
@@ -156,10 +157,10 @@ app.get('/find', function (req, res) {
  }
 );
 
-app.post('/append-item',appendItem);
-app.post('/delete-item',deleteItem);
-app.post('/create-list',createList);
-app.post('/remove-list',removeList);
+app.post('/api/append-item',appendItem);
+app.post('/api/delete-item/:itemId',deleteItem);
+app.post('/api/create-list',createList);
+app.post('/api/remove-list',removeList)
 
 // after identifying unique  session tokens from MD5 string
 // Then we are able to compare tokens in each singular form request: 
@@ -266,3 +267,8 @@ app.post('/remove-list',removeList);
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+
+
+
+
