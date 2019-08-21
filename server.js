@@ -4,10 +4,10 @@ var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 const cors = require('cors');
 const cookie = require('cookie-parser');
-// const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
-// const pw = process.env.MongoPassword;
-// const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
+const pw = process.env.MongoPassword;
+const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 
 require('./db/dbMongo/config/db_connection');
 require('./db/dbMongo/config/AllData')();
@@ -34,7 +34,7 @@ app.use(sslRedirect());
 app.use(cors());
 app.use('/facebook', facebook);
 app.post('/api/login', authenticationLogin);
-app.use(authenticationVerify);
+// app.use(authenticationVerify);
 app.get('/api/grocery', isAuthenticated);
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
