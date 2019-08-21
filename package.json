@@ -25,11 +25,12 @@
     "pg": "^7.10.0"
   },
   "scripts": {
-    
-    "heroku-postbuild": "NODE_ENV=production cd client && npm install && npm run build",
-    "server": "nodemon server.js",
+
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "build": "npm run build --prefix client",
     "client": "npm start --prefix client",
-    "start": " concurrently \"npm run server\" \"npm run client\" --proxy.config.json"
+    "server": "NODE_ENV=production nodemon server.js",
+    "dev": "NODE_ENV=production  concurrently \"npm run server\" \"npm run client\" --proxy.config.json"
   },
   "description": "This project was bootstrapped with Create React App.",
   "directories": {
