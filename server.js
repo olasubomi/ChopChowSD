@@ -4,12 +4,14 @@ var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 const cors = require('cors');
 const cookie = require('cookie-parser');
-const MongoClient = require('mongodb').MongoClient;
+// const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
-const pw = process.env.MongoPassword;
-const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
+// const pw = process.env.MongoPassword;
+// const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
+
 require('./db/dbMongo/config/db_connection');
 require('./db/dbMongo/config/AllData')();
+
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
 const authenticationVerify = require('./controllers/authentication/2.authunticatinVerify')
@@ -37,9 +39,15 @@ app.get('/api/grocery', isAuthenticated);
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
 // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
 
+
+app.use(express.static(path.join(__dirname, 'client/build')));
+    // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
+
+    app.get('*', (_req, res) => {
+      res.sendFile(join(__dirname, '..', 'client', 'build', 'index.html'));
+    });
 app.get('/get_products', (req, res) => {
     console.log("Calling all Mongo products");
     var collection;

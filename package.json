@@ -25,6 +25,8 @@
     "pg": "^7.10.0"
   },
   "scripts": {
+    
+    "heroku-postbuild": "NODE_ENV=production cd client && npm install && npm run build",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "start": " concurrently \"npm run server\" \"npm run client\" --proxy.config.json"
