@@ -119,7 +119,6 @@ app.get('/terms-of-service', (req, res) => {
 //     console.log("Gets in client builds index");
 //     res.sendFile(path.join(__dirname+'/client/build/'));
 //   });
-
 app.get('/getLists/:customerId', getList)
 app.get('/api/get-all-data-lists', getAllDataLists)
 

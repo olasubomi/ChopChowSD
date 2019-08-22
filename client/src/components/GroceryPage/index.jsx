@@ -4,7 +4,6 @@ import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
 import { Row, Container, Alert, Card, Col } from 'react-bootstrap'
 import { Link } from "react-router-dom";
-
 export default class GroceryPage extends React.Component {
     state = {
         valueData: null,
@@ -16,6 +15,7 @@ export default class GroceryPage extends React.Component {
     componentDidMount() {
         fetch('/api/grocery', {
             method: 'GET',
+            credentials: 'same-origin',
             headers: {
                 'Content-type': 'application/json',
             },
@@ -23,14 +23,12 @@ export default class GroceryPage extends React.Component {
 
             .then(res => {
                 res.json().then(response => {
-                    console.log(9999,response);
-                    
                     if (response.success && response.data) {
                         this.setState({ isAuthenticated: true })
 
                         this.setState({ customerId: response.data })
                         const { customerId } = this.state;
-                        fetch(`getLists/${customerId}`, {
+                        fetch(`/getLists/${customerId}`, {
                             method: 'GET',
                             credentials: 'same-origin',
                             headers: {
@@ -57,8 +55,6 @@ export default class GroceryPage extends React.Component {
 
     render() {
         const { valueData, message, isAuthenticated } = this.state;
-        let img = null;
-        let src;
         return (
             <>
                 {isAuthenticated ? (
@@ -70,13 +66,10 @@ export default class GroceryPage extends React.Component {
                     {message && <Alert variant="danger">{message}</Alert>}
                     {valueData ? (
                         <>
-                        {console.log(valueData)}
-                        
                             <Card className="card-image">
-                              
                                 <img src={`/images/products/${valueData.product_image}`} className="card-img"/>
-                              
-                            </Card> 
+                               
+                            </Card>
                             <Col xs={12} md={6} lg={3} key={valueData.id}>
                                 <Card className="yourlist__card" key={valueData.id} >
                                     <Card.Header className="yourlist__card-header">
@@ -106,6 +99,7 @@ export default class GroceryPage extends React.Component {
         )
     }
 }
+
 
 
 
