@@ -29,7 +29,7 @@
     "heroku-postbuild": "cd client && npm install && npm run build",
     "build": "npm run build --prefix client",
     "client": "npm start --prefix client",
-    "server": "NODE_ENV=production nodemon server.js",
+    "server": "NODE_ENV=production nodemon server.js"
   },
   "description": "This project was bootstrapped with Create React App.",
   "directories": {
