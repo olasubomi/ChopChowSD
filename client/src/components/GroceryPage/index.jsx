@@ -4,9 +4,6 @@ import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
 import { Row, Container, Alert, Card, Col } from 'react-bootstrap'
 import { Link } from "react-router-dom";
-// import k from './images/products/butter.jpg';
-// import k from '../../../public/images/products';
-
 
 export default class GroceryPage extends React.Component {
     state = {
@@ -77,9 +74,7 @@ export default class GroceryPage extends React.Component {
                         
                             <Card className="card-image">
                               
-                                <img src={`/images/products/${valueData.product_image}`} />
-                               {/* <img src={k} />  */}
-                              
+                                <img src={`/images/products/${valueData.product_image}`} className="card-img"/>
                               
                             </Card> 
                             <Col xs={12} md={6} lg={3} key={valueData.id}>

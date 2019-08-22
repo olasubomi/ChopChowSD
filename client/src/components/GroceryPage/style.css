@@ -26,6 +26,9 @@
     margin-bottom: 17px;
     margin-left: 16px;
   }
+  .card-img{
+    width: 283px;
+  }
   .yourlist__card-header{
     border-bottom: none !important;
     background: rgba(255, 167, 5, 0.47) !important;
