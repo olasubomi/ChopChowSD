@@ -39,9 +39,11 @@ app.use('/facebook', facebook);
 
 
 app.use(express.static(path.join(__dirname, 'client/build')));
-    app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
+    // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
 
-   
+    app.get('*', (_req, res) => {
+        res.sendFile(join(__dirname, '..', 'client', 'build', 'index.html'));
+      });
 app.get('/get_products', (req, res) => {
     console.log("Calling all Mongo products");
     var collection;
