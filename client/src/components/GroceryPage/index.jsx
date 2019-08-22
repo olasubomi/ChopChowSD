@@ -42,6 +42,7 @@ export default class GroceryPage extends React.Component {
 
                                     this.setState({ valueData: response.data })
                                 }
+                                
                             }).catch(() => {
                                 this.setState({ message: 'Sorry , Internal Server ERROR' })
                             })
