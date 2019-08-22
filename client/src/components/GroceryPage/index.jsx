@@ -81,7 +81,7 @@ export default class GroceryPage extends React.Component {
                                {/* <img src={k} />  */}
                               
                               
-                            </Card>
+                            </Card> 
                             <Col xs={12} md={6} lg={3} key={valueData.id}>
                                 <Card className="yourlist__card" key={valueData.id} >
                                     <Card.Header className="yourlist__card-header">
