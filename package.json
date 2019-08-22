@@ -25,7 +25,6 @@
     "pg": "^7.10.0"
   },
   "scripts": {
-
     "heroku-postbuild": "cd client && npm install && npm run build",
     "build": "npm run build --prefix client",
     "client": "npm start --prefix client",
