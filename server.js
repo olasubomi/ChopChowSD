@@ -33,11 +33,7 @@ app.use(cookie());
 app.use(sslRedirect());
 app.use(cors());
 app.use('/facebook', facebook);
-app.post('/api/login', authenticationLogin);
-app.use(authenticationVerify);
-app.get('/api/grocery', isAuthenticated);
-app.get('/hash', hashPassword);
-app.get('/api/logout',authunticationLogout)
+
 // Serve static files from the React app
 // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
 
@@ -283,6 +279,10 @@ app.get('/find', function (req, res) {
 
 
 
-
+app.post('/api/login', authenticationLogin);
+app.use(authenticationVerify);
+app.get('/api/grocery', isAuthenticated);
+app.get('/hash', hashPassword);
+app.get('/api/logout',authunticationLogout)
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
