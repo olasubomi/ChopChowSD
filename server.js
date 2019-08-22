@@ -32,16 +32,11 @@ app.use(express.json());
 app.use(cookie());
 app.use(sslRedirect());
 app.use(cors());
-app.use('/facebook', facebook);
+app.use('/facebook', facebook);         
 
 // Serve static files from the React app
 
 
-app.use(express.static(path.join(__dirname, '/client', 'build')));
-
-app.get('/', (_req, res) => {
-    res.sendFile(path.join(__dirname, '/client', 'build', 'index.html'));
-});
 
 // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
 app.get('/get_products', (req, res) => {
@@ -232,10 +227,10 @@ app.get('/find', function (req, res) {
 //           Cart.saveCart(req);
 //           res.redirect('/cart');
 //       }).catch(err => {
-//          res.redirect('/');
+    //          res.redirect('/');
 //       });
 //   } else {
-//       res.redirect('/');
+    //       res.redirect('/');
 //   }
 //   });
 
@@ -282,9 +277,16 @@ app.get('/find', function (req, res) {
 
 
 app.post('/api/login', authenticationLogin);
-app.use(authenticationVerify);
-app.get('/api/grocery', isAuthenticated);
+// app.use(authenticationVerify);
+app.get('/api/grocery', authenticationVerify ,isAuthenticated);
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
+
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+app.get('*', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

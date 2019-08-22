@@ -4,7 +4,10 @@ import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
 import { Row, Container, Alert, Card, Col } from 'react-bootstrap'
 import { Link } from "react-router-dom";
-// import k from '../../../build/images/products'
+// import k from './images/products/butter.jpg';
+// import k from '../../../public/images/products';
+
+
 export default class GroceryPage extends React.Component {
     state = {
         valueData: null,
@@ -57,6 +60,8 @@ export default class GroceryPage extends React.Component {
 
     render() {
         const { valueData, message, isAuthenticated } = this.state;
+        let img = null;
+        let src;
         return (
             <>
                 {isAuthenticated ? (
@@ -68,8 +73,14 @@ export default class GroceryPage extends React.Component {
                     {message && <Alert variant="danger">{message}</Alert>}
                     {valueData ? (
                         <>
+                        {console.log(valueData)}
+                        
                             <Card className="card-image">
-                                <img src={`../../../build/images/products/${valueData.product_image}`} />
+                              
+                                <img src={`/images/products/${valueData.product_image}`} />
+                               {/* <img src={k} />  */}
+                              
+                              
                             </Card>
                             <Col xs={12} md={6} lg={3} key={valueData.id}>
                                 <Card className="yourlist__card" key={valueData.id} >
