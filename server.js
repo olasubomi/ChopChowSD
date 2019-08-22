@@ -35,15 +35,14 @@ app.use(cors());
 app.use('/facebook', facebook);
 
 // Serve static files from the React app
+
+
+app.use(express.static(path.join(__dirname, '/client', 'build')));
+
+app.get('*', (_req, res) => {
+    res.sendFile(path.join(__dirname, '/client', 'build', 'index.html'));
+});
 // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
-
-
-app.use(express.static(path.join(__dirname, 'client/build')));
-    // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
-
-    app.get('*', (_req, res) => {
-        res.sendFile(join(__dirname, '..', 'client', 'build', 'index.html'));
-      });
 app.get('/get_products', (req, res) => {
     console.log("Calling all Mongo products");
     var collection;
