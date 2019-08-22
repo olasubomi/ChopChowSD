@@ -17,10 +17,10 @@ export default class Login extends React.Component {
   handleClick = () => {
     const { email, password } = this.state;
     if (email && password) {
+
       // make a requset to the back with method post and data{email , password}
       fetch('/api/login', {
         method: 'POST',
-        credentials: 'same-origin',
         headers: {
           'Content-type': 'application/json',
         },
@@ -30,6 +30,7 @@ export default class Login extends React.Component {
         }),
       })
         .then(response => {
+          
           if (response.status === 400 || response.status === 404) {
             this.setState({ messageErr: 'Bad Request , Check username or password ... !!' });
           } else if (response.status === 401) {

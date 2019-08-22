@@ -34,7 +34,7 @@ app.use(sslRedirect());
 app.use(cors());
 app.use('/facebook', facebook);
 app.post('/api/login', authenticationLogin);
-// app.use(authenticationVerify);
+app.use(authenticationVerify);
 app.get('/api/grocery', isAuthenticated);
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
@@ -43,11 +43,9 @@ app.get('/api/logout',authunticationLogout)
 
 
 app.use(express.static(path.join(__dirname, 'client/build')));
-    // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
+    app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
 
-    app.get('*', (_req, res) => {
-      res.sendFile(join(__dirname, '..', 'client', 'build', 'index.html'));
-    });
+   
 app.get('/get_products', (req, res) => {
     console.log("Calling all Mongo products");
     var collection;

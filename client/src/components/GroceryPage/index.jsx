@@ -16,7 +16,6 @@ export default class GroceryPage extends React.Component {
     componentDidMount() {
         fetch('/api/grocery', {
             method: 'GET',
-            credentials: 'same-origin',
             headers: {
                 'Content-type': 'application/json',
             },
@@ -24,6 +23,8 @@ export default class GroceryPage extends React.Component {
 
             .then(res => {
                 res.json().then(response => {
+                    console.log(9999,response);
+                    
                     if (response.success && response.data) {
                         this.setState({ isAuthenticated: true })
 
