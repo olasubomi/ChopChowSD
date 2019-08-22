@@ -275,6 +275,7 @@ app.get('/find', function (req, res) {
 
 
 
+
 app.post('/api/login', authenticationLogin);
 app.get('/api/grocery', authenticationVerify ,isAuthenticated);
 app.get('/hash', hashPassword);
