@@ -30,7 +30,7 @@ export default class GroceryPage extends React.Component {
 
                         this.setState({ customerId: response.data })
                         const { customerId } = this.state;
-                        fetch(`/api/getLists/${customerId}`, {
+                        fetch(`getLists/${customerId}`, {
                             method: 'GET',
                             credentials: 'same-origin',
                             headers: {
