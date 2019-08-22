@@ -120,7 +120,7 @@ app.get('/terms-of-service', (req, res) => {
 //     res.sendFile(path.join(__dirname+'/client/build/'));
 //   });
 
-app.get('/getLists/:customerId', getList)
+app.get('/api/getLists/:customerId', getList)
 app.get('/api/get-all-data-lists', getAllDataLists)
 
 
