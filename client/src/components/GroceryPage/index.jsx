@@ -191,15 +191,6 @@ export default class GroceryPage extends React.Component {
                             <h2 className="login__form-title">Log in to View Grocery List</h2>
 
                             </div>
-
-                          <div className="div-buttons">
-                            <div className="div-buttons__google-button">
-                            <div  className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
-                            </div>
-                            <div className="div-buttons__facebook-button">
-                            <div className="button" className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
-                            </div>
-                          </div>
                             <Form.Group>
                             <Form.Label>Email :</Form.Label>
                             <Form.Control
@@ -223,9 +214,7 @@ export default class GroceryPage extends React.Component {
                                 <p className="msg-success">{messageSuccess}</p>
                                 <p className="msg-err">{messageErr}</p> 
                                 <Link>
-                                <di className="div__link-forgot-password">
                                 <span className="link-forgot-password">Forget Password  ?</span>
-                                </di>
                                 </Link>
                                 
                                 <Button
@@ -252,6 +241,14 @@ export default class GroceryPage extends React.Component {
                           </Form>
                           </Modal.Body>
                       </Modal>
+                      <div className="div-buttons">
+                        <div className="div-buttons__google-button">
+                        <div  className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                        </div>
+                        <div className="div-buttons__facebook-button">
+                        <div className="button" className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                        </div>
+                      </div>
                 </>
                 }
                
