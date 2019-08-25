@@ -236,7 +236,6 @@ export default class GroceryPage extends React.Component {
                             continue as guest 
                             </Link>
                             </Form.Text>
-                          </Form>
                           <div className="div-buttons">
                             <div className="div-buttons__google-button">
                             <div  className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
@@ -245,6 +244,7 @@ export default class GroceryPage extends React.Component {
                             <div className="button" className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
                             </div>
                           </div>
+                          </Form>
                       </Modal>
                 </>
                 }
