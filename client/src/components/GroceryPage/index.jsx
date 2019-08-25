@@ -184,7 +184,7 @@ export default class GroceryPage extends React.Component {
                     </Container>
                     <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>                            
                       <Modal show={show} onHide={this.handleClose} className="modal" backdrop="static">
-                        
+                        <Modal.Body>
                           <Form className="login__form">
                             <div className="login__form-div-title">
                             <h2 className="login__form-title">Log in to View Grocery List</h2>
@@ -235,7 +235,7 @@ export default class GroceryPage extends React.Component {
                             <Link className="link-guest-word" to="/aguest">
                             continue as guest 
                             </Link>
-                            </Form.Text>
+
                           <div className="div-buttons">
                             <div className="div-buttons__google-button">
                             <div  className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
@@ -244,7 +244,9 @@ export default class GroceryPage extends React.Component {
                             <div className="button" className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
                             </div>
                           </div>
+                            </Form.Text>
                           </Form>
+                          </Modal.Body>
                       </Modal>
                 </>
                 }
