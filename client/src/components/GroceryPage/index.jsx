@@ -192,10 +192,7 @@ export default class GroceryPage extends React.Component {
 
                             </div>
                           
-                          {/*  */}
-                          <div className="login__form-div-title">
-                            <h2 className="login__form-title">Log in to View Grocery List</h2>
-                          </div>
+                         
 
                           <div className="vl">
                             <span className="vl-innertext">or</span>
