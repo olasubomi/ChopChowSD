@@ -114,9 +114,17 @@
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   margin-top: -38px;
-  margin-left: -188px;
+  margin-left: 2px;
   -moz-osx-font-smoothing: grayscale;
   color: red;
+}
+.fa-facebook-f:before, .fa-facebook:before {
+  content: "\f09a";
+  margin-left: -22px;
+}
+.fa-google:before {
+  content: "\f1a0";
+  margin-left: -32px;
 }
 .fa-close:before, .fa-remove:before, .fa-times:before {
   content: "\F00D";
@@ -251,7 +259,7 @@
     width: 53%;
     margin-left: 335px;
     margin-top: 96px;
-    height: 268px;
+    height: 320px;
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 4px transparent;
@@ -276,7 +284,7 @@
     letter-spacing: 0.04em;
     color: #5d5756;
     width: 91%;
-    margin-left: 17px;
+    margin-left: -84px;
     background: #FFFFFF;
 }
 .btn:hover {
@@ -293,11 +301,7 @@
   border-radius: 21px;
   font-size: 20px!important;
 }
-.fb {
-  background-color: #3b5998;
-  color: #fff;
-  margin-left: 36px;
-}
+
 .google {
   background-color: #dd4b39;
   color: #fff;
@@ -310,7 +314,7 @@
   background-color: #3b5998;
   color: #fff;
   margin-left: 36px;
-  margin-top: 3px;
+  margin-top: 40px;
   margin-bottom: -1px;
 }
 .vl {

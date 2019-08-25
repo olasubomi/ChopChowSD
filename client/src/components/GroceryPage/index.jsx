@@ -262,14 +262,6 @@ export default class GroceryPage extends React.Component {
                           </Form>
                           </Modal.Body>
                       </Modal>
-                      {/* <div className="div-buttons">
-                        <div className="div-buttons__google-button">
-                        <div  className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
-                        </div>
-                        <div className="div-buttons__facebook-button">
-                        <div className="button" className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
-                        </div>
-                      </div> */}
                 </>
                 }
                
