@@ -243,6 +243,7 @@ class App extends Component {
             message: null,
             userInfo:null,
             isAuthenticated:false
+
         }
     }
 
@@ -405,7 +406,7 @@ handleLogout = () => {
     render() {
         const { valueData, valueAllDataLists, message,isLogged,isAuthenticated} = this.state;
         
-        console.log(266666,isAuthenticated);
+        console.log('authApp',isAuthenticated);
         
         // Render your page inside
         // the layout provider
@@ -558,11 +559,12 @@ handleLogout = () => {
                 <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
                     {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
                     <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
-                    {!isAuthenticated?(
+                    {/* {!isAuthenticated?(
                         <Link to="/login"  >Login</Link>
-                        ):<Link to = "/api/grocery">GroceryPage</Link>}
+                        ):}
+                         */}
                      
-                     
+                     <Link to = "/grocery" onClick={this.onClick} >GroceryPage</Link>
                     <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
                     
 
@@ -696,20 +698,17 @@ handleLogout = () => {
 
                     <Route 
                     exact 
-                    path="/api/grocery" 
+                    path="/grocery" 
                     render={props=>(
                         <GroceryPage
-                        
+                        showLogin={!isAuthenticated}
+                        auth={isAuthenticated}
                         />  
                         
                         )}
-                        
-                        />
-                            {/* {auth?(
-                                this.setState({isAuthenticated:true})
-                            ):this.setState({isAuthenticated:false})} */}
-                        
 
+                        />
+                        
                     <Route path="/products" render={(props) => (
                         <ProductsSection />
                     )} />
