@@ -191,21 +191,29 @@ export default class GroceryPage extends React.Component {
                             <h2 className="login__form-title">Log in to View Grocery List</h2>
 
                             </div>
-                            <div className="vl">
+                          
+                          {/*  */}
+                          <div className="login__form-div-title">
+                            <h2 className="login__form-title">Log in to View Grocery List</h2>
+                          </div>
+
+                          <div className="vl">
                             <span className="vl-innertext">or</span>
                           </div>
-                            <div className="col">
+
+                          <div className="col">
                             <a href="#" className="fb btn">
-                              <i class="fa fa-facebook fa-fw"></i> Login with Facebook
-                            </a>
+                                <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+                                                  </a>
                             <a href="#" className="google btn"><i class="fa fa-google fa-fw">
-                              </i> Login with Google+
-                            </a>
+                            </i> Login with Google+
+                                                  </a>
                           </div>
-                          
+                            
                           <div className="col">
                             <div className="hide-md-lg">
-                            <p>Or sign in manually:</p>
+                                <p>Or sign in manually:</p>
+                            </div>
                           </div>
                             <Form.Group>
                             <Form.Label>Email :</Form.Label>
@@ -255,8 +263,6 @@ export default class GroceryPage extends React.Component {
 
                             </Form.Text>
                           </Form>
-                          
-                          
                           </Modal.Body>
                       </Modal>
                       {/* <div className="div-buttons">
