@@ -191,20 +191,20 @@ export default class GroceryPage extends React.Component {
                             <h2 className="login__form-title">Log in to View Grocery List</h2>
 
                             </div>
-                            <div class="vl">
-                            <span class="vl-innertext">or</span>
+                            <div className="vl">
+                            <span className="vl-innertext">or</span>
                           </div>
-                            <div class="col">
-                            <a href="#" class="fb btn">
+                            <div className="col">
+                            <a href="#" className="fb btn">
                               <i class="fa fa-facebook fa-fw"></i> Login with Facebook
                             </a>
-                            <a href="#" class="google btn"><i class="fa fa-google fa-fw">
+                            <a href="#" className="google btn"><i class="fa fa-google fa-fw">
                               </i> Login with Google+
                             </a>
                           </div>
                           
-                          <div class="col">
-                            <div class="hide-md-lg">
+                          <div className="col">
+                            <div className="hide-md-lg">
                             <p>Or sign in manually:</p>
                           </div>
                             <Form.Group>

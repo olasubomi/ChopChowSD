@@ -277,24 +277,8 @@
     margin-left: 17px;
     background: #FFFFFF;
 }
-  .facebook-button{
-    display: inline-block;
-  margin-bottom: .5rem;
-  }
-  .div-buttons__google-button {
-    margin-top: -7px;
-    width: 30px;
-    margin-left: 11px;
-}
-  .div-buttons__facebook-button{
-    margin-top: 35px;
-    width: 30px;
-    margin-left: 10px;
-  }
-  .div-buttons {
-    width: 22%;
-    margin-top: -439px;
-    margin-left: 346px;
+.btn:hover {
+  opacity: 1;
 }
 .login__form-btn {
   width: 20%;
@@ -306,6 +290,59 @@
   height: 40px;
   border-radius: 21px;
   font-size: 20px!important;
+}
+/* For buttons social media */
+.fb {
+  background-color: #3B5998;
+  color: white;
+}
+.google {
+  background-color: #dd4b39;
+  color: white;
+}
+.col {
+  float: left;
+  width: 50%;
+  margin: auto;
+  padding: 0 50px;
+  margin-top: 6px;
+}
+/* vertical line */
+.vl {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  border: 2px solid #ddd;
+  height: 175px;
+}
+/* text inside the vertical line */
+.vl-innertext {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 8px 10px;
+}
+/* hide some text on medium and large screens */
+.hide-md-lg {
+  display: none;
+}
+@media screen and (max-width: 650px) {
+  .col {
+    width: 100%;
+    margin-top: 0;
+  }
+  /* hide the vertical line */
+  .vl {
+    display: none;
+  }
+  /* show the hidden text on small screens */
+  .hide-md-lg {
+    display: block;
+    text-align: center;
+  }
 }
   @media only screen and (max-width: 992px) {
     .login__form {
