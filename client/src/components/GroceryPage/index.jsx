@@ -2,17 +2,61 @@ import React from 'react';
 import './style.css';
 import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
-import { Row, Container, Alert, Card, Col } from 'react-bootstrap'
-import { Link } from "react-router-dom";
+import {  Container, Alert, Card, Col,Form, Button, Modal} from 'react-bootstrap'
+import { Link } from 'react-router-dom';
 export default class GroceryPage extends React.Component {
     state = {
         valueData: null,
-        isAuthenticated: false,
+        Authentication: false,
         customerId: null,
         message: null,
-
+        email: '',
+        password: '',
+        messageErr:false,
+        messageSuccess:false,
+        show:false,
     }
+    
+    handleClick = () => {
+      const { email, password } = this.state;
+      if (email && password) {
+        // make a requset to the back with method post and data{email , password}
+        fetch('/api/login', {
+          method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+              email,
+              password,
+            }),
+          })
+          .then(response => {
+            if (response.status === 400 || response.status === 404) {
+              this.setState({ messageErr: 'Bad Request , Check username or password ... !!' });
+            } else if (response.status === 401) {
+                this.setState({ messageErr: 'you are UnAuthorized' });
+              } else if (response.status === 500) {
+                this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
+              } else {
+                this.setState({messageErr:''});
+                window.location.href = '/grocery'
+                
+                this.setState({ messageSuccess: 'login sucessfully '});
+                return this.setState({Authentication:true})
+              }
+            })
+        } else {
+          this.setState({ messageErr: 'Please enter all fields' });
+        }
+      };
+    
+      handleChange = ({ target: { value, name } }) =>
+        this.setState({ [name]: value });
     componentDidMount() {
+      const {auth} = this.props;
+      this.setState({Authentication:auth})
         fetch('/api/grocery', {
             method: 'GET',
             credentials: 'same-origin',
@@ -24,7 +68,15 @@ export default class GroceryPage extends React.Component {
             .then(res => {
                 res.json().then(response => {
                     if (response.success && response.data) {
-                        this.setState({ isAuthenticated: true })
+                      if(this.props.showLogin===false){
+
+                        this.setState({ Authentication: true ,show:false});
+
+                      }else{
+                        this.setState({ Authentication: false,show:true });
+
+                      }
+
 
                         this.setState({ customerId: response.data })
                         const { customerId } = this.state;
@@ -53,55 +105,151 @@ export default class GroceryPage extends React.Component {
             });
     }
 
-
+    handleClose = e => {
+      if (e) e.stopPropagation();
+      this.setState({ show: false });
+    };
+  
     render() {
-        const { valueData, message, isAuthenticated } = this.state;
+        const { valueData, message, email, password, messageErr, messageSuccess,show} = this.state;
+        const {auth} = this.props;
+
         return (
             <>
-                {isAuthenticated ? (
-                    <Link to="/api/grocery" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
-
-                ) : <div>WELCOME To Your Page</div>}
-                <PageTitle title="My List in Progcery Page" />
-                <Container className="page__container">
-                    {message && <Alert variant="danger">{message}</Alert>}
-                    {valueData ? (
-                        <>
-                            <Card className="card-image">
-                                <img src={`/images/products/${valueData.product_image}`} className="card-img"/>
-                               
-                            </Card>
-                            <Col xs={12} md={6} lg={3} key={valueData.id}>
-                                <Card className="yourlist__card" key={valueData.id} >
+                {auth ? (
+                    <>
+                    <PageTitle title=" Your Grocery List" />
+                    <Container className="page__container">
+                        {message && <Alert variant="danger">{message}</Alert>}
+                        {valueData ? (
+                            <>
+                              <img src={`/images/products/${valueData.product_image}`} className="card-img"/>
+                                <Col xs={12} md={6} lg={3} key={valueData.id}>
+                                    <div className="yourlist__card-div">
                                     <Card.Header className="yourlist__card-header">
-                                        <div>No.List>>{valueData.id}>></div>
-                                        Name Product > {valueData.product_name}>
-                                </Card.Header>
-                                    <Card.Text className="yourlist__card-text">
-                                        Product Price >>  {valueData.product_price}>>
-                                </Card.Text>
-                                    <Card.Text className="yourlist__card-text">
-                                        Product Size >> {valueData.sizes} >>
-                                </Card.Text>
-                                </Card>
+                                            <div>No.List>>{valueData.id}>></div>
+                                            <div className="header__name-product">Name Product : {valueData.product_name}</div> 
+                                    </Card.Header>
+                                        <Card.Text className="yourlist__card-text">
+                                            Product Price :  {valueData.product_price}
+                                    </Card.Text>
+                                        <Card.Text className="yourlist__card-text">
+                                            Product Size : {valueData.sizes}
+                                    </Card.Text>
+                                    </div>
 
-                            </Col>
-
-
-
+                                    <Button className="yourlist__buttonAdd">Add To Cart</Button>
+                                   <div className="yourlist__buttonDelete"><i class="fa fa-remove"></i></div> 
+                                </Col>
+    
+    
+    
+                            </>
+                        ) : <Spinner animation="border" variant="info" />
+                        }
+                    </Container>
+    
+    
+                    <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
                         </>
-                    ) : <Spinner animation="border" variant="info" />
-                    }
-                </Container>
-
-
-                <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                ) : 
+                <>
+               
+               <PageTitle title=" Your Grocery List" />
+                    <Container className="page__container">
+                        {message && <Alert variant="danger">{message}</Alert>}
+                        {valueData ? (
+                            <>
+                               <img src={`/images/products/${valueData.product_image}`} className="card-img"/>
+                                   
+                                <Col xs={12} md={6} lg={3} key={valueData.id}>
+                                    <div className="yourlist__card-div">
+                                    <Card.Header className="yourlist__card-header">
+                                            <div>No.List>>{valueData.id}>></div>
+                                            <div className="header__name-product">Name Product : {valueData.product_name}</div> 
+                                    </Card.Header>
+                                        <Card.Text className="yourlist__card-text">
+                                            Product Price :  {valueData.product_price}
+                                    </Card.Text>
+                                        <Card.Text className="yourlist__card-text">
+                                            Product Size : {valueData.sizes}
+                                    </Card.Text>
+                                    </div>
+                                    <Button className="yourlist__buttonAdd">Add To Cart</Button>
+                                   <div className="yourlist__buttonDelete"><i class="fa fa-remove"></i></div> 
+                                </Col>
+                            </>
+                        ) : <Spinner animation="border" variant="info" />
+                        }
+                    </Container>
+                    <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>                            
+                      <Modal show={show} onHide={this.handleClose} className="modal" backdrop="static">
+                        <Modal.Body >
+                          <Form className="login__form">
+                            <h2 className="login__form-title">Log in to View Grocery List</h2>
+                            <Form.Group>
+                            <Form.Label>Email :</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="email"
+                                value={email}
+                                placeholder="Enter your email"
+                                onChange={this.handleChange}
+                            />
+                            </Form.Group>
+                            <Form.Group>
+                            <Form.Label>Password :</Form.Label>
+                            <Form.Control
+                                type="password"
+                                name="password"
+                                value={password}
+                                placeholder="Enter your password"
+                                onChange={this.handleChange}
+                            />
+                            </Form.Group>
+                                <p className="msg-success">{messageSuccess}</p>
+                                <p className="msg-err">{messageErr}</p> 
+                                <Link>
+                                <span className="link-forgot-password">Forget Password  ?</span>
+                                </Link>
+                                
+                                <Button
+                                  type="button"
+                                  className="login__form-btn"
+                                  onClick={this.handleClick}
+                                >
+                                  Log in
+                              </Button>
+                            <Form.Text className="login__form__text-muted">
+                            Don’t have an account? {''}
+                            
+                            <Link className="link-signup-word" to="/signup">
+                            Sign Up  
+                            </Link>
+                            <br/>
+                            or
+                            
+                            <Link className="link-guest-word" to="/aguest">
+                            continue as guest 
+                            </Link>
+                            </Form.Text>
+                          </Form>
+                          <div className="div-buttons">
+                            <div className="div-buttons__google-button">
+                            <div  className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                            </div>
+                            <div className="div-buttons__facebook-button">
+                            <div className="button" className="fb-login-button " data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                            </div>
+                          </div>
+                          </Modal.Body>
+                      </Modal>
+                </>
+                }
+               
             </>
         )
     }
 }
-
-
-
 
 

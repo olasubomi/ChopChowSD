@@ -1,11 +1,12 @@
 /* grocery page */
 .page__container{
-    background: linear-gradient(to right, #f2994a, #f2c94c);
+    background: linear-gradient(to right, #ffffff, #de902e);
     box-shadow: 0 0 3px rgba(0,0,0,.25);
     padding: 20px;
-    margin-left: 69px;
-    margin-top: 2rem;
-    height: 361px;
+    margin-left: 185px;
+    margin-top: 1rem;
+    height: 414px;
+    width: 73%;
   }
   .yourlist__card{
     border: 1px solid rgba(234, 234, 234, 0.9) !important;
@@ -27,11 +28,19 @@
     margin-left: 16px;
   }
   .card-img{
-    width: 283px;
+    width: 155px;
+    height: 52%;
+    margin-top: 61px;
+    margin-left: -142px;
+
+  }
+  .yourlist__card-div{
+    margin-top: 93px;
+    margin-left: -19rem;
   }
   .yourlist__card-header{
     border-bottom: none !important;
-    background: rgba(255, 167, 5, 0.47) !important;
+    background: rgba(245, 243, 240, 0.47) !important;
     margin-left: -19px;
     margin-top: -30px;
     padding-left: 19px;
@@ -39,8 +48,194 @@
   
   }
   
+
+.modal.show .modal-dialog {
+  -webkit-transform: none;
+  transform: none;
+}
   .yourlist__card-text{
-    float: left;
-    text-transform: capitalize;
+    margin-top: 24px;
   }
+
+.btn-primary {
+  color: #2f2c2c;
+  margin-top: -235px;
+  margin-left: 76px;
+  background-color: #c1c5ca;
+  border-color: #525456;
+  width: 92%;
+  border: 51px;
+  border-radius: 33px;
+}
+.yourlist__buttonDelete{
+  background-color: red;
+  margin-top: -151px;
+    margin-left: 246px;
+
+}
+.fa-remove:before, .fa-close:before, .fa-times:before {
+  content: "\f00d";
+  font-size: 255%;
+  margin-left: 9px;
+}
+.btn-primary {
+  color: #2f2c2c;
+  margin-left: -15px;
+  background-color: #c1c5ca;
+  border-color: #525456;
+  border: 51px;
+  border-radius: 33px;
+}
+.modal-content {
+  display: -ms-flexbox;
+  -ms-flex-direction: column;
+  width: 129%;
+  pointer-events: auto;
+  background-clip: padding-box;
+  border-radius: .3rem;
+  outline: 0;
+}
+
+.modal-body {
+  position: relative;
+  width: 221%;
+  margin-left: -350px;
+  width: 182%;
+}
+
+
+.modal-body {
+    position: relative;
+    width: 221%;
+    margin-left: -350px;
+    width: 184%;
+    display: block;
+    background-color: #fff0;
+}
+  /******** design log in page ******/
+  .login__form__text-muted {
+    padding: 5px 0 40px;
+    text-align: center;
+    font-size: 15px;
+    opacity: .8;
+    margin-right:-21rem;
+  }
+ .link-forgot-password{
+  color: black !important;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+  margin-left: 24rem;
+ }
+ .link-signup-word {
+  color: #4c4646 !important;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+}
+  .link-guest-word {
+    color: #423d3c !important;
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    margin-left: 7px;
+    margin-right: -64px;
+
+  }
+  .link-signup-word:hover {
+    text-decoration: none;
+    color: #104d58 !important;
+  }
+  
+  .content-login__input {
+    width: 275px;
+    margin-right: 37px;
+    margin-left: 24px;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.03em;
+    color: black;
+    border-radius: 3px;
+  }
+  .form-group {
+    margin-bottom: 1rem;
+    margin-left: 360px;
+    margin-right: 40px;
+}
+.form-text {
+  display: block;
+  margin-left: 7px;
+  margin-right: -208px;
+}
+  .msg-err {
+    text-align: center;
+    padding: 0 22px;
+    margin-left: 360px;
+    margin-right: 40px;
+    color: red;
+  }
+  .msg-success{
+    text-align: center;
+    padding: 0 22px;
+    margin-left: 360px;
+    margin-right: 40px;
+    color: green;
+  }
+  
+  .login__form {
+    width: -17%;
+    margin: 100px auto;
+    padding: 20px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0);
+    border-radius: 77px;
+}
+.login__form-title {
+  padding: 20px 0;
+  font-weight: 600;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.04em;
+  color: #5d5756;
+  width: 59%;
+  margin-left: 209px;
+  background: #FFFFFF;
+}
+  .login__form-title {
+    padding: 20px 0;
+    font-weight: 600;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.04em;
+    color: #5d5756;
+    width: 91%;
+    margin-left: 17px;
+    background: #FFFFFF;
+}
+  .facebook-button{
+    display: inline-block;
+  margin-bottom: .5rem;
+  }
+  .div-buttons__google-button {
+    margin-top: -7px;
+    width: 30px;
+    margin-left: 11px;
+}
+  .div-buttons__facebook-button{
+    margin-top: 35px;
+    width: 30px;
+    margin-left: 10px;
+  }
+  .div-buttons {
+    width: 22%;
+    margin-top: -439px;
+    margin-left: 346px;
+}
+  @media only screen and (max-width: 992px) {
+    .login__form {
+      width: 95%;
+    }
+  }
+  
   
