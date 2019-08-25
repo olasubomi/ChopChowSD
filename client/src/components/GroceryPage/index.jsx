@@ -213,7 +213,9 @@ export default class GroceryPage extends React.Component {
                                 <p className="msg-success">{messageSuccess}</p>
                                 <p className="msg-err">{messageErr}</p> 
                                 <Link>
+                                <di className="div__link-forgot-password">
                                 <span className="link-forgot-password">Forget Password  ?</span>
+                                </di>
                                 </Link>
                                 
                                 <Button
