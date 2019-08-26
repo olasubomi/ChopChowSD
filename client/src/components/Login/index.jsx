@@ -29,18 +29,17 @@ export default class Login extends React.Component {
         }),
       })
         .then(response => {
-          
           if (response.status === 400 || response.status === 404) {
             this.setState({ messageErr: 'Bad Request , Check username or password ... !!' });
           } else if (response.status === 401) {
             this.setState({ messageErr: 'you are UnAuthorized' });
-          } else if (response.status === 500) {
+          } else if (response.status >= 500) {
             this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
           } else {
             this.setState({messageErr:''});
             this.setState({isAuthenticated:true})
             this.setState({ messageSuccess: 'login sucessfully '});
-            return window.location.href = '/api/grocery'
+            return window.location.href = '/grocery'
           }
         })
 

@@ -1,6 +1,6 @@
 'use strict';
 // allow to store local env variables in nodejs process event environment(env) object
-var sslRedirect = require('heroku-ssl-redirect');
+// var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 const cors = require('cors');
 const cookie = require('cookie-parser');
@@ -275,12 +275,10 @@ app.get('/find', function (req, res) {
 
 
 
-app.get('/api/sallam', (req, res)=>{
-    res.send('ttttttttttttttt')
-    
-})
+
 app.post('/api/login', authenticationLogin);
-app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
+app.use(authenticationVerify)
+app.get('/api/grocery' ,isAuthenticated);
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 
