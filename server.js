@@ -20,7 +20,7 @@ const authunticationLogout = require('./controllers/authentication/authunticatio
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4430;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
@@ -277,8 +277,7 @@ app.get('/find', function (req, res) {
 
 
 app.post('/api/login', authenticationLogin);
-app.use(authenticationVerify)
-app.get('/api/grocery' ,isAuthenticated);
+app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 
