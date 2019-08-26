@@ -10,7 +10,7 @@ const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 
 require('./db/dbMongo/config/db_connection');
-require('./db/dbMongo/config/AllData')();
+// require('./db/dbMongo/config/AllData')();
 
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
@@ -30,7 +30,7 @@ const { getAllDataLists } = require("./controllers/list/getAllDataLists");
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(cookie());
-app.use(sslRedirect());
+// app.use(sslRedirect());
 app.use(cors());
 app.use('/facebook', facebook);         
 
@@ -275,9 +275,12 @@ app.get('/find', function (req, res) {
 
 
 
-
+app.get('/api/sallam', (req, res)=>{
+    res.send('ttttttttttttttt')
+    
+})
 app.post('/api/login', authenticationLogin);
-app.get('/api/grocery', authenticationVerify ,isAuthenticated);
+app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 
