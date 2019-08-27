@@ -13,6 +13,7 @@
     "react-dom": "^16.8.6",
     "react-leaf-carousel": "^1.2.2",
     "react-page-layout": "^0.9.8",
+    "react-responsive-carousel": "^3.1.50",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^2.1.8",
     "reactjs-popup": "^1.4.2",
