@@ -20,7 +20,7 @@ const authunticationLogout = require('./controllers/authentication/authunticatio
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 4430;
+const port = process.env.PORT || 4427;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
@@ -119,8 +119,7 @@ app.get('/terms-of-service', (req, res) => {
 //     console.log("Gets in client builds index");
 //     res.sendFile(path.join(__dirname+'/client/build/'));
 //   });
-app.get('/getLists/:customerId', getList)
-app.get('/api/get-all-data-lists', getAllDataLists)
+
 
 
 
@@ -277,7 +276,10 @@ app.get('/find', function (req, res) {
 
 
 app.post('/api/login', authenticationLogin);
+// app.use(authenticationVerify)
 app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
+app.get('/api/getLists/:customerId', getList)
+app.get('/api/get-all-data-lists', getAllDataLists)
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 
