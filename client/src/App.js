@@ -406,8 +406,6 @@ handleLogout = () => {
     render() {
         const { valueData, valueAllDataLists, message,isLogged,isAuthenticated} = this.state;
         
-        console.log('authApp',isAuthenticated);
-        
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -703,7 +701,7 @@ handleLogout = () => {
                         <GroceryPage
                         showLogin={!isAuthenticated}
                         auth={isAuthenticated}
-                        />  
+                        /> 
                         
                         )}
 
