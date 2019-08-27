@@ -154,10 +154,10 @@ export default class GroceryPage extends React.Component {
     
                     <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
                         </>
-                ) : 
+                ) : (
                 <>
                
-               <PageTitle title=" Your Grocery List" />
+               {/* <PageTitle title=" Your Grocery List" />
                     <Container className="page__container">
                         {message && <Alert variant="danger">{message}</Alert>}
                         {valueData ? (
@@ -183,7 +183,7 @@ export default class GroceryPage extends React.Component {
                             </>
                         ) : <Spinner animation="border" variant="info" />
                         }
-                    </Container>
+                    </Container> */}
                    
                       <Modal show={show} onHide={this.handleClose} className="modal" backdrop="static">
                         <Modal.Body>
@@ -262,7 +262,7 @@ export default class GroceryPage extends React.Component {
                           </Modal.Body>
                       </Modal>
                 </>
-                }
+         )}
 
              </>
         )
