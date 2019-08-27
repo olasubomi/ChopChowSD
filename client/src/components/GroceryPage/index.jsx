@@ -234,7 +234,7 @@ export default class GroceryPage extends React.Component {
                   </Form>
                 </Modal.Body>
               </Modal>
-              {/* <PageTitle title=" Your Grocery List" />
+              <PageTitle title=" Your Grocery List" />
                     <Container className="page__container">
                         {message && <Alert variant="danger">{message}</Alert>}
                         {valueData ? (
@@ -260,7 +260,7 @@ export default class GroceryPage extends React.Component {
                             </>
                         ) : <Spinner animation="border" variant="info" />
                         }
-                    </Container> */}
+                    </Container>
             </>
           )}
 
