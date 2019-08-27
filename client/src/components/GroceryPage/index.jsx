@@ -23,7 +23,7 @@ export default class GroceryPage extends React.Component {
         // make a requset to the back with method post and data{email , password}
         fetch('/api/login', {
           method: 'POST',
-            credentials: 'same-origin',
+          credentials: 'include',
             headers: {
               'Content-type': 'application/json',
             },

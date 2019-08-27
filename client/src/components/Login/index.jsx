@@ -20,6 +20,7 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
        // make a requset to the back with method post and data{email , password}
       fetch('/api/login', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-type': 'application/json',
         },
