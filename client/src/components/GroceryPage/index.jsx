@@ -66,6 +66,7 @@ export default class GroceryPage extends React.Component {
         })
 
             .then(res => {
+              
                 res.json().then(response => {
                     if (response.success && response.data) {
                       if(this.props.showLogin===false){

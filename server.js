@@ -1,6 +1,6 @@
 'use strict';
 // allow to store local env variables in nodejs process event environment(env) object
-var sslRedirect = require('heroku-ssl-redirect');
+// var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 const cors = require('cors');
 const cookie = require('cookie-parser');
@@ -10,7 +10,7 @@ const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 
 require('./db/dbMongo/config/db_connection');
-require('./db/dbMongo/config/AllData')();
+// require('./db/dbMongo/config/AllData')();
 
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
@@ -20,7 +20,7 @@ const authunticationLogout = require('./controllers/authentication/authunticatio
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4333;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
@@ -30,7 +30,7 @@ const { getAllDataLists } = require("./controllers/list/getAllDataLists");
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(cookie());
-app.use(sslRedirect());
+// app.use(sslRedirect());
 app.use(cors());
 app.use('/facebook', facebook);         
 
