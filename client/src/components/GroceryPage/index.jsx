@@ -17,7 +17,7 @@ export default class GroceryPage extends React.Component {
     show: false,
   }
 
-  handleClick = () => {
+   handleClick = () => {
     const { email, password } = this.state;
     if (email && password) {
       // make a requset to the back with method post and data{email , password}
@@ -34,7 +34,7 @@ export default class GroceryPage extends React.Component {
       })
         .then(response => {
 
-          if (response.status === 400 || response.status === 404) {
+           if (response.status === 400 || response.status === 404) {
             this.setState({ messageErr: 'Bad Request , Check username or password ... !!' });
           } else if (response.status === 401) {
             this.setState({ messageErr: 'you are UnAuthorized' });
@@ -44,7 +44,7 @@ export default class GroceryPage extends React.Component {
             this.setState({ messageErr: '' });
             window.location.href = '/grocery'
 
-            this.setState({ messageSuccess: 'login sucessfully ' });
+             this.setState({ messageSuccess: 'login sucessfully ' });
             return this.setState({ Authentication: true })
           }
         })
@@ -53,12 +53,12 @@ export default class GroceryPage extends React.Component {
     }
   };
 
-  handleChange = ({ target: { value, name } }) =>
+   handleChange = ({ target: { value, name } }) =>
     this.setState({ [name]: value });
   async componentDidMount() {
     const { auth } = this.props;
 
-    this.setState({ Authentication: auth })
+     this.setState({ Authentication: auth })
     const data = await fetch('/api/grocery', {
       method: 'GET',
       credentials: 'same-origin',
@@ -68,19 +68,19 @@ export default class GroceryPage extends React.Component {
     })
     let response = await data.json()
 
-    if (response.success && response.data) {
+     if (response.success && response.data) {
       if (this.props.showLogin === false) {
 
-        this.setState({ Authentication: true, show: false });
+         this.setState({ Authentication: true, show: false });
 
-      } else {
+       } else {
 
-        this.setState({ Authentication: false, show: true });
+         this.setState({ Authentication: false, show: true });
 
-      }
+       }
 
 
-      this.setState({ customerId: response.data })
+       this.setState({ customerId: response.data })
       const { customerId } = this.state;
       fetch(`/getLists/${customerId}`, {
         method: 'GET',
@@ -89,33 +89,33 @@ export default class GroceryPage extends React.Component {
           'Content-Type': 'application/json',
         },
 
-      })
+       })
         .then(res => res.json())
         .then(response => {
           if (response) {
 
-            this.setState({ valueData: response.data })
+             this.setState({ valueData: response.data })
           }
 
-        }).catch(() => {
+         }).catch(() => {
           this.setState({ message: 'Sorry , Internal Server ERROR' })
         })
     } else {
       this.setState({ isAuthenticated: false })
     }
 
-  }
+   }
 
-  handleClose = e => {
+   handleClose = e => {
     if (e) e.stopPropagation();
     this.setState({ show: false });
   };
 
-  render() {
+   render() {
     const { valueData, message, email, password, messageErr, messageSuccess, show } = this.state;
     const { auth } = this.props;
 
-    return (
+     return (
       <>
         {auth ? (
           <>
@@ -139,35 +139,28 @@ export default class GroceryPage extends React.Component {
                       </Card.Text>
                     </div>
 
-                    <Button className="yourlist__buttonAdd">Add To Cart</Button>
+                     <Button className="yourlist__buttonAdd">Add To Cart</Button>
                     <div className="yourlist__buttonDelete"><i class="fa fa-remove"></i></div>
                   </Col>
 
 
 
-                </>
+                 </>
               ) : <Spinner animation="border" variant="info" />
               }
             </Container>
-
-
-            <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
           </>
         ) : (
             <>
-
-              
-
-              <Modal show={true} onHide={this.handleClose} className="modal" backdrop="static">
+               
+               <Modal show={true} onHide={this.handleClose} className="modal" backdrop="static">
                 <Modal.Body>
                   <Form className="login__form">
                     <div className="login__form-div-title">
                       <h2 className="login__form-title">Log in to View Grocery List</h2>
-
-                    </div>
-
-
-                    <div className="vl">
+                     </div>
+                     <div className="vl">
                       <span className="vl-innertext">or</span>
                     </div>
                     <div className="col">
@@ -178,8 +171,7 @@ export default class GroceryPage extends React.Component {
                       </i> Login with Google+
                                                   </a>
                     </div>
-
-                    <div className="col">
+                     <div className="col">
                       <div className="hide-md-lg">
                         <p>Or sign in manually:</p>
                       </div>
@@ -209,8 +201,7 @@ export default class GroceryPage extends React.Component {
                     <Link>
                       <span className="link-forgot-password">Forget Password  ?</span>
                     </Link>
-
-                    <Button
+                     <Button
                       type="button"
                       className="login__form-btn"
                       onClick={this.handleClick}
@@ -219,18 +210,15 @@ export default class GroceryPage extends React.Component {
                               </Button>
                     <Form.Text className="login__form__text-muted">
                       Don’t have an account? {''}
-
-                      <Link className="link-signup-word" to="/signup">
+                       <Link className="link-signup-word" to="/signup">
                         Sign Up
                             </Link>
                       <br />
                       or
-
-                             <Link className="link-guest-word" to="/aguest">
+                              <Link className="link-guest-word" to="/aguest">
                         continue as guest
                             </Link>
-
-                    </Form.Text>
+                     </Form.Text>
                   </Form>
                 </Modal.Body>
               </Modal>
@@ -240,8 +228,7 @@ export default class GroceryPage extends React.Component {
                         {valueData ? (
                             <>
                                <img src={`/images/products/${valueData.product_image}`} className="card-img"/>
-
-                                 <Col xs={12} md={6} lg={3} key={valueData.id}>
+                                  <Col xs={12} md={6} lg={3} key={valueData.id}>
                                     <div className="yourlist__card-div">
                                     <Card.Header className="yourlist__card-header">
                                             <div>No.List>>{valueData.id}>></div>
@@ -263,8 +250,7 @@ export default class GroceryPage extends React.Component {
                     </Container>
             </>
           )}
-
-      </>
+       </>
     )
   }
 }
