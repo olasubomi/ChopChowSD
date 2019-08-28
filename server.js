@@ -20,7 +20,7 @@ const authunticationLogout = require('./controllers/authentication/authunticatio
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 4663;
+const port = process.env.PORT || 4555;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
@@ -120,6 +120,7 @@ app.get('/terms-of-service', (req, res) => {
 //     res.sendFile(path.join(__dirname+'/client/build/'));
 //   });
 app.get('/getLists/:customerId', getList)
+
 app.get('/api/get-all-data-lists', getAllDataLists)
 
 
