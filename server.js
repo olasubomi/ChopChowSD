@@ -26,6 +26,7 @@ const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
 const { getList } = require("./controllers/list/getList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
+const { getMeals } = require("./controllers/list/getMeals");
  
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -121,7 +122,7 @@ app.get('/terms-of-service', (req, res) => {
 //   });
 app.get('/getLists/:customerId', getList)
 app.get('/api/get-all-data-lists', getAllDataLists)
-
+app.get('/api/get-meals', getMeals)
 
 
 // on enetering landing page

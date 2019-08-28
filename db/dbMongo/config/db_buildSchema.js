@@ -33,3 +33,24 @@ exports.supplier = mongoose.model('supplier', new Schema({
     id: Schema.Types.ObjectId,
     storeName: String,
 }))
+
+
+
+exports.meal = mongoose.model('meal', new Schema({
+    id: Number,
+    label: String,
+    imageSrc: String,
+    readTime: String,
+    cookTime: String,
+    intro: String,
+    ingredients: Array,
+    products: Array,
+    product_slider: [{ingredient: String, image: String}],
+    instructions: Array,
+    display: Boolean
+}))
+
+
+
+
+
