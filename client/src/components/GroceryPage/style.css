@@ -143,8 +143,9 @@
 }
 
 @media screen and (max-width: 1024px) {
+
   .fa-remove {
-    margin-left: -98px;
+    margin-left: -21px;
     margin-top: -7px;
   }
   .yourlist__card-div {
@@ -163,7 +164,7 @@
     margin-left: -39px;
   }
   .fa-remove {
-    margin-left: -68px;
+    margin-left: 21px;
     margin-top: 2px;
   }
   .yourlist__card-div {
@@ -214,7 +215,7 @@
 
 @media screen and (max-width: 414px) {
   .yourlist__buttonDelete {
-    margin-left: 177px;
+    margin-left: 181px;
     margin-top: -200px;
   }
   .yourlist__card-div {
@@ -248,7 +249,7 @@
 
 @media screen and (max-width: 320px) {
   .yourlist__buttonDelete {
-    margin-left: 139px;
+    margin-left: 148px;
     margin-top: -200px;
   }
   .yourlist__card-div {
