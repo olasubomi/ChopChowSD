@@ -530,11 +530,7 @@ handleLogout = () => {
                         {value.products}
                         <WithScrollbar products={value.product_slider} ingredients={[{"name": "sugar","image": "/images/products/sugar.jpeg"}, {"name": "onion","image": "/images/products/onion.jpg"}, {"name": "tomato","image": "/images/products/tomato.jpg"}, {"name": "water","image": "/images/products/water.jpeg"}, {"name": "vegetable oil","image": "/images/products/vegetable_oil.jpg"}]}/>
                         <br/>
-<<<<<<< HEAD
-                    </div>    
-=======
                         
->>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                 </div>
             </div>
             )
