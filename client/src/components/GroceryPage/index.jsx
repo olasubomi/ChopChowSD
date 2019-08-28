@@ -41,11 +41,8 @@ export default class GroceryPage extends React.Component {
           } else if (response.status >= 500) {
             this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
           } else {
-            this.setState({ messageErr: '' });
             window.location.href = '/grocery'
-
-             this.setState({ messageSuccess: 'login sucessfully ' });
-            return this.setState({ Authentication: true })
+            return this.setState({  messageSuccess: 'login sucessfully ', messageErr: '' ,Authentication: true })
           }
         })
     } else {
@@ -67,7 +64,6 @@ export default class GroceryPage extends React.Component {
       },
     })
     let response = await data.json()
-
      if (response.success && response.data) {
       if (this.props.showLogin === false) {
 
@@ -93,7 +89,6 @@ export default class GroceryPage extends React.Component {
         .then(res => res.json())
         .then(response => {
           if (response) {
-
              this.setState({ valueData: response.data })
           }
 
@@ -124,6 +119,7 @@ export default class GroceryPage extends React.Component {
               {message && <Alert variant="danger">{message}</Alert>}
               {valueData ? (
                 <>
+
                   <img src={`/images/products/${valueData.product_image}`} className="card-img" />
                   <Col xs={12} md={6} lg={3} key={valueData.id}>
                     <div className="yourlist__card-div">
