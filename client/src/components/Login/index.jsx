@@ -2,9 +2,9 @@ import React from 'react';
 import './style.css';
 import { Form, Button, Container ,Modal} from 'react-bootstrap';
 
-import { Link, Redirect } from 'react-router-dom';
+ import { Link, Redirect } from 'react-router-dom';
 
-export default class Login extends React.Component {
+ export default class Login extends React.Component {
   state = {
     email: '',
     password: '',
@@ -13,13 +13,14 @@ export default class Login extends React.Component {
     isAuthenticated: false,
   };
 
-  handleClick = () => {
+   handleClick = () => {
     const { email, password } = this.state;
     if (email && password) {
 
-      // make a requset to the back with method post and data{email , password}
+       // make a requset to the back with method post and data{email , password}
       fetch('/api/login', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-type': 'application/json',
         },
@@ -44,15 +45,15 @@ export default class Login extends React.Component {
         })
 
 
-    } else {
+     } else {
       this.setState({ messageErr: 'Please enter all fields' });
     }
   };
 
-  handleChange = ({ target: { value, name } }) =>
+   handleChange = ({ target: { value, name } }) =>
     this.setState({ [name]: value });
 
-  render() {
+   render() {
     const { email, password, messageErr, messageSuccess } = this.state;
     return (
       <>
@@ -60,6 +61,7 @@ export default class Login extends React.Component {
         <Modal show="true" onHide={this.handleClose} className="modal" backdrop="static">
                         <Modal.Body>
 
+<<<<<<< HEAD
                           <Form className="login__form">
                             <div className="login__form-div-title">
                             <h2 className="login__form-title">Log in to View Grocery List</h2>
@@ -73,6 +75,21 @@ export default class Login extends React.Component {
                           </div>
 
                           <div className="col">
+=======
+                           <Form className="login__form">
+                            <div className="login__form-div-title">
+                            <h2 className="login__form-title">Log in to View Grocery List</h2>
+
+                             </div>
+
+
+
+                           <div className="vl">
+                            <span className="vl-innertext">or</span>
+                          </div>
+
+                           <div className="col">
+>>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                             <a href="#" className="fb btn">
                                 <i class="fa fa-facebook fa-fw"></i> Login with Facebook
                                                   </a>
@@ -80,8 +97,13 @@ export default class Login extends React.Component {
                             </i> Login with Google+
                                                   </a>
                           </div>
+<<<<<<< HEAD
                             
                           <div className="col">
+=======
+
+                           <div className="col">
+>>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                             <div className="hide-md-lg">
                                 <p>Or sign in manually:</p>
                             </div>
@@ -111,8 +133,13 @@ export default class Login extends React.Component {
                                 <Link>
                                 <span className="link-forgot-password">Forget Password  ?</span>
                                 </Link>
+<<<<<<< HEAD
                                 
                                 <Button
+=======
+
+                                 <Button
+>>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                                   type="button"
                                   className="login__form-btn"
                                   onClick={this.handleClick}
@@ -121,18 +148,32 @@ export default class Login extends React.Component {
                               </Button>
                             <Form.Text className="login__form__text-muted">
                             Don’t have an account? {''}
+<<<<<<< HEAD
                             
                             <Link className="link-signup-word" to="/signup">
+=======
+
+                             <Link className="link-signup-word" to="/signup">
+>>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                             Sign Up  
                             </Link>
                             <br/>
                             or
+<<<<<<< HEAD
                             
                             <Link className="link-guest-word" to="/aguest">
                             continue as guest 
                             </Link>
 
                             </Form.Text>
+=======
+
+                             <Link className="link-guest-word" to="/aguest">
+                            continue as guest 
+                            </Link>
+
+                             </Form.Text>
+>>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                           </Form>
                           </Modal.Body>
                       </Modal>

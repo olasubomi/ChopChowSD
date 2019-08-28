@@ -29,6 +29,7 @@ VALUES
     12.00,
     '2 lbs',
     3.2
+    
   ),(
     4,
     'Spinach',
@@ -46,7 +47,7 @@ VALUES
   ),(
     6,
     'Blueberries',
-    'beans.jpeg',
+    'blueberries.jpeg',
     1.00,
     '1lbs',
     null

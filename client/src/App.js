@@ -10,7 +10,7 @@ import { Link, Route, Switch } from "react-router-dom";
 import { Spinner } from 'react-bootstrap'
 import InfiniteCarousel from 'react-leaf-carousel';
 import Slider from './components/product_slider/slider';
-
+import WithScrollbar from './components/product_slider/WithScrollbar';
 import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 import IngredientSection from './components/mealMenu/IngredientSection';
@@ -414,8 +414,6 @@ handleLogout = () => {
     render() {
         const { valueData, valueAllDataLists, message,isLogged,isAuthenticated} = this.state;
         
-        console.log('authApp',isAuthenticated);
-        
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -532,12 +530,17 @@ handleLogout = () => {
                         {value.products}
                         <WithScrollbar products={value.product_slider} ingredients={[{"name": "sugar","image": "/images/products/sugar.jpeg"}, {"name": "onion","image": "/images/products/onion.jpg"}, {"name": "tomato","image": "/images/products/tomato.jpg"}, {"name": "water","image": "/images/products/water.jpeg"}, {"name": "vegetable oil","image": "/images/products/vegetable_oil.jpg"}]}/>
                         <br/>
+<<<<<<< HEAD
                     </div>    
+=======
+                        
+>>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                 </div>
+            </div>
             )
         }
 
-        /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+         /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */ 
         function myFunction() {
             var x = document.getElementById("myTopnav");
             console.log(x);
@@ -712,7 +715,7 @@ handleLogout = () => {
                         <GroceryPage
                         showLogin={!isAuthenticated}
                         auth={isAuthenticated}
-                        />  
+                        /> 
                         
                         )}
 
