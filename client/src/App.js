@@ -571,9 +571,9 @@ handleLogout = () => {
                         <Link to="/login"  >Login</Link>
                         ):}
                          */}
-                     
-                     <Link to = "/grocery" onClick={this.onClick} >GroceryPage</Link>
                     <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
+                     
+                     <Link to = "/grocery" onClick={this.onClick} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
                     
 
                     <div className="w3-dropdown-hover w3-mobile">
@@ -595,7 +595,7 @@ handleLogout = () => {
                     </Link>
                     {isAuthenticated?(
 
-                        <Link to='/logout' onClick={this.handleLogout}>Logout</Link>
+                        <Link to='/' onClick={this.handleLogout} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Logout</Link>
                     ):null}
 
                 </div>
