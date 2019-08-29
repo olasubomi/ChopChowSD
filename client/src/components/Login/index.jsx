@@ -61,21 +61,6 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
         <Modal show="true" onHide={this.handleClose} className="modal" backdrop="static">
                         <Modal.Body>
 
-<<<<<<< HEAD
-                          <Form className="login__form">
-                            <div className="login__form-div-title">
-                            <h2 className="login__form-title">Log in to View Grocery List</h2>
-
-                            </div>
-                          
-                         
-
-                          <div className="vl">
-                            <span className="vl-innertext">or</span>
-                          </div>
-
-                          <div className="col">
-=======
                            <Form className="login__form">
                             <div className="login__form-div-title">
                             <h2 className="login__form-title">Log in to View Grocery List</h2>
@@ -89,7 +74,6 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
                           </div>
 
                            <div className="col">
->>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                             <a href="#" className="fb btn">
                                 <i class="fa fa-facebook fa-fw"></i> Login with Facebook
                                                   </a>
@@ -97,13 +81,8 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
                             </i> Login with Google+
                                                   </a>
                           </div>
-<<<<<<< HEAD
-                            
-                          <div className="col">
-=======
 
                            <div className="col">
->>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                             <div className="hide-md-lg">
                                 <p>Or sign in manually:</p>
                             </div>
@@ -133,13 +112,8 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
                                 <Link>
                                 <span className="link-forgot-password">Forget Password  ?</span>
                                 </Link>
-<<<<<<< HEAD
-                                
-                                <Button
-=======
 
                                  <Button
->>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                                   type="button"
                                   className="login__form-btn"
                                   onClick={this.handleClick}
@@ -148,32 +122,18 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
                               </Button>
                             <Form.Text className="login__form__text-muted">
                             Don’t have an account? {''}
-<<<<<<< HEAD
-                            
-                            <Link className="link-signup-word" to="/signup">
-=======
 
                              <Link className="link-signup-word" to="/signup">
->>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                             Sign Up  
                             </Link>
                             <br/>
                             or
-<<<<<<< HEAD
-                            
-                            <Link className="link-guest-word" to="/aguest">
-                            continue as guest 
-                            </Link>
-
-                            </Form.Text>
-=======
 
                              <Link className="link-guest-word" to="/aguest">
                             continue as guest 
                             </Link>
 
                              </Form.Text>
->>>>>>> a772de0a7b20c3c4ea78a006a63a81154b068938
                           </Form>
                           </Modal.Body>
                       </Modal>
