@@ -357,7 +357,7 @@ class App extends Component {
             .then(response => {
                 if (response) {
                     let arrAllData =[];
-                    for (let i = 15; i <= 29; i++) {
+                    for (let i = 0; i <= 12; i++) {
                         arrAllData.push(response.data[i].product_name);
                         this.setState({ valueAllDataLists: arrAllData })
                     }
@@ -412,7 +412,7 @@ handleLogout = () => {
 }
 
     render() {
-        const { valueData, valueAllDataLists, message,isLogged,isAuthenticated} = this.state;
+        const {  valueAllDataLists,isAuthenticated} = this.state;
         
         // Render your page inside
         // the layout provider
