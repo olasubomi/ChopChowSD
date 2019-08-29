@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "heroku-ssl-redirect": "0.0.4",
+    "http-proxy-middleware": "^0.19.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.1.13",
     "mongoose": "^5.4.11",
@@ -25,9 +26,10 @@
     "pg": "^7.10.0"
   },
   "scripts": {
-    "server": "nodemon server.js",
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "build": "npm run build --prefix client",
     "client": "npm start --prefix client",
-    "start": " concurrently \"npm run server\" \"npm run client\" --proxy.config.json"
+    "server": "NODE_ENV=production nodemon server.js"
   },
   "description": "This project was bootstrapped with Create React App.",
   "directories": {

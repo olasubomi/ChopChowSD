@@ -11,7 +11,7 @@ import { Link, Route, Switch } from "react-router-dom";
 import { Spinner } from 'react-bootstrap'
 import InfiniteCarousel from 'react-leaf-carousel';
 import Slider from './components/product_slider/slider';
-
+import WithScrollbar from './components/product_slider/WithScrollbar';
 import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 import IngredientSection from './components/mealMenu/IngredientSection';
@@ -261,6 +261,7 @@ class App extends Component {
             messageAlert:'',
             showAlert:false,
             varaint:''
+
         }
     }
 
@@ -366,7 +367,7 @@ class App extends Component {
             .then(response => {
                 if (response) {
                     let arrAllData =[];
-                    for (let i = 15; i <= 29; i++) {
+                    for (let i = 0; i <= 12; i++) {
                         arrAllData.push(response.data[i].product_name);
                         this.setState({ valueAllDataLists: arrAllData })
                     }
@@ -618,10 +619,11 @@ handleSize= ({ target: { name, value } }) => {
                         <br/>
                         
                 </div>
+            </div>
             )
         }
 
-        /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+         /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */ 
         function myFunction() {
             var x = document.getElementById("myTopnav");
             console.log(x);
@@ -652,12 +654,13 @@ handleSize= ({ target: { name, value } }) => {
                 <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
                     {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
                     <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
-                    {!isAuthenticated?(
+                    {/* {!isAuthenticated?(
                         <Link to="/login"  >Login</Link>
-                        ):<Link to = "/api/grocery">GroceryPage</Link>}
-                     
-                     
+                        ):}
+                         */}
                     <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
+                     
+                     <Link to = "/grocery" onClick={this.onClick} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
                     
 
                     <div className="w3-dropdown-hover w3-mobile">
@@ -679,7 +682,7 @@ handleSize= ({ target: { name, value } }) => {
                     </Link>
                     {isAuthenticated?(
 
-                        <Link to='/logout' onClick={this.handleLogout}>Logout</Link>
+                        <Link to='/' onClick={this.handleLogout} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Logout</Link>
                     ):null}
 
                 </div>
@@ -803,20 +806,17 @@ handleSize= ({ target: { name, value } }) => {
 
                     <Route 
                     exact 
-                    path="/api/grocery" 
+                    path="/grocery" 
                     render={props=>(
                         <GroceryPage
-                        
-                        />  
+                        showLogin={!isAuthenticated}
+                        auth={isAuthenticated}
+                        /> 
                         
                         )}
-                        
-                        />
-                            {/* {auth?(
-                                this.setState({isAuthenticated:true})
-                            ):this.setState({isAuthenticated:false})} */}
-                        
 
+                        />
+                        
                     <Route path="/products" render={(props) => (
                         <ProductsSection />
                     )} />

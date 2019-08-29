@@ -1,6 +1,6 @@
 'use strict';
 // allow to store local env variables in nodejs process event environment(env) object
-var sslRedirect = require('heroku-ssl-redirect');
+// var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 const cors = require('cors');
 const cookie = require('cookie-parser');
@@ -8,8 +8,10 @@ const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
 const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
+
 require('./db/dbMongo/config/db_connection');
-require('./db/dbMongo/config/AllData')();
+// require('./db/dbMongo/config/AllData')();
+
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
 const authenticationVerify = require('./controllers/authentication/2.authunticatinVerify')
@@ -18,7 +20,7 @@ const authunticationLogout = require('./controllers/authentication/authunticatio
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4555;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
@@ -32,67 +34,61 @@ const removeList = require('./controllers/list/removeList')
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(cookie());
-app.use(sslRedirect());
+// app.use(sslRedirect());
 app.use(cors());
-app.use('/facebook', facebook);
-app.post('/api/login', authenticationLogin);
-app.use(authenticationVerify);
-app.get('/api/grocery', isAuthenticated);
-app.get('/hash', hashPassword);
-app.get('/api/logout',authunticationLogout)
+app.use('/facebook', facebook);         
+
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+
+
+
 // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
-app.post('/api/append-item',appendItem);
-app.post('/api/delete-item/:itemId',deleteItem);
-app.post('/api/create-list',createList);
-app.post('/api/remove-list/:customerId',removeList);
-// app.get('/get_products', (req, res) => {
-//     console.log("Calling all Mongo products");
-//     var collection;
-//     const client = new MongoClient(uri, { useNewUrlParser: true });
-//     console.log(uri);
-//     //const opts  = {db:{authSource: 'users'}};
-//     // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
-//     MongoClient.connect(uri, { useNewUrlParser: true }, function (err, db) {
-//         if (err) throw err;
-//         // console.log(JSON.stringify(collection));
-//         // store = JSON.stringify(collection);
-//         // res.send(store);
-//         var dbo = db.db("Product_Supply");
-//         dbo.collection("all_products").find({}).toArray(function (err, result) {
-//             if (err) throw err;
-//             // console.log(result);
-//             res.send(result);
-//             // perform actions on the collection object
-//             db.close();
-//         });
-//     });
-// });
+app.get('/get_products', (req, res) => {
+    console.log("Calling all Mongo products");
+    var collection;
+    const client = new MongoClient(uri, { useNewUrlParser: true });
+    console.log(uri);
+    //const opts  = {db:{authSource: 'users'}};
+    // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+    MongoClient.connect(uri, { useNewUrlParser: true }, function (err, db) {
+        if (err) throw err;
+        // console.log(JSON.stringify(collection));
+        // store = JSON.stringify(collection);
+        // res.send(store);
+        var dbo = db.db("Product_Supply");
+        dbo.collection("all_products").find({}).toArray(function (err, result) {
+            if (err) throw err;
+            // console.log(result);
+            res.send(result);
+            // perform actions on the collection object
+            db.close();
+        });
+    });
+});
 
-// app.get('/get_store_products', (req, res) => {
+app.get('/get_store_products', (req, res) => {
 
-//     console.log("Calling all Mongo meals");
-//     var collection;
-//     const client = new MongoClient(uri, { useNewUrlParser: true });
-//     console.log(uri);
-//     //const opts  = {db:{authSource: 'users'}};
-//     // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
-//     MongoClient.connect(uri, { useNewUrlParser: true }, function (err, db) {
-//         if (err) throw err;
-//         // console.log(JSON.stringify(collection));
-//         // store = JSON.stringify(collection);
-//         // res.send(store);
-//         var dbo = db.db("Product_Supply");
-//         dbo.collection("Store_Products").find({}).toArray(function (err, result) {
-//             if (err) throw err;
-//             console.log(result);
-//             res.send(result);
-//             // perform actions on the collection object
-//             db.close();
-//         });
-//     });
-// });
+    console.log("Calling all Mongo meals");
+    var collection;
+    const client = new MongoClient(uri, { useNewUrlParser: true });
+    console.log(uri);
+    //const opts  = {db:{authSource: 'users'}};
+    // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+    MongoClient.connect(uri, { useNewUrlParser: true }, function (err, db) {
+        if (err) throw err;
+        // console.log(JSON.stringify(collection));
+        // store = JSON.stringify(collection);
+        // res.send(store);
+        var dbo = db.db("Product_Supply");
+        dbo.collection("Store_Products").find({}).toArray(function (err, result) {
+            if (err) throw err;
+            console.log(result);
+            res.send(result);
+            // perform actions on the collection object
+            db.close();
+        });
+    });
+});
 
 app.get('/test', (req, res) => {
     console.log("To test page");
@@ -127,8 +123,8 @@ app.get('/terms-of-service', (req, res) => {
 //     console.log("Gets in client builds index");
 //     res.sendFile(path.join(__dirname+'/client/build/'));
 //   });
-
 app.get('/getLists/:customerId', getList)
+
 app.get('/api/get-all-data-lists', getAllDataLists)
 
 
@@ -238,10 +234,10 @@ app.get('/find', function (req, res) {
 //           Cart.saveCart(req);
 //           res.redirect('/cart');
 //       }).catch(err => {
-//          res.redirect('/');
+    //          res.redirect('/');
 //       });
 //   } else {
-//       res.redirect('/');
+    //       res.redirect('/');
 //   }
 //   });
 
@@ -287,6 +283,20 @@ app.get('/find', function (req, res) {
 
 
 
+
+app.post('/api/login', authenticationLogin);
+// app.use(authenticationVerify)
+app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
+app.get('/api/getLists/:customerId', getList)
+app.get('/api/get-all-data-lists', getAllDataLists)
+app.get('/hash', hashPassword);
+app.get('/api/logout',authunticationLogout)
+
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+app.get('*', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

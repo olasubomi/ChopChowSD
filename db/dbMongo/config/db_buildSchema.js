@@ -6,8 +6,9 @@ exports.list = mongoose.model('list', new Schema({
     id: Number,
     product_name: String,
     product_image:String,
-    product_price:String,
-    sizes:String
+    product_price:Number,
+    sizes:String,
+    price_per_ounce:Number
 }))
 
 exports.Customer = mongoose.model('Customer', new Schema({
