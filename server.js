@@ -10,7 +10,6 @@ const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 
 require('./db/dbMongo/config/db_connection');
-// require('./db/dbMongo/config/AllData')();
 
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
@@ -291,6 +290,8 @@ app.get('/api/getLists/:customerId', getList)
 app.get('/api/get-all-data-lists', getAllDataLists)
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
+app.post('/api/appendItem',appendItem)
+app.delete('/api/removeItem/:itemId',deleteItem)
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 

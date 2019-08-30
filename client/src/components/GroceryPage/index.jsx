@@ -16,6 +16,16 @@ export default class GroceryPage extends React.Component {
     messageErr: false,
     messageSuccess: false,
     show: false,
+    valueId:'',
+    valueProductName:'',
+    valueProductImage:'',
+    valueProductPrice:'',
+    valueProductSize:'',
+    valuePricePerOunce:'',
+    addListClick:false,
+    deleteListClick:false,
+    showInsert:false,
+    showRemove:false
   }
 
    handleClick = () => {
@@ -99,9 +109,17 @@ export default class GroceryPage extends React.Component {
     } else {
       this.setState({ isAuthenticated: false })
     }
+    
+   }
+   handleAddToCart=()=>{
+    this.setState({showInsert:true})
 
    }
-   handleRemoveList = () => {
+   handleRemoveFromCart=()=>{
+    this.setState({showRemove:true})
+
+   }
+   handleDeleteItem=()=>{
     const { customerId } = this.state;
     fetch(`/api/remove-list/${customerId}`, {
         method: 'DELETE',
@@ -113,31 +131,63 @@ export default class GroceryPage extends React.Component {
     })
         .then(res => res.json)
         .then(response => {
-            if (response.data) {
-                this.setState({
+                // this.setState({
 
-                    messageAlert: 'deleted successfully',
-                    showAlert: true,
-                    varaint: 'success'
-                }),
-                    () =>
-                        setTimeout(() => {
-                            this.setState({ messageAlert: '', showAlert: false })
-                        }, 1000)
-            }
+                //     messageAlert: 'deleted successfully',
+                //     showAlert: true,
+                //     varaint: 'success'
+                // }),
+                //     () =>
+                //         setTimeout(() => {
+                //             this.setState({ messageAlert: '', showAlert: false })
+                //         }, 1000)
+                this.setState({messageSuccess:response.data})
+            
         })
-        .catch((err) => console.log(err)
+        .catch(()=>this.setState({messageErr:'Sorry , Internal Server Error'})
         )
-}
+   }
+   handleInsertItem=()=>{
+     const {valueId,valueProductName,valueProductImage,valueProductPrice,valuePricePerOunce,valueProductSize}=this.state;
+    fetch('/api/appendItem',{
+      method:'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: valueId,
+        product_name:valueProductName,
+        product_image:valueProductImage,
+        product_price:valueProductPrice,
+        sizes:valueProductSize,
+        price_per_ounce: valuePricePerOunce
+      }),
+    
+    })
+    .then(res=>res.json())
+    .then(response=>{
+      console.log(777755,response)
+      this.setState({messageSuccess:response.data})
+    }).catch(()=>this.setState({messageErr:'Sorry, Internal Server Error'}))
+   }
+
    handleClose = e => {
     if (e) e.stopPropagation();
-    this.setState({ show: false });
+    this.setState({ Insert: false });
   };
 
    render() {
-    const { valueData, message, email, password, messageErr, messageSuccess, show } = this.state;
+    const {valueId, valueProductName,valueProductImage,valueProductSize,valueProductPrice,valuePricePerOunce, valueData, message, email, password, messageErr, messageSuccess, show ,addListClick,deleteListClick,showInsert,showRemove} = this.state;
     const { auth } = this.props;
-
+    console.log(22222,addListClick);
+    console.log('id',valueId);
+    console.log('name',valueProductName);
+    console.log('image',valueProductImage);
+    console.log('size',valueProductSize);
+    console.log('price',valueProductPrice);
+    console.log('price once',valuePricePerOunce);
+    
      return (
       <>
         {auth ? (
@@ -163,8 +213,114 @@ export default class GroceryPage extends React.Component {
                       </Card.Text>
                     </div>
 
-                     <Button className="yourlist__buttonAdd">Add To Cart</Button>
-                    <div className="yourlist__buttonDelete"><i class="fa fa-remove"></i></div>
+                     <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
+                    {showInsert?(
+                      <Modal show={showInsert} onHide={this.handleClose} className="modal" backdrop="static">
+                        <Modal.Body>
+                        <Form.Group>
+                      <Form.Label>Product Id:</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="valueId"
+                        value={valueId}
+                        placeholder="Enter id list"
+                        onChange={this.handleChange}
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>Product Name :</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="valueProductName"
+                        value={valueProductName}
+                        placeholder="Enter name list"
+                        onChange={this.handleChange}
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>Product Image :</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="valueProductImage"
+                        value={valueProductImage}
+                        placeholder="Enter image list"
+                        onChange={this.handleChange}
+                      />
+                    </Form.Group>
+
+                    <Form.Group>
+                      <Form.Label>Product Price :</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="valueProductPrice"
+                        value={valueProductPrice}
+                        placeholder="Enter price list"
+                        onChange={this.handleChange}
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>Product Size :</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="valueProductSize"
+                        value={valueProductSize}
+                        placeholder="Enter size list"
+                        onChange={this.handleChange}
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>Product Price Per Ounce :</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="valuePricePerOunce"
+                        value={valuePricePerOunce}
+                        placeholder="Enter Price Per Ounce list"
+                        onChange={this.handleChange}
+                      />
+                    </Form.Group>
+                    
+                    <p className="msg-success">{messageSuccess}</p>
+                    <p className="msg-err">{messageErr}</p>
+                        </Modal.Body>
+                        <Modal.Footer className="confirm__success">
+                                <Button
+                                  variant="secondary"
+                                  onClick={this.handleClose}
+                                >
+                                  Close
+                                </Button>
+                                <Button
+                                  variant="danger"
+                                  onClick={this.handleInsertItem}
+                                >
+                                  Insert
+                                </Button>
+                              </Modal.Footer>
+                      </Modal>
+                    ):null}
+                    <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={this.handleRemoveFromCart} ></i></div>
+                      {showRemove?(
+                        <Modal show={showRemove} onHide={this.handleClose}>
+                              <Modal.Body>
+                                Are you sure to delete this offer ?!
+                              </Modal.Body>
+                              <Modal.Footer className="confirm__delete">
+                                <Button
+                                  variant="secondary"
+                                  onClick={this.handleClose}
+                                >
+                                  Close
+                                </Button>
+                                <Button
+                                  variant="danger"
+                                  onClick={this.handleDeleteItem}
+                                >
+                                  Delete
+                                </Button>
+                              </Modal.Footer>
+                            </Modal>
+                        ):null}
+                    
                   </Col>
 
 
@@ -265,7 +421,7 @@ export default class GroceryPage extends React.Component {
                                             Product Size : {valueData.sizes}
                                     </Card.Text>
                                     </div>
-                                    <Button className="yourlist__buttonAdd">Add To Cart</Button>
+                                    <Button className="yourlist__buttonAdd" >Add To Cart</Button>
                                    <div className="yourlist__buttonDelete"><i class="fa fa-remove"></i></div> 
                                 </Col>
                             </>
