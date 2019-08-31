@@ -89,9 +89,9 @@ export default class GroceryPage extends React.Component {
 
        this.setState({ customerId: response.data })
       const { customerId } = this.state;
-      fetch(`/getLists/${customerId}`, {
+      fetch(`/getList/${customerId}`, {
 
-        
+
         method: 'GET',
         credentials: 'same-origin',
         headers: {
@@ -101,7 +101,7 @@ export default class GroceryPage extends React.Component {
        })
         .then(res => res.json())
         .then(response => {
-          if (response) {
+          if (response) {//all list for this customer
              this.setState({ valueData: response.data })
           }
 

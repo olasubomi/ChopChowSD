@@ -8,7 +8,9 @@ exports.list = mongoose.model('list', new Schema({
     product_image:String,
     product_price:Number,
     sizes:String,
-    price_per_ounce:Number
+    price_per_ounce:Number,
+    customerid: [{ type: Schema.Types.ObjectId, ref: 'customer' }],
+
 }))
 
 exports.Customer = mongoose.model('Customer', new Schema({

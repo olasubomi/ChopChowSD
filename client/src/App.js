@@ -549,7 +549,6 @@ handleSize= ({ target: { name, value } }) => {
                             <div style={{ color: "black" }}> <b> {value.label} | {value.cookTime}  </b>| <span style={{ color: "grey" }}> View Details</span></div>
                         </div>
                     </div>
-                    </div>
                     <Popup
                         trigger={
                             <div id={value.id} style={{ display: "none" }}>

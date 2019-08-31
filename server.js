@@ -10,6 +10,7 @@ const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 
 require('./db/dbMongo/config/db_connection');
+// require('./db/dbMongo/config/AllData')();
 
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
@@ -122,7 +123,7 @@ app.get('/terms-of-service', (req, res) => {
 //     console.log("Gets in client builds index");
 //     res.sendFile(path.join(__dirname+'/client/build/'));
 //   });
-app.get('/getLists/:customerId', getList)
+app.get('/getList/:customerId', getList)
 
 app.get('/api/get-all-data-lists', getAllDataLists)
 
