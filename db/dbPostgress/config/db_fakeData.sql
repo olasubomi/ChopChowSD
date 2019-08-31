@@ -32,10 +32,10 @@ VALUES
     
   ),(
     4,
-    'Spinach',
-    'garri.jpg',
-    2.99,
-    '0.5lbs',
+    '',
+    '',
+    0,
+    '',
     null
   ),(
     5,
@@ -288,3 +288,7 @@ INSERT INTO
 VALUES
   (1, 'Dima');
   
+  
+  
+  
+

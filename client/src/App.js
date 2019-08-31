@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
-import { Typeahead } from 'react-bootstrap-typeahead';
+// import { Typeahead } from 'react-bootstrap-typeahead';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
@@ -707,11 +707,11 @@ handleSize= ({ target: { name, value } }) => {
     </Link>
 </div> */}
 
-                <Typeahead
+                {/* <Typeahead
                     options={valueAllDataLists}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
-                />
+                /> */}
 
     <Button onClick={this.handleInsertButton}>Add item</Button>
     {isInsert?(

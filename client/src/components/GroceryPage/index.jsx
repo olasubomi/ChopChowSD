@@ -122,6 +122,7 @@ export default class GroceryPage extends React.Component {
 
    }
    handleDeleteItem=()=>{
+     
     const { customerId } = this.state;
     fetch(`/api/remove-list/${customerId}`, {
         method: 'DELETE',
@@ -131,8 +132,13 @@ export default class GroceryPage extends React.Component {
         },
 
     })
-        .then(res => res.json)
+        .then(res => 
+          {
+            res.json
+          })
         .then(response => {
+          console.log(9999,response);
+          
                 // this.setState({
 
                 //     messageAlert: 'deleted successfully',
@@ -143,7 +149,7 @@ export default class GroceryPage extends React.Component {
                 //         setTimeout(() => {
                 //             this.setState({ messageAlert: '', showAlert: false })
                 //         }, 1000)
-                this.setState({messageSuccess:response.data})
+                // this.setState({messageSuccess:response.data})
             
         })
         .catch(()=>this.setState({messageErr:'Sorry , Internal Server Error'})
@@ -173,7 +179,24 @@ export default class GroceryPage extends React.Component {
       this.setState({messageSuccess:response.data})
     }).catch(()=>this.setState({messageErr:'Sorry, Internal Server Error'}))
    }
-
+handleCreateList=()=>{
+  fetch('/api/create-list',{
+    method:'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then(res=>{
+    res.json();
+    // console.log(6666,res);
+    
+  })
+  .then(response=>{
+    console.log(8888,response);
+    
+  })
+    
+}
    handleClose = e => {
     if (e) e.stopPropagation();
     this.setState({ Insert: false });
@@ -216,6 +239,8 @@ export default class GroceryPage extends React.Component {
                     </div>
 
                      <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
+                     <Button className="yourlist__buttonAdd" onClick={this.handleCreateList}>create list</Button>
+                    
                     {showInsert?(
                       <Modal show={showInsert} onHide={this.handleClose} className="modal" backdrop="static">
                         <Modal.Body>
