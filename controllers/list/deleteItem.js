@@ -7,7 +7,8 @@ module.exports=(req,res)=>{
     list.remove({id:itemId})
     .then(()=>{
         res.send({
-            data:'delete successfully'
+            data:'delete successfully',
+            id:itemId
         })
         .catch(()=>next({code:500,msg:'internal server error'}))
     })

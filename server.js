@@ -293,7 +293,7 @@ app.get('/api/get-all-data-lists', getAllDataLists)
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 app.post('/api/appendItem',appendItem)
-app.delete('/api/removeItem/:itemId',deleteItem)
+app.delete('/api/remove-list/:itemId',deleteItem)
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
