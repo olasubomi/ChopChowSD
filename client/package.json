@@ -2,7 +2,7 @@
   "name": "chop_chow_sd",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:4555",
+  "proxy": "http://localhost:4272",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.1",

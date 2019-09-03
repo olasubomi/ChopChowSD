@@ -3,11 +3,11 @@ const { getDataCustomerId } = require('../../db/dbPostgress/queries/getDataCusto
 exports.getList = (req, res) => {
     const { customerId } = req.params   
     getDataCustomerId(customerId).then((result) => {
-        console.log(444,result.rows);
+        // console.log(444,result.rows);
         
         let data = {};
         data = result.rows[0];
-        return list.findOne({ id: data.listid })
+        return list.find({ id: data.listid })
             .then(resList => {
                 console.log(55555,resList);
                 

@@ -102,6 +102,8 @@ export default class GroceryPage extends React.Component {
         .then(res => res.json())
         .then(response => {
           if (response) {//all list for this customer
+            console.log(4444,response);
+            
              this.setState({ valueData: response.data })
           }
 
@@ -134,7 +136,9 @@ export default class GroceryPage extends React.Component {
     })
         .then(res => 
           {
-            res.json
+            
+          return  res.json()
+          
           })
         .then(response => {
           console.log(9999,response);
@@ -187,8 +191,8 @@ handleCreateList=()=>{
     },
   })
   .then(res=>{
-    res.json();
-    // console.log(6666,res);
+    console.log(6666,res);
+   return res.json();
     
   })
   .then(response=>{
@@ -206,6 +210,8 @@ handleCreateList=()=>{
     const {valueId, valueProductName,valueProductImage,valueProductSize,valueProductPrice,valuePricePerOunce, valueData, message, email, password, messageErr, messageSuccess, show ,addListClick,deleteListClick,showInsert,showRemove} = this.state;
     const { auth } = this.props;
     console.log(22222,addListClick);
+    console.log('dataaaccc',valueData);
+
     console.log('id',valueId);
     console.log('name',valueProductName);
     console.log('image',valueProductImage);
@@ -222,6 +228,8 @@ handleCreateList=()=>{
               {message && <Alert variant="danger">{message}</Alert>}
               {valueData ? (
                 <>
+                {console.log(111111,valueData.product_image)}
+                {console.log(222222,valueData.product_price)}
 
                   <img src={`/images/products/${valueData.product_image}`} className="card-img" />
                   <Col xs={12} md={6} lg={3} key={valueData.id}>

@@ -20,7 +20,7 @@ const authunticationLogout = require('./controllers/authentication/authunticatio
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 4555;
+const port = process.env.PORT || 4272;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
@@ -293,7 +293,8 @@ app.get('/api/get-all-data-lists', getAllDataLists)
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 app.post('/api/appendItem',appendItem)
-app.delete('/api/remove-list/:customerId',deleteItem)
+app.delete('/api/remove-list/:customerId',removeList)
+
 app.post('/api/create-list',createList)
 
 createList
