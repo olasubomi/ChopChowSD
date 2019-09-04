@@ -103,6 +103,10 @@ export default class GroceryPage extends React.Component {
         .then(response => {
           if (response) {//all list for this customer
             console.log(4444,response);
+            // response.data.map(element=>{
+            //   console.log(45454,element);
+              
+            // })
             
              this.setState({ valueData: response.data })
           }
@@ -228,23 +232,33 @@ handleCreateList=()=>{
               {message && <Alert variant="danger">{message}</Alert>}
               {valueData ? (
                 <>
+                kkkkkkk
+                {console.log(7777777,valueData[1].product_image)
+                }
+                {valueData.map((itemList)=>{
+                  console.log('eleeem',itemList.product_image);
+                return  <div>
+                    
+                  <img src={`/images/products/${itemList.product_image}`} className="card-img" />
+                  <div className="yourlist__card-div">
+                      <Card.Header className="yourlist__card-header">
+                        <div>No.List>>{itemList.id}>></div>
+                        <div className="header__name-product">Name Product : {itemList.product_name}</div>
+                      </Card.Header>
+                      <Card.Text className="yourlist__card-text">
+                        Product Price :  {itemList.product_price}
+                      </Card.Text>
+                      <Card.Text className="yourlist__card-text">
+                        Product Size : {itemList.sizes}
+                      </Card.Text>
+                    </div>
+                  </div>
+                })}
                 {console.log(111111,valueData.product_image)}
                 {console.log(222222,valueData.product_price)}
 
-                  <img src={`/images/products/${valueData[0].product_image}`} className="card-img" />
                   <Col xs={12} md={6} lg={3} key={valueData.id}>
-                    <div className="yourlist__card-div">
-                      <Card.Header className="yourlist__card-header">
-                        <div>No.List>>{valueData.id}>></div>
-                        <div className="header__name-product">Name Product : {valueData.product_name}</div>
-                      </Card.Header>
-                      <Card.Text className="yourlist__card-text">
-                        Product Price :  {valueData.product_price}
-                      </Card.Text>
-                      <Card.Text className="yourlist__card-text">
-                        Product Size : {valueData.sizes}
-                      </Card.Text>
-                    </div>
+                    
 
                      <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
                      <Button className="yourlist__buttonAdd" onClick={this.handleCreateList}>create list</Button>
