@@ -3,7 +3,7 @@ import React from 'react';
 import './style.css';
 import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
-import { Container, Alert, Card, Col, Form, Button, Modal } from 'react-bootstrap'
+import { Container, Alert, Card, Col, Row,Form, Button, Modal } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 export default class GroceryPage extends React.Component {
   state = {
@@ -228,157 +228,171 @@ handleCreateList=()=>{
         {auth ? (
           <>
             <PageTitle title=" Your Grocery List" />
-            <Container className="page__container">
               {message && <Alert variant="danger">{message}</Alert>}
-              {valueData ? (
-                <>
-                kkkkkkk
-                {console.log(7777777,valueData[1].product_image)
+            <Container className="page__container">
+              {valueData && valueData.length?(
+
+                <Row>
+                {valueData ? (
+
+                  valueData.map((itemList)=>{
+                    console.log('eleeem',itemList.product_image);
+                      
+                    return  <Col xs={12} md={12} lg={12} key={itemList.id}>
+                      {/* <div> */}
+                    <img src={`/images/products/${itemList.product_image}`} className="card-img" />
+                   {/* <Card  className="page__container__card" key={itemList.id}> */}
+
+                    <div className="yourlist__card-div">
+                        <Card.Header className="yourlist__card-header">
+                          <div>No.List>>{itemList.id}>></div>
+                          <div className="header__name-product">Name Product : {itemList.product_name}</div>
+                        </Card.Header>
+                        <Card.Text className="yourlist__card-text">
+                          Product Price :  {itemList.product_price}
+                        </Card.Text>
+                        <Card.Text className="yourlist__card-text">
+                          Product Size : {itemList.sizes}
+                        </Card.Text>
+                      </div>
+                   {/* </Card> */}
+                      {/* </div> */}
+                    </Col>
+                  })
+                  // {console.log(111111,valueData.product_image)}
+                  // {console.log(222222,valueData.product_price)}
+  
+                      
+  
+                      //  <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
+                      //  <Button className="yourlist__buttonAdd" onClick={this.handleCreateList}>create list</Button>
+                      
+                      // {showInsert?(
+                      //   <Modal show={showInsert} onHide={this.handleClose} className="modal" backdrop="static">
+                      //     <Modal.Body>
+                      //     <Form.Group>
+                      //   <Form.Label>Product Id:</Form.Label>
+                      //   <Form.Control
+                      //     type="number"
+                      //     name="valueId"
+                      //     value={valueId}
+                      //     placeholder="Enter id list"
+                      //     onChange={this.handleChange}
+                      //   />
+                      // </Form.Group>
+                      // <Form.Group>
+                      //   <Form.Label>Product Name :</Form.Label>
+                      //   <Form.Control
+                      //     type="text"
+                      //     name="valueProductName"
+                      //     value={valueProductName}
+                      //     placeholder="Enter name list"
+                      //     onChange={this.handleChange}
+                      //   />
+                      // </Form.Group>
+                      // <Form.Group>
+                      //   <Form.Label>Product Image :</Form.Label>
+                      //   <Form.Control
+                      //     type="text"
+                      //     name="valueProductImage"
+                      //     value={valueProductImage}
+                      //     placeholder="Enter image list"
+                      //     onChange={this.handleChange}
+                      //   />
+                      // </Form.Group>
+  
+                      // <Form.Group>
+                      //   <Form.Label>Product Price :</Form.Label>
+                      //   <Form.Control
+                      //     type="number"
+                      //     name="valueProductPrice"
+                      //     value={valueProductPrice}
+                      //     placeholder="Enter price list"
+                      //     onChange={this.handleChange}
+                      //   />
+                      // </Form.Group>
+                      // <Form.Group>
+                      //   <Form.Label>Product Size :</Form.Label>
+                      //   <Form.Control
+                      //     type="text"
+                      //     name="valueProductSize"
+                      //     value={valueProductSize}
+                      //     placeholder="Enter size list"
+                      //     onChange={this.handleChange}
+                      //   />
+                      // </Form.Group>
+                      // <Form.Group>
+                      //   <Form.Label>Product Price Per Ounce :</Form.Label>
+                      //   <Form.Control
+                      //     type="number"
+                      //     name="valuePricePerOunce"
+                      //     value={valuePricePerOunce}
+                      //     placeholder="Enter Price Per Ounce list"
+                      //     onChange={this.handleChange}
+                      //   />
+                      // </Form.Group>
+                      
+                      // <p className="msg-success">{messageSuccess}</p>
+                      // <p className="msg-err">{messageErr}</p>
+                      //     </Modal.Body>
+                      //     <Modal.Footer className="confirm__success">
+                      //             <Button
+                      //               variant="secondary"
+                      //               onClick={this.handleClose}
+                      //             >
+                      //               Close
+                      //             </Button>
+                      //             <Button
+                      //               variant="danger"
+                      //               onClick={this.handleInsertItem}
+                      //             >
+                      //               Insert
+                      //             </Button>
+                      //           </Modal.Footer>
+                      //   </Modal>
+                      // ):null}
+                      // <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={this.handleRemoveFromCart} ></i></div>
+                      //   {showRemove?(
+                      //     <Modal show={showRemove} onHide={this.handleClose}>
+                      //           <Modal.Body>
+                      //             Are you sure to delete this offer ?!
+                      //           </Modal.Body>
+                      //           <Modal.Footer className="confirm__delete">
+                      //             <Button
+                      //               variant="secondary"
+                      //               onClick={this.handleClose}
+                      //             >
+                      //               Close
+                      //             </Button>
+                      //             <Button
+                      //               variant="danger"
+                      //               onClick={this.handleDeleteItem}
+                      //             >
+                      //               Delete
+                      //             </Button>
+                      //           </Modal.Footer>
+                      //         </Modal>
+                      //     ):null}
+                      
+  
+  
+  
+  
+  
+  
+  
+  
+  
+                ) : <Spinner animation="border" variant="info" />
                 }
-                {valueData.map((itemList)=>{
-                  console.log('eleeem',itemList.product_image);
-                return  <div>
-                    
-                  <img src={`/images/products/${itemList.product_image}`} className="card-img" />
-                  <div className="yourlist__card-div">
-                      <Card.Header className="yourlist__card-header">
-                        <div>No.List>>{itemList.id}>></div>
-                        <div className="header__name-product">Name Product : {itemList.product_name}</div>
-                      </Card.Header>
-                      <Card.Text className="yourlist__card-text">
-                        Product Price :  {itemList.product_price}
-                      </Card.Text>
-                      <Card.Text className="yourlist__card-text">
-                        Product Size : {itemList.sizes}
-                      </Card.Text>
-                    </div>
-                  </div>
-                })}
-                {console.log(111111,valueData.product_image)}
-                {console.log(222222,valueData.product_price)}
-
-                  <Col xs={12} md={6} lg={3} key={valueData.id}>
-                    
-
-                     <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
-                     <Button className="yourlist__buttonAdd" onClick={this.handleCreateList}>create list</Button>
-                    
-                    {showInsert?(
-                      <Modal show={showInsert} onHide={this.handleClose} className="modal" backdrop="static">
-                        <Modal.Body>
-                        <Form.Group>
-                      <Form.Label>Product Id:</Form.Label>
-                      <Form.Control
-                        type="number"
-                        name="valueId"
-                        value={valueId}
-                        placeholder="Enter id list"
-                        onChange={this.handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group>
-                      <Form.Label>Product Name :</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="valueProductName"
-                        value={valueProductName}
-                        placeholder="Enter name list"
-                        onChange={this.handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group>
-                      <Form.Label>Product Image :</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="valueProductImage"
-                        value={valueProductImage}
-                        placeholder="Enter image list"
-                        onChange={this.handleChange}
-                      />
-                    </Form.Group>
-
-                    <Form.Group>
-                      <Form.Label>Product Price :</Form.Label>
-                      <Form.Control
-                        type="number"
-                        name="valueProductPrice"
-                        value={valueProductPrice}
-                        placeholder="Enter price list"
-                        onChange={this.handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group>
-                      <Form.Label>Product Size :</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="valueProductSize"
-                        value={valueProductSize}
-                        placeholder="Enter size list"
-                        onChange={this.handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group>
-                      <Form.Label>Product Price Per Ounce :</Form.Label>
-                      <Form.Control
-                        type="number"
-                        name="valuePricePerOunce"
-                        value={valuePricePerOunce}
-                        placeholder="Enter Price Per Ounce list"
-                        onChange={this.handleChange}
-                      />
-                    </Form.Group>
-                    
-                    <p className="msg-success">{messageSuccess}</p>
-                    <p className="msg-err">{messageErr}</p>
-                        </Modal.Body>
-                        <Modal.Footer className="confirm__success">
-                                <Button
-                                  variant="secondary"
-                                  onClick={this.handleClose}
-                                >
-                                  Close
-                                </Button>
-                                <Button
-                                  variant="danger"
-                                  onClick={this.handleInsertItem}
-                                >
-                                  Insert
-                                </Button>
-                              </Modal.Footer>
-                      </Modal>
-                    ):null}
-                    <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={this.handleRemoveFromCart} ></i></div>
-                      {showRemove?(
-                        <Modal show={showRemove} onHide={this.handleClose}>
-                              <Modal.Body>
-                                Are you sure to delete this offer ?!
-                              </Modal.Body>
-                              <Modal.Footer className="confirm__delete">
-                                <Button
-                                  variant="secondary"
-                                  onClick={this.handleClose}
-                                >
-                                  Close
-                                </Button>
-                                <Button
-                                  variant="danger"
-                                  onClick={this.handleDeleteItem}
-                                >
-                                  Delete
-                                </Button>
-                              </Modal.Footer>
-                            </Modal>
-                        ):null}
-                    
-                  </Col>
-
-
-
-                 </>
-              ) : <Spinner animation="border" variant="info" />
-              }
+                </Row>
+              ):(
+                <>
+                <span>There is no list until now</span>
+                       <Button className="yourlist__buttonAdd" onClick={this.handleCreateList}>create list</Button>
+                </>
+              )}
             </Container>
-             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
           </>
         ) : (
             <>

@@ -2,10 +2,10 @@
 
 @media screen and (max-width: 1920px) {
   .page__container {
-    background: linear-gradient(to right, #ffffff, #ec8a51);
-    box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+    /* background: linear-gradient(to right, #ffffff, #ec8a51); */
+    /* box-shadow: 0 0 3px rgba(0, 0, 0, .25); */
     padding: 20px;
-    margin-left: 185px;
+    margin-left: 270px;
     margin-top: 1rem;
     height: 414px;
     width: 73%;
@@ -31,18 +31,19 @@
   .card-img {
     width: 155px;
     height: 52%;
-    margin-top: 61px;
-    margin-left: -142px;
+    margin-top: 57px;
+    margin-bottom: -10px;
+    margin-left: 50px;
   }
   .yourlist__card-div {
-    margin-top: 93px;
-    margin-left: -19rem;
+    margin-top: -114px;
+    margin-left: 393px;
   }
   .yourlist__card-header {
     border-bottom: none !important;
     background: rgba(245, 243, 240, 0.47) !important;
     margin-left: -19px;
-    margin-top: -30px;
+    margin-top: -27px;
     padding-left: 19px;
     width: 257px;
   }
@@ -133,13 +134,31 @@
     background-color: #fff0;
   }
   .yourlist__buttonAdd {
-    margin-top: -244px;
+    margin-top: 80px;
     margin-left: -13px;
+    width: 154px;
+    height: 35px
   }
   .fa-remove {
     margin-left: -22px;
     margin-top: 3px;
   }
+  .card {
+    position: relative;
+    display: -ms-flexbox;
+    margin-left: 403px;
+    width: 260px;
+    margin-top: -135px;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
 }
 
 @media screen and (max-width: 1024px) {
@@ -152,7 +171,7 @@
     margin-left: -190px
   }
   .yourlist__buttonAdd {
-    margin-top: -255px;
+    margin-top: 80px;
     margin-left: 92px;
   }
 }
@@ -171,7 +190,7 @@
     margin-left: -100px
   }
   .yourlist__buttonAdd {
-    margin-top: -244px;
+    margin-top: 80px;
     margin-left: 159px;
     width: 104px;
   }
@@ -223,9 +242,9 @@
     width: 114px;
   }
   .yourlist__buttonAdd {
-    margin-top: -375px;
-    margin-left: 156px;
-    width: 49px;
+    margin-top: 80px;
+    margin-left: 0px;
+    width: 120px;
   }
   .card-img {
     width: 71px;
@@ -257,9 +276,9 @@
     width: 83x;
   }
   .yourlist__buttonAdd {
-    margin-top: -375px;
-    margin-left: 123px;
-    width: 49px;
+    margin-top: 80px;
+    margin-left: -152px;
+    width: 106px;
   }
   .card-img {
     width: 51px;
