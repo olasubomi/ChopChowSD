@@ -218,12 +218,14 @@ this.setState({ Authentication: false, show: true });
               </Modal>
               <PageTitle title=" Your Grocery List" />
               <Container className="page__container">
-              {valueData && valueData.length?(
+              {/* {valueData && valueData.length?( */}
 
                 <Row>
                 {valueData ? (
 
                   valueData.map((itemList)=>{
+                    console.log();
+                    
                     console.log('eleeem',itemList.product_image);
                       
                     return  <Col xs={12} md={12} lg={12} key={itemList.id}>
@@ -243,12 +245,12 @@ this.setState({ Authentication: false, show: true });
                     </Col>
                   })) : <Spinner animation="border" variant="info" />}
                 </Row>
-              ):(
-                <>
-                <span>There is no list until now</span>
-                <Button className="yourlist__button" onClick={this.handleCreateList}>create list</Button>
-                </>
-              )}
+              // ):(
+              //   <>
+              //   <span>There is no list until now</span>
+              //   <Button className="yourlist__button" onClick={this.handleCreateList}>create list</Button>
+              //   </>
+              // )}
             </Container>
           
             </>
