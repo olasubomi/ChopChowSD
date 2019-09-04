@@ -231,7 +231,7 @@ handleCreateList=()=>{
                 {console.log(111111,valueData.product_image)}
                 {console.log(222222,valueData.product_price)}
 
-                  <img src={`/images/products/${valueData.product_image}`} className="card-img" />
+                  <img src={`/images/products/${valueData[0].product_image}`} className="card-img" />
                   <Col xs={12} md={6} lg={3} key={valueData.id}>
                     <div className="yourlist__card-div">
                       <Card.Header className="yourlist__card-header">
