@@ -280,7 +280,7 @@ app.get('/find', function (req, res) {
 app.post('/api/login', authenticationLogin);
 // app.use(authenticationVerify)
 app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
-app.get('/api/getLists/:customerId', getList)
+app.get('/api/getList/:customerId', getList)
 app.get('/api/get-all-data-lists', getAllDataLists)
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)

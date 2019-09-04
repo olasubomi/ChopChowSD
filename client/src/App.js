@@ -621,11 +621,11 @@ handleLogout = () => {
     </Link>
 </div> */}
 
-                <Typeahead
+                {/* <Typeahead
                     options={valueAllDataLists}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
-                />
+                /> */}
 
 
 

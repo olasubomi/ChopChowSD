@@ -1,19 +1,25 @@
+
 const { list } = require('../../db/dbMongo/config/db_buildSchema')
 const { getDataCustomerId } = require('../../db/dbPostgress/queries/getDataCustomerId')
-exports.getList = (req, res) => {
-    const { customerId } = req.params   
-    getDataCustomerId(customerId).then((result) => {
+exports.getList =  (req, res) => {
+    const { customerId } = req.params
+     getDataCustomerId(customerId).then((result) => {
+        console.log(2222, result.rows);
         let data = {};
-        data = result.rows[0];
-        return list.findOne({ id: data.listid })
-            .then(resList => {
-                res.send({
-                    data: resList
-                })
+        list.find({})
+            .then(() => {
+                data = result.rows;
+                const list_ids = data.map((el) => el.list_id)
+                console.log({ list_ids });
+                list.find( { id: { $in: list_ids} } )
+                    .then(result => {
+                        
+                        res.send({
+                            data:result
+                        })
+                    })
+                    .catch(err => console.log(err))
+            })
+        })
+    }
 
-            })// data from list that it spcial of this customer
-
-        .catch(() =>  next({ code: 500, msg: 'sorry , found Inernal server error' }));
-    })
-
-}

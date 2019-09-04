@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-expressions */
 import React from 'react';
 import './style.css';
 import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
-import { Container, Alert, Card, Col, Form, Button, Modal } from 'react-bootstrap'
+import { Container, Alert, Card, Col, Row,Form, Button, Modal } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 export default class GroceryPage extends React.Component {
   state = {
@@ -56,96 +57,93 @@ export default class GroceryPage extends React.Component {
     const { auth } = this.props;
 
      this.setState({ Authentication: auth })
-    const data = await fetch('/api/grocery', {
+     fetch('/api/grocery', {
       method: 'GET',
       credentials: 'same-origin',
       headers: {
         'Content-type': 'application/json',
       },
     })
-    let response = await data.json()
-     if (response.success && response.data) {
-      if (this.props.showLogin === false) {
+   .then(res=>{
+   return res.json()
 
-         this.setState({ Authentication: true, show: false });
+  }) 
+  .then(response=>{
+    if (response.success && response.data) {
+     if (this.props.showLogin === false) {
+        this.setState({ Authentication: true, show: false });
+      } else {
+this.setState({ Authentication: false, show: true });
+}
+} else {
+  this.setState({ isAuthenticated: false })
+}
+      this.setState({ customerId: response.data })
+     const { customerId } = this.state;
+     fetch(`/api/getList/${customerId}`, {
+       method: 'GET',
+       credentials: 'same-origin',
+       headers: {
+         'Content-Type': 'application/json',
+       },
 
-       } else {
+      })
+       .then(res => res.json())
+       .then(response => {
+         if (response) {//all lists for this customer
+            this.setState({ valueData: response.data })
+         }
 
-         this.setState({ Authentication: false, show: true });
-
-       }
-
-
-       this.setState({ customerId: response.data })
-      const { customerId } = this.state;
-      fetch(`/getLists/${customerId}`, {
-        method: 'GET',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-
+        }).catch(() => {
+         this.setState({ message: 'Sorry , Internal Server ERROR' })
        })
-        .then(res => res.json())
-        .then(response => {
-          if (response) {
-             this.setState({ valueData: response.data })
-          }
-
-         }).catch(() => {
-          this.setState({ message: 'Sorry , Internal Server ERROR' })
-        })
-    } else {
-      this.setState({ isAuthenticated: false })
-    }
-
+  
+  })
    }
-
+   
    handleClose = e => {
     if (e) e.stopPropagation();
-    this.setState({ show: false });
   };
 
    render() {
-    const { valueData, message, email, password, messageErr, messageSuccess, show } = this.state;
+    const { valueData, message, email, password, messageErr, messageSuccess} = this.state;
     const { auth } = this.props;
-
      return (
       <>
         {auth ? (
           <>
             <PageTitle title=" Your Grocery List" />
-            <Container className="page__container">
               {message && <Alert variant="danger">{message}</Alert>}
-              {valueData ? (
-                <>
+            <Container className="page__container">
+              {valueData && valueData.length?(
 
-                  <img src={`/images/products/${valueData.product_image}`} className="card-img" />
-                  <Col xs={12} md={6} lg={3} key={valueData.id}>
+                <Row>
+                {valueData ? (
+                  valueData.map((itemList)=>{
+                    return  <Col xs={12} md={12} lg={12} key={itemList.id}>
+                    <img src={`/images/products/${itemList.product_image}`} className="card-img" />
                     <div className="yourlist__card-div">
-                      <Card.Header className="yourlist__card-header">
-                        <div>No.List>>{valueData.id}>></div>
-                        <div className="header__name-product">Name Product : {valueData.product_name}</div>
-                      </Card.Header>
-                      <Card.Text className="yourlist__card-text">
-                        Product Price :  {valueData.product_price}
-                      </Card.Text>
-                      <Card.Text className="yourlist__card-text">
-                        Product Size : {valueData.sizes}
-                      </Card.Text>
-                    </div>
-
-                     <Button className="yourlist__buttonAdd">Add To Cart</Button>
-                    <div className="yourlist__buttonDelete"><i class="fa fa-remove"></i></div>
-                  </Col>
-
-
-
-                 </>
-              ) : <Spinner animation="border" variant="info" />
-              }
+                        <Card.Header className="yourlist__card-header">
+                          <div>No.List>>{itemList.id}>></div>
+                          <div className="header__name-product">Name Product : {itemList.product_name}</div>
+                        </Card.Header>
+                        <Card.Text className="yourlist__card-text">
+                          Product Price :  {itemList.product_price}
+                        </Card.Text>
+                        <Card.Text className="yourlist__card-text">
+                          Product Size : {itemList.sizes}
+                        </Card.Text>
+                      </div>
+                    </Col>
+                  })) : <Spinner animation="border" variant="info" />}
+                </Row>
+              ):(
+                <>
+                <span>There is no list until now</span>
+                <Button className="yourlist__button" onClick={this.handleCreateList}>create list</Button>
+                </>
+              )}
             </Container>
-             <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
           </>
         ) : (
             <>
@@ -219,31 +217,40 @@ export default class GroceryPage extends React.Component {
                 </Modal.Body>
               </Modal>
               <PageTitle title=" Your Grocery List" />
-                    <Container className="page__container">
-                        {message && <Alert variant="danger">{message}</Alert>}
-                        {valueData ? (
-                            <>
-                               <img src={`/images/products/${valueData.product_image}`} className="card-img"/>
-                                  <Col xs={12} md={6} lg={3} key={valueData.id}>
-                                    <div className="yourlist__card-div">
-                                    <Card.Header className="yourlist__card-header">
-                                            <div>No.List>>{valueData.id}>></div>
-                                            <div className="header__name-product">Name Product : {valueData.product_name}</div> 
-                                    </Card.Header>
-                                        <Card.Text className="yourlist__card-text">
-                                            Product Price :  {valueData.product_price}
-                                    </Card.Text>
-                                        <Card.Text className="yourlist__card-text">
-                                            Product Size : {valueData.sizes}
-                                    </Card.Text>
-                                    </div>
-                                    <Button className="yourlist__buttonAdd">Add To Cart</Button>
-                                   <div className="yourlist__buttonDelete"><i class="fa fa-remove"></i></div> 
-                                </Col>
-                            </>
-                        ) : <Spinner animation="border" variant="info" />
-                        }
-                    </Container>
+              <Container className="page__container">
+              {valueData && valueData.length?(
+
+                <Row>
+                {valueData ? (
+
+                  valueData.map((itemList)=>{
+                    console.log('eleeem',itemList.product_image);
+                      
+                    return  <Col xs={12} md={12} lg={12} key={itemList.id}>
+                    <img src={`/images/products/${itemList.product_image}`} className="card-img" />
+                    <div className="yourlist__card-div">
+                        <Card.Header className="yourlist__card-header">
+                          <div>No.List>>{itemList.id}>></div>
+                          <div className="header__name-product">Name Product : {itemList.product_name}</div>
+                        </Card.Header>
+                        <Card.Text className="yourlist__card-text">
+                          Product Price :  {itemList.product_price}
+                        </Card.Text>
+                        <Card.Text className="yourlist__card-text">
+                          Product Size : {itemList.sizes}
+                        </Card.Text>
+                      </div>
+                    </Col>
+                  })) : <Spinner animation="border" variant="info" />}
+                </Row>
+              ):(
+                <>
+                <span>There is no list until now</span>
+                <Button className="yourlist__button" onClick={this.handleCreateList}>create list</Button>
+                </>
+              )}
+            </Container>
+          
             </>
           )}
        </>
