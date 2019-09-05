@@ -285,11 +285,11 @@ app.get('/api/get-all-data-lists', getAllDataLists)
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 
-app.use(express.static(path.join(__dirname, 'client', 'build')));
+// app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-app.get('*', (_req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
+// app.get('*', (_req, res) => {
+//     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+// });
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
