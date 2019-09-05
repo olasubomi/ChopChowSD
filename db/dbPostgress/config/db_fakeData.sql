@@ -46,15 +46,15 @@ VALUES
     null
   ),(
     6,
-    'Blueberries',
-    'blueberries.jpeg',
+    'Oregano',
+    'oregano.jpeg',
     1.00,
     '1lbs',
     null
   ),(
     7,
     'Squash Potatoes',
-    'potatoes.jpg',
+    'red_potatoes.jpg',
     8.99,
     '50lbs',
     null
