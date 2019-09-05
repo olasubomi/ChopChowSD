@@ -116,10 +116,11 @@ this.setState({ Authentication: false, show: true });
               {message && <Alert variant="danger">{message}</Alert>}
             <Container className="page__container">
               {valueData && valueData.length?(
-
                 <Row>
                 {valueData ? (
                   valueData.map((itemList)=>{
+                    console.log(6000,itemList.product_image);
+                    
                     return  <Col xs={12} md={12} lg={12} key={itemList.id}>
                     <img src={`/images/products/${itemList.product_image}`} className="card-img" />
                     <div className="yourlist__card-div">
@@ -224,11 +225,7 @@ this.setState({ Authentication: false, show: true });
                 {valueData ? (
 
                   valueData.map((itemList)=>{
-                    console.log();
-                    
-                    console.log('eleeem',itemList.product_image);
-                      
-                    return  <Col xs={12} md={12} lg={12} key={itemList.id}>
+                  return  <Col xs={12} md={12} lg={12} key={itemList.id}>
                     <img src={`/images/products/${itemList.product_image}`} className="card-img" />
                     <div className="yourlist__card-div">
                         <Card.Header className="yourlist__card-header">
@@ -245,12 +242,6 @@ this.setState({ Authentication: false, show: true });
                     </Col>
                   })) : <Spinner animation="border" variant="info" />}
                 </Row>
-              // ):(
-              //   <>
-              //   <span>There is no list until now</span>
-              //   <Button className="yourlist__button" onClick={this.handleCreateList}>create list</Button>
-              //   </>
-              // )}
             </Container>
           
             </>
