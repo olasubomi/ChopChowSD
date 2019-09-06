@@ -25,8 +25,7 @@ export default class GroceryPage extends React.Component {
     addListClick:false,
     deleteListClick:false,
     showInsert:false,
-    showRemove:false,
-    loading:false
+    showRemove:false
   }
 
    handleClick = () => {
@@ -53,7 +52,6 @@ export default class GroceryPage extends React.Component {
           } else if (response.status >= 500) {
             this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
           } else {
-            this.setState({loading:false})
             window.location.href = '/grocery'
             return this.setState({  messageSuccess: 'login sucessfully ', messageErr: '' ,Authentication: true })
           }
@@ -69,45 +67,37 @@ export default class GroceryPage extends React.Component {
     const { auth } = this.props;
 
      this.setState({ Authentication: auth })
-     fetch('/api/grocery', {
+    const data = await fetch('/api/grocery', {
       method: 'GET',
       credentials: 'same-origin',
       headers: {
         'Content-type': 'application/json',
       },
     })
-   .then(res=>{
-   return res.json()
+    let response = await data.json()
+     if (response.success && response.data) {
+      if (this.props.showLogin === false) {
 
-  }) 
-  .then(response=>{
-    if (response.success && response.data) {
-     if (this.props.showLogin === false) {
-        this.setState({ Authentication: true, show: false });
-      } else {
-this.setState({ Authentication: false, show: true });
-}
-} else {
-  this.setState({ isAuthenticated: false })
-}
-      this.setState({ customerId: response.data })
-     const { customerId } = this.state;
-     fetch(`/api/getList/${customerId}`, {
-       method: 'GET',
-       credentials: 'same-origin',
-       headers: {
-         'Content-Type': 'application/json',
-       },
+         this.setState({ Authentication: true, show: false });
 
-      })
-       .then(res => res.json())
-       .then(response => {
-         if (response) {//all lists for this customer
-            this.setState({ valueData: response.data })
-         }
+       } else {
 
-        }).catch(() => {
-         this.setState({ message: 'Sorry , Internal Server ERROR' })
+         this.setState({ Authentication: false, show: true });
+
+       }
+
+
+       this.setState({ customerId: response.data })
+      const { customerId } = this.state;
+      fetch(`/getList/${customerId}`, {
+
+
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+
        })
         .then(res => res.json())
         .then(response => {
@@ -124,7 +114,9 @@ this.setState({ Authentication: false, show: true });
          }).catch(() => {
           this.setState({ message: 'Sorry , Internal Server ERROR' })
         })
-    }) 
+    } else {
+      this.setState({ isAuthenticated: false })
+    }
     
    }
    handleAddToCart=()=>{
@@ -135,10 +127,15 @@ this.setState({ Authentication: false, show: true });
     this.setState({showRemove:true})
 
    }
-   handleDeleteItem=()=>{
+   handleDeleteItem=(idItem)=>{
+     console.log(41414214,idItem);
      
-    const { customerId } = this.state;
-    fetch(`/api/remove-list/${customerId}`, {
+    // const { valueData } = this.state;
+    // // valueData.map((idItem)=>{
+    // //   console.log('alaa',idItem.id);
+      
+    // // })
+    fetch(`/api/remove-list/${idItem}`, {
         method: 'DELETE',
         headers: {
             Accept: 'application/json',
@@ -218,13 +215,19 @@ handleCreateList=()=>{
     this.setState({ Insert: false });
   };
 
-
-   
-
-
    render() {
-    const {valueId, valueProductName,valueProductImage,valueProductSize,valueProductPrice,valuePricePerOunce, valueData, message, email, password, messageErr, messageSuccess,loading} = this.state;
+    const {valueId, valueProductName,valueProductImage,valueProductSize,valueProductPrice,valuePricePerOunce, valueData, message, email, password, messageErr, messageSuccess, show ,addListClick,deleteListClick,showInsert,showRemove} = this.state;
     const { auth } = this.props;
+    console.log(22222,addListClick);
+    console.log('dataaaccc',valueData);
+
+    console.log('id',valueId);
+    console.log('name',valueProductName);
+    console.log('image',valueProductImage);
+    console.log('size',valueProductSize);
+    console.log('price',valueProductPrice);
+    console.log('price once',valuePricePerOunce);
+    
      return (
       <>
         {auth ? (
@@ -233,16 +236,22 @@ handleCreateList=()=>{
               {message && <Alert variant="danger">{message}</Alert>}
             <Container className="page__container">
               {valueData && valueData.length?(
+
                 <Row>
                 {valueData ? (
+
                   valueData.map((itemList)=>{
-                    
-                    return <> 
-                    <Col xs={12} md={12} lg={12} key={itemList.id}>
+                    let idItem = itemList.id;
+                    console.log('eleeem',itemList.product_image);
+                      
+                    return  <Col xs={12} md={12} lg={12} key={idItem}>
+                      {/* <div> */}
                     <img src={`/images/products/${itemList.product_image}`} className="card-img" />
+                   {/* <Card  className="page__container__card" key={itemList.id}> */}
+
                     <div className="yourlist__card-div">
                         <Card.Header className="yourlist__card-header">
-                          <div>No.List>>{itemList.id}>></div>
+                          <div>No.List>>{idItem}>></div>
                           <div className="header__name-product">Name Product : {itemList.product_name}</div>
                         </Card.Header>
                         <Card.Text className="yourlist__card-text">
@@ -252,27 +261,149 @@ handleCreateList=()=>{
                           Product Size : {itemList.sizes}
                         </Card.Text>
                       </div>
+                   {/* </Card> */}
+                      {/* </div> */}
+                      <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
+                      {showInsert?(
+                        <Modal show={showInsert} onHide={this.handleClose} className="modal" backdrop="static">
+                          <Modal.Body>
+                          <Form.Group>
+                        <Form.Label>Product Id:</Form.Label>
+                        <Form.Control
+                          type="number"
+                          name="valueId"
+                          value={valueId}
+                          placeholder="Enter id list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Name :</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="valueProductName"
+                          value={valueProductName}
+                          placeholder="Enter name list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Image :</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="valueProductImage"
+                          value={valueProductImage}
+                          placeholder="Enter image list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+  
+                      <Form.Group>
+                        <Form.Label>Product Price :</Form.Label>
+                        <Form.Control
+                          type="number"
+                          name="valueProductPrice"
+                          value={valueProductPrice}
+                          placeholder="Enter price list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Size :</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="valueProductSize"
+                          value={valueProductSize}
+                          placeholder="Enter size list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Price Per Ounce :</Form.Label>
+                        <Form.Control
+                          type="number"
+                          name="valuePricePerOunce"
+                          value={valuePricePerOunce}
+                          placeholder="Enter Price Per Ounce list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      
+                      <p className="msg-success">{messageSuccess}</p>
+                      <p className="msg-err">{messageErr}</p>
+                          </Modal.Body>
+                          <Modal.Footer className="confirm__success">
+                                  <Button
+                                    variant="secondary"
+                                    onClick={this.handleClose}
+                                  >
+                                    Close
+                                  </Button>
+                                  <Button
+                                    variant="danger"
+                                    onClick={this.handleInsertItem}
+                                  >
+                                    Insert
+                                  </Button>
+                                </Modal.Footer>
+                        </Modal>
+                      ):null}
+                      <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={this.handleRemoveFromCart} ></i></div>
+                        {showRemove?(
+                          <Modal show={showRemove} onHide={this.handleClose}>
+                                <Modal.Body>
+                                  Are you sure to delete this offer ?!
+                                </Modal.Body>
+                                <Modal.Footer className="confirm__delete">
+                                  <Button
+                                    variant="secondary"
+                                    onClick={this.handleClose}
+                                  >
+                                    Close
+                                  </Button>
+
+                                  <Button
+                                    variant="danger"
+                                    onClick={this.handleDeleteItem(idItem)}
+                                  >
+                                    Delete
+                                  </Button>
+                                </Modal.Footer>
+                              </Modal>
+                          ):null}
+                      
                     </Col>
-                        <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
-                        <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={this.handleRemoveFromCart} ></i></div>
-                 </>
-                 })) : <Spinner animation="border" variant="info" />}
+                  })
+                  // {console.log(111111,valueData.product_image)}
+                  // {console.log(222222,valueData.product_price)}
+  
+                      
+  
+                      
+                   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+                ) : <Spinner animation="border" variant="info" />
+                }
                 </Row>
               ):(
                 <>
                 <span>There is no list until now</span>
-                <Button className="yourlist__button" onClick={this.handleCreateList}>create list</Button>
+                       <Button className="yourlist__buttonAdd" onClick={this.handleCreateList}>create list</Button>
                 </>
               )}
             </Container>
           </>
         ) : (
-
-          <>
-             {loading?(
-              
-              <Spinner animation="border" variant="info" />
-              ):null}
+            <>
+               
                <Modal show={true} onHide={this.handleClose} className="modal" backdrop="static">
                 <Modal.Body>
                   <Form className="login__form">
@@ -326,8 +457,7 @@ handleCreateList=()=>{
                       onClick={this.handleClick}
                     >
                       Log in
-                    </Button>
-                   
+                              </Button>
                     <Form.Text className="login__form__text-muted">
                       Don’t have an account? {''}
                        <Link className="link-signup-word" to="/signup">
@@ -335,7 +465,7 @@ handleCreateList=()=>{
                             </Link>
                       <br />
                       or
-                              <Link className="link-guest-word" to="/grocery-empty">
+                              <Link className="link-guest-word" to="/aguest">
                         continue as guest
                             </Link>
                      </Form.Text>
@@ -343,40 +473,34 @@ handleCreateList=()=>{
                 </Modal.Body>
               </Modal>
               <PageTitle title=" Your Grocery List" />
-              <Container className="page__container">
-
-                <Row>
-                {valueData ? (
-
-                  valueData.map((itemList)=>{
-                  return <>
-                   <Col xs={12} md={12} lg={12} key={itemList.id}>
-                      <img src={`/images/products/${itemList.product_image}`} className="card-img" />
-                    <div className="yourlist__card-div">
-                        <Card.Header className="yourlist__card-header">
-                          <div>No.List>>{itemList.id}>></div>
-                          <div className="header__name-product">Name Product : {itemList.product_name}</div>
-                        </Card.Header>
-                        <Card.Text className="yourlist__card-text">
-                          Product Price :  {itemList.product_price}
-                        </Card.Text>
-                        <Card.Text className="yourlist__card-text">
-                          Product Size : {itemList.sizes}
-                        </Card.Text>
-                      </div>
-                    </Col>
-                    
-                         <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
-                         <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={this.handleRemoveFromCart} ></i></div>
-                  </>
-                  })) : <Spinner animation="border" variant="info" />}
-                </Row>
-            </Container>
-          
+                    <Container className="page__container">
+                        {message && <Alert variant="danger">{message}</Alert>}
+                        {valueData ? (
+                            <>
+                               <img src={`/images/products/${valueData.product_image}`} className="card-img"/>
+                                  <Col xs={12} md={6} lg={3} key={valueData.id}>
+                                    <div className="yourlist__card-div">
+                                    <Card.Header className="yourlist__card-header">
+                                            <div>No.List>>{valueData.id}>></div>
+                                            <div className="header__name-product">Name Product : {valueData.product_name}</div> 
+                                    </Card.Header>
+                                        <Card.Text className="yourlist__card-text">
+                                            Product Price :  {valueData.product_price}
+                                    </Card.Text>
+                                        <Card.Text className="yourlist__card-text">
+                                            Product Size : {valueData.sizes}
+                                    </Card.Text>
+                                    </div>
+                                    <Button className="yourlist__buttonAdd" >Add To Cart</Button>
+                                   <div className="yourlist__buttonDelete"><i class="fa fa-remove"></i></div> 
+                                </Col>
+                            </>
+                        ) : <Spinner animation="border" variant="info" />
+                        }
+                    </Container>
             </>
           )}
        </>
     )
   }
-
 }
