@@ -40,8 +40,8 @@ module.exports = async () => {
         },
         {
             id:6,
-            product_name: "Blueberries",
-            product_image: 'blueberries.jpg',
+            product_name: "Oregano",
+            product_image: 'oregano.jpg',
             product_price: 1.00,
             sizes: '1lbs',
             price_per_ounce:null
@@ -49,7 +49,7 @@ module.exports = async () => {
         {
             id:7,
             product_name: "Squash Potatoes",
-            product_image: 'potatoes.jpg',
+            product_image: 'red_potatoes.jpg',
             product_price: 8.99,
             sizes: '50lbs',
             price_per_ounce:null
