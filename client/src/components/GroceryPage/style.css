@@ -4,7 +4,7 @@
 
   .page__container {
 
-    margin-left: 270px;
+    margin-left: 164px;
     margin-top: 1rem;
     height: 393px;
     width: 73%;
@@ -48,7 +48,7 @@
 
   .yourlist__card-header {
     border-bottom: none !important;
-    background: rgba(195, 195, 193, 0.47) !important;
+    background: rgba(243, 243, 116, 0.47) !important;
     margin-left: -19px;
     margin-top: -27px;
     padding-left: 19px;
@@ -71,9 +71,10 @@
     border-radius: 33px;
   }
   .yourlist__buttonDelete {
-    margin-top: -151px;
-    margin-left: 246px;
-  }
+    margin-top: -150px;
+    margin-left: 904px;
+    cursor: pointer;
+}
   .fa-remove:before, .fa-close:before, .fa-times:before {
     content: "\f00d";
     font-size: 255%;
@@ -87,6 +88,7 @@
     border: 51px;
     border-radius: 33px;
   }
+ 
   .modal-content {
     width: 154%;
     margin-left: -139px;
@@ -131,6 +133,17 @@
     margin-left: 9px;
     margin-top: 91px;
     cursor: pointer;
+  }
+  .yourlist__buttonAdd {
+    margin-top: -145px;
+    margin-left: 685px;
+    width: 154px;
+    height: 35px;
+    cursor: pointer;
+  }
+  .fa-remove {
+    margin-left: -22px;
+    margin-top: 3px;
   }
   .modal-body {
     position: relative;
@@ -184,6 +197,17 @@
 }
 
 @media screen and (max-width: 768px) {
+  .yourlist__buttonAdd{
+    margin-left: 605px;
+    margin-top: -201px;
+    width: 52px;
+    height: 107px;
+  }
+  .yourlist__buttonDelete {
+    margin-left: 663px;
+    margin-top: -163px;
+  
+  }
   .card-img {
     width: 54px;
     height: 108px;
@@ -204,8 +228,8 @@
     width: 104px;
   }
   .page__container {
-    width: 580px;
-    margin-left: 97px;
+    width: 574px;
+    margin-left: 31px;
   }
 }
 
@@ -239,9 +263,17 @@
 }
 
 @media screen and (max-width: 414px) {
+  .yourlist__buttonAdd{
+    margin-left: 330px;
+    margin-top: -241px;
+    width: 52px;
+    height: 107px;
+  }
   .yourlist__buttonDelete {
-    margin-left: 181px;
-    margin-top: -200px;
+    margin-left: 308px;
+    margin-top: -300px;
+
+  
   }
   .yourlist__card-div {
     margin-left: 188px;
@@ -261,7 +293,8 @@
     width: 140px
   }
   .page__container {
-    width: 356px;
+    width: 273px;
+    margin-left: -25px;
   }
 }
 
@@ -274,11 +307,11 @@
 
 @media screen and (max-width: 320px) {
   .yourlist__buttonDelete {
-    margin-left: 148px;
-    margin-top: -200px;
+    margin-left: 232px;
+    margin-top: -316px;
   }
   .yourlist__card-div {
-    margin-left: 166px;
+    margin-left: 120px;
     width: 83x;
   }
   .yourlist__button {
@@ -289,7 +322,7 @@
   .card-img {
     width: 51px;
     height: 91px;
-    margin-left: 71px;
+    margin-left: 32px;
     margin-top: 149px;
   }
   .yourlist__card-header {
@@ -299,8 +332,13 @@
     width: 310px;
     margin-left: -1px;
   }
+  .yourlist__buttonAdd {
+    margin-left: 253px;
+    margin-top: -241px;
+    width: 52px;
+    height: 107px;
+  }
 }
-
 @media screen and (max-width: 411px) {
   .page__container {
     width: 351px;

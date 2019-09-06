@@ -19,6 +19,8 @@ import ProductsSection from './components/productSection/ProductsPage';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
+import GroceryPageEmpty from './components/GroceryPageEmpty';
+
 class App extends Component {
 
 
@@ -711,6 +713,17 @@ handleLogout = () => {
                         <GroceryPage
                         showLogin={!isAuthenticated}
                         auth={isAuthenticated}
+                        /> 
+                        
+                        )}
+
+                        />
+                        <Route 
+                    exact 
+                    path="/grocery-empty" 
+                    render={props=>(
+                        <GroceryPageEmpty
+                        
                         /> 
                         
                         )}

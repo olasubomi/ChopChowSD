@@ -16,7 +16,7 @@ export default class GroceryPage extends React.Component {
     messageErr: false,
     messageSuccess: false,
     show: false,
-    loading:true
+    loading:false
   }
 
    handleClick = () => {
@@ -122,7 +122,8 @@ this.setState({ Authentication: false, show: true });
                 {valueData ? (
                   valueData.map((itemList)=>{
                     
-                    return  <Col xs={12} md={12} lg={12} key={itemList.id}>
+                    return <> 
+                    <Col xs={12} md={12} lg={12} key={itemList.id}>
                     <img src={`/images/products/${itemList.product_image}`} className="card-img" />
                     <div className="yourlist__card-div">
                         <Card.Header className="yourlist__card-header">
@@ -137,7 +138,10 @@ this.setState({ Authentication: false, show: true });
                         </Card.Text>
                       </div>
                     </Col>
-                  })) : <Spinner animation="border" variant="info" />}
+                        <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
+                        <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={this.handleRemoveFromCart} ></i></div>
+                 </>
+                 })) : <Spinner animation="border" variant="info" />}
                 </Row>
               ):(
                 <>
@@ -207,7 +211,8 @@ this.setState({ Authentication: false, show: true });
                       onClick={this.handleClick}
                     >
                       Log in
-                              </Button>
+                    </Button>
+                   
                     <Form.Text className="login__form__text-muted">
                       Don’t have an account? {''}
                        <Link className="link-signup-word" to="/signup">
@@ -215,7 +220,7 @@ this.setState({ Authentication: false, show: true });
                             </Link>
                       <br />
                       or
-                              <Link className="link-guest-word" to="/aguest">
+                              <Link className="link-guest-word" to="/grocery-empty">
                         continue as guest
                             </Link>
                      </Form.Text>
@@ -229,7 +234,8 @@ this.setState({ Authentication: false, show: true });
                 {valueData ? (
 
                   valueData.map((itemList)=>{
-                  return  <Col xs={12} md={12} lg={12} key={itemList.id}>
+                  return <>
+                   <Col xs={12} md={12} lg={12} key={itemList.id}>
                       <img src={`/images/products/${itemList.product_image}`} className="card-img" />
                     <div className="yourlist__card-div">
                         <Card.Header className="yourlist__card-header">
@@ -243,8 +249,11 @@ this.setState({ Authentication: false, show: true });
                           Product Size : {itemList.sizes}
                         </Card.Text>
                       </div>
-                    
                     </Col>
+                    
+                         <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
+                         <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={this.handleRemoveFromCart} ></i></div>
+                  </>
                   })) : <Spinner animation="border" variant="info" />}
                 </Row>
             </Container>
