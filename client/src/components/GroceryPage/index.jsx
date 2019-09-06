@@ -103,9 +103,7 @@ this.setState({ Authentication: false, show: true });
   })
    }
    
-   handleClose = e => {
-    if (e) e.stopPropagation();
-  };
+
 
    render() {
     const { valueData, message, email, password, messageErr, messageSuccess,loading} = this.state;

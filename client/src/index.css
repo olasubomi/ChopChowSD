@@ -256,3 +256,10 @@ Show the link that contains should open and close the topnav (.icon) */
 }
 /* ============================================================================== */
 
+.grocery-page-empty__message {
+    
+  margin-left: 500px;
+  
+  color: rgb(255, 94, 0);
+
+}

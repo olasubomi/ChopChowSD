@@ -19,7 +19,6 @@ import ProductsSection from './components/productSection/ProductsPage';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
-import GroceryPageEmpty from './components/GroceryPageEmpty/index';
 
 class App extends Component {
 
@@ -722,13 +721,12 @@ handleLogout = () => {
                     exact 
                     path="/grocery-empty" 
                     render={props=>(
-                        <GroceryPageEmpty
-                        
-                        /> 
-                        
-                        )}
+                    
+                            <span className="grocery-page-empty__message">Sorry you must make log in to seen grocery list </span>
 
-                        />
+                       
+                        
+                        )}/>
                         
                     <Route path="/products" render={(props) => (
                         <ProductsSection />
