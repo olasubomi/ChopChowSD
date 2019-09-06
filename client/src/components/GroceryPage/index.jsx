@@ -16,6 +16,7 @@ export default class GroceryPage extends React.Component {
     messageErr: false,
     messageSuccess: false,
     show: false,
+    loading:true
   }
 
    handleClick = () => {
@@ -42,6 +43,7 @@ export default class GroceryPage extends React.Component {
           } else if (response.status >= 500) {
             this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
           } else {
+            this.setState({loading:false})
             window.location.href = '/grocery'
             return this.setState({  messageSuccess: 'login sucessfully ', messageErr: '' ,Authentication: true })
           }
@@ -106,7 +108,7 @@ this.setState({ Authentication: false, show: true });
   };
 
    render() {
-    const { valueData, message, email, password, messageErr, messageSuccess} = this.state;
+    const { valueData, message, email, password, messageErr, messageSuccess,loading} = this.state;
     const { auth } = this.props;
      return (
       <>
@@ -119,7 +121,6 @@ this.setState({ Authentication: false, show: true });
                 <Row>
                 {valueData ? (
                   valueData.map((itemList)=>{
-                    console.log(6000,itemList.product_image);
                     
                     return  <Col xs={12} md={12} lg={12} key={itemList.id}>
                     <img src={`/images/products/${itemList.product_image}`} className="card-img" />
@@ -147,8 +148,12 @@ this.setState({ Authentication: false, show: true });
             </Container>
           </>
         ) : (
-            <>
-               
+
+          <>
+             {loading?(
+              
+              <Spinner animation="border" variant="info" />
+              ):null}
                <Modal show={true} onHide={this.handleClose} className="modal" backdrop="static">
                 <Modal.Body>
                   <Form className="login__form">
@@ -219,14 +224,13 @@ this.setState({ Authentication: false, show: true });
               </Modal>
               <PageTitle title=" Your Grocery List" />
               <Container className="page__container">
-              {/* {valueData && valueData.length?( */}
 
                 <Row>
                 {valueData ? (
 
                   valueData.map((itemList)=>{
                   return  <Col xs={12} md={12} lg={12} key={itemList.id}>
-                    <img src={`/images/products/${itemList.product_image}`} className="card-img" />
+                      <img src={`/images/products/${itemList.product_image}`} className="card-img" />
                     <div className="yourlist__card-div">
                         <Card.Header className="yourlist__card-header">
                           <div>No.List>>{itemList.id}>></div>
@@ -239,6 +243,7 @@ this.setState({ Authentication: false, show: true });
                           Product Size : {itemList.sizes}
                         </Card.Text>
                       </div>
+                    
                     </Col>
                   })) : <Spinner animation="border" variant="info" />}
                 </Row>

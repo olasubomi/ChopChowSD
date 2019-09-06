@@ -1,13 +1,12 @@
 /* grocery page */
 
 @media screen and (max-width: 1920px) {
+
   .page__container {
-    /* background: linear-gradient(to right, #ffffff, #ec8a51); */
-    /* box-shadow: 0 0 3px rgba(0, 0, 0, .25); */
-    padding: 20px;
+
     margin-left: 270px;
     margin-top: 1rem;
-    height: 414px;
+    height: 393px;
     width: 73%;
   }
   .yourlist__card {
@@ -23,25 +22,33 @@
   .yourlist__card:hover {
     box-shadow: 0 0 30px -15px rgba(0, 0, 0, 0.3);
   }
-  .card-image {
-    margin-top: 17px;
-    margin-bottom: 17px;
-    margin-left: 16px;
-  }
+ 
   .card-img {
-    width: 155px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+    width: 160px;
     height: 52%;
-    margin-top: 57px;
-    margin-bottom: -10px;
+    margin-top: 0px;
+    margin-bottom: -103px;
     margin-left: 50px;
   }
+
   .yourlist__card-div {
-    margin-top: -114px;
+    margin-top: 0rem;
     margin-left: 393px;
+    /* margin-bottom: 3rem; */
   }
+  @media (min-width: 992px){
+.col-lg-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 2rem;
+}
+  }
+
   .yourlist__card-header {
     border-bottom: none !important;
-    background: rgba(245, 243, 240, 0.47) !important;
+    background: rgba(195, 195, 193, 0.47) !important;
     margin-left: -19px;
     margin-top: -27px;
     padding-left: 19px;
@@ -168,7 +175,7 @@
     margin-top: -7px;
   }
   .yourlist__card-div {
-    margin-left: -190px
+    margin-left: 23rem
   }
   .yourlist__button {
     margin-top: 80px;
@@ -180,15 +187,17 @@
   .card-img {
     width: 54px;
     height: 108px;
-    margin-left: -39px;
+    margin-left: 144px;
   }
   .fa-remove {
     margin-left: 21px;
     margin-top: 2px;
   }
   .yourlist__card-div {
-    margin-left: -100px
-  }
+    margin-left: 303px;
+    margin-right: -121px;
+    margin-bottom: 7rem;
+}
   .yourlist__button {
     margin-top: 80px;
     margin-left: 159px;
@@ -201,10 +210,7 @@
 }
 
 @media screen and (max-width: 375px) {
-  /* .fa-remove {
-    margin-left: -68px;
-    margin-top: 2px;
-} */
+  
   .yourlist__buttonDelete {
     margin-left: 177px;
     margin-top: -200px;
@@ -238,7 +244,7 @@
     margin-top: -200px;
   }
   .yourlist__card-div {
-    margin-left: 28px;
+    margin-left: 188px;
     width: 114px;
   }
   .yourlist__button {
@@ -272,7 +278,7 @@
     margin-top: -200px;
   }
   .yourlist__card-div {
-    margin-left: 28px;
+    margin-left: 166px;
     width: 83x;
   }
   .yourlist__button {
