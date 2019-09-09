@@ -20,7 +20,7 @@ const authunticationLogout = require('./controllers/authentication/authunticatio
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 4555;
+const port = process.env.PORT || 4577;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
@@ -28,7 +28,7 @@ const { getList } = require("./controllers/list/getList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
 // const appendItem = require('./controllers/list/appendItem')
 const removeItem = require('./controllers/list/removeItem');
-// const createList = require('./controllers/list/createList')
+const createList = require('./controllers/list/createList')
 const removeList = require('./controllers/list/removeList')
 const getIdsItems = require('./controllers/list/getIdsItems')
 
@@ -290,7 +290,7 @@ app.get('/api/get-all-data-lists', getAllDataLists)
 // app.post('/api/appendItem',appendItem)
 app.delete('/api/remove-list/:customerId',authenticationVerify,removeList)
 app.delete('/api/remove-item/:itemId/:customerId',authenticationVerify,removeItem)
-// app.post('/api/create-list/:itemId/:customerId',createList)
+app.post('/api/create-list/:itemId/:customerId',createList)
 app.get('/api/get-ids-items/:customerId',getIdsItems)
 
 app.get('/hash', hashPassword);

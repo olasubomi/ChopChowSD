@@ -25,6 +25,12 @@ export default class GroceryPage extends React.Component {
     showCreate:false,
     idsItems:null,
     deletedItemsId:null,
+    valueId:'',
+    valueProductName:'',
+    valueProductImage:'',
+    valueProductPrice:'',
+    valueProductSize:'',
+    valuePricePerOunce:'',
 
   }
 
@@ -194,6 +200,41 @@ this.setState({ Authentication: false, show: true });
           });
         })
    }
+   this.handleShowCreateList=()=>{
+    this.setState({showCreate:true})
+    
+  }
+   this.handleCreateList=()=>{
+    const {showCreate,valueId,valueProductName,valueProductImage,valueProductPrice,valuePricePerOunce,valueProductSize}=this.state;
+    const {customerId}=this.state;
+  const itemId = valueId;
+    fetch(`/api/create-list/${itemId}/${customerId}`,{
+      method:'POST',
+      credentials: 'same-origin',
+  
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: valueId,
+        product_name:valueProductName,
+        product_image:valueProductImage,
+        product_price:valueProductPrice,
+        sizes:valueProductSize,
+        price_per_ounce: valuePricePerOunce
+      }),
+    })
+    .then(res=>{
+      console.log(6666,res);
+     return res.json();
+      
+    })
+    .then(response=>{
+      console.log(8888,response);
+      
+    })
+      
+  }
    }
    
 
@@ -297,7 +338,96 @@ this.setState({ Authentication: false, show: true });
               ):(
                 <>
                 <span>There is no list until now</span>
-                <Button className="yourlist__button" onClick={this.handleCreateList}>create list</Button>
+                <Button className="yourlist__button" onClick={this.handleShowCreateList}>create list</Button>
+                {showCreate?(
+                        <Modal show={showCreate} onHide={this.handleClose} className="modal" backdrop="static">
+                          <Modal.Body>
+                          <Form.Group>
+                        <Form.Label>Product Id:</Form.Label>
+                        <Form.Control
+                          type="number"
+                          name="valueId"
+                          value={valueId}
+                          placeholder="Enter id list"
+                          onChange={this.handleChange}
+                        />
+                         {/* <Typeahead
+                    // options={valueAllDataLists}
+                    placeholder="all ids"
+                    id="typeahead"
+                />  */}
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Name :</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="valueProductName"
+                          value={valueProductName}
+                          placeholder="Enter name list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Image :</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="valueProductImage"
+                          value={valueProductImage}
+                          placeholder="Enter image list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+  
+                      <Form.Group>
+                        <Form.Label>Product Price :</Form.Label>
+                        <Form.Control
+                          type="number"
+                          name="valueProductPrice"
+                          value={valueProductPrice}
+                          placeholder="Enter price list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Size :</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="valueProductSize"
+                          value={valueProductSize}
+                          placeholder="Enter size list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Price Per Ounce :</Form.Label>
+                        <Form.Control
+                          type="number"
+                          name="valuePricePerOunce"
+                          value={valuePricePerOunce}
+                          placeholder="Enter Price Per Ounce list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      
+                      <p className="msg-success">{messageSuccess}</p>
+                      <p className="msg-err">{messageErr}</p>
+                          </Modal.Body>
+                          <Modal.Footer className="confirm__success">
+                                  <Button
+                                    variant="secondary"
+                                    onClick={this.handleClose}
+                                  >
+                                    Close
+                                  </Button>
+                                  <Button
+                                    variant="danger"
+                                    onClick={this.handleCreateList}
+                                  >
+                                    create
+                                  </Button>
+                                </Modal.Footer>
+                        </Modal>
+                      ):null}
                 </>
               )}
             </Container>
