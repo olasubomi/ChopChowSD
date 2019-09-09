@@ -23,6 +23,9 @@ export default class GroceryPage extends React.Component {
     deletedItemId:null,
     showRemoveList:false,
     showCreate:false,
+    idsItems:null,
+    deletedItemsId:null,
+
   }
 
    handleClick = () => {
@@ -114,6 +117,29 @@ this.setState({ Authentication: false, show: true });
   this.handleShowDeleteItem=(id) =>{
    this.setState({ deletedItemId: id, showRemove: true });
  }
+ 
+ this.handleShowDeleteList=(idsItems)=> {
+  const {customerId}=this.state;
+  fetch(`/api/get-ids-items/${customerId}`, {
+   method: 'GET',
+   credentials: 'same-origin',
+   headers: {
+     'Content-Type': 'application/json',
+   },
+ 
+  })
+   .then(res => res.json())
+   .then(response => {
+     if (response) {//all lists for this customer
+       
+        this.setState({ idsItems: response.data })
+     }
+ 
+    }).catch(() => {
+     this.setState({ message: 'Sorry , Internal Server ERROR' })
+   })
+ this.setState({deletedItemsId:idsItems,showRemoveList: true });
+}
   this.handleDeleteItem=(idItem)=>{
     const {customerId, deletedItemId} = this.state;
     fetch(`/api/remove-item/${idItem}/${customerId}`, {
@@ -142,13 +168,41 @@ this.setState({ Authentication: false, show: true });
         .catch(()=>this.setState({messageErr:'Sorry , Internal Server Error'})
         )
    }
+
+   this.handleDeleteList=(customerId)=>{
+     const {deletedItemsId} = this.state
+     fetch(`/api/remove-list/${customerId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+
+    })
+        .then(res => 
+          {
+            console.log(5555555,res);
+            
+          return  res.json()
+          
+          })
+        .then(response => {
+          this.setState(prevState => {
+            const newValueData = prevState.valueData.filter(
+              item => item.id !== deletedItemsId
+            );
+            return { valueData: newValueData };
+          });
+        })
+   }
    }
    
 
 
    render() {
-    const {idsLists,showCreate,valueId,customerId,showRemoveList,deletedItemId, valueProductName,valueProductImage,valueProductSize,valueProductPrice,valuePricePerOunce, valueData, message, email, password, messageErr, messageSuccess, show ,addListClick,deleteListClick,showInsert,showRemove} = this.state;
+    const {idsItems,showCreate,valueId,customerId,showRemoveList,deletedItemId, valueProductName,valueProductImage,valueProductSize,valueProductPrice,valuePricePerOunce, valueData, message, email, password, messageErr, messageSuccess, show ,addListClick,deleteListClick,showInsert,showRemove} = this.state;
     const { auth } = this.props;
+    console.log(7777777,idsItems);
+    
      return (
       <>
         {auth ? (
@@ -158,6 +212,37 @@ this.setState({ Authentication: false, show: true });
             <Container className="page__container">
               {valueData && valueData.length?(
                 <Row>
+                   <Button className="yourlist__buttonDeleteList" 
+                      
+                      // onClick={this.handleDeleteAllItems}
+                      onClick={e => {
+                        e.stopPropagation();
+                        this.handleShowDeleteList(idsItems);
+                      }} 
+
+                      >Delete All Items</Button>
+                      {showRemoveList?(
+                          <Modal show={showRemoveList} onHide={this.handleClose}>
+                                <Modal.Body>
+                                  Are you sure to delete all this items ?!
+                                </Modal.Body>
+                                <Modal.Footer className="confirm__delete">
+                                  <Button
+                                    variant="secondary"
+                                    onClick={this.handleClose}
+                                  >
+                                    Close
+                                  </Button>
+
+                                  <Button
+                                    variant="secondary"
+                                    onClick={this.handleClose}
+                                    >
+                                    Close
+                                  </Button>
+                                </Modal.Footer>
+                              </Modal>
+                          ):null}
                 {valueData ? (
                   valueData.map((itemList)=>{
                     let idItem = itemList.id;
