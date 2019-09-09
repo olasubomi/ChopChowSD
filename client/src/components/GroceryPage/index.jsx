@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-expressions */
 import React from 'react';
 import './style.css';
+import { Typeahead } from 'react-bootstrap-typeahead';
+
 import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
 import { Container, Alert, Card, Col, Row,Form, Button, Modal } from 'react-bootstrap'
@@ -25,7 +27,11 @@ export default class GroceryPage extends React.Component {
     addListClick:false,
     deleteListClick:false,
     showInsert:false,
-    showRemove:false
+    showRemove:false,
+    deletedOfferId:null,
+    showRemoveList:false,
+    showCreate:false,
+    idsLists:null
   }
 
    handleClick = () => {
@@ -118,24 +124,79 @@ export default class GroceryPage extends React.Component {
       this.setState({ isAuthenticated: false })
     }
     
+    fetch('/api/get-ids-lists', {
+
+     method: 'GET',
+     credentials: 'same-origin',
+     headers: {
+       'Content-Type': 'application/json',
+     },
+ 
+    })
+    //  .then(res => res.json())
+    //  .then(response => {
+    //    console.log(22000,response);
+       
+    //  })
+    .then(res=>{
+      console.log(6666555,res);
+      return res.json()
+      
+    }).then(response=>{
+      console.log(8888,response);
+      this.setState({idsLists:response.data})
+    })
    }
    handleAddToCart=()=>{
     this.setState({showInsert:true})
 
    }
-   handleRemoveFromCart=()=>{
-    this.setState({showRemove:true})
+   handleShow(id) {
+     console.log("engiii",id);
+     
+    this.setState({ deletedOfferId: id, showRemove: true });
+  }
 
+  handleShowDeleteList() {
+    // const {customerId} = this.state;
+    
+   this.setState({showRemoveList: true });
+  }
+   handleDeleteList(customerId){
+    console.log('custttttomer',customerId)
+     fetch(`/api/remove-list/${customerId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+
+    })
+        .then(res => 
+          {
+            console.log(5555555,res);
+            
+          return  res.json()
+          
+          })
+        .then(response => {
+          console.log(999945695,response);
+        })
    }
+    
+ 
+
    handleDeleteItem=(idItem)=>{
+    // e.stopPropagation();
+    // this.handleShowDeleteId(idItem)
      console.log(41414214,idItem);
      
-    // const { valueData } = this.state;
-    // // valueData.map((idItem)=>{
-    // //   console.log('alaa',idItem.id);
+    // // const { valueData } = this.state;
+    // // // valueData.map((idItem)=>{
+    // // //   console.log('alaa',idItem.id);
       
-    // // })
-    fetch(`/api/remove-list/${idItem}`, {
+    // // // })
+    const {customerId, deletedOfferId} = this.state;
+    fetch(`/api/remove-item/${idItem}/${customerId}`, {
         method: 'DELETE',
         headers: {
             Accept: 'application/json',
@@ -150,8 +211,31 @@ export default class GroceryPage extends React.Component {
           
           })
         .then(response => {
-          console.log(9999,response);
+          console.log(2222,'are you delete>');
           
+          // console.log(9999,response);
+          this.setState(prevState => {
+            const newValueData = prevState.valueData.filter(
+              offer => offer.id !== deletedOfferId
+            );
+            return { valueData: newValueData };
+          });
+          // this.setState({value})
+          // fetch(`/getList/${customerId}`, {
+
+
+          //   method: 'GET',
+          //   credentials: 'same-origin',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+    
+          //  })
+          //   .then(res => res.json())
+          //   .then(response => {
+          //     //all list for this customer
+          //       console.log(4444,response);
+          //   })
                 // this.setState({
 
                 //     messageAlert: 'deleted successfully',
@@ -168,6 +252,9 @@ export default class GroceryPage extends React.Component {
         .catch(()=>this.setState({messageErr:'Sorry , Internal Server Error'})
         )
    }
+  //  handleDeleteAllItems=()=>{
+    
+  //  }
    handleInsertItem=()=>{
      const {valueId,valueProductName,valueProductImage,valueProductPrice,valuePricePerOunce,valueProductSize}=this.state;
     fetch('/api/appendItem',{
@@ -192,12 +279,29 @@ export default class GroceryPage extends React.Component {
       this.setState({messageSuccess:response.data})
     }).catch(()=>this.setState({messageErr:'Sorry, Internal Server Error'}))
    }
+handleShowCreateList=()=>{
+  this.setState({showCreate:true})
+  
+}
 handleCreateList=()=>{
-  fetch('/api/create-list',{
+  const {showCreate,valueId,valueProductName,valueProductImage,valueProductPrice,valuePricePerOunce,valueProductSize}=this.state;
+  const {customerId}=this.state;
+const itemId = this.state.valueId;
+  fetch(`/api/create-list/${itemId}/${customerId}`,{
     method:'POST',
+    credentials: 'same-origin',
+
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify({
+      
+      product_name:valueProductName,
+      product_image:valueProductImage,
+      product_price:valueProductPrice,
+      sizes:valueProductSize,
+      price_per_ounce: valuePricePerOunce
+    }),
   })
   .then(res=>{
     console.log(6666,res);
@@ -212,14 +316,17 @@ handleCreateList=()=>{
 }
    handleClose = e => {
     if (e) e.stopPropagation();
-    this.setState({ Insert: false });
+    this.setState({ showRemove: false });
   };
 
    render() {
-    const {valueId, valueProductName,valueProductImage,valueProductSize,valueProductPrice,valuePricePerOunce, valueData, message, email, password, messageErr, messageSuccess, show ,addListClick,deleteListClick,showInsert,showRemove} = this.state;
+    const {idsLists,showCreate,valueId,customerId,showRemoveList,deletedOfferId, valueProductName,valueProductImage,valueProductSize,valueProductPrice,valuePricePerOunce, valueData, message, email, password, messageErr, messageSuccess, show ,addListClick,deleteListClick,showInsert,showRemove} = this.state;
     const { auth } = this.props;
+    console.log(441414111,idsLists);
+    
     console.log(22222,addListClick);
     console.log('dataaaccc',valueData);
+console.log('idddddelee',deletedOfferId);
 
     console.log('id',valueId);
     console.log('name',valueProductName);
@@ -232,16 +339,30 @@ handleCreateList=()=>{
       <>
         {auth ? (
           <>
+          
             <PageTitle title=" Your Grocery List" />
               {message && <Alert variant="danger">{message}</Alert>}
             <Container className="page__container">
               {valueData && valueData.length?(
 
                 <Row>
+                  
+                   {/* {idsLists.map(item=>{
+                     let idsIem= item.id;
+                     return(
+                       <>
+                  <label>id:{idsIem}</label>
+                    {console.log('ggggg',idsIem+1)}
+                    </>
+                     )
+
+          })} */}
                 {valueData ? (
 
                   valueData.map((itemList)=>{
                     let idItem = itemList.id;
+                    console.log(9898,idItem);
+                    
                     console.log('eleeem',itemList.product_image);
                       
                     return  <Col xs={12} md={12} lg={12} key={idItem}>
@@ -263,6 +384,38 @@ handleCreateList=()=>{
                       </div>
                    {/* </Card> */}
                       {/* </div> */}
+                      <Button className="yourlist__buttonAdd" 
+                      
+                      // onClick={this.handleDeleteAllItems}
+                      onClick={e => {
+                        e.stopPropagation();
+                        this.handleShowDeleteList();
+                      }} 
+
+                      >Delete All Items</Button>
+                      {showRemoveList?(
+                          <Modal show={showRemoveList} onHide={this.handleClose}>
+                                <Modal.Body>
+                                  Are you sure to delete this offer ?!
+                                </Modal.Body>
+                                <Modal.Footer className="confirm__delete">
+                                  <Button
+                                    variant="secondary"
+                                    onClick={this.handleClose}
+                                  >
+                                    Close
+                                  </Button>
+
+                                  <Button
+                                    variant="danger"
+                                    onClick={this.handleDeleteList(customerId)}
+                                  
+                                  >
+                                    Delete
+                                  </Button>
+                                </Modal.Footer>
+                              </Modal>
+                          ):null}
                       <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
                       {showInsert?(
                         <Modal show={showInsert} onHide={this.handleClose} className="modal" backdrop="static">
@@ -348,7 +501,11 @@ handleCreateList=()=>{
                                 </Modal.Footer>
                         </Modal>
                       ):null}
-                      <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={this.handleRemoveFromCart} ></i></div>
+                      <div className="yourlist__buttonDelete"><i class="fa fa-remove"
+                       onClick={e => {
+                                e.stopPropagation();
+                                this.handleShow(idItem);
+                              }} ></i></div>
                         {showRemove?(
                           <Modal show={showRemove} onHide={this.handleClose}>
                                 <Modal.Body>
@@ -365,6 +522,7 @@ handleCreateList=()=>{
                                   <Button
                                     variant="danger"
                                     onClick={this.handleDeleteItem(idItem)}
+                                  
                                   >
                                     Delete
                                   </Button>
@@ -396,7 +554,96 @@ handleCreateList=()=>{
               ):(
                 <>
                 <span>There is no list until now</span>
-                       <Button className="yourlist__buttonAdd" onClick={this.handleCreateList}>create list</Button>
+                       <Button className="yourlist__buttonAdd" onClick={this.handleShowCreateList}>create list</Button>
+                       {showCreate?(
+                        <Modal show={showCreate} onHide={this.handleClose} className="modal" backdrop="static">
+                          <Modal.Body>
+                          <Form.Group>
+                        <Form.Label>Product Id:</Form.Label>
+                        <Form.Control
+                          type="number"
+                          name="valueId"
+                          value={valueId}
+                          placeholder="Enter id list"
+                          onChange={this.handleChange}
+                        />
+                         {/* <Typeahead
+                    // options={valueAllDataLists}
+                    placeholder="all ids"
+                    id="typeahead"
+                />  */}
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Name :</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="valueProductName"
+                          value={valueProductName}
+                          placeholder="Enter name list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Image :</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="valueProductImage"
+                          value={valueProductImage}
+                          placeholder="Enter image list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+  
+                      <Form.Group>
+                        <Form.Label>Product Price :</Form.Label>
+                        <Form.Control
+                          type="number"
+                          name="valueProductPrice"
+                          value={valueProductPrice}
+                          placeholder="Enter price list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Size :</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="valueProductSize"
+                          value={valueProductSize}
+                          placeholder="Enter size list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Product Price Per Ounce :</Form.Label>
+                        <Form.Control
+                          type="number"
+                          name="valuePricePerOunce"
+                          value={valuePricePerOunce}
+                          placeholder="Enter Price Per Ounce list"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      
+                      <p className="msg-success">{messageSuccess}</p>
+                      <p className="msg-err">{messageErr}</p>
+                          </Modal.Body>
+                          <Modal.Footer className="confirm__success">
+                                  <Button
+                                    variant="secondary"
+                                    onClick={this.handleClose}
+                                  >
+                                    Close
+                                  </Button>
+                                  <Button
+                                    variant="danger"
+                                    onClick={this.handleCreateList}
+                                  >
+                                    Insert
+                                  </Button>
+                                </Modal.Footer>
+                        </Modal>
+                      ):null}
                 </>
               )}
             </Container>

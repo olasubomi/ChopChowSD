@@ -28,13 +28,31 @@ module.exports=(req,res)=>{
     //     //         })
     //   });
     const {inputId,inputProductName,inputProductImage,inputProductPrice,inputSize} = req.body;
-    list.insertMany({id:inputId , product_name:inputProductName, product_image:inputProductImage,product_price:inputProductPrice,sizes:inputSize})
-    list.insertOne(req.body)
-    .then(()=>{
+    // list.insertMany({id:inputId , product_name:inputProductName, product_image:inputProductImage,product_price:inputProductPrice,sizes:inputSize})
+    // // list.insertOne(req.body)
+    // .then(()=>{
         
-        res.status(200).send({
-            data:'add successfully'
-        })
-        .catch(()=>next({code:500,msg:'internal server error'}))
+    //     res.status(200).send({
+    //         data:'add successfully'
+    //     })
+    //     .catch(()=>next({code:500,msg:'internal server error'}))
+    // })
+    var createList=new list(req.body)
+    createList.save((err,book)=>{
+        if (err) return console.error(err);
+            console.log('kkkkkk');
+            res.status(200).send({
+                        data:'add successfully'
+                    })
+
     })
+        //   list.save(function (err, book) {
+        //     console.log(555,book);
+            
+        //     if (err) return console.error(err);
+        //     // console.log('kkkkkk');
+        //     res.status(200).send({
+        //                 data:'add successfully'
+        //             })
+        //   });
 }

@@ -10,7 +10,10 @@ const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 
 require('./db/dbMongo/config/db_connection');
-// require('./db/dbMongo/config/AllData')();
+// require('./db/dbMongo/config/AllDataList')();
+// require('./db/dbMongo/config/AllDataCusomerList')();
+// require('./db/dbMongo/config/AllDataCustomer')();
+
 
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
@@ -20,7 +23,7 @@ const authunticationLogout = require('./controllers/authentication/authunticatio
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 4272;
+const port = process.env.PORT || 4445;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
@@ -28,9 +31,10 @@ const { getList } = require("./controllers/list/getList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
  
 const appendItem = require('./controllers/list/appendItem')
-const deleteItem = require('./controllers/list/deleteItem');
+const removeItem = require('./controllers/list/removeItem');
 const createList = require('./controllers/list/createList')
 const removeList = require('./controllers/list/removeList')
+const getIdsLists = require('./controllers/list/getIdsLists')
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(cookie());
@@ -292,12 +296,16 @@ app.get('/api/getList/:customerId', getList)
 app.get('/api/get-all-data-lists', getAllDataLists)
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
+app.get('/api/get-ids-lists',getIdsLists)
 app.post('/api/appendItem',appendItem)
-app.delete('/api/remove-list/:customerId',removeList)
+app.delete('/api/remove-list/:customerId',authenticationVerify,removeList)
+app.delete('/api/remove-item/:itemId/:customerId',authenticationVerify,removeItem)
 
-app.post('/api/create-list',createList)
 
-createList
+app.post('/api/create-list/:itemId/:customerId',createList)
+// app.post('/api/create-list',createList)
+
+
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 app.get('*', (_req, res) => {

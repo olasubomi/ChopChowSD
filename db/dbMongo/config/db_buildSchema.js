@@ -12,7 +12,7 @@ exports.list = mongoose.model('list', new Schema({
 
 }))
 
-exports.Customer = mongoose.model('Customer', new Schema({
+exports.customer = mongoose.model('customer', new Schema({
     id: Number,
     firstname: String,
     lastname: String,
@@ -23,6 +23,12 @@ exports.Customer = mongoose.model('Customer', new Schema({
     city: String,
     zipCode: Number,
     ipsid: Number,
+}))
+exports.customer_list = mongoose.model('customer_list', new Schema({
+    id: Number,
+    customer_id: Number,
+    list_id:Number,
+
 }))
 
 exports.admin = mongoose.model('admin', new Schema({
