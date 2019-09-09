@@ -16,7 +16,13 @@ export default class GroceryPage extends React.Component {
     messageErr: false,
     messageSuccess: false,
     show: false,
-    loading:false
+    loading:false,
+    deleteListClick:false,
+    showInsert:false,
+    showRemove:false,
+    deletedItemId:null,
+    showRemoveList:false,
+    showCreate:false,
   }
 
    handleClick = () => {
@@ -101,12 +107,47 @@ this.setState({ Authentication: false, show: true });
        })
   
   })
+  this.handleClose = e => {
+    if (e) e.stopPropagation();
+    this.setState({ showRemove: false });
+  };
+  this.handleShowDeleteItem=(id) =>{
+   this.setState({ deletedItemId: id, showRemove: true });
+ }
+  this.handleDeleteItem=(idItem)=>{
+    const {customerId, deletedItemId} = this.state;
+    fetch(`/api/remove-item/${idItem}/${customerId}`, {
+        method: 'DELETE',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+
+    })
+        .then(res => 
+          {
+            
+          return  res.json()
+          
+          })
+        .then(response => {
+          this.setState(prevState => {
+            const newValueData = prevState.valueData.filter(
+              item => item.id !== deletedItemId
+            );
+            return { valueData: newValueData };
+          });
+            
+        })
+        .catch(()=>this.setState({messageErr:'Sorry , Internal Server Error'})
+        )
+   }
    }
    
 
 
    render() {
-    const { valueData, message, email, password, messageErr, messageSuccess,loading} = this.state;
+    const {idsLists,showCreate,valueId,customerId,showRemoveList,deletedItemId, valueProductName,valueProductImage,valueProductSize,valueProductPrice,valuePricePerOunce, valueData, message, email, password, messageErr, messageSuccess, show ,addListClick,deleteListClick,showInsert,showRemove} = this.state;
     const { auth } = this.props;
      return (
       <>
@@ -119,7 +160,7 @@ this.setState({ Authentication: false, show: true });
                 <Row>
                 {valueData ? (
                   valueData.map((itemList)=>{
-                    
+                    let idItem = itemList.id;
                     return <> 
                     <Col xs={12} md={12} lg={12} key={itemList.id}>
                     <img src={`/images/products/${itemList.product_image}`} className="card-img" />
@@ -135,9 +176,35 @@ this.setState({ Authentication: false, show: true });
                           Product Size : {itemList.sizes}
                         </Card.Text>
                       </div>
-                    </Col>
                         <Button className="yourlist__buttonAdd" onClick={this.handleAddToCart}>Add To Cart</Button>
-                        <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={this.handleRemoveFromCart} ></i></div>
+                        <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={e => {
+                                e.stopPropagation();
+                                this.handleShowDeleteItem(idItem);
+                              }} ></i></div>
+                        {showRemove?(
+                          <Modal show={showRemove} onHide={this.handleClose}>
+                                <Modal.Body>
+                                  Are you sure to delete this item ?!
+                                </Modal.Body>
+                                <Modal.Footer className="confirm__delete">
+                                  <Button
+                                    variant="secondary"
+                                    onClick={this.handleClose}
+                                    >
+                                    Close
+                                  </Button>
+
+                                  <Button
+                                    variant="danger"
+                                    onClick={this.handleDeleteItem(idItem)}
+                                    
+                                    >
+                                    Delete
+                                  </Button>
+                                </Modal.Footer>
+                              </Modal>
+                          ):null}
+                          </Col>
                  </>
                  })) : <Spinner animation="border" variant="info" />}
                 </Row>
@@ -152,10 +219,10 @@ this.setState({ Authentication: false, show: true });
         ) : (
 
           <>
-             {loading?(
+             {/* {loading?(
               
               <Spinner animation="border" variant="info" />
-              ):null}
+              ):null} */}
                <Modal show={true} onHide={this.handleClose} className="modal" backdrop="static">
                 <Modal.Body>
                   <Form className="login__form">

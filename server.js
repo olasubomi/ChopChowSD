@@ -26,7 +26,10 @@ const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
 const { getList } = require("./controllers/list/getList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
- 
+// const appendItem = require('./controllers/list/appendItem')
+const removeItem = require('./controllers/list/removeItem');
+// const createList = require('./controllers/list/createList')
+// const removeList = require('./controllers/list/removeList')
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(cookie());
@@ -282,6 +285,10 @@ app.post('/api/login', authenticationLogin);
 app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
 app.get('/api/getList/:customerId', getList)
 app.get('/api/get-all-data-lists', getAllDataLists)
+// app.post('/api/appendItem',appendItem)
+// app.delete('/api/remove-list/:customerId',authenticationVerify,removeList)
+app.delete('/api/remove-item/:itemId/:customerId',authenticationVerify,removeItem)
+// app.post('/api/create-list/:itemId/:customerId',createList)
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 
