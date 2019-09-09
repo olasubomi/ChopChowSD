@@ -136,6 +136,8 @@ this.setState({ Authentication: false, show: true });
   })
    .then(res => res.json())
    .then(response => {
+    
+
      if (response) {//all lists for this customer
        
         this.setState({ idsItems: response.data })
@@ -163,6 +165,7 @@ this.setState({ Authentication: false, show: true });
           
           })
         .then(response => {
+      this.setState({messageSuccess:'delete successfull'})
           this.setState(prevState => {
             const newValueData = prevState.valueData.filter(
               item => item.id !== deletedItemId
@@ -192,6 +195,7 @@ this.setState({ Authentication: false, show: true });
           
           })
         .then(response => {
+          this.setState({messageSuccess:'delete successfull'})
           this.setState(prevState => {
             const newValueData = prevState.valueData.filter(
               item => item.id !== deletedItemsId
@@ -231,7 +235,7 @@ this.setState({ Authentication: false, show: true });
     })
     .then(response=>{
       console.log(8888,response);
-      
+      this.setState({messageSuccess:'add successfull'})
     })
       
   }
@@ -282,6 +286,7 @@ this.setState({ Authentication: false, show: true });
                                   >
                                     Delete
                                   </Button>
+                                  <span>{messageSuccess}</span>
                                 </Modal.Footer>
                               </Modal>
                           ):null}
@@ -328,6 +333,7 @@ this.setState({ Authentication: false, show: true });
                                     >
                                     Delete
                                   </Button>
+                                  <span>{messageSuccess}</span>
                                 </Modal.Footer>
                               </Modal>
                           ):null}
@@ -351,11 +357,7 @@ this.setState({ Authentication: false, show: true });
                           placeholder="Enter id list"
                           onChange={this.handleChange}
                         />
-                         {/* <Typeahead
-                    // options={valueAllDataLists}
-                    placeholder="all ids"
-                    id="typeahead"
-                />  */}
+                  
                       </Form.Group>
                       <Form.Group>
                         <Form.Label>Product Name :</Form.Label>
@@ -425,6 +427,7 @@ this.setState({ Authentication: false, show: true });
                                   >
                                     create
                                   </Button>
+                                  <span>{messageSuccess}</span>
                                 </Modal.Footer>
                         </Modal>
                       ):null}
