@@ -235,10 +235,11 @@ this.setState({ Authentication: false, show: true });
                                   </Button>
 
                                   <Button
-                                    variant="secondary"
-                                    onClick={this.handleClose}
-                                    >
-                                    Close
+                                    variant="danger"
+                                    onClick={this.handleDeleteList(customerId)}
+                                  
+                                  >
+                                    Delete
                                   </Button>
                                 </Modal.Footer>
                               </Modal>
