@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-// import { Typeahead } from 'react-bootstrap-typeahead';
+import { Typeahead } from 'react-bootstrap-typeahead';
+
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
@@ -19,7 +21,7 @@ import ProductsSection from './components/productSection/ProductsPage';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
-
+import CartPage from './components/GroceryPage/CartPage'
 class App extends Component {
 
 
@@ -54,10 +56,10 @@ class App extends Component {
                 }
 
             },
-            products: ["Garri ", "Sugar ", "Water " ],
-            product_slider: [{ingredient: "Garri", image: "garri.jpg"}, {ingredient: "Sugar", image: "sugar.jpeg"}, {ingredient: "Water", image: "water.jpeg"}],
-            quantity:[1,2,1],
-            measurements:["Cup(s)","Cup(s)","Spoon(s)"],
+            products: ["Garri ", "Sugar ", "Water "],
+            product_slider: [{ ingredient: "Garri", image: "garri.jpg" }, { ingredient: "Sugar", image: "sugar.jpeg" }, { ingredient: "Water", image: "water.jpeg" }],
+            quantity: [1, 2, 1],
+            measurements: ["Cup(s)", "Cup(s)", "Spoon(s)"],
             instructions: ["Mix Garri and Sugar in a bowl", "Add ice, water and groundnuts as preffered", "Enjoy!"],
             servings: 1,
             display: false
@@ -93,9 +95,9 @@ class App extends Component {
 
             },
             products: ["Flour ", "Sugar ", "Yeast ", "Water "],
-            product_slider: [{ingredient: "Flour", image: "flour.jpg"}, {ingredient: "Sugar", image: "sugar.jpeg"}, {ingredient: "Yeast", image: "yeast.jpg"}, {ingredient: "Water", image: "water.jpeg"}],
-            quantity:[1,2,1],
-            measurements:["Cup(s)","Cup(s)","Spoon(s)"],
+            product_slider: [{ ingredient: "Flour", image: "flour.jpg" }, { ingredient: "Sugar", image: "sugar.jpeg" }, { ingredient: "Yeast", image: "yeast.jpg" }, { ingredient: "Water", image: "water.jpeg" }],
+            quantity: [1, 2, 1],
+            measurements: ["Cup(s)", "Cup(s)", "Spoon(s)"],
             instructions: ["Mix salt, sugar, water, and yeast . Set aside for 5 minutes.",
                 "Add flour and mix.",
                 "Let the mixture rise for approximately 1- 2 hours",
@@ -123,12 +125,12 @@ class App extends Component {
                 "Chop-Chow guarantees one of the best methods in Cooking Jollof rice. Chow!",
             ingredients: ["Rice- 3 Cups", "Tomatoes x 6", "Onion x 2"],
             products: ["Rice ", "Tomatoes ", "Onions "],
-            product_slider: [{ingredient: "Rice", image: "rice.jpeg"}, {ingredient: "Tomatoes", image: "tomato.jpg"}, {ingredient: "Onions", image: "onion.jpg"}],
-            instructions:[ "Tomato , Onion Tatashe, Rodo Blended in Blender",
-            "Vegetable Oil, Low Heat in Pan",
-            "Add onions to Pan", "Add Tomato Paste", "Add Powdered Ginger, Garlic and Curry",
-            "Add Blended Tomatoes mix (If too thick, add water)","Add seasoning, Maggi (Chicken Flavor), Salt",
-        "For Jollof Rice, add Bay Leaves."],
+            product_slider: [{ ingredient: "Rice", image: "rice.jpeg" }, { ingredient: "Tomatoes", image: "tomato.jpg" }, { ingredient: "Onions", image: "onion.jpg" }],
+            instructions: ["Tomato , Onion Tatashe, Rodo Blended in Blender",
+                "Vegetable Oil, Low Heat in Pan",
+                "Add onions to Pan", "Add Tomato Paste", "Add Powdered Ginger, Garlic and Curry",
+                "Add Blended Tomatoes mix (If too thick, add water)", "Add seasoning, Maggi (Chicken Flavor), Salt",
+                "For Jollof Rice, add Bay Leaves."],
             display: true
         },
         {
@@ -141,13 +143,13 @@ class App extends Component {
                 " It can serves as alternative for those trying to reduce the intake of meat and animal protein.",
             ingredients: ["Black Eyed Beans x 1 bag(350mL)", "Onions x 2", "Palm Oil- 2 Cups"],
             products: ["Black Eyed Beans ", "Onions ", "Palm Oil "],
-            product_slider: [{ingredient: "Black Eyed Beans", image: "beans.jpg"}, {ingredient: "Onions", image: "onion.jpg"}, {ingredient: "Palm Oil", image: "palm_oil.jpg"}],
-            instructions: ["Soak beans in water overnight","The next day, chop 1 onion into thin slices, cut the other one into 4 big chunks then pound/grind the pepper.",
-        "Rinse the beans and put in a sizeable pot. I rinse it twice.",
-     "Pre-cook the sliced onions with a few drops of water to soften them a bit.","When the beans is done, add salt, leave to dry up all the water and transfer the beans to another container.",
-    "Now, set a dry clean pot on the stove, pour the palm oil and heat it up till the oil melts (if congealed). Note that you should only heat it up, not bleach the oil. You will know it is hot enough when a piece of onion dropped into the oil sizzles.",
-"Add the precooked onions and stir for a bit.", "Add the ground Habanero pepper and stir till everything is heated up very well, at most 2 minutes.","Add the beans and stir for about 2 minutes. Add salt if necessary.",
-"Cover and leave to simmer for about 2 minutes and it's done."],
+            product_slider: [{ ingredient: "Black Eyed Beans", image: "beans.jpg" }, { ingredient: "Onions", image: "onion.jpg" }, { ingredient: "Palm Oil", image: "palm_oil.jpg" }],
+            instructions: ["Soak beans in water overnight", "The next day, chop 1 onion into thin slices, cut the other one into 4 big chunks then pound/grind the pepper.",
+                "Rinse the beans and put in a sizeable pot. I rinse it twice.",
+                "Pre-cook the sliced onions with a few drops of water to soften them a bit.", "When the beans is done, add salt, leave to dry up all the water and transfer the beans to another container.",
+                "Now, set a dry clean pot on the stove, pour the palm oil and heat it up till the oil melts (if congealed). Note that you should only heat it up, not bleach the oil. You will know it is hot enough when a piece of onion dropped into the oil sizzles.",
+                "Add the precooked onions and stir for a bit.", "Add the ground Habanero pepper and stir till everything is heated up very well, at most 2 minutes.", "Add the beans and stir for about 2 minutes. Add salt if necessary.",
+                "Cover and leave to simmer for about 2 minutes and it's done."],
             display: true
         },
         {
@@ -159,7 +161,7 @@ class App extends Component {
             intro: "Delicious Red Roasted Potatoes. Popular in European dishes",
             ingredients: ["Potatoes - 8", "Garlic- 6 cloves", "Thyme", "Oregano", "Basil", "Parmesan Cheese", "Oil", "Butter"],
             products: ["Red Potatoes ", "Parmesan Cheese ", "Thyme ", "Oregano ", "Basil ", "Vegetable Oil ", "Butter "],
-            product_slider: [{ingredient: "Red Potatoes", image: "red_potatoes.jpg"}, {ingredient: "Parmesan Cheese", image: "parmesan_cheese.jpg"}, {ingredient: "Thyme", image: "thyme.jpg"}, {ingredient: "Oregano", image: "oregano.jpg"}, {ingredient: "Basil", image: "basil.jpg"},{ingredient: "Vegetable Oil", image: "vegetable_oil.jpg"},{ingredient: "Butter", image: "butter.jpg"}],
+            product_slider: [{ ingredient: "Red Potatoes", image: "red_potatoes.jpg" }, { ingredient: "Parmesan Cheese", image: "parmesan_cheese.jpg" }, { ingredient: "Thyme", image: "thyme.jpg" }, { ingredient: "Oregano", image: "oregano.jpg" }, { ingredient: "Basil", image: "basil.jpg" }, { ingredient: "Vegetable Oil", image: "vegetable_oil.jpg" }, { ingredient: "Butter", image: "butter.jpg" }],
             instructions: ["Adjust oven rack to lowest position and heat oven to 450 degrees. ", "Cut potatoes into quarter chunks",
                 "Toss potatoes with oil, salt and pepper chopped garlic, Thyme, Oregano, Basil and then Parmesan Cheese",
                 "Arrange, cut side down, on a large lipped cookie sheet or jellyroll pan.", "Roast until tender and golden brown, or until desired crispiness about 30-45 minutes", "Add butter in between roasting for a savory taste, Transfer to a serving dish when ready."],
@@ -172,9 +174,9 @@ class App extends Component {
             readTime: "8 mins read",
             cookTime: "40 mins to prepare",
             intro: "A healthy replacement for beef burgers, Beans burgers is just as filling and can be even more delicious.",
-            ingredients: ["2 cans black beans","1/2 bell pepper","1 large onion","6 garlic cloves","1 cup breadcrumbs","3 eggs (or more)", "Paprika","Cumin","Garlic powder","½ cup cheese","1 tbsp worcestershire sauce","2 tbsp ketchup or bbq sauce"],
+            ingredients: ["2 cans black beans", "1/2 bell pepper", "1 large onion", "6 garlic cloves", "1 cup breadcrumbs", "3 eggs (or more)", "Paprika", "Cumin", "Garlic powder", "½ cup cheese", "1 tbsp worcestershire sauce", "2 tbsp ketchup or bbq sauce"],
             products: ["Black Beans", "Vegetable Oil", "BreadCrumbs", "Paprika", "Cheese", "Worcestershire Sauce", "BBQ Sauce", "Heinz Ketchup"],
-            product_slider: [{ingredient: "Black Beans", image: "beans.jpg"}, {ingredient: "Vegetable Oil", image: "vegetable_oil.jpg"}, {ingredient: "BreadCrumbs", image: "breadcrumbs.jpg"}, {ingredient: "Paprika", image: "paprika.jpg"}, {ingredient: "Cheese", image: "cheese.jpg"}, {ingredient: "Worcestershire Sauce", image: "worcestershire_sauce.jpg"}, {ingredient: "BBQ Sauce", image: "bbq_sauce.jpg"}, {ingredient: "Heinz Ketchup", image: "heinz_ketchup.jpg"}],
+            product_slider: [{ ingredient: "Black Beans", image: "beans.jpg" }, { ingredient: "Vegetable Oil", image: "vegetable_oil.jpg" }, { ingredient: "BreadCrumbs", image: "breadcrumbs.jpg" }, { ingredient: "Paprika", image: "paprika.jpg" }, { ingredient: "Cheese", image: "cheese.jpg" }, { ingredient: "Worcestershire Sauce", image: "worcestershire_sauce.jpg" }, { ingredient: "BBQ Sauce", image: "bbq_sauce.jpg" }, { ingredient: "Heinz Ketchup", image: "heinz_ketchup.jpg" }],
             instructions: ["Drain and rinse beans and lay out on a baking tray in a single layer. Bake 325F for 15 min, while you set up the rest.",
                 "Dice the onion, garlic and pepper as finely as you can. Fry them together with a very small amount of oil, until onions start to go clear.",
                 "Blot the onion mix with a paper towel to remove excess oil and moisture. Add to a large mixing bowl with the beans and all other ingredients.",
@@ -193,7 +195,7 @@ class App extends Component {
             intro: "A classic west African delicious stew that can be customized to your taste. Egusi can be eaten with varieties of meal like rice, amala and eba.",
             ingredients: ["Melon Seeds - 3 Cups", "Palm Oil", "Chicken/Beef", "Spinach - 1", "Bell Pepper - 1", "Tomatoes - 3", "Onion - 1", "Maggi", "Salt", "Stockfish", "Crayfish", "Assorted meats"],
             products: ["Melon Seeds", "Palm Oil", "Chicken/Beef", "Spinach", "Bell Pepper", "Tomatoes", "Onion", "Maggi", "Salt", "Stockfish", "Crayfish", "Assorted meats"],
-            product_slider: [{ingredient: "Melon Seeds", image: "melon_seeds.jpg"}, {ingredient: "Palm Oil", image: "palm_oil.jpg"}, {ingredient: "Chicken/Beef", image: "chicken_beef.jpg"}, {ingredient: "Spinach", image: "spinach.jpeg"}, {ingredient: "Bell Pepper", image: "bell_pepper.jpeg"}, {ingredient: "Tomatoes", image: "tomato.jpg"}, {ingredient: "Onion", image: "onion.jpg"}, {ingredient: "Maggi", image: "maggi.jpg"}, {ingredient: "Salt", image: "salt.png"}, {ingredient: "Stockfish", image: "stockfish.jpg"}, {ingredient: "Crayfish", image: "crayfish.jpg"}, {ingredient: "Assorted meats", image: "assorted_meats.jpg"}],
+            product_slider: [{ ingredient: "Melon Seeds", image: "melon_seeds.jpg" }, { ingredient: "Palm Oil", image: "palm_oil.jpg" }, { ingredient: "Chicken/Beef", image: "chicken_beef.jpg" }, { ingredient: "Spinach", image: "spinach.jpeg" }, { ingredient: "Bell Pepper", image: "bell_pepper.jpeg" }, { ingredient: "Tomatoes", image: "tomato.jpg" }, { ingredient: "Onion", image: "onion.jpg" }, { ingredient: "Maggi", image: "maggi.jpg" }, { ingredient: "Salt", image: "salt.png" }, { ingredient: "Stockfish", image: "stockfish.jpg" }, { ingredient: "Crayfish", image: "crayfish.jpg" }, { ingredient: "Assorted meats", image: "assorted_meats.jpg" }],
             instructions: ["Boil chicken/meat and keep aside the liquid broth for later use", "Pour 3 cups of powder melon seed into a bowl", "Pour 2 cups of water and mix into a thick paste",
                 "Pour desired amount of stock fish and crayfish into a bowl and add hot water to soften", "Add 1 bell pepper, 3 tomatoes and half onion into blender and blend", "Pour a small amount of palm oil and half onion diced into a cooking pot",
                 "Let it sizzle for a minute, then add the blended mixture", " Cook for 10 minutes, then add chicken or meat broth", "Cook for additional 5 minutes ",
@@ -210,7 +212,7 @@ class App extends Component {
             intro: "Egg stew is a creative modern style of frying eggs and insanely delicious, easy to make. Watch out, you might find this meal addictive.",
             ingredients: ["Eggs -3 uncooked", "Tomatoes - 3", "Onions - 1", "Oil", "Maggi - 2 cubes", "Salt", "Shrimp", "Sardine"],
             products: ["Eggs", "Tomatoes", "Onions", "Oil", "Maggi", "Salt", "Shrimp", "Sardine"],
-            product_slider: [{ingredient: "Eggs", image: "eggs.jpg"}, {ingredient: "Tomatoes", image: "tomato.jpg"}, {ingredient: "Onions", image: "onion.jpg"}, {ingredient: "Oil", image: "oil.jpg"}, {ingredient: "Maggi", image: "maggi.jpg"}, {ingredient: "Salt", image: "salt.png"}, {ingredient: "Shrimp", image: "shrimp.jpeg"}, {ingredient: "Sardine", image: "sardine.jpg"}],
+            product_slider: [{ ingredient: "Eggs", image: "eggs.jpg" }, { ingredient: "Tomatoes", image: "tomato.jpg" }, { ingredient: "Onions", image: "onion.jpg" }, { ingredient: "Oil", image: "oil.jpg" }, { ingredient: "Maggi", image: "maggi.jpg" }, { ingredient: "Salt", image: "salt.png" }, { ingredient: "Shrimp", image: "shrimp.jpeg" }, { ingredient: "Sardine", image: "sardine.jpg" }],
             instructions: ["Add 3 tomatoes and ½ onion into blender and blend", "Crack 3 eggs into a bowl, plus 1 maggi and a little sprinkle of salt, then mix well ", "Add a small amount of cooking oil into frying pan",
                 "Add ½ diced onion and let it fry for about a minute ", "Add your choice of secondary ingredients", "Let it cook for 5 mins", " Add the blended mixture, plus 1 maggi", "Let it cook for another 5 mins (Taste often for desired level of seasoning",
                 "Pour the egg mixture into the fry pan and stir often ", "Let it cook for about 7 mins (stir often)"
@@ -247,12 +249,15 @@ class App extends Component {
             mealsLength: this.meals.length,
             base_index: 0,
             topNav_className: "w3-bar w3-dark-grey w3-green topnav",
-            
+
             valueAllDataLists: [],
             message: null,
-            userInfo:null,
-            isAuthenticated:false
-
+            userInfo: null,
+            isAuthenticated: false,
+            infoCart: null,
+            infoItem:null,
+            nameItems:[],
+            itemOptionState:[]
         }
     }
 
@@ -275,6 +280,10 @@ class App extends Component {
             .catch(err => {
                 console.log(err);
             });
+        this.setInfoCart = (data) => {
+            this.setState({ infoCart: data })
+        }
+
     }
 
     showIngredients = (event) => {
@@ -345,7 +354,7 @@ class App extends Component {
 
 
     componentDidMount() {
-         this.auth()
+        this.auth()
         fetch('/api/get-all-data-lists', {
             method: 'GET',
             credentials: 'same-origin',
@@ -357,9 +366,21 @@ class App extends Component {
             .then(res => res.json())
             .then(response => {
                 if (response) {
-                    let arrAllData =[];
-                    for (let i = 0; i <= 12; i++) {
-                        arrAllData.push(response.data[i].product_name);
+                    let ress= response.data
+                    console.log(2424,ress);
+                    // response.data.forEach(item=>{
+                    //     console.log(6363,item);
+                    //     this.setState({infoItem:item});
+                    //   this.setState({nameItems:item.product_name})  
+                    // })
+                    
+                    let arrAllData = [];
+                    for (let i = 0; i <= ress.length-1; i++) {
+                        console.log(33333,ress[i]);
+                        
+                        arrAllData.push(ress[i].product_name);
+                        console.log(444545456,arrAllData);
+                        
                         this.setState({ valueAllDataLists: arrAllData })
                     }
                 }
@@ -367,54 +388,65 @@ class App extends Component {
                 this.setState({ message: 'Sorry , Internal Server ERROR' })
             })
 
-        
+
     }
 
-   
-auth(){
-    fetch('/api/grocery', {
-        method: 'GET',
-        credentials: 'same-origin',
-        headers: {
-            'Content-type': 'application/json',
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        console.log(res.success);
-        if (res.success) {
-            this.setState({isAuthenticated: true})
-        }
-    }).catch(er => console.log(er))
-    
-}
 
-handleLogout = () => {
-   fetch('/api/logout',{
-       method:"GET",
-       credentials:'same-origin',
-       headers:{
-        'Content-type': 'application/json',
-        
-       }
-   }).then(res=>{
-       
-    res.json()
-   .then(response=>{
-       if(response.data){
-           this.setState({isAuthenticated:false})
-       }
-   })
-})
-   .catch(()=>{
-    this.setState({ message: 'Sorry , Internal Server ERROR' })
+    auth() {
+        fetch('/api/grocery', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json',
+            },
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res.success);
+                if (res.success) {
+                    this.setState({ isAuthenticated: true })
+                }
+            }).catch(er => console.log(er))
 
-   })
-}
+    }
 
+    handleLogout = () => {
+        fetch('/api/logout', {
+            method: "GET",
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json',
+
+            }
+        }).then(res => {
+
+            res.json()
+                .then(response => {
+                    if (response.data) {
+                        this.setState({ isAuthenticated: false })
+                    }
+                })
+        })
+            .catch(() => {
+                this.setState({ message: 'Sorry , Internal Server ERROR' })
+
+            })
+    }
+    // handleInputChange = item => {
+    //     const { valueAllDataLists } = this.state;
+    //     const { allowNew } = this.props;
+    //     if (!allowNew) return;
+    //     valueAllDataLists.filter(option => {
+    //      this.setState({itemOptionState:option})
+    //     });
+    //   };
     render() {
-        const {  valueAllDataLists,isAuthenticated} = this.state;
-        
+        const { valueAllDataLists, isAuthenticated, infoCart,nameItems,infoItem,itemOptionState } = this.state;
+console.log(99999,infoItem);
+console.log(59595,nameItems);
+
+console.log('asasasa',valueAllDataLists);
+
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -529,15 +561,15 @@ handleLogout = () => {
                         <b>Ingredients 1</b>
                         <br></br>
                         {value.products}
-                        <WithScrollbar products={value.product_slider} ingredients={[{"name": "sugar","image": "/images/products/sugar.jpeg"}, {"name": "onion","image": "/images/products/onion.jpg"}, {"name": "tomato","image": "/images/products/tomato.jpg"}, {"name": "water","image": "/images/products/water.jpeg"}, {"name": "vegetable oil","image": "/images/products/vegetable_oil.jpg"}]}/>
-                        <br/>
-                        
+                        <WithScrollbar products={value.product_slider} ingredients={[{ "name": "sugar", "image": "/images/products/sugar.jpeg" }, { "name": "onion", "image": "/images/products/onion.jpg" }, { "name": "tomato", "image": "/images/products/tomato.jpg" }, { "name": "water", "image": "/images/products/water.jpeg" }, { "name": "vegetable oil", "image": "/images/products/vegetable_oil.jpg" }]} />
+                        <br />
+
+                    </div>
                 </div>
-            </div>
             )
         }
 
-         /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */ 
+        /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
         function myFunction() {
             var x = document.getElementById("myTopnav");
             console.log(x);
@@ -568,14 +600,11 @@ handleLogout = () => {
                 <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
                     {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
                     <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
-                    {/* {!isAuthenticated?(
-                        <Link to="/login"  >Login</Link>
-                        ):}
-                         */}
+
                     <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
-                     
-                     <Link to = "/grocery" onClick={this.onClick} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
-                    
+
+                    <Link to="/grocery" onClick={this.onClick} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
+
 
                     <div className="w3-dropdown-hover w3-mobile">
                         <button className="w3-button w3-hover-orange w3-mobile">
@@ -594,10 +623,10 @@ handleLogout = () => {
                     <Link to="#" className="icon" onClick={() => { console.log("Comes thru here"); myFunction() }} >
                         <i className="fa fa-bars" ></i>
                     </Link>
-                    {isAuthenticated?(
+                    {isAuthenticated ? (
 
                         <Link to='/' onClick={this.handleLogout} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Logout</Link>
-                    ):null}
+                    ) : null}
 
                 </div>
 
@@ -622,13 +651,31 @@ handleLogout = () => {
     </Link>
 </div> */}
 
-                {/* <Typeahead
-                    options={valueAllDataLists}
+                <Typeahead
+        //   onInputChange={this.handleInputChange}
+
+                    // options={valueAllDataLists}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
-                /> */}
+                    // labelKey={option=>option.name}
+                />
 
-
+{/* <Typeahead
+          clearButton
+          multiple
+          onInputChange={this.handleInputChange}
+        //   onChange={this.handleChange}
+        //   id={`autoComplete${type}`}
+          key="id"
+        //   selected={selectedTags}
+          valueKey="id"
+          labelKey="name"
+        //   options={nameItems}
+        //   allowNew={allownew}
+          newSelectionPrefix="Add a new item: "
+        //   placeholder={placeholder}
+          className="autComplete-dev"
+        /> */}
 
 
                 <Switch>
@@ -705,29 +752,44 @@ handleLogout = () => {
                         </div>
                     )} />
 
-                    <Route 
-                    exact 
-                    path="/grocery" 
-                    render={props=>(
-                        <GroceryPage
-                        showLogin={!isAuthenticated}
-                        auth={isAuthenticated}
-                        /> 
-                        
+
+
+                    <Route
+                        exact
+                        path="/grocery"
+                        render={props => (
+                            <GroceryPage
+                                showLogin={!isAuthenticated}
+                                auth={isAuthenticated}
+                                infoItem={this.infoCart}
+                                infoItemOption={itemOptionState}
+                                // {...props}
+                            />
+
                         )}
 
-                        />
-                        <Route 
-                    exact 
-                    path="/grocery-empty" 
-                    render={props=>(
-                    
+                    />
+                    <Route
+                        exact
+                        path="/grocery-empty"
+                        render={props => (
+
                             <span className="grocery-page-empty__message">Sorry you must make log in to seen grocery list </span>
 
-                       
-                        
-                        )}/>
-                        
+
+
+                        )} />
+                    {/* <Route
+                        exact
+                        path="/cart-page"
+                        render={props => (
+                            <CartPage
+                                // infoItem={this.infoCart}  
+                            />
+
+                        )}
+
+                    /> */}
                     <Route path="/products" render={(props) => (
                         <ProductsSection />
                     )} />
