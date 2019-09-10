@@ -654,7 +654,7 @@ console.log('asasasa',valueAllDataLists);
                 <Typeahead
         //   onInputChange={this.handleInputChange}
 
-                    // options={valueAllDataLists}
+                    options={nameItems}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
                     // labelKey={option=>option.name}
