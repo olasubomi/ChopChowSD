@@ -30,6 +30,7 @@ export default class GroceryPage extends React.Component {
     showCreate: false,
     idsItems: null,
     deletedItemsId: null,
+    lasIdListState:null,
     valueId: '',
     valueProductName: '',
     valueProductImage: '',
@@ -89,10 +90,13 @@ export default class GroceryPage extends React.Component {
       },
     })
       .then(res => {
+        console.log('resgreoccc',res);
+        
         return res.json()
 
       })
       .then(response => {
+        console.log('alalalalala',response.data)
         if (response.success && response.data) {
           if (this.props.showLogin === false) {
             this.setState({ Authentication: true, show: false });
@@ -112,8 +116,16 @@ export default class GroceryPage extends React.Component {
           },
 
         })
-          .then(res => res.json())
+          .then(res => {
+            console.log('resvaalalla',res);
+            
+         return   res.json()
+          }
+            
+            
+            )
           .then(response => {
+            console.log('vvvvaaaalll',response)
             if (response) {//all lists for this customer
               this.setState({ valueData: response.data })
             }
@@ -134,8 +146,39 @@ export default class GroceryPage extends React.Component {
       if (e) e.stopPropagation();
       this.setState({ showRemove: false });
     };
-    this.handleShowDeleteItem = (id) => {
-      this.setState({ deletedItemId: id, showRemove: true });
+    this.handleShowDeleteItem = (idItem) => {
+      console.log(7878787,idItem);
+      
+      this.setState({deletedItemId: idItem});
+      const { customerId, deletedItemId } = this.state;
+      fetch(`/api/remove-item/${idItem}/${customerId}`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+
+      })
+        .then(res => {
+          console.log('res200',res);
+          
+          return res.json()
+
+        })
+        .then(response => {
+          console.log('response delted',response);
+          
+          this.setState({ messageSuccess: 'delete successfull' })
+          this.setState(prevState => {
+            const newValueData = prevState.valueData.filter(
+              item => item.id !== deletedItemId
+            );
+            return { valueData: newValueData };
+          });
+
+        })
+        .catch(() => this.setState({ messageErr: 'Sorry , Internal Server Error' })
+        )
     }
     this.handleShowAddItem = (itemList) => {
       const { infoCart } = this.state;
@@ -170,42 +213,55 @@ export default class GroceryPage extends React.Component {
 
 
           if (response) {//all lists for this customer
-
+            console.log(2020,response.data);
+            
             this.setState({ idsItems: response.data })
+            // let response.data
+            // let  idItemLabel   = idsItem[idsItem.length-1]+1
+
+        //  this.setState({idItemLabelState:idItemLabel})   
+
+            // idsItems.map(idItem=>{
+            //   this.setState({deletedItemsId: idItem})
+            // })
+            this.setState({deletedItemsId:idsItems})
           }
 
         }).catch(() => {
           this.setState({ message: 'Sorry , Internal Server ERROR' })
         })
-      this.setState({ deletedItemsId: idsItems, showRemoveList: true });
+      this.setState({  showRemoveList: true });
     }
     this.handleDeleteItem = (idItem) => {
-      const { customerId, deletedItemId } = this.state;
-      fetch(`/api/remove-item/${idItem}/${customerId}`, {
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
+      console.log('alaa855a5a5a5',idItem);
+      
+      // const { customerId, deletedItemId } = this.state;
+      // fetch(`/api/remove-item/${idItem}/${customerId}`, {
+      //   method: 'DELETE',
+      //   headers: {
+      //     Accept: 'application/json',
+      //     'Content-Type': 'application/json',
+      //   },
 
-      })
-        .then(res => {
+      // })
+      //   .then(res => {
+      //     console.log('res200',res);
+          
+      //     return res.json()
 
-          return res.json()
+      //   })
+      //   .then(response => {
+      //     this.setState({ messageSuccess: 'delete successfull' })
+      //     this.setState(prevState => {
+      //       const newValueData = prevState.valueData.filter(
+      //         item => item.id !== deletedItemId
+      //       );
+      //       return { valueData: newValueData };
+      //     });
 
-        })
-        .then(response => {
-          this.setState({ messageSuccess: 'delete successfull' })
-          this.setState(prevState => {
-            const newValueData = prevState.valueData.filter(
-              item => item.id !== deletedItemId
-            );
-            return { valueData: newValueData };
-          });
-
-        })
-        .catch(() => this.setState({ messageErr: 'Sorry , Internal Server Error' })
-        )
+      //   })
+      //   .catch(() => this.setState({ messageErr: 'Sorry , Internal Server Error' })
+      //   )
     }
 
     this.handleDeleteList = (customerId) => {
@@ -238,10 +294,10 @@ export default class GroceryPage extends React.Component {
 
     }
     this.handleCreateList = () => {
-      const { showCreate, valueId, valueProductName, valueProductImage, valueProductPrice, valuePricePerOunce, valueProductSize } = this.state;
+      const { lasIdListState,showCreate, valueId, valueProductName, valueProductImage, valueProductPrice, valuePricePerOunce, valueProductSize } = this.state;
       const { customerId } = this.state;
-      const itemId = valueId;
-      fetch(`/api/create-list/${itemId}/${customerId}`, {
+      const idItem = lasIdListState;
+      fetch(`/api/create-list/${idItem}/${customerId}`, {
         method: 'POST',
         credentials: 'same-origin',
 
@@ -249,7 +305,6 @@ export default class GroceryPage extends React.Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: valueId,
           product_name: valueProductName,
           product_image: valueProductImage,
           product_price: valueProductPrice,
@@ -264,19 +319,45 @@ export default class GroceryPage extends React.Component {
         })
         .then(response => {
           console.log(8888, response);
-          this.setState({ messageSuccess: 'add successfull' })
+          // this.setState({ messageSuccess: 'add successfull' })
         })
 
-    }
+
+        
+ 
+}
+    
+    fetch('/api/get-ids-list', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+    })
+    .then(res=>{
+      console.log('fgfalaa',res);
+      return res.json()
+    })
+    .then(response=>{
+      console.log('respppppp',response.data);
+      let arrResponse= response.data;
+     const lasIdList= arrResponse[arrResponse.length-1]
+     console.log('lasIdListnnnnn',lasIdList+1);
+     this.setState({lasIdListState:lasIdList+1})
+     
+    })
   }
 
 
 
   render() {
-    const { infoCart, propsInfoCart, deletedItemId, idItem, idsItems, showCreate, valueId, customerId, showRemoveList, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, valueData, message, email, password, messageErr, messageSuccess, show, addListClick, deleteListClick, showInsert, showRemove } = this.state;
+    const {lasIdListState,valueData, infoCart, propsInfoCart, deletedItemId, idItem, idsItems, showCreate, valueId, customerId, showRemoveList, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, message, email, password, messageErr, messageSuccess, show, addListClick, deleteListClick, showInsert, showRemove } = this.state;
     const { auth } = this.props;
 const {infoItemOption} = this.props
-
+    console.log('valuedata',valueData);
+    console.log('lasIdListStatejkfjffj',lasIdListState);
+    
     console.log(7777777, idsItems);
     console.log('alaaaaa', idItem);
     console.log(3636, deletedItemId);
@@ -354,15 +435,17 @@ const {infoItemOption} = this.props
                           {console.log(55555, showInsert)
                           }
                           {showInsert?(
-                          <Modal show={showInsert} onHide={this.handleClose}>
-                                <Modal.Body>
+                          <Modal show={showInsert} onHide={this.handleClose} className='insert'>
+                                <Modal.Body className='insert'>
                                  cart pazge , idfdfdfd {idItem}
+                                   <div>No.List>>{infoCart.id}>></div>
+                                  <div>Name Product : {infoCart.product_name}</div>
+                                  <div> Product Price :  {infoCart.product_price}</div>
+                                  <div> Product Size : {infoCart.sizes}</div>
                                 </Modal.Body>
                                 <Modal.Footer className="confirm__delete">
-                                  <div>No.List>>{itemList.id}>></div>
-                                  <div>Name Product : {itemList.product_name}</div>
-                                  <div> Product Price :  {itemList.product_price}</div>
-                                  <div> Product Size : {itemList.sizes}</div>
+                                
+
 
 
                                   <Button
@@ -396,9 +479,11 @@ const {infoItemOption} = this.props
                           {/* ) : null} */} */}
                           <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={e => {
                             e.stopPropagation();
-                            this.handleShowDeleteItem(idItem);
+                            this.handleShowDeleteItem(itemList.id);
+                          // {console.log(565656,itemList.id)
+                          // }
                           }} ></i></div>
-                          {showRemove ? (
+                          {/* {showRemove ? (
                             <Modal show={showRemove} onHide={this.handleClose}>
                               <Modal.Body>
                                 Are you sure to delete this item ?!
@@ -413,15 +498,17 @@ const {infoItemOption} = this.props
 
                                 <Button
                                   variant="danger"
-                                  onClick={this.handleDeleteItem(idItem)}
+                                  onClick={this.handleDeleteItem(itemList.id)}
 
                                 >
+                                  {console.log('id item',idItem)
+                                  }
                                   Delete
                                   </Button>
                                 <span>{messageSuccess}</span>
                               </Modal.Footer>
                             </Modal>
-                          ) : null}
+                          ) : null} */}
 
                         </Col>
                       </>
@@ -435,15 +522,16 @@ const {infoItemOption} = this.props
                       <Modal show={showCreate} onHide={this.handleClose} className="modal" backdrop="static">
                         <Modal.Body>
                           <Form.Group>
-                            <Form.Label>Product Id:</Form.Label>
-                            <Form.Control
+                            {/* <Form.Label>Product Id:</Form.Label> */}
+                            {/* <Form.Control
                               type="number"
                               name="valueId"
                               value={valueId}
                               placeholder="Enter id list"
                               onChange={this.handleChange}
-                            />
-
+                            /> */}
+                            <Form.Label>Product Id: {lasIdListState}</Form.Label>
+                                  
                           </Form.Group>
                           <Form.Group>
                             <Form.Label>Product Name :</Form.Label>
@@ -497,8 +585,8 @@ const {infoItemOption} = this.props
                             />
                           </Form.Group>
 
-                          <p className="msg-success">{messageSuccess}</p>
-                          <p className="msg-err">{messageErr}</p>
+                          {/* <p className="msg-success">{messageSuccessCreate}</p>
+                          <p className="msg-err">{messageErrCreate}</p> */}
                         </Modal.Body>
                         <Modal.Footer className="confirm__success">
                           <Button
@@ -513,7 +601,7 @@ const {infoItemOption} = this.props
                           >
                             create
                                   </Button>
-                          <span>{messageSuccess}</span>
+                          {/* <span>{messageSuccess}</span> */}
                         </Modal.Footer>
                       </Modal>
                     ) : null}

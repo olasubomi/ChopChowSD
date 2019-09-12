@@ -37,6 +37,11 @@
     margin-left: 393px;
     /* margin-bottom: 3rem; */
   }
+  /* .insert {
+    width: 1359px;
+    height: 533px;
+    margin-left: -176px;
+} */
   @media (min-width: 992px){
 .col-lg-12 {
     -ms-flex: 0 0 100%;
