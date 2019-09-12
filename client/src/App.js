@@ -392,7 +392,7 @@ class App extends Component {
                         <br></br>                           
                         
            </div> 
-                    } modal closeOnDocumentClick contentStyle={contentStyle}> {/*-- overlayStyle={overlayStyle} >*/}
+                    } modal closeOnDocumentClick contentStyle={contentStyle}> 
 
                     {/* Inside Pop - up */}
                     
@@ -667,18 +667,6 @@ maxHeight: "100vh",
 overflow: "scroll",
 width:"80%",
 };
-
-const overlayStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    // zIndex: 99,
-    backgroundColor: 'rgba(0,0,0,0.6)'
-    // width:"100%",
-    // height:"100%"
-}
 
 
 /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
