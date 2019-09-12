@@ -382,7 +382,7 @@ class App extends Component {
                             <div style={{color: "black"}}> <b> {value.label} | {value.cookTime}  </b>| <span style={{color:"grey"}}> View Details</span></div>
                         </div>
                     </div>
-                <Popup 
+                <Popup
                     trigger={
                         <div id = {value.id} style={{ display:"none"}}>
                         {value.intro}
@@ -392,10 +392,11 @@ class App extends Component {
                         <br></br>                           
                         
            </div> 
-                    } modal closeOnDocumentClick contentStyle={contentStyle}>
+                    } modal closeOnDocumentClick contentStyle={contentStyle}> {/*-- overlayStyle={overlayStyle} >*/}
 
                     {/* Inside Pop - up */}
-                    <div className="container">
+                    
+                    <div className="container ">
                         <div className="row">
                             <div className="col-sm-6">
                                 <div><b>Ingredients</b></div>
@@ -663,11 +664,22 @@ const contentStyle = {
 // borderRadius: "25px",
 maxWidth: "100vw",
 maxHeight: "100vh",
-overflow: "scroll"
-// width: "90%",
-// height: "50%",
-
+overflow: "scroll",
+width:"80%",
 };
+
+const overlayStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    // zIndex: 99,
+    backgroundColor: 'rgba(0,0,0,0.6)'
+    // width:"100%",
+    // height:"100%"
+}
+
 
 /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
 // function myFunction() {
