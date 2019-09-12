@@ -1,6 +1,7 @@
 const { list } = require('../../db/dbMongo/config/db_buildSchema')
 const { customer_list } = require('../../db/dbMongo/config/db_buildSchema')
 const { getDataCustomerId } = require('../../db/dbPostgress/queries/getDataCustomerId')
+const {deleteListsCustomer} = require('../../db/dbPostgress/queries/list/deleteListsCustomer')
 
 
 
@@ -9,6 +10,9 @@ module.exports = (req, res) => {
 
     getDataCustomerId(customerId).then((result) => {
         let data = {};
+///////////////////////////
+deleteListsCustomer(customerId).then(result=>{
+    console.log(444);
         list.find({})
             .then(() => {
                 data = result.rows;
@@ -25,4 +29,5 @@ module.exports = (req, res) => {
 
             })
     })
+})
 }
