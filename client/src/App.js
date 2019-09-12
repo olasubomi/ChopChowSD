@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+zimport React, { Component } from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -496,15 +496,26 @@ console.log('asasasa',valueAllDataLists);
                             <div style={{ color: "black" }}> <b> {value.label} | {value.cookTime}  </b>| <span style={{ color: "grey" }}> View Details</span></div>
                         </div>
                     </div>
-                    <Popup
-                        trigger={
-                            <div id={value.id} style={{ display: "none" }}>
-                                {value.intro}
-                                <br></br>
-                                <br></br>
-                                <button style={{ backgroundColor: "orange" }}>View Steps</button>
-                                <br></br>
+                    </div>
+                <Popup
+                    trigger={
+                        <div id = {value.id} style={{ display:"none"}}>
+                        {value.intro}
+                        <br></br>
+                        <br></br>
+                        <button style={{backgroundColor: "orange" }}>View Steps</button>  
+                        <br></br>                           
+                        
+           </div> 
+                    } modal closeOnDocumentClick contentStyle={contentStyle}> 
 
+                    {/* Inside Pop - up */}
+                    
+                    <div className="container ">
+                        <div className="row">
+                            <div className="col-sm-6">
+                                <div><b>Ingredients</b></div>
+                                <div className="col align-items-center"><ol>{ingredientsList}</ol></div>
                             </div>
                         } modal closeOnDocumentClick contentStyle={contentStyle}>
 
@@ -556,6 +567,7 @@ console.log('asasasa',valueAllDataLists);
                     </div>
                     </div>
                     */}
+                    
                     </Popup>
                     <div id={value.id + "products"} style={{ display: "none" }}>
                         <b>Ingredients 1</b>
@@ -833,14 +845,13 @@ const containerStyle = {
 }
 
 const contentStyle = {
-    // borderRadius: "25px",
-    maxWidth: "100vw",
-    maxHeight: "100vh",
-    overflow: "scroll"
-    // width: "90%",
-    // height: "50%",
-
+// borderRadius: "25px",
+maxWidth: "100vw",
+maxHeight: "100vh",
+overflow: "scroll",
+width:"80%",
 };
+
 
 /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
 // function myFunction() {
