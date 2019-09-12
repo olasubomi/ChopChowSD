@@ -35,13 +35,39 @@
   .yourlist__card-div {
     margin-top: 0rem;
     margin-left: 393px;
-    /* margin-bottom: 3rem; */
-  }
-  /* .insert {
-    width: 1359px;
-    height: 533px;
-    margin-left: -176px;
-} */
+    margin-bottom: 14rem;
+}
+
+  .modal-content {
+    width: 1346px;
+    /* margin-left: -424px; */
+    pointer-events: auto;
+    background-clip: padding-box;
+    border-radius: -2.7rem;
+    outline: 0;
+}
+.btn-danger {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  margin-left: 851px;
+  height: 51px;
+  width: 225px;
+}
+  /* .insert { */
+    /* width: 1359px;
+    height: 533px; */
+    /* margin-left: -176px; */
+/* } */
+.modal-body {
+  position: relative;
+  width: 221%;
+  margin-left: -350px;
+  width: 184%;
+  display: block;
+  background-color: #fff0;
+  margin-left: 28px;
+}
   @media (min-width: 992px){
 .col-lg-12 {
     -ms-flex: 0 0 100%;
@@ -68,17 +94,21 @@
   }
   .btn-primary {
     color: #2f2c2c;
-    margin-left: 76px;
+    margin-left: -217px;
     background-color: #c1c5ca;
     border-color: #525456;
-    width: 92%;
     border: 51px;
     border-radius: 33px;
-  }
+    width: 136px;
+    margin-top: -421px;
+}
   .yourlist__buttonDelete {
-    margin-top: -150px;
-    margin-left: 904px;
+    margin-top: -141px;
+    margin-left: 732px;
     cursor: pointer;
+}
+.yourlist__buttonAdd{
+  margin-left: 10px
 }
   .fa-remove:before, .fa-close:before, .fa-times:before {
     content: "\f00d";
@@ -109,10 +139,11 @@
   .modal-body {
     position: relative;
     width: 221%;
-    margin-left: -350px;
-    width: 182%;
-    background-color: #ffeed8;
-  }
+    margin-left: 26px;
+    width: 184%;
+    display: block;
+    background-color: #fff0;
+}
   .fa {
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
@@ -265,6 +296,14 @@
     width: 356px;
     margin-left: 13px;
   }
+  .btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    margin-left: 851px;
+    height: 51px;
+    width: 225px;
+}
 }
 
 @media screen and (max-width: 414px) {

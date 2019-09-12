@@ -16,6 +16,9 @@ export default class GroceryPage extends React.Component {
     password: '',
     messageErr: false,
     messageSuccess: false,
+    showAlert:false,
+    messageAlert: '',
+    variant:'',
     show: false,
     loading: false,
     valueItemId: null,
@@ -168,7 +171,17 @@ export default class GroceryPage extends React.Component {
         .then(response => {
           console.log('response delted',response);
           
-          this.setState({ messageSuccess: 'delete successfull' })
+          // this.setState({ message: 'deleted successfull' })
+          this.setState({
+            messageAlert: 'deleted successfully',
+            showAlert:true,
+            variant:'success'
+          },
+          ()=>
+          setTimeout(()=>{
+            this.setState({ messageAlert: '', showAlert: false})
+          },3500)
+          )
           this.setState(prevState => {
             const newValueData = prevState.valueData.filter(
               item => item.id !== deletedItemId
@@ -179,6 +192,7 @@ export default class GroceryPage extends React.Component {
         })
         .catch(() => this.setState({ messageErr: 'Sorry , Internal Server Error' })
         )
+
     }
     this.handleShowAddItem = (itemList) => {
       const { infoCart } = this.state;
@@ -213,59 +227,20 @@ export default class GroceryPage extends React.Component {
 
 
           if (response) {//all lists for this customer
-            console.log(2020,response.data);
-            
-            this.setState({ idsItems: response.data })
-            // let response.data
-            // let  idItemLabel   = idsItem[idsItem.length-1]+1
+        console.log(8582552,response);
+        let arrResItemDelete=response.data
+        arrResItemDelete.map(resDelete=>{
 
-        //  this.setState({idItemLabelState:idItemLabel})   
-
-            // idsItems.map(idItem=>{
-            //   this.setState({deletedItemsId: idItem})
-            // })
-            this.setState({deletedItemsId:idsItems})
+          this.setState({deletedItemsId:resDelete})
+        })
+            // this.setState({ idsItems: response.data })
           }
 
         }).catch(() => {
           this.setState({ message: 'Sorry , Internal Server ERROR' })
         })
-      this.setState({  showRemoveList: true });
-    }
-    this.handleDeleteItem = (idItem) => {
-      console.log('alaa855a5a5a5',idItem);
-      
-      // const { customerId, deletedItemId } = this.state;
-      // fetch(`/api/remove-item/${idItem}/${customerId}`, {
-      //   method: 'DELETE',
-      //   headers: {
-      //     Accept: 'application/json',
-      //     'Content-Type': 'application/json',
-      //   },
-
-      // })
-      //   .then(res => {
-      //     console.log('res200',res);
-          
-      //     return res.json()
-
-      //   })
-      //   .then(response => {
-      //     this.setState({ messageSuccess: 'delete successfull' })
-      //     this.setState(prevState => {
-      //       const newValueData = prevState.valueData.filter(
-      //         item => item.id !== deletedItemId
-      //       );
-      //       return { valueData: newValueData };
-      //     });
-
-      //   })
-      //   .catch(() => this.setState({ messageErr: 'Sorry , Internal Server Error' })
-      //   )
-    }
-
-    this.handleDeleteList = (customerId) => {
-      const { deletedItemsId } = this.state
+      // this.setState({  showRemoveList: true });
+      const {deletedItemsId}=this.state
       fetch(`/api/remove-list/${customerId}`, {
         method: 'DELETE',
         headers: {
@@ -280,15 +255,28 @@ export default class GroceryPage extends React.Component {
 
         })
         .then(response => {
-          this.setState({ messageSuccess: 'delete successfull' })
+          console.log(65625,response);
+          
           this.setState(prevState => {
             const newValueData = prevState.valueData.filter(
               item => item.id !== deletedItemsId
             );
-            return { valueData: newValueData };
+            this.setState({ valueData: newValueData }) ;
+            this.setState({
+              messageAlert: 'deleted successfully',
+              showAlert:true,
+              variant:'success'
+            },
+            ()=>
+            setTimeout(()=>{
+              this.setState({ messageAlert: '', showAlert: false})
+            },4000)
+            )
           });
         })
     }
+
+
     this.handleShowCreateList = () => {
       this.setState({ showCreate: true })
 
@@ -352,11 +340,12 @@ export default class GroceryPage extends React.Component {
 
 
   render() {
-    const {lasIdListState,valueData, infoCart, propsInfoCart, deletedItemId, idItem, idsItems, showCreate, valueId, customerId, showRemoveList, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, message, email, password, messageErr, messageSuccess, show, addListClick, deleteListClick, showInsert, showRemove } = this.state;
+    const {deletedItemsId,showAlert, variant,messageAlert,lasIdListState,valueData, infoCart, propsInfoCart, deletedItemId, idItem, idsItems, showCreate, valueId, customerId, showRemoveList, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, message, email, password, messageErr, messageSuccess, show, addListClick, deleteListClick, showInsert, showRemove } = this.state;
     const { auth } = this.props;
 const {infoItemOption} = this.props
     console.log('valuedata',valueData);
     console.log('lasIdListStatejkfjffj',lasIdListState);
+    console.log(1010101,deletedItemsId);
     
     console.log(7777777, idsItems);
     console.log('alaaaaa', idItem);
@@ -371,22 +360,28 @@ const {infoItemOption} = this.props
         {auth ? (
           <>
             <PageTitle title=" Your Grocery List" />
-            {message && <Alert variant="danger">{message}</Alert>}
+            {/* {message && <Alert variant="danger">{message}</Alert>} */}
+            
             <Container className="page__container">
 
-            infoItemOption:  {infoItemOption}
+            {/* infoItemOption:  {infoItemOption} */}
               {valueData && valueData.length ? (
                 <Row>
-                  <Button className="yourlist__buttonDeleteList"
+                  
+                 <Button className='yourlist__buttonDeleteList'
+                          variant="danger"
+                          onClick={e => {
+                            e.stopPropagation();
+                            this.handleShowDeleteList(idsItems);
+                          }}
 
-                    // onClick={this.handleDeleteAllItems}
-                    onClick={e => {
-                      e.stopPropagation();
-                      this.handleShowDeleteList(idsItems);
-                    }}
-
-                  >Delete All Items</Button>
-                  {showRemoveList ? (
+                        >
+                          Delete All Items
+                                  </Button>
+                   <Alert show={showAlert} key={1} variant={variant}>
+                    {messageAlert}
+                  </Alert>
+                  {/* {showRemoveList ? (
                     <Modal show={showRemoveList} onHide={this.handleClose}>
                       <Modal.Body>
                         Are you sure to delete all this items ?!
@@ -406,10 +401,11 @@ const {infoItemOption} = this.props
                         >
                           Delete
                                   </Button>
-                        <span>{messageSuccess}</span>
-                      </Modal.Footer>
+            {messageSuccess && <Alert variant="danger">{messageSuccess}</Alert>} */}
+           
+                      {/* </Modal.Footer>
                     </Modal>
-                  ) : null}
+                  ) : null} */}
                   {valueData ? (
                     valueData.map((itemList) => {
                       let idItem = itemList.id;
@@ -428,10 +424,10 @@ const {infoItemOption} = this.props
                               Product Size : {itemList.sizes}
                             </Card.Text>
                           </div>
-                          <div className="yourlist__buttonDelete"><Button onClick={e => {
+                          <div className="yourlist__buttonAdd"><Button onClick={e => {
                             e.stopPropagation();
                             this.handleShowAddItem(itemList);
-                          }}> Add</Button> </div>
+                          }}> Add To Cart</Button> </div>
                           {console.log(55555, showInsert)
                           }
                           {showInsert?(
@@ -476,13 +472,18 @@ const {infoItemOption} = this.props
 
                             /> */}
 
-                          {/* ) : null} */} */}
+                          {/* ) : null} */} 
                           <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={e => {
                             e.stopPropagation();
                             this.handleShowDeleteItem(itemList.id);
                           // {console.log(565656,itemList.id)
                           // }
                           }} ></i></div>
+            {/* {message && <Alert variant="danger">{message}</Alert>} */}
+
+            <Alert show={showAlert} key={1} variant={variant}>
+                    {messageAlert}
+                  </Alert>
                           {/* {showRemove ? (
                             <Modal show={showRemove} onHide={this.handleClose}>
                               <Modal.Body>
