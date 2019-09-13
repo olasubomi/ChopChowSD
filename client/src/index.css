@@ -14,8 +14,8 @@ code {
 }
 
 .container{
-  /*display: flex;
-  justify-content: space-around;*/
+  display: flex;
+  justify-content: space-around;
 
   /* width: 100%;
   background-color: #D3D3D3;
@@ -258,25 +258,10 @@ Show the link that contains should open and close the topnav (.icon) */
 }
 /* ============================================================================== */
 
+.grocery-page-empty__message {
+    
+  margin-left: 500px;
+  
+  color: rgb(255, 94, 0);
 
-.slide {
-  background: #ffffff!important;
-  color: #000!important;
-}
-
-.carousel.carousel-slider .control-arrow{
-    background: rgba(0, 0, 0, 0)!important;
-    height: 35px!important;
-    width: 35px!important;
-    background-color: #000!important;
-    border-radius: 50%!important;
-    margin-top: 100px!important;
-}
-
-.carousel .control-next.control-arrow:before {
-    margin-bottom: 8px!important;
-}
-
-.carousel .control-prev.control-arrow:before {
-    margin-bottom: 8px!important;
 }
