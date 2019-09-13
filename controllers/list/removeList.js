@@ -10,7 +10,6 @@ module.exports = (req, res) => {
 
     getDataCustomerId(customerId).then((result) => {
         let data = {};
-///////////////////////////
 deleteListsCustomer(customerId).then(result=>{
     console.log(444);
         list.find({})

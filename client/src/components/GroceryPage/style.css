@@ -54,6 +54,14 @@
   height: 51px;
   width: 225px;
 }
+.create-input {
+  margin-left: -2px;
+  width: 723px;
+}
+.create-button{
+  width: 74px;
+  height: 34px;
+}
   /* .insert { */
     /* width: 1359px;
     height: 533px; */
@@ -123,7 +131,13 @@
     border: 51px;
     border-radius: 33px;
   }
- 
+  .yourlist__card-header-add{
+    margin-left: 0px
+  }
+ .yourlist__card-text-add{
+   margin-left:370px
+ }
+
   .modal-content {
     width: 154%;
     margin-left: -139px;
@@ -153,7 +167,6 @@
     margin-top: -38px;
     margin-left: 2px;
     -moz-osx-font-smoothing: grayscale;
-    color: red;
   }
   .fa-facebook-f:before, .fa-facebook:before {
     content: "\f09a";

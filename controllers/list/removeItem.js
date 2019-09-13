@@ -3,8 +3,6 @@ const {deleteListCustomer} = require('../../db/dbPostgress/queries/list/deleteLi
 module.exports = (req, res) => {
     const { customerId, idItem } = req.params
     deleteListCustomer(customerId,idItem).then(result=>{
-        console.log(444);
-        // res.status(200).send({ error: null, data: 'Deleted successfully ' });
         customer_list.deleteMany({ $and: [{ list_id: idItem, customer_id: customerId }] }).then(elem => {
             
             res.send({
