@@ -668,30 +668,11 @@ console.log('asasasa',valueAllDataLists);
 </div> */}
 
                 <Typeahead
-        //   onInputChange={this.handleInputChange}
 
                     options={nameItems}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
-                    // labelKey={option=>option.name}
                 />
-
-{/* <Typeahead
-          clearButton
-          multiple
-          onInputChange={this.handleInputChange}
-        //   onChange={this.handleChange}
-        //   id={`autoComplete${type}`}
-          key="id"
-        //   selected={selectedTags}
-          valueKey="id"
-          labelKey="name"
-        //   options={nameItems}
-        //   allowNew={allownew}
-          newSelectionPrefix="Add a new item: "
-        //   placeholder={placeholder}
-          className="autComplete-dev"
-        /> */}
 
 
                 <Switch>
