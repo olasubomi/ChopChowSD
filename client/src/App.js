@@ -1,4 +1,4 @@
-zimport React, { Component } from 'react';
+import React, { Component } from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -474,6 +474,7 @@ console.log('asasasa',valueAllDataLists);
             // console.log(this.meal_popups);
             // console.log(index);
             items.push(
+                <>
                 <div className="col-sm-12 col-md-6 col-lg-4 mealContainer" key={value.id} >
                     <div>
                         <div style={containerStyle} onClick={() => {
@@ -496,7 +497,8 @@ console.log('asasasa',valueAllDataLists);
                             <div style={{ color: "black" }}> <b> {value.label} | {value.cookTime}  </b>| <span style={{ color: "grey" }}> View Details</span></div>
                         </div>
                     </div>
-                    </div>
+           </div> 
+                
                 <Popup
                     trigger={
                         <div id = {value.id} style={{ display:"none"}}>
@@ -504,9 +506,10 @@ console.log('asasasa',valueAllDataLists);
                         <br></br>
                         <br></br>
                         <button style={{backgroundColor: "orange" }}>View Steps</button>  
-                        <br></br>                           
+                        <br></br>  
+                        </div>
+
                         
-           </div> 
                     } modal closeOnDocumentClick contentStyle={contentStyle}> 
 
                     {/* Inside Pop - up */}
@@ -518,7 +521,8 @@ console.log('asasasa',valueAllDataLists);
                                 <div className="col align-items-center"><ol>{ingredientsList}</ol></div>
                             </div>
                         } modal closeOnDocumentClick contentStyle={contentStyle}>
-
+                        </div>
+                    </div>    
                         {/* Inside Pop - up */}
                         <div className="container">
                             <div className="row">
@@ -577,7 +581,7 @@ console.log('asasasa',valueAllDataLists);
                         <br />
 
                     </div>
-                </div>
+                    </>
             )
         }
 
