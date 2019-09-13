@@ -1,7 +1,5 @@
 const { list } = require('../../db/dbMongo/config/db_buildSchema')
 const { customer_list } = require('../../db/dbMongo/config/db_buildSchema')
-const { addList } = require('../../db/dbPostgress/queries/list/addList')
-const { addListCustomer } = require('../../db/dbPostgress/queries/list/addListCustomer')
 
 
 module.exports = (req, res) => {
