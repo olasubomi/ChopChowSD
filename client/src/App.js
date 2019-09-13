@@ -21,7 +21,6 @@ import ProductsSection from './components/productSection/ProductsPage';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
-import CartPage from './components/GroceryPage/CartPage'
 class App extends Component {
 
 
