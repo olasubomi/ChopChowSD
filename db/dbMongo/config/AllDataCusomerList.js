@@ -9,11 +9,6 @@ module.exports = async () => {
             list_id: 3,
 
         }, {
-            id:2,
-            customer_id: 1,
-            list_id: 4,
-
-        }, {
             id:3,
             customer_id: 1,
             list_id: 5,
@@ -24,12 +19,7 @@ module.exports = async () => {
             list_id: 7,
 
         },
-        {
-            id:5,
-            customer_id: 2,
-            list_id: 4,
-
-        },
+        
         {
             id:6,
             customer_id: 2,
@@ -67,12 +57,7 @@ module.exports = async () => {
             customer_id: 5,
             list_id: 10,
 
-        }, {
-            id:13,
-            customer_id: 5,
-            list_id: 4,
-
-        },
+        }, 
         {
             id:14,
             customer_id: 6,

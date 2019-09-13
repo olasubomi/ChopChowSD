@@ -43,6 +43,7 @@
     "@storybook/addon-actions": "^5.1.10",
     "@storybook/addon-links": "^5.1.10",
     "@storybook/addons": "^5.1.10",
+<<<<<<< HEAD
     "@storybook/react": "^5.1.10",
     "babel-loader": "^8.0.6"
   },
@@ -51,4 +52,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC"
+=======
+    "@storybook/react": "^5.1.10"
+  }
+>>>>>>> 352ed71bee69a76144e36409b18c8257b615c62c
 }

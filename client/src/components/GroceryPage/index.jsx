@@ -130,7 +130,7 @@ export default class GroceryPage extends React.Component {
 
     this.handleClose = e => {
       if (e) e.stopPropagation();
-      this.setState({ showInsert: false });
+      this.setState({ showInsert: false,showCreate:false });
     };
     this.handleShowDeleteItem = (idItem) => {
       this.setState({ deletedItemId: idItem });
