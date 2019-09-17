@@ -129,8 +129,29 @@ export default class GroceryPage extends React.Component {
       })
 
     this.handleClose = e => {
+      const {customerId}=this.state;
       if (e) e.stopPropagation();
       this.setState({ showInsert: false,showCreate:false });
+      
+      fetch(`/api/getList/${customerId}`, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+
+      })
+        .then(res => {
+          return res.json()
+        })
+        .then(response => {
+          if (response) {//all lists for this customer
+            this.setState({ valueData: response.data })
+          }
+
+        }).catch(() => {
+          this.setState({ message: 'Sorry , Internal Server ERROR' })
+        })
     };
     this.handleShowDeleteItem = (idItem) => {
       this.setState({ deletedItemId: idItem });
@@ -244,25 +265,28 @@ export default class GroceryPage extends React.Component {
       const idItem = lasIdListState;
       fetch(`/api/create-list/${idItem}/${customerId}`, {
         method: 'POST',
-        credentials: 'same-origin',
-
+  
+        body: JSON.stringify({
+          valueProductName,
+          valueProductImage,
+          valueProductPrice,
+          valueProductSize,
+          valuePricePerOunce,
+          
+        }),
         headers: {
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          product_name: valueProductName,
-          product_image: valueProductImage,
-          product_price: valueProductPrice,
-          sizes: valueProductSize,
-          price_per_ounce: valuePricePerOunce
-        }),
       })
         .then(res => {
           return res.json();
 
         })
         .then(response => {
-          this.setState({ messageSuccess: 'add successfull' })
+          console.log('10101response createlist', response)
+          this.setState({ messageSuccess: 'add successfull' });
+          
         })
     }
 
@@ -288,9 +312,18 @@ export default class GroceryPage extends React.Component {
 
 
   render() {
-    const { deletedItemsId, showAlert, variant, messageAlert, lasIdListState, valueData, infoCart, propsInfoCart, deletedItemId, idItem, idsItems, showCreate, valueId, customerId, showRemoveList, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, message, email, password, messageErr, messageSuccess, show, addListClick, deleteListClick, showInsert, showRemove } = this.state;
+    const {valueProductName, deletedItemsId, showAlert, variant, messageAlert, lasIdListState, valueData, infoCart, propsInfoCart, deletedItemId, idItem, idsItems, showCreate, valueId, customerId, showRemoveList, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, message, email, password, messageErr, messageSuccess, show, addListClick, deleteListClick, showInsert, showRemove } = this.state;
     const { auth } = this.props;
-    const { infoItemOption } = this.props
+    const { infoItemOption } = this.props;
+    console.log('valueProductName',valueProductName);
+    console.log('valueProductImage',valueProductImage);
+    console.log('valueProductSize',valueProductSize);
+    console.log('valueProductPrice',valueProductPrice);
+    console.log('valuePricePerOunce',valuePricePerOunce);
+    console.log('valueData',valueData);
+
+    
+    
     return (
       <>
         {auth ? (
