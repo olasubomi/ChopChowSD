@@ -1,5 +1,3 @@
-
-
 const { customer_list } = require('./db_buildSchema');
 module.exports = async () => {
     const allDataCustomerList = [
@@ -19,7 +17,7 @@ module.exports = async () => {
             list_id: 7,
 
         },
-        
+
         {
             id:6,
             customer_id: 2,
@@ -138,5 +136,3 @@ module.exports = async () => {
 
     return customer_list.create(allDataCustomerList)
 }
-
-

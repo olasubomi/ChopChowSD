@@ -24,7 +24,7 @@ CREATE  TABLE customer_list (
   id SERIAL PRIMARY KEY,
 customer_id INTEGER REFERENCES customer(id), 
 list_id INTEGER REFERENCES list(id)
-  
+
 );
 
 CREATE TABLE admin(id INTEGER, name TEXT PRIMARY KEY) WITH (OIDS = FALSE);
@@ -33,6 +33,3 @@ CREATE TABLE supplier (
   storename TEXT NOT NULL
 );
 COMMIT;
-
-
-

@@ -1,5 +1,3 @@
-
-
 const { list } = require('./db_buildSchema');
 module.exports = async () => {
     const allDataList = [
@@ -98,17 +96,8 @@ module.exports = async () => {
             sizes: '2 lbs',
             price_per_ounce: 3.2
         }
-       
+
     ]
 
     return list.create(allDataList)
 }
-
-
-
-
-
-
-
-
-

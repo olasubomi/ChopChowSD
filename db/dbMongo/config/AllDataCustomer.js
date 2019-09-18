@@ -1,5 +1,3 @@
-
-
 const { customer } = require('./db_buildSchema');
 module.exports = async () => {
     const allDataCustomer = [
@@ -15,7 +13,7 @@ module.exports = async () => {
             zipCode:12334,
             ipsid:4566,
         }, {
-            
+
             id:2,
             firstname: 'ala',
             lastname: 'tare',
@@ -153,10 +151,8 @@ module.exports = async () => {
             zipCode:12334,
             ipsid:4566,
         }
-       
+
     ]
 
     return customer.create(allDataCustomer)
 }
-
-

@@ -29,7 +29,7 @@ VALUES
     12.00,
     '2 lbs',
     3.2
-    
+
   ),(
     4,
     'Spinach',
@@ -329,4 +329,3 @@ INSERT INTO
   supplier (id, storename)
 VALUES
   (1, 'Dima');
-  
