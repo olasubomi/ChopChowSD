@@ -19,6 +19,7 @@ import IngredientSection from './components/mealMenu/IngredientSection';
 import ProductsSection from './components/productSection/ProductsPage';
 //import Collapse from 'react-bootstrap/Collapse';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import CartPage from './components/GroceryPage/CartPage';
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
 
