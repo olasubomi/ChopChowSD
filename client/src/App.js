@@ -423,20 +423,20 @@ class App extends Component {
                 if (response) {
                     let ress = response.data
                     console.log(2424, ress);
-                    // response.data.forEach(item=>{
-                    //     console.log(6363,item);
-                    //     this.setState({infoItem:item});
-                    //   this.setState({nameItems:item.product_name})  
-                    // })
-
                     let arrAllData = [];
                     for (let i = 0; i <= ress.length - 1; i++) {
                         console.log(33333, ress[i]);
 
-                        arrAllData.push(ress[i].product_name);
-                        console.log(444545456, arrAllData);
-
-                        this.setState({ valueAllDataLists: arrAllData })
+                        arrAllData.push(ress[i]);
+                        console.log(56562,arrAllData);
+                        
+                        arrAllData.map((it)=>{
+                            console.log(8989,it);
+                            
+                               this.setState({infoItem:it});
+                    //   this.setState({nameItems:it.product_name})   
+                        })
+    
                     }
                 }
             }).catch(() => {
@@ -723,6 +723,8 @@ class App extends Component {
     <i className="fa fa-bars" ></i>
     </Link>
 </div> */}
+{console.log('valueAllDataLists',valueAllDataLists)
+}
 
                 <Typeahead
 
