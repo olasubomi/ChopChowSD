@@ -21,6 +21,8 @@ import ProductsSection from './components/productSection/ProductsPage';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
+import CartPage from './components/GroceryPage/CartPage';
+
 class App extends Component {
 
 
@@ -230,6 +232,8 @@ class App extends Component {
         // this.myFunction = this.myFunction.bind(this);
 
         this.state = {
+            valueDataUpdate: '',
+            infoCartState: '',
             suggestMealPopOver: false,
             mealsListed: false,
             mealSelected: false,
@@ -254,15 +258,19 @@ class App extends Component {
             userInfo: null,
             isAuthenticated: false,
             infoCart: null,
-            infoItem:null,
-            nameItems:[],
-            itemOptionState:[]
+            infoItem: null,
+            nameItems: [],
+            itemOptionState: []
         }
     }
 
     meal_popups = [];
 
+    setName = (data) => {
+        this.setState({ nameItem: data })
+    }
     componentDidMount() {
+
         this.auth();
         console.log("Comes in apps component did mount")
         var url = "http://localhost:5000/get_products"
@@ -279,9 +287,9 @@ class App extends Component {
             .catch(err => {
                 console.log(err);
             });
-        this.setInfoCart = (data) => {
-            this.setState({ infoCart: data })
-        }
+        // this.setInfoCart = (data) => {
+        //     this.setState({ infoCart: data })
+        // }
 
     }
 
@@ -354,6 +362,54 @@ class App extends Component {
 
     componentDidMount() {
         this.auth()
+        fetch('/api/grocery', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json',
+            },
+        })
+            .then(res => {
+
+                return res.json()
+
+            })
+            .then(response => {
+                console.log('resssss', response);
+
+                if (response.success && response.data) {
+                    this.setState({ customerId: response.data })
+                    const { customerId } = this.state;
+                    fetch(`/api/getList/${customerId}`, {
+                        method: 'GET',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+
+                    })
+                        .then(res => {
+                            return res.json()
+                        })
+                        .then(response => {
+
+                            if (response) {//all lists for this customer
+                                const { valueDataUpdate } = this.state
+                                this.setState({ valueDataUpdate: response.data })
+                                // valueDataUpdate.map(infoCart=>{
+                                //     console.log(5252,infoCart);
+
+                                //     this.setState({infoCartState:infoCart})
+                                // })
+                            }
+
+                        }).catch(() => {
+                            this.setState({ message: 'Sorry , Internal Server ERROR' })
+                        })
+
+                }
+
+            })
         fetch('/api/get-all-data-lists', {
             method: 'GET',
             credentials: 'same-origin',
@@ -365,21 +421,21 @@ class App extends Component {
             .then(res => res.json())
             .then(response => {
                 if (response) {
-                    let ress= response.data
-                    console.log(2424,ress);
+                    let ress = response.data
+                    console.log(2424, ress);
                     // response.data.forEach(item=>{
                     //     console.log(6363,item);
                     //     this.setState({infoItem:item});
                     //   this.setState({nameItems:item.product_name})  
                     // })
-                    
+
                     let arrAllData = [];
-                    for (let i = 0; i <= ress.length-1; i++) {
-                        console.log(33333,ress[i]);
-                        
+                    for (let i = 0; i <= ress.length - 1; i++) {
+                        console.log(33333, ress[i]);
+
                         arrAllData.push(ress[i].product_name);
-                        console.log(444545456,arrAllData);
-                        
+                        console.log(444545456, arrAllData);
+
                         this.setState({ valueAllDataLists: arrAllData })
                     }
                 }
@@ -440,12 +496,13 @@ class App extends Component {
     //     });
     //   };
     render() {
-        const { valueAllDataLists, isAuthenticated, infoCart,nameItems,infoItem,itemOptionState } = this.state;
-console.log(99999,infoItem);
-console.log(59595,nameItems);
-
-console.log('asasasa',valueAllDataLists);
-
+        const { infoCartState, valueDataUpdate, valueAllDataLists, isAuthenticated, nameItems, infoItem, itemOptionState } = this.state;
+        console.log(99999, infoItem);
+        console.log(59595, nameItems);
+        console.log('hvgbcgbbb', valueDataUpdate)
+        console.log('asasasa', valueAllDataLists);
+        console.log(2532, infoCartState);
+        
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -474,54 +531,54 @@ console.log('asasasa',valueAllDataLists);
             // console.log(index);
             items.push(
                 <>
-                <div className="col-sm-12 col-md-6 col-lg-4 mealContainer" key={value.id} >
-                    <div>
-                        <div style={containerStyle} onClick={() => {
-                            this.meal_popups[index] = !this.meal_popups[index];
-                            // console.log(this.meal_popups);
-                            var x = document.getElementById(value.id);
-                            var y = document.getElementById(value.id + "products")
-                            if (this.meal_popups[index]) {
-                                x.style.display = "block";
-                                y.style.display = "block";
+                    <div className="col-sm-12 col-md-6 col-lg-4 mealContainer" key={value.id} >
+                        <div>
+                            <div style={containerStyle} onClick={() => {
+                                this.meal_popups[index] = !this.meal_popups[index];
+                                // console.log(this.meal_popups);
+                                var x = document.getElementById(value.id);
+                                var y = document.getElementById(value.id + "products")
+                                if (this.meal_popups[index]) {
+                                    x.style.display = "block";
+                                    y.style.display = "block";
 
-                            }
-                            else {
-                                x.style.display = "none";
-                                y.style.display = "none";
-                            }
-                        }}>
-                            <img src={value.imageSrc} className="images" style={{ width: "100%" }} alt={value.id}></img>
-                            {/* <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={this.showIngredient(index)}></img> */}
-                            <div style={{ color: "black" }}> <b> {value.label} | {value.cookTime}  </b>| <span style={{ color: "grey" }}> View Details</span></div>
+                                }
+                                else {
+                                    x.style.display = "none";
+                                    y.style.display = "none";
+                                }
+                            }}>
+                                <img src={value.imageSrc} className="images" style={{ width: "100%" }} alt={value.id}></img>
+                                {/* <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={this.showIngredient(index)}></img> */}
+                                <div style={{ color: "black" }}> <b> {value.label} | {value.cookTime}  </b>| <span style={{ color: "grey" }}> View Details</span></div>
+                            </div>
                         </div>
                     </div>
-           </div> 
-                
-                <Popup
-                    trigger={
-                        <div id = {value.id} style={{ display:"none"}}>
-                        {value.intro}
-                        <br></br>
-                        <br></br>
-                        <button style={{backgroundColor: "orange" }}>View Steps</button>  
-                        <br></br>  
-                        </div>
 
-                        
-                    } modal closeOnDocumentClick contentStyle={contentStyle}> 
-
-                    {/* Inside Pop - up */}
-                    
-                    <div className="container ">
-                        <div className="row">
-                            <div className="col-sm-6">
-                                <div><b>Ingredients</b></div>
-                                <div className="col align-items-center"><ol>{ingredientsList}</ol></div>
+                    <Popup
+                        trigger={
+                            <div id={value.id} style={{ display: "none" }}>
+                                {value.intro}
+                                <br></br>
+                                <br></br>
+                                <button style={{ backgroundColor: "orange" }}>View Steps</button>
+                                <br></br>
                             </div>
+
+
                         } modal closeOnDocumentClick contentStyle={contentStyle}>
+
+                        {/* Inside Pop - up */}
+
+                        <div className="container ">
+                            <div className="row">
+                                <div className="col-sm-6">
+                                    <div><b>Ingredients</b></div>
+                                    <div className="col align-items-center"><ol>{ingredientsList}</ol></div>
+                                </div>
+                                } modal closeOnDocumentClick contentStyle={contentStyle}>
                         </div>
-                    </div>    
+                        </div>
                         {/* Inside Pop - up */}
                         <div className="container">
                             <div className="row">
@@ -570,7 +627,7 @@ console.log('asasasa',valueAllDataLists);
                     </div>
                     </div>
                     */}
-                    
+
                     </Popup>
                     <div id={value.id + "products"} style={{ display: "none" }}>
                         <b>Ingredients 1</b>
@@ -580,7 +637,7 @@ console.log('asasasa',valueAllDataLists);
                         <br />
 
                     </div>
-                    </>
+                </>
             )
         }
 
@@ -608,6 +665,7 @@ console.log('asasasa',valueAllDataLists);
 
 
         return (
+
             <div>
                 {/* <div> */}
 
@@ -759,10 +817,40 @@ console.log('asasasa',valueAllDataLists);
                                 auth={isAuthenticated}
                                 infoItem={this.infoCart}
                                 infoItemOption={itemOptionState}
-                                // {...props}
+                            // {...props}
                             />
 
                         )}
+
+                    />
+                    <Route
+                        path='/test'
+                        render={() =>
+
+                        // valueDataUpdate.forEach(infoCart => {
+                        //         let idItem = infoCart.id;
+                        // })    
+
+                        // valueDataUpdate.map((itemList) => {
+                        //     let idItem = itemList.id;
+                        //     return <>
+
+                        //     {console.log('infooooo',idItem)}
+                        //     </>
+                        // })
+
+
+                     
+                         
+                            <h1>this is the component</h1>
+                            // <div className='yourlist__card-text-add'>No.List>>{infoCart.id}>></div>
+                            // <div className='yourlist__card-text-add'>Name Product : {valueDataUpdate.map(item=>{
+                            // item
+                            // })}</div>
+                            // <div className='yourlist__card-text-add'> Product Price :  {infoCart.product_price}</div>
+                            // <div className='yourlist__card-text-add'> Product Size : {infoCart.sizes}</div>
+
+                        }
 
                     />
                     <Route
@@ -775,17 +863,12 @@ console.log('asasasa',valueAllDataLists);
 
 
                         )} />
-                    {/* <Route
+                    <Route
                         exact
-                        path="/cart-page"
-                        render={props => (
-                            <CartPage
-                                // infoItem={this.infoCart}  
-                            />
+                        path="/cart-page/:idItem"
+                            component={CartPage}
 
-                        )}
-
-                    /> */}
+                    />
                     <Route path="/products" render={(props) => (
                         <ProductsSection />
                     )} />
@@ -829,11 +912,11 @@ const containerStyle = {
 }
 
 const contentStyle = {
-// borderRadius: "25px",
-maxWidth: "100vw",
-maxHeight: "100vh",
-overflow: "scroll",
-width:"80%",
+    // borderRadius: "25px",
+    maxWidth: "100vw",
+    maxHeight: "100vh",
+    overflow: "scroll",
+    width: "80%",
 };
 
 

@@ -35,6 +35,7 @@ const createList = require('./controllers/list/createList')
 const removeList = require('./controllers/list/removeList')
 const getIdsItems = require('./controllers/list/getIdsItems')
 const getIdsList = require('./controllers/list/getIdsList')
+const getItemId = require('./controllers/list/getItemId')
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -297,7 +298,7 @@ app.delete('/api/remove-item/:idItem/:customerId',removeItem)
 app.post('/api/create-list/:idItem/:customerId',createList)
 app.get('/api/get-ids-items/:customerId',getIdsItems)
 app.get('/api/get-ids-list',getIdsList)
-
+app.get('/api/get-data-item/:idItem',getItemId)
 
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)

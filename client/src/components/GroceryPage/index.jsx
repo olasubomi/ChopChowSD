@@ -4,8 +4,10 @@ import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
 import { Container, Alert, Card, Col, Row, Form, Button, Modal } from 'react-bootstrap'
 import { Link, Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+import CartPage from './CartPage'
 export default class GroceryPage extends React.Component {
   state = {
+    cartTrue:false,
     valueData: null,
     Authentication: false,
     customerId: null,
@@ -191,10 +193,15 @@ export default class GroceryPage extends React.Component {
         )
 
     }
-    this.handleShowAddItem = (itemList) => {
+    this.handleShowAddItem = (idItem) => {
       const { infoCart } = this.state;
-      this.setState({ infoCart: itemList })
-      this.setState({ showInsert: true });
+      // const {history} = this.props;
+      window.location.href =`cart-page/${idItem}`
+
+      // history.push(`cart-page/${idItem}`)
+      
+      // this.setState({ infoCart: itemList })
+      // this.setState({ showInsert: true,cartTrue:true });
     }
     this.handleShowDeleteList = (idsItems) => {
       const { customerId } = this.state;
@@ -312,9 +319,14 @@ export default class GroceryPage extends React.Component {
 
 
   render() {
-    const {valueProductName, deletedItemsId, showAlert, variant, messageAlert, lasIdListState, valueData, infoCart, propsInfoCart, deletedItemId, idItem, idsItems, showCreate, valueId, customerId, showRemoveList, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, message, email, password, messageErr, messageSuccess, show, addListClick, deleteListClick, showInsert, showRemove } = this.state;
+    const {idItem,cartTrue,valueProductName, deletedItemsId, showAlert, variant, messageAlert, lasIdListState, valueData, infoCart, propsInfoCart, deletedItemId, idsItems, showCreate, valueId, customerId, showRemoveList, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, message, email, password, messageErr, messageSuccess, show, addListClick, deleteListClick, showInsert, showRemove } = this.state;
     const { auth } = this.props;
     const { infoItemOption } = this.props;
+    console.log('idItem',idItem);
+    
+    console.log(65696,cartTrue);
+    console.log('showinsert',showInsert);
+    
     console.log('valueProductName',valueProductName);
     console.log('valueProductImage',valueProductImage);
     console.log('valueProductSize',valueProductSize);
@@ -367,9 +379,10 @@ export default class GroceryPage extends React.Component {
                           </div>
                           <div className="yourlist__buttonAdd"><Button onClick={e => {
                             e.stopPropagation();
-                            this.handleShowAddItem(itemList);
+                            // window.location.href ='/cart-page'
+                            this.handleShowAddItem(idItem);
                           }}> Add To Cart</Button> </div>
-                          {showInsert ? (
+                          {/* {showInsert ? (
                             <Modal show={showInsert} onHide={this.handleClose} className='insert'>
                                  <Card.Header className="yourlist__card-header-add">
                               <div >Cart Page</div>
@@ -389,7 +402,18 @@ export default class GroceryPage extends React.Component {
                                   </Button>
                                   </Modal.Footer>
                             </Modal>
-                          ) : null}
+                          ) : null} */}
+                          {/* {showInsert?(
+
+                          // <CartPage name={infoCart}/>
+                      //     <Switch>
+                      //       <Route 
+                      //     path='/test'
+                      //     render= {()=><h1>this is the component</h1>}
+                      // /> 
+                      //     </Switch>
+                         
+                            ):null} */}
 
                           <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={e => {
                             e.stopPropagation();
