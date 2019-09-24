@@ -19,6 +19,7 @@ const { isAuthenticated } = require('./controllers/authentication/3.isAuthentica
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
 const authenticationVerify = require('./controllers/authentication/2.authunticatinVerify')
 const { hashPassword } = require('./controllers/hashPassword')
+const {authenticationSignup}=require('./controllers/authentication/authenticationSignup')
 const authunticationLogout = require('./controllers/authentication/authunticationLogout')
 const app = express();
 
@@ -35,7 +36,11 @@ const createList = require('./controllers/list/createList')
 const removeList = require('./controllers/list/removeList')
 const getIdsItems = require('./controllers/list/getIdsItems')
 const getIdsList = require('./controllers/list/getIdsList')
+const getIdsCustomers = require('./controllers/authentication/getIdsCustomers')
+
 const getItemId = require('./controllers/list/getItemId')
+const getDataItemTypeahead = require('./controllers/list/getDataItemTypeahead')
+
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -289,6 +294,7 @@ app.get('/find', function (req, res) {
 
 app.post('/api/login', authenticationLogin);
 // app.use(authenticationVerify)
+app.post ('/api/signup/:newcustomerId',authenticationSignup)
 app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
 app.get('/api/getList/:customerId',authenticationVerify,getList)
 app.get('/api/get-all-data-lists', getAllDataLists)
@@ -298,7 +304,11 @@ app.delete('/api/remove-item/:idItem/:customerId',removeItem)
 app.post('/api/create-list/:idItem/:customerId',createList)
 app.get('/api/get-ids-items/:customerId',getIdsItems)
 app.get('/api/get-ids-list',getIdsList)
+app.get('/api/get-ids-customers',getIdsCustomers)
+
 app.get('/api/get-data-item/:idItem',getItemId)
+
+app.get('/api/get-data-typeahead/:option',getDataItemTypeahead)
 
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
