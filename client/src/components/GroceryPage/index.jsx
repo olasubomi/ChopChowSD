@@ -1,17 +1,23 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-use-before-define */
 import React from 'react';
 import './style.css';
 import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
 import { Container, Alert, Card, Col, Row, Form, Button, Modal } from 'react-bootstrap'
-import { Link, Route, Switch, BrowserRouter as Router } from 'react-router-dom';
-import CartPage from './CartPage'
+import { Link } from 'react-router-dom';
+import signupValidation from './validationSignup';
+import validationCreateList from './validationCreateList'
 export default class GroceryPage extends React.Component {
   state = {
-    cartTrue:false,
+    newcustomerId: '',
+    dataTypeaheadState: '',
+    cartTrue: false,
     valueData: null,
     Authentication: false,
     customerId: null,
-    message: null,
+    messageErrServer: null,
     email: '',
     password: '',
     messageErr: false,
@@ -19,7 +25,7 @@ export default class GroceryPage extends React.Component {
     showAlert: false,
     messageAlert: '',
     variant: '',
-    show: false,
+    showSignup: false,
     loading: false,
     valueItemId: null,
 
@@ -41,36 +47,81 @@ export default class GroceryPage extends React.Component {
     valueProductSize: '',
     valuePricePerOunce: '',
     propsInfoCart: '',
-    infoCart: ''
+    infoCart: '',
+    showLogin: false,
+    firstname: '',
+    lastname: '',
+    password: '',
+    phoneNumber: '',
+    street: '',
+    city: '',
+    zipCode: '',
+    ipsid: '',
+    errormsg: '',
+    showSignupState: false
   }
-  handleClick = () => {
-    const { email, password } = this.state;
-    if (email && password) {
-      // make a requset to the back with method post and data{email , password}
-      fetch('/api/login', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      })
-        .then(response => {
 
-          if (response.status === 400 || response.status === 404) {
-            this.setState({ messageErr: 'Bad Request , Check username or password ... !!' });
-          } else if (response.status === 401) {
-            this.setState({ messageErr: 'you are UnAuthorized' });
-          } else if (response.status >= 500) {
-            this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
-          } else {
-            this.setState({ loading: false })
-            window.location.href = '/grocery'
+  handleClickSignup = () => {
+    const { firstname, lastname, email, password, confPassword, phoneNumber, street, city, zipCode, ipsid, newcustomerId } = this.state;
+    if (firstname && lastname && email && password && confPassword && phoneNumber && street && city && zipCode && ipsid) {
 
-            return this.setState({ messageSuccess: 'login sucessfully ', messageErr: '', Authentication: true })
+      signupValidation
+        .validate(
+          {
+            firstname,
+            lastname,
+            email,
+            password,
+            confPassword,
+            phoneNumber,
+            street,
+            city,
+            zipCode,
+            ipsid
+          },
+          { abortEarly: false }
+        )
+        .then(() => {
+
+          fetch(`/api/signup/${newcustomerId}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+              firstname,
+              lastname,
+              email,
+              password,
+              confPassword,
+              phoneNumber,
+              street,
+              city,
+              zipCode,
+              ipsid
+            }),
+          })
+            .then(response => {
+              if (response.status === 400 || response.status === 404) {
+                this.setState({ messageErr: 'Bad Request , This Email is exist so,try enter another email,please... !!' });
+              } else if (response.status === 401) {
+                this.setState({ messageErr: 'you are UnAuthorized' });
+              } else if (response.status >= 500) {
+                this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
+              } else {
+                this.setState({ messageSuccess: 'signup sucessfully ', messageErr: '', Authentication: true })
+                return window.location.href = '/login'
+              }
+            })
+        })
+        .catch(({ inner }) => {
+          if (inner) {
+            const errors = inner.reduce(
+              (acc, item) => ({ ...acc, [item.path]: item.message }),
+              {}
+            );
+            this.setState({ errormsg: { ...errors } });
           }
         })
     } else {
@@ -80,8 +131,12 @@ export default class GroceryPage extends React.Component {
 
   handleChange = ({ target: { value, name } }) =>
     this.setState({ [name]: value });
+
+
+  
   async componentDidMount() {
-    const { auth } = this.props;
+
+    const { auth, dataTypeaheadProps } = this.props;
 
     this.setState({ Authentication: auth })
     fetch('/api/grocery', {
@@ -98,13 +153,9 @@ export default class GroceryPage extends React.Component {
       })
       .then(response => {
         if (response.success && response.data) {
-          if (this.props.showLogin === false) {
-            this.setState({ Authentication: true, show: false });
-          } else {
-            this.setState({ Authentication: false, show: true });
-          }
+            this.setState({ Authentication: true });
         } else {
-          this.setState({ isAuthenticated: false })
+          this.setState({ Authenticated: false })
         }
         this.setState({ customerId: response.data })
         const { customerId } = this.state;
@@ -122,19 +173,21 @@ export default class GroceryPage extends React.Component {
           .then(response => {
             if (response) {//all lists for this customer
               this.setState({ valueData: response.data })
+              this.setState({ valueData: dataTypeaheadProps[0] })
             }
 
           }).catch(() => {
             this.setState({ message: 'Sorry , Internal Server ERROR' })
           })
 
+
       })
 
     this.handleClose = e => {
-      const {customerId}=this.state;
+      const { customerId } = this.state;
       if (e) e.stopPropagation();
-      this.setState({ showInsert: false,showCreate:false });
-      
+      this.setState({ showInsert: false, showCreate: false });
+
       fetch(`/api/getList/${customerId}`, {
         method: 'GET',
         credentials: 'same-origin',
@@ -152,7 +205,7 @@ export default class GroceryPage extends React.Component {
           }
 
         }).catch(() => {
-          this.setState({ message: 'Sorry , Internal Server ERROR' })
+          this.setState({ messageErrServer: 'Sorry , Internal Server ERROR' })
         })
     };
     this.handleShowDeleteItem = (idItem) => {
@@ -189,20 +242,13 @@ export default class GroceryPage extends React.Component {
           });
 
         })
-        .catch(() => this.setState({ messageErr: 'Sorry , Internal Server Error' })
+        .catch(() => this.setState({ messageErrServer: 'Sorry , Internal Server Error' })
         )
-
     }
     this.handleShowAddItem = (idItem) => {
-      const { infoCart } = this.state;
-      // const {history} = this.props;
-      window.location.href =`cart-page/${idItem}`
-
-      // history.push(`cart-page/${idItem}`)
-      
-      // this.setState({ infoCart: itemList })
-      // this.setState({ showInsert: true,cartTrue:true });
+      window.location.href = `cart-page/${idItem}`
     }
+
     this.handleShowDeleteList = (idsItems) => {
       const { customerId } = this.state;
       fetch(`/api/get-ids-items/${customerId}`, {
@@ -215,19 +261,17 @@ export default class GroceryPage extends React.Component {
       })
         .then(res => res.json())
         .then(response => {
-
-
           if (response) {//all lists for this customer
             let arrResItemDelete = response.data
-            arrResItemDelete.map(resDelete => {
+            arrResItemDelete.map((resDelete) => {
               this.setState({ deletedItemsId: resDelete })
             })
           }
 
         }).catch(() => {
-          this.setState({ message: 'Sorry , Internal Server ERROR' })
+          this.setState({ messageErrServer: 'Sorry , Internal Server ERROR' })
         })
-      const { deletedItemsId } = this.state
+
       fetch(`/api/remove-list/${customerId}`, {
         method: 'DELETE',
         headers: {
@@ -236,65 +280,57 @@ export default class GroceryPage extends React.Component {
 
       })
         .then(res => {
-         
-
           return res.json()
-
         })
         .then(response => {
-          this.setState(prevState => {
-            const newValueData = prevState.valueData.filter(
-              item => item.id !== deletedItemsId
-            );
-            this.setState({ valueData: newValueData });
-            this.setState({
-              messageAlert: 'deleted successfully',
-              showAlert: true,
-              variant: 'success'
-            },
-              () =>
-                setTimeout(() => {
-                  this.setState({ messageAlert: '', showAlert: false })
-                }, 4000)
-            )
-          });
+          this.setState({ valueData: [] });
         })
     }
-
 
     this.handleShowCreateList = () => {
       this.setState({ showCreate: true })
-
     }
+
     this.handleCreateList = () => {
-      const { lasIdListState, showCreate, valueId, valueProductName, valueProductImage, valueProductPrice, valuePricePerOunce, valueProductSize } = this.state;
+      const { lasIdListState, valueProductName, valueProductImage, valueProductPrice, valuePricePerOunce, valueProductSize } = this.state;
       const { customerId } = this.state;
       const idItem = lasIdListState;
-      fetch(`/api/create-list/${idItem}/${customerId}`, {
-        method: 'POST',
-  
-        body: JSON.stringify({
-          valueProductName,
-          valueProductImage,
-          valueProductPrice,
-          valueProductSize,
-          valuePricePerOunce,
-          
-        }),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(res => {
-          return res.json();
+      validationCreateList.validate(
+        { valueProductName, valueProductImage, valueProductPrice, valueProductSize, valuePricePerOunce },
+        { abortEarly: false }
+      )
+        .then(() => {
+          fetch(`/api/create-list/${idItem}/${customerId}`, {
+            method: 'POST',
+            body: JSON.stringify({
+              valueProductName,
+              valueProductImage,
+              valueProductPrice,
+              valueProductSize,
+              valuePricePerOunce,
 
+            }),
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          })
+            .then(res => {
+              return res.json();
+            })
+            .then(response => {
+              this.setState({ messageSuccess: 'add successfull' });
+            })
         })
-        .then(response => {
-          console.log('10101response createlist', response)
-          this.setState({ messageSuccess: 'add successfull' });
-          
-        })
+        .catch(({ inner }) => {
+          if (inner) {
+            const errors = inner.reduce(
+              (acc, item) => ({ ...acc, [item.path]: item.message }),
+              {}
+            );
+            this.setState({ errormsg: { ...errors } });
+          }
+        });
     }
 
     fetch('/api/get-ids-list', {
@@ -314,36 +350,38 @@ export default class GroceryPage extends React.Component {
         this.setState({ lasIdListState: lasIdList + 1 })
 
       })
+    fetch('/api/get-ids-customers', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(response => {
+        let arrResponse = response.data;
+        const lasIdCustomer = arrResponse[arrResponse.length - 1]
+        this.setState({ newcustomerId: lasIdCustomer + 1 })
+
+      })
+
   }
 
-
-
   render() {
-    const {idItem,cartTrue,valueProductName, deletedItemsId, showAlert, variant, messageAlert, lasIdListState, valueData, infoCart, propsInfoCart, deletedItemId, idsItems, showCreate, valueId, customerId, showRemoveList, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, message, email, password, messageErr, messageSuccess, show, addListClick, deleteListClick, showInsert, showRemove } = this.state;
+    const { firstname, lastname, email, password, phoneNumber, street, city, zipCode, ipsid, confPassword, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess} = this.state;
     const { auth } = this.props;
-    const { infoItemOption } = this.props;
-    console.log('idItem',idItem);
-    
-    console.log(65696,cartTrue);
-    console.log('showinsert',showInsert);
-    
-    console.log('valueProductName',valueProductName);
-    console.log('valueProductImage',valueProductImage);
-    console.log('valueProductSize',valueProductSize);
-    console.log('valueProductPrice',valueProductPrice);
-    console.log('valuePricePerOunce',valuePricePerOunce);
-    console.log('valueData',valueData);
-
-    
-    
     return (
       <>
         {auth ? (
           <>
+      
             <PageTitle title=" Your Grocery List" />
-             <Alert show={showAlert} key={1} variant={variant}>
-                    {messageAlert}
-                  </Alert>
+            <Alert show={showAlert} key={1} variant={variant}>
+              {messageAlert}
+            </Alert>
             <Container className="page__container">
               {valueData && valueData.length ? (
                 <Row>
@@ -356,13 +394,15 @@ export default class GroceryPage extends React.Component {
 
                   >
                     Delete All Items
-                                  </Button>
-                  
+                  </Button>
+
 
                   {valueData ? (
                     valueData.map((itemList) => {
                       let idItem = itemList.id;
                       return <>
+
+                        <div>{itemList.product_image}</div>
                         <Col xs={12} md={12} lg={12} key={itemList.id}>
                           <img src={`/images/products/${itemList.product_image}`} className="card-img" />
                           <div className="yourlist__card-div">
@@ -379,49 +419,14 @@ export default class GroceryPage extends React.Component {
                           </div>
                           <div className="yourlist__buttonAdd"><Button onClick={e => {
                             e.stopPropagation();
-                            // window.location.href ='/cart-page'
                             this.handleShowAddItem(idItem);
                           }}> Add To Cart</Button> </div>
-                          {/* {showInsert ? (
-                            <Modal show={showInsert} onHide={this.handleClose} className='insert'>
-                                 <Card.Header className="yourlist__card-header-add">
-                              <div >Cart Page</div>
-                            </Card.Header>
-                              <Modal.Body className='insert'>
-                                <div className='yourlist__card-text-add'>No.List>>{infoCart.id}>></div>
-                                <div className='yourlist__card-text-add'>Name Product : {infoCart.product_name}</div>
-                                <div className='yourlist__card-text-add'> Product Price :  {infoCart.product_price}</div>
-                                <div className='yourlist__card-text-add'> Product Size : {infoCart.sizes}</div>
-                              </Modal.Body>
-                              <Modal.Footer className="confirm__success">
-                          <Button
-                            variant="secondary"
-                            onClick={this.handleClose}
-                          >
-                            Close
-                                  </Button>
-                                  </Modal.Footer>
-                            </Modal>
-                          ) : null} */}
-                          {/* {showInsert?(
-
-                          // <CartPage name={infoCart}/>
-                      //     <Switch>
-                      //       <Route 
-                      //     path='/test'
-                      //     render= {()=><h1>this is the component</h1>}
-                      // /> 
-                      //     </Switch>
-                         
-                            ):null} */}
 
                           <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={e => {
                             e.stopPropagation();
                             this.handleShowDeleteItem(itemList.id);
 
                           }} ></i></div>
-
-                          
 
                         </Col>
                       </>
@@ -435,9 +440,7 @@ export default class GroceryPage extends React.Component {
                       <Modal show={showCreate} onHide={this.handleClose} className="modal" backdrop="static">
                         <Modal.Body>
                           <Form.Group>
-
                             <Form.Label>Product Id: {lasIdListState}</Form.Label>
-
                           </Form.Group>
                           <Form.Group>
                             <Form.Label>Product Name :</Form.Label>
@@ -450,6 +453,7 @@ export default class GroceryPage extends React.Component {
                               onChange={this.handleChange}
                             />
                           </Form.Group>
+                          {errormsg && <span className="errormsg">{errormsg.valueProductName}</span>}
                           <Form.Group>
                             <Form.Label>Product Image :</Form.Label>
                             <Form.Control
@@ -461,6 +465,7 @@ export default class GroceryPage extends React.Component {
                               onChange={this.handleChange}
                             />
                           </Form.Group>
+                          {errormsg && <span className="errormsg">{errormsg.valueProductImage}</span>}
 
                           <Form.Group>
                             <Form.Label>Product Price :</Form.Label>
@@ -473,6 +478,8 @@ export default class GroceryPage extends React.Component {
                               onChange={this.handleChange}
                             />
                           </Form.Group>
+                          {errormsg && <span className="errormsg">{errormsg.valueProductPrice}</span>}
+
                           <Form.Group>
                             <Form.Label>Product Size :</Form.Label>
                             <Form.Control
@@ -484,6 +491,8 @@ export default class GroceryPage extends React.Component {
                               onChange={this.handleChange}
                             />
                           </Form.Group>
+                          {errormsg && <span className="errormsg">{errormsg.valueProductSize}</span>}
+
                           <Form.Group>
                             <Form.Label>Product Price Per Ounce :</Form.Label>
                             <Form.Control
@@ -495,6 +504,7 @@ export default class GroceryPage extends React.Component {
                               onChange={this.handleChange}
                             />
                           </Form.Group>
+                          {errormsg && <span className="errormsg">{errormsg.valuePricePerOunce}</span>}
 
                           <p className="msg-success">{messageSuccess}</p>
                         </Modal.Body>
@@ -504,14 +514,14 @@ export default class GroceryPage extends React.Component {
                             onClick={this.handleClose}
                           >
                             Close
-                                  </Button>
+                          </Button>
                           <Button
                             className='create-button'
                             variant="success"
                             onClick={this.handleCreateList}
                           >
                             create
-                                  </Button>
+                          </Button>
                         </Modal.Footer>
                       </Modal>
                     ) : null}
@@ -525,79 +535,230 @@ export default class GroceryPage extends React.Component {
 
               <Modal show={true} onHide={this.handleClose} className="modal" backdrop="static">
                 <Modal.Body>
-                  <Form className="login__form">
-                    <div className="login__form-div-title">
-                      <h2 className="login__form-title">Log in to View Grocery List</h2>
-                    </div>
-                    <div className="vl">
-                      <span className="vl-innertext">or</span>
-                    </div>
-                    <div className="col">
-                      <a href="#" className="fb btn">
-                        <i class="fa fa-facebook fa-fw"></i> Login with Facebook
-                                                  </a>
-                      <a href="#" className="google btn"><i class="fa fa-google fa-fw">
-                      </i> Login with Google+
-                                                  </a>
-                    </div>
-                    <div className="col">
-                      <div className="hide-md-lg">
-                        <p>Or sign in manually:</p>
-                      </div>
-                    </div>
-                    <Form.Group>
-                      <Form.Label>Email :</Form.Label>
+                  <Form className="content-signup">
+                    <h2 className="content-signup__word-sigup">SIGN UP</h2>
+                    <Form.Group controlId="formBasicUsername">
+                      <Form.Label className="content-signup__form-label">
+                        First Name :{' '}
+                        <span className="content-signup__username-star">*</span>
+                      </Form.Label>
                       <Form.Control
+                        name="firstname"
+                        value={firstname}
+                        onChange={this.handleChange}
+                        type="firstname"
+                        placeholder="e.g: emily1234"
+                        className="content-signup__form-input"
+                      />
+                      {!messageSuccess || !messageErr || errormsg ? (
+
+                        <span className="errormsg">{errormsg.firstname}</span>
+                      ) : null}
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicUsername">
+                      <Form.Label className="content-signup__form-label">
+                        Last Name :{' '}
+                        <span className="content-signup__username-star">*</span>
+                      </Form.Label>
+                      <Form.Control
+                        name="lastname"
+                        value={lastname}
+                        onChange={this.handleChange}
                         type="text"
+                        placeholder="e.g: emily1234"
+                        className="content-signup__form-input"
+
+                      />
+                      {!messageSuccess || !messageErr || errormsg ? (
+
+                        <span className="errormsg">{errormsg.lastname}</span>
+                      ) : null}
+
+                    </Form.Group>
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Label className="content-signup__form-label">
+                        E-mail : <span className="content-signup__email-star">*</span>
+                      </Form.Label>
+                      <Form.Control
                         name="email"
                         value={email}
-                        placeholder="Enter your email"
                         onChange={this.handleChange}
+                        type="email"
+                        placeholder="example@mail.com"
+                        className="content-signup__form-input"
+
                       />
+                      {!messageSuccess || !messageErr || errormsg ? (
+
+                        <span className="errormsg">{errormsg.email}</span>
+                      ) : null}
+
                     </Form.Group>
-                    <Form.Group>
-                      <Form.Label>Password :</Form.Label>
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Label className="content-signup__form-label">
+                        Password :{' '}
+                        <span className="content-signup__password-star">*</span>
+                      </Form.Label>
                       <Form.Control
-                        type="password"
                         name="password"
                         value={password}
-                        placeholder="Enter your password"
                         onChange={this.handleChange}
+                        type="password"
+                        placeholder="Password"
+                        className="content-signup__form-input"
+
                       />
+                      {!messageSuccess || !messageErr || errormsg ? (
+
+                        <span className="errormsg">{errormsg.password}</span>
+                      ) : null}
+
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Label className="content-signup__form-label">
+                        Confirm Password :{' '}
+                        <span className="content-signup__confirm-password-star">*</span>
+                      </Form.Label>
+                      <Form.Control
+                        name="confPassword"
+                        value={confPassword}
+                        onChange={this.handleChange}
+                        type="password"
+                        placeholder="Password"
+                        className="content-signup__form-input"
+
+                      />
+                      {!messageSuccess || !messageErr || errormsg ? (
+
+                        <span className="errormsg">{errormsg.confPassword}</span>
+                      ) : null}
+
+                    </Form.Group>
+                    <Form.Group controlId="formBasicUsername">
+                      <Form.Label className="content-signup__form-label">
+                        Phone Number  :{' '}
+                        <span className="content-signup__username-star">*</span>
+                      </Form.Label>
+                      <Form.Control
+                        name="phoneNumber"
+                        value={phoneNumber}
+                        onChange={this.handleChange}
+                        type="number"
+                        placeholder="e.g: emily1234"
+                        className="content-signup__form-input"
+
+                      />
+                      {!messageSuccess || !messageErr || errormsg ? (
+
+                        <span className="errormsg">{errormsg.phoneNumber}</span>
+                      ) : null}
+
+                    </Form.Group>
+                    <Form.Group controlId="formBasicUsername">
+                      <Form.Label className="content-signup__form-label">
+                        Street :{' '}
+                        <span className="content-signup__username-star">*</span>
+                      </Form.Label>
+                      <Form.Control
+                        name="street"
+                        value={street}
+                        onChange={this.handleChange}
+                        type="text"
+                        placeholder="e.g: emily1234"
+                        className="content-signup__form-input"
+
+                      />
+                      {!messageSuccess || !messageErr || errormsg ? (
+
+                        <span className="errormsg">{errormsg.street}</span>
+                      ) : null}
+
+                    </Form.Group>
+                    <Form.Group controlId="formBasicUsername">
+                      <Form.Label className="content-signup__form-label">
+                        city :{' '}
+                        <span className="content-signup__username-star">*</span>
+                      </Form.Label>
+                      <Form.Control
+                        name="city"
+                        value={city}
+                        onChange={this.handleChange}
+                        type="text"
+                        placeholder="e.g: emily1234"
+                        className="content-signup__form-input"
+
+                      />
+                      {errormsg && <span className="errormsg">{errormsg.city}</span>}
+                      {!messageSuccess || !messageErr || errormsg ? (
+
+                        <span className="errormsg">{errormsg.city}</span>
+                      ) : null}
+                    </Form.Group>
+                    <Form.Group controlId="formBasicUsername">
+                      <Form.Label className="content-signup__form-label">
+                        zip Code :{' '}
+                        <span className="content-signup__username-star">*</span>
+                      </Form.Label>
+                      <Form.Control
+                        name="zipCode"
+                        value={zipCode}
+                        onChange={this.handleChange}
+                        type="number"
+                        placeholder="e.g: emily1234"
+                        className="content-signup__form-input"
+
+                      />
+                      {!messageSuccess || !messageErr || errormsg ? (
+
+                        <span className="errormsg">{errormsg.zipCode}</span>
+                      ) : null}
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicUsername">
+                      <Form.Label className="content-signup__form-label">
+                        Ips Id :{' '}
+                        <span className="content-signup__username-star">*</span>
+                      </Form.Label>
+                      <Form.Control
+                        name="ipsid"
+                        value={ipsid}
+                        onChange={this.handleChange}
+                        type="number"
+                        placeholder="e.g: emily1234"
+                        className="content-signup__form-input"
+
+                      />
+                      {!messageSuccess && !messageErr && errormsg ? (
+
+                        <span className="errormsg">{errormsg.ipsid}</span>
+                      ) : null}
                     </Form.Group>
                     <p className="msg-success">{messageSuccess}</p>
                     <p className="msg-err">{messageErr}</p>
-                    <Link>
-                      <span className="link-forgot-password">Forget Password  ?</span>
-                    </Link>
                     <Button
-                      type="button"
-                      className="login__form-btn"
-                      onClick={this.handleClick}
+                      variant="primary"
+                      className="content-signup__submit"
+                      onClick={this.handleClickSignup}
                     >
-                      Log in
-                    </Button>
+                      Sign Up
+          </Button>
+                    <Form.Text className="content-signup__text-muted">
+                      Already have an account?{' '}
+                      <Link to='login' className="content-signup__word-login" >
+                        login
 
-                    <Form.Text className="login__form__text-muted">
-                      Don’t have an account? {''}
-                      <Link className="link-signup-word" to="/signup">
-                        Sign Up
-                            </Link>
-                      <br />
-                      or
-                              <Link className="link-guest-word" to="/grocery-empty">
-                        continue as guest
-                            </Link>
+                      </Link>
                     </Form.Text>
                   </Form>
                 </Modal.Body>
               </Modal>
+
+
               <PageTitle title=" Your Grocery List" />
               <Container className="page__container">
-
                 <Row>
                   {valueData ? (
-
                     valueData.map((itemList) => {
                       return <>
                         <Col xs={12} md={12} lg={12} key={itemList.id}>
@@ -615,11 +776,6 @@ export default class GroceryPage extends React.Component {
                             </Card.Text>
                           </div>
                         </Col>
-
-                        <Button className="yourlist__buttonAdd"
-                        // onClick={this.handleAddToCart(idItem)}
-
-                        >Add To Cart</Button>
                       </>
                     })) : <Spinner animation="border" variant="info" />}
                 </Row>

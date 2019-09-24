@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-class-members */
 import React, { Component } from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
@@ -22,7 +23,7 @@ import ProductsSection from './components/productSection/ProductsPage';
 import CartPage from './components/GroceryPage/CartPage';
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
-
+import Signup from './components/Signup'
 class App extends Component {
 
 
@@ -232,6 +233,11 @@ class App extends Component {
         // this.myFunction = this.myFunction.bind(this);
 
         this.state = {
+            showSignup: false,
+            itemTypeaheadState: '',
+            itemState: '',
+            optionState: '',
+            nameItem: '',
             valueDataUpdate: '',
             infoCartState: '',
             suggestMealPopOver: false,
@@ -260,15 +266,13 @@ class App extends Component {
             infoCart: null,
             infoItem: null,
             nameItems: [],
-            itemOptionState: []
+            itemOptionState: [],
+            dataTypeahead: ''
         }
     }
 
     meal_popups = [];
 
-    setName = (data) => {
-        this.setState({ nameItem: data })
-    }
     componentDidMount() {
 
         this.auth();
@@ -361,84 +365,35 @@ class App extends Component {
 
 
     componentDidMount() {
+
         this.auth()
-        fetch('/api/grocery', {
-            method: 'GET',
-            credentials: 'same-origin',
-            headers: {
-                'Content-type': 'application/json',
-            },
-        })
-            .then(res => {
-
-                return res.json()
-
-            })
-            .then(response => {
-                console.log('resssss', response);
-
-                if (response.success && response.data) {
-                    this.setState({ customerId: response.data })
-                    const { customerId } = this.state;
-                    fetch(`/api/getList/${customerId}`, {
-                        method: 'GET',
-                        credentials: 'same-origin',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-
-                    })
-                        .then(res => {
-                            return res.json()
-                        })
-                        .then(response => {
-
-                            if (response) {//all lists for this customer
-                                const { valueDataUpdate } = this.state
-                                this.setState({ valueDataUpdate: response.data })
-                                // valueDataUpdate.map(infoCart=>{
-                                //     console.log(5252,infoCart);
-
-                                //     this.setState({infoCartState:infoCart})
-                                // })
-                            }
-
-                        }).catch(() => {
-                            this.setState({ message: 'Sorry , Internal Server ERROR' })
-                        })
-
-                }
-
-            })
+        const { valueAllDataLists } = this.state
         fetch('/api/get-all-data-lists', {
             method: 'GET',
             credentials: 'same-origin',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
 
         })
             .then(res => res.json())
             .then(response => {
                 if (response) {
-                    let ress = response.data
-                    console.log(2424, ress);
-                    let arrAllData = [];
-                    for (let i = 0; i <= ress.length - 1; i++) {
-                        console.log(33333, ress[i]);
 
-                        arrAllData.push(ress[i]);
-                        console.log(56562,arrAllData);
-                        
-                        arrAllData.map((it)=>{
-                            console.log(8989,it);
-                            
-                               this.setState({infoItem:it});
-                    //   this.setState({nameItems:it.product_name})   
+                    let arrAllData = [];
+                    let resArr = response.data
+                    console.log(response.data);
+
+                    for (let i = 6; i <= resArr.length - 1; i++) {
+                        arrAllData.push(response.data[i].product_name);
+                        this.setState({ valueAllDataLists: arrAllData })
+                        valueAllDataLists.map(item => {
+                            this.setState({ itemState: item })
+
                         })
-    
                     }
                 }
+                // }
             }).catch(() => {
                 this.setState({ message: 'Sorry , Internal Server ERROR' })
             })
@@ -457,7 +412,7 @@ class App extends Component {
         })
             .then(res => res.json())
             .then(res => {
-                console.log(res.success);
+                // console.log(res.success);
                 if (res.success) {
                     this.setState({ isAuthenticated: true })
                 }
@@ -487,22 +442,31 @@ class App extends Component {
 
             })
     }
-    // handleInputChange = item => {
-    //     const { valueAllDataLists } = this.state;
-    //     const { allowNew } = this.props;
-    //     if (!allowNew) return;
-    //     valueAllDataLists.filter(option => {
-    //      this.setState({itemOptionState:option})
-    //     });
-    //   };
+
+    handleInputChange = itemState => {
+        console.log('itemTypeahead in fetch', itemState);
+
+        fetch(`/api/get-data-typeahead/${itemState}`, {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(res => {
+                console.log('res', res);
+
+                return res.json()
+            })
+            .then(response => {
+                //  console.log('response for item in typeahead',response);
+                this.setState({ dataTypeahead: response.data })
+
+            })
+    };
     render() {
-        const { infoCartState, valueDataUpdate, valueAllDataLists, isAuthenticated, nameItems, infoItem, itemOptionState } = this.state;
-        console.log(99999, infoItem);
-        console.log(59595, nameItems);
-        console.log('hvgbcgbbb', valueDataUpdate)
-        console.log('asasasa', valueAllDataLists);
-        console.log(2532, infoCartState);
-        
+        const { itemState, dataTypeahead, valueAllDataLists, isAuthenticated, itemOptionState } = this.state;
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -676,7 +640,7 @@ class App extends Component {
 
                     <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
 
-                    <Link to="/grocery" onClick={this.onClick} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
+                    <Link to="/grocery" onClick={this.handleClickGrocery} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
 
 
                     <div className="w3-dropdown-hover w3-mobile">
@@ -723,15 +687,37 @@ class App extends Component {
     <i className="fa fa-bars" ></i>
     </Link>
 </div> */}
-{console.log('valueAllDataLists',valueAllDataLists)
-}
+                {/* // {console.log('valueAllDataLists',valueAllDataLists) */}
+                {/* } */}
+                {/* {valueAllDataLists.map(optionItem=>{ 
+    //   console.log('popoppoop',optionItem);
+      let varOptionItem = optionItem
+    //   console.log('inside varOptionItem',varOptionItem);
+       
+    //   this.setState({optionState:optionItem}) 
+    // console.log('outside varOptionItem',varOptionItem)
+ })
+ 
+}  */}
+
 
                 <Typeahead
-
-                    options={nameItems}
+                    onInputChange={this.handleInputChange(itemState)}
+                    options={valueAllDataLists}
+                    // filterBy={nameItems}
                     placeholder="Find Meals (and Ingredients) here.."
-                    id="typeahead"
+                    valueKey="id"
+                    labelKey="name"
+                    selected={valueAllDataLists}
+                    id={`auto${itemState}`}
+                    ref="typeahead"
                 />
+                {/* <button onClick={() =>{
+
+    this.refs.typeahead.getInstance().blur
+    } }>
+  Clear Typeahead
+</button> */}
 
 
                 <Switch>
@@ -740,6 +726,13 @@ class App extends Component {
                         path="/login"
                         render={props => (
                             <Login {...props} />
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/signup"
+                        render={props => (
+                            <Signup {...props} />
                         )}
                     />
                     <Route exact path="/" render={(props) => (
@@ -815,35 +808,37 @@ class App extends Component {
                         path="/grocery"
                         render={props => (
                             <GroceryPage
-                                showLogin={!isAuthenticated}
                                 auth={isAuthenticated}
-                                infoItem={this.infoCart}
                                 infoItemOption={itemOptionState}
-                            // {...props}
+                                dataTypeaheadProps={dataTypeahead}
                             />
 
                         )}
 
                     />
+
+                    )}
+
+                />
                     <Route
                         path='/test'
                         render={() =>
 
-                        // valueDataUpdate.forEach(infoCart => {
-                        //         let idItem = infoCart.id;
-                        // })    
+                            // valueDataUpdate.forEach(infoCart => {
+                            //         let idItem = infoCart.id;
+                            // })    
 
-                        // valueDataUpdate.map((itemList) => {
-                        //     let idItem = itemList.id;
-                        //     return <>
+                            // valueDataUpdate.map((itemList) => {
+                            //     let idItem = itemList.id;
+                            //     return <>
 
-                        //     {console.log('infooooo',idItem)}
-                        //     </>
-                        // })
+                            //     {console.log('infooooo',idItem)}
+                            //     </>
+                            // })
 
 
-                     
-                         
+
+
                             <h1>this is the component</h1>
                             // <div className='yourlist__card-text-add'>No.List>>{infoCart.id}>></div>
                             // <div className='yourlist__card-text-add'>Name Product : {valueDataUpdate.map(item=>{
@@ -868,7 +863,7 @@ class App extends Component {
                     <Route
                         exact
                         path="/cart-page/:idItem"
-                            component={CartPage}
+                        component={CartPage}
 
                     />
                     <Route path="/products" render={(props) => (

@@ -1,13 +1,13 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React from 'react';
 import './style.css';
-import { Button, Container} from 'react-bootstrap';
-
-import {  Card, Col, Row} from 'react-bootstrap'
+import {  Card, Col} from 'react-bootstrap'
 
 export default class CartPage extends React.Component {
   state = {
     cartInfo:'',
-    idItem:''
+    idItem:'',
+    message:''
   }
   componentDidMount() {
     const {
@@ -31,24 +31,18 @@ export default class CartPage extends React.Component {
     
   })
   .catch(()=>{
-    console.log('internal server error');
+    this.setState({ message: 'Sorry , Internal Server ERROR' })
     
   })
-
-
 
   }
   render() {
     const { cartInfo } = this.state;
-    console.log('cartInfo in render', cartInfo);
 
     return (
       <>
-
-        
-          
               <Col xs={12} md={12} lg={12} key={cartInfo.id}>
-                <img src={`/images/products/${cartInfo.product_image}`} className="card-img" />
+                <img src={`/images/products/${cartInfo.product_image}`} alt='image' className="card-img" />
                 <div className="yourlist__card-div">
                   <Card.Header className="yourlist__card-header">
                     <div>No.List>>{cartInfo.id}>></div>
@@ -61,9 +55,7 @@ export default class CartPage extends React.Component {
                     Product Size : {cartInfo.sizes}
                   </Card.Text>
                 </div>
-                </Col>
-        
-              
+                </Col>    
             </>
     )
         }
