@@ -402,7 +402,6 @@ export default class GroceryPage extends React.Component {
                       let idItem = itemList.id;
                       return <>
 
-                        <div>{itemList.product_image}</div>
                         <Col xs={12} md={12} lg={12} key={itemList.id}>
                           <img src={`/images/products/${itemList.product_image}`} className="card-img" />
                           <div className="yourlist__card-div">
