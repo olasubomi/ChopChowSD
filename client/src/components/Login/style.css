@@ -82,18 +82,7 @@ margin-top: 35px;
   background-color: #fff;
   box-shadow: 0 0 4px transparent;
 }
-.login__form-title {
-margin-top: -119px;
-padding: 20px 0;
-font-weight: 600;
-align-items: center;
-text-align: center;
-letter-spacing: .04em;
-color: #5d5756;
-width: 91%;
-margin-left: 17px;
-background: #fff;
-}
+
 .login__form-title {
   padding: 20px 0;
   font-weight: 600;

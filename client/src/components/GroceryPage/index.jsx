@@ -134,14 +134,13 @@ export default class GroceryPage extends React.Component {
 
 
   
-  async componentDidMount() {
+   componentDidMount() {
 
     const { auth, dataTypeaheadProps } = this.props;
 
     this.setState({ Authentication: auth })
     fetch('/api/grocery', {
       method: 'GET',
-      credentials: 'same-origin',
       headers: {
         'Content-type': 'application/json',
       },
@@ -187,7 +186,6 @@ export default class GroceryPage extends React.Component {
       const { customerId } = this.state;
       if (e) e.stopPropagation();
       this.setState({ showInsert: false, showCreate: false });
-
       fetch(`/api/getList/${customerId}`, {
         method: 'GET',
         credentials: 'same-origin',
@@ -207,6 +205,7 @@ export default class GroceryPage extends React.Component {
         }).catch(() => {
           this.setState({ messageErrServer: 'Sorry , Internal Server ERROR' })
         })
+  
     };
     this.handleShowDeleteItem = (idItem) => {
       this.setState({ deletedItemId: idItem });
@@ -283,6 +282,17 @@ export default class GroceryPage extends React.Component {
           return res.json()
         })
         .then(response => {
+          this.setState({
+            messageAlert: 'deleted successfully',
+            showAlert: true,
+            variant: 'success'
+          },
+            () =>
+              setTimeout(() => {
+                this.setState({ messageAlert: '', showAlert: false })
+              }, 3500)
+          )
+         
           this.setState({ valueData: [] });
         })
     }
@@ -320,6 +330,7 @@ export default class GroceryPage extends React.Component {
             })
             .then(response => {
               this.setState({ messageSuccess: 'add successfull' });
+                 
             })
         })
         .catch(({ inner }) => {

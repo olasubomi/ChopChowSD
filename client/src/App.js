@@ -365,7 +365,48 @@ class App extends Component {
 
 
     componentDidMount() {
-
+        fetch('/api/grocery', {
+            method: 'GET',
+            headers: {
+              'Content-type': 'application/json',
+            },
+          })
+            .then(res => {
+      
+              return res.json()
+      
+            })
+            .then(response => {
+              if (response.success && response.data) {
+                  this.setState({ Authentication: true });
+              } else {
+                this.setState({ Authenticated: false })
+              }
+              this.setState({ customerId: response.data })
+              const { customerId } = this.state;
+              fetch(`/api/getList/${customerId}`, {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+      
+              })
+                .then(res => {
+                  return res.json()
+                })
+                .then(response => {
+                  if (response) {//all lists for this customer
+                    this.setState({ valueData: response.data })
+                  }
+      
+                }).catch(() => {
+                  this.setState({ message: 'Sorry , Internal Server ERROR' })
+                })
+      
+      
+            })
+      
         this.auth()
         const { valueAllDataLists } = this.state
         fetch('/api/get-all-data-lists', {
@@ -701,7 +742,7 @@ class App extends Component {
 }  */}
 
 
-                <Typeahead
+                {/* <Typeahead
                     onInputChange={this.handleInputChange(itemState)}
                     options={valueAllDataLists}
                     // filterBy={nameItems}
@@ -711,7 +752,7 @@ class App extends Component {
                     selected={valueAllDataLists}
                     id={`auto${itemState}`}
                     ref="typeahead"
-                />
+                /> */}
                 {/* <button onClick={() =>{
 
     this.refs.typeahead.getInstance().blur
