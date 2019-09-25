@@ -61,81 +61,49 @@ export default class GroceryPage extends React.Component {
     showSignupState: false
   }
 
-  handleClickSignup = () => {
-    const { firstname, lastname, email, password, confPassword, phoneNumber, street, city, zipCode, ipsid, newcustomerId } = this.state;
-    if (firstname && lastname && email && password && confPassword && phoneNumber && street && city && zipCode && ipsid) {
-
-      signupValidation
-        .validate(
-          {
-            firstname,
-            lastname,
-            email,
-            password,
-            confPassword,
-            phoneNumber,
-            street,
-            city,
-            zipCode,
-            ipsid
-          },
-          { abortEarly: false }
-        )
-        .then(() => {
-
-          fetch(`/api/signup/${newcustomerId}`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-              'Content-type': 'application/json',
-            },
-            body: JSON.stringify({
-              firstname,
-              lastname,
-              email,
-              password,
-              confPassword,
-              phoneNumber,
-              street,
-              city,
-              zipCode,
-              ipsid
-            }),
-          })
-            .then(response => {
-              if (response.status === 400 || response.status === 404) {
-                this.setState({ messageErr: 'Bad Request , This Email is exist so,try enter another email,please... !!' });
-              } else if (response.status === 401) {
-                this.setState({ messageErr: 'you are UnAuthorized' });
-              } else if (response.status >= 500) {
-                this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
-              } else {
-                this.setState({ messageSuccess: 'signup sucessfully ', messageErr: '', Authentication: true })
-                return window.location.href = '/login'
-              }
-            })
-        })
-        .catch(({ inner }) => {
-          if (inner) {
-            const errors = inner.reduce(
-              (acc, item) => ({ ...acc, [item.path]: item.message }),
-              {}
-            );
-            this.setState({ errormsg: { ...errors } });
-          }
-        })
-    } else {
-      this.setState({ messageErr: 'Please enter all fields' });
-    }
-  };
 
   handleChange = ({ target: { value, name } }) =>
     this.setState({ [name]: value });
 
 
-  
-   componentDidMount() {
 
+  componentDidMount() {
+    this.handleClick = () => {
+      const { email, password } = this.state;
+      if (email && password) {
+
+        // make a requset to the back with method post and data{email , password}
+        fetch('/api/login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        })
+          .then(response => {
+            if (response.status === 400 || response.status === 404) {
+              this.setState({ messageErr: 'Bad Request , Check username or password ... !!' });
+            } else if (response.status === 401) {
+              this.setState({ messageErr: 'you are UnAuthorized' });
+            } else if (response.status >= 500) {
+              this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
+            } else {
+              this.setState({ messageErr: '' });
+              this.setState({ isAuthenticated: true })
+              this.setState({ messageSuccess: 'login sucessfully ' });
+              return window.location.href = '/grocery'
+            }
+          })
+
+
+      } else {
+        this.setState({ messageErr: 'Please enter all fields' });
+      }
+    };
     const { auth, dataTypeaheadProps } = this.props;
 
     this.setState({ Authentication: auth })
@@ -152,7 +120,7 @@ export default class GroceryPage extends React.Component {
       })
       .then(response => {
         if (response.success && response.data) {
-            this.setState({ Authentication: true });
+          this.setState({ Authentication: true });
         } else {
           this.setState({ Authenticated: false })
         }
@@ -205,7 +173,7 @@ export default class GroceryPage extends React.Component {
         }).catch(() => {
           this.setState({ messageErrServer: 'Sorry , Internal Server ERROR' })
         })
-  
+
     };
     this.handleShowDeleteItem = (idItem) => {
       this.setState({ deletedItemId: idItem });
@@ -292,7 +260,7 @@ export default class GroceryPage extends React.Component {
                 this.setState({ messageAlert: '', showAlert: false })
               }, 3500)
           )
-         
+
           this.setState({ valueData: [] });
         })
     }
@@ -330,7 +298,7 @@ export default class GroceryPage extends React.Component {
             })
             .then(response => {
               this.setState({ messageSuccess: 'add successfull' });
-                 
+
             })
         })
         .catch(({ inner }) => {
@@ -382,13 +350,13 @@ export default class GroceryPage extends React.Component {
   }
 
   render() {
-    const { firstname, lastname, email, password, phoneNumber, street, city, zipCode, ipsid, confPassword, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess} = this.state;
+    const { firstname, lastname, email, password, phoneNumber, street, city, zipCode, ipsid, confPassword, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
     const { auth } = this.props;
     return (
       <>
         {auth ? (
           <>
-      
+
             <PageTitle title=" Your Grocery List" />
             <Alert show={showAlert} key={1} variant={variant}>
               {messageAlert}
@@ -543,226 +511,87 @@ export default class GroceryPage extends React.Component {
 
             <>
 
-              <Modal show={true} onHide={this.handleClose} className="modal" backdrop="static">
-                <Modal.Body>
-                  <Form className="content-signup">
-                    <h2 className="content-signup__word-sigup">SIGN UP</h2>
-                    <Form.Group controlId="formBasicUsername">
-                      <Form.Label className="content-signup__form-label">
-                        First Name :{' '}
-                        <span className="content-signup__username-star">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        name="firstname"
-                        value={firstname}
-                        onChange={this.handleChange}
-                        type="firstname"
-                        placeholder="e.g: emily1234"
-                        className="content-signup__form-input"
-                      />
-                      {!messageSuccess || !messageErr || errormsg ? (
+              <Container>
+                <Modal show={true} onHide={this.handleClose} className="modal" backdrop="static">
+                  <Modal.Body>
 
-                        <span className="errormsg">{errormsg.firstname}</span>
-                      ) : null}
-                    </Form.Group>
+                    <Form className="login__form">
+                      <div className="login__form-div-title">
+                        <h2 className="login__form-title">Log in to View Grocery List</h2>
 
-                    <Form.Group controlId="formBasicUsername">
-                      <Form.Label className="content-signup__form-label">
-                        Last Name :{' '}
-                        <span className="content-signup__username-star">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        name="lastname"
-                        value={lastname}
-                        onChange={this.handleChange}
-                        type="text"
-                        placeholder="e.g: emily1234"
-                        className="content-signup__form-input"
+                      </div>
 
-                      />
-                      {!messageSuccess || !messageErr || errormsg ? (
 
-                        <span className="errormsg">{errormsg.lastname}</span>
-                      ) : null}
 
-                    </Form.Group>
-                    <Form.Group controlId="formBasicEmail">
-                      <Form.Label className="content-signup__form-label">
-                        E-mail : <span className="content-signup__email-star">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        name="email"
-                        value={email}
-                        onChange={this.handleChange}
-                        type="email"
-                        placeholder="example@mail.com"
-                        className="content-signup__form-input"
+                      <div className="vl">
+                        <span className="vl-innertext">or</span>
+                      </div>
 
-                      />
-                      {!messageSuccess || !messageErr || errormsg ? (
+                      <div className="col">
+                        <a href="#" className="fb btn">
+                          <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+                                                  </a>
+                        <a href="#" className="google btn"><i class="fa fa-google fa-fw">
+                        </i> Login with Google+
+                                                  </a>
+                      </div>
 
-                        <span className="errormsg">{errormsg.email}</span>
-                      ) : null}
-
-                    </Form.Group>
-                    <Form.Group controlId="formBasicPassword">
-                      <Form.Label className="content-signup__form-label">
-                        Password :{' '}
-                        <span className="content-signup__password-star">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        name="password"
-                        value={password}
-                        onChange={this.handleChange}
-                        type="password"
-                        placeholder="Password"
-                        className="content-signup__form-input"
-
-                      />
-                      {!messageSuccess || !messageErr || errormsg ? (
-
-                        <span className="errormsg">{errormsg.password}</span>
-                      ) : null}
-
-                    </Form.Group>
-                    <Form.Group controlId="formBasicPassword">
-                      <Form.Label className="content-signup__form-label">
-                        Confirm Password :{' '}
-                        <span className="content-signup__confirm-password-star">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        name="confPassword"
-                        value={confPassword}
-                        onChange={this.handleChange}
-                        type="password"
-                        placeholder="Password"
-                        className="content-signup__form-input"
-
-                      />
-                      {!messageSuccess || !messageErr || errormsg ? (
-
-                        <span className="errormsg">{errormsg.confPassword}</span>
-                      ) : null}
-
-                    </Form.Group>
-                    <Form.Group controlId="formBasicUsername">
-                      <Form.Label className="content-signup__form-label">
-                        Phone Number  :{' '}
-                        <span className="content-signup__username-star">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        name="phoneNumber"
-                        value={phoneNumber}
-                        onChange={this.handleChange}
-                        type="number"
-                        placeholder="e.g: emily1234"
-                        className="content-signup__form-input"
-
-                      />
-                      {!messageSuccess || !messageErr || errormsg ? (
-
-                        <span className="errormsg">{errormsg.phoneNumber}</span>
-                      ) : null}
-
-                    </Form.Group>
-                    <Form.Group controlId="formBasicUsername">
-                      <Form.Label className="content-signup__form-label">
-                        Street :{' '}
-                        <span className="content-signup__username-star">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        name="street"
-                        value={street}
-                        onChange={this.handleChange}
-                        type="text"
-                        placeholder="e.g: emily1234"
-                        className="content-signup__form-input"
-
-                      />
-                      {!messageSuccess || !messageErr || errormsg ? (
-
-                        <span className="errormsg">{errormsg.street}</span>
-                      ) : null}
-
-                    </Form.Group>
-                    <Form.Group controlId="formBasicUsername">
-                      <Form.Label className="content-signup__form-label">
-                        city :{' '}
-                        <span className="content-signup__username-star">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        name="city"
-                        value={city}
-                        onChange={this.handleChange}
-                        type="text"
-                        placeholder="e.g: emily1234"
-                        className="content-signup__form-input"
-
-                      />
-                      {errormsg && <span className="errormsg">{errormsg.city}</span>}
-                      {!messageSuccess || !messageErr || errormsg ? (
-
-                        <span className="errormsg">{errormsg.city}</span>
-                      ) : null}
-                    </Form.Group>
-                    <Form.Group controlId="formBasicUsername">
-                      <Form.Label className="content-signup__form-label">
-                        zip Code :{' '}
-                        <span className="content-signup__username-star">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        name="zipCode"
-                        value={zipCode}
-                        onChange={this.handleChange}
-                        type="number"
-                        placeholder="e.g: emily1234"
-                        className="content-signup__form-input"
-
-                      />
-                      {!messageSuccess || !messageErr || errormsg ? (
-
-                        <span className="errormsg">{errormsg.zipCode}</span>
-                      ) : null}
-                    </Form.Group>
-
-                    <Form.Group controlId="formBasicUsername">
-                      <Form.Label className="content-signup__form-label">
-                        Ips Id :{' '}
-                        <span className="content-signup__username-star">*</span>
-                      </Form.Label>
-                      <Form.Control
-                        name="ipsid"
-                        value={ipsid}
-                        onChange={this.handleChange}
-                        type="number"
-                        placeholder="e.g: emily1234"
-                        className="content-signup__form-input"
-
-                      />
-                      {!messageSuccess && !messageErr && errormsg ? (
-
-                        <span className="errormsg">{errormsg.ipsid}</span>
-                      ) : null}
-                    </Form.Group>
-                    <p className="msg-success">{messageSuccess}</p>
-                    <p className="msg-err">{messageErr}</p>
-                    <Button
-                      variant="primary"
-                      className="content-signup__submit"
-                      onClick={this.handleClickSignup}
-                    >
-                      Sign Up
-          </Button>
-                    <Form.Text className="content-signup__text-muted">
-                      Already have an account?{' '}
-                      <Link to='login' className="content-signup__word-login" >
-                        login
-
+                      <div className="col">
+                        <div className="hide-md-lg">
+                          <p>Or sign in manually:</p>
+                        </div>
+                      </div>
+                      <Form.Group>
+                        <Form.Label>Email :</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="email"
+                          value={email}
+                          placeholder="Enter your email"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <Form.Group>
+                        <Form.Label>Password :</Form.Label>
+                        <Form.Control
+                          type="password"
+                          name="password"
+                          value={password}
+                          placeholder="Enter your password"
+                          onChange={this.handleChange}
+                        />
+                      </Form.Group>
+                      <p className="msg-success">{messageSuccess}</p>
+                      <p className="msg-err">{messageErr}</p>
+                      <Link>
+                        <span className="link-forgot-password">Forget Password  ?</span>
                       </Link>
-                    </Form.Text>
-                  </Form>
-                </Modal.Body>
-              </Modal>
+
+                      <Button
+                        type="button"
+                        className="login__form-btn"
+                        onClick={this.handleClick}
+                      >
+                        Log in
+                              </Button>
+                      <Form.Text className="login__form__text-muted">
+                        Don’t have an account? {''}
+
+                        <Link className="link-signup-word" to="/signup">
+                          Sign Up
+                            </Link>
+                        <br />
+                        or
+
+                             <Link className="link-guest-word" to="/aguest">
+                          continue as guest
+                            </Link>
+
+                      </Form.Text>
+                    </Form>
+                  </Modal.Body>
+                </Modal>
+              </Container>
 
 
               <PageTitle title=" Your Grocery List" />

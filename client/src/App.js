@@ -23,7 +23,6 @@ import ProductsSection from './components/productSection/ProductsPage';
 import CartPage from './components/GroceryPage/CartPage';
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
-import Signup from './components/Signup'
 class App extends Component {
 
 
@@ -769,13 +768,7 @@ class App extends Component {
                             <Login {...props} />
                         )}
                     />
-                    <Route
-                        exact
-                        path="/signup"
-                        render={props => (
-                            <Signup {...props} />
-                        )}
-                    />
+                    
                     <Route exact path="/" render={(props) => (
                         <div>
                             <div id="title">
