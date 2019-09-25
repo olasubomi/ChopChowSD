@@ -550,7 +550,7 @@ class App extends Component {
 }  */}
 
 
-                <Typeahead
+                {/* <Typeahead
                     onChange={(item) => {
                         console.log(item[0])
                         this.setState({option:item[0]})
@@ -578,7 +578,7 @@ class App extends Component {
                     labelKey="name"
                     id={`auto${itemState}`}
                     ref="typeahead"
-                />
+                /> */}
                 {/* <button onClick={() =>{
 
     this.refs.typeahead.getInstance().blur

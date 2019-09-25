@@ -351,27 +351,12 @@ export default class GroceryPage extends React.Component {
         this.setState({ newcustomerId: lasIdCustomer + 1 })
 
       })
-      // const {option}=this.props;
-      // fetch(`/api/get-data-typeahead/${option}`, {
-      //   method: 'GET',
-      //   credentials: 'same-origin',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-  
-      // })
-      //   .then(res => {
-
-      //     return res.json()
-      //   })
-      //   // .then(response => {
-      //   //   log
-      //   // })
+      
   }
 
   render() {
-    const {Authentication, firstname, lastname, email, password, phoneNumber, street, city, zipCode, ipsid, confPassword, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
-    const { auth ,dataTypeaheadProps} = this.props;
+    const {email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
+    const { auth } = this.props;
     
     
     return (
