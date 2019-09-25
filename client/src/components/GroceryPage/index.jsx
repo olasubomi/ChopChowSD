@@ -104,9 +104,9 @@ export default class GroceryPage extends React.Component {
           .then(response => {
             if (response) {//all lists for this customer
               
-              let arrRes=[...this.state.valueData, dataTypeaheadProps];
-              this.setState({option:dataTypeaheadProps})
-              this.setState({ valueData: arrRes })
+              // let arrRes=[...this.state.valueData, dataTypeaheadProps];
+              // this.setState({option:dataTypeaheadProps})
+              this.setState({ valueData: response.data })
             }
 
           }).catch(() => {
@@ -355,8 +355,9 @@ export default class GroceryPage extends React.Component {
   }
 
   render() {
-    const {email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
+    const {dataTypeaheadProps,email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
     const { auth } = this.props;
+    console.log('dataTypeaheadPropsvvvv',dataTypeaheadProps);
     
     
     return (
