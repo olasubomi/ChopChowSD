@@ -1,7 +1,7 @@
 const proxy = require("http-proxy-middleware");
 module.exports = function(app) {
   app.use(proxy("/api/**", { 
-    target: "http://localhost:4663",
+    target: "http://localhost:5555",
     secure: false
   }));
 };

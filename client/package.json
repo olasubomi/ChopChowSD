@@ -2,7 +2,7 @@
   "name": "chop_chow_sd",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:4663",
+  "proxy": "http://localhost:5555",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.1",
@@ -43,8 +43,7 @@
     "@storybook/addon-actions": "^5.1.10",
     "@storybook/addon-links": "^5.1.10",
     "@storybook/addons": "^5.1.10",
-    "@storybook/react": "^5.1.10",
-    "babel-loader": "^8.0.6"
+    "@storybook/react": "^5.1.10"
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",

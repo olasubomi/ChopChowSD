@@ -10,24 +10,41 @@ const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 
 require('./db/dbMongo/config/db_connection');
-// require('./db/dbMongo/config/AllData')();
+// require('./db/dbMongo/config/AllDataList')();
+// require('./db/dbMongo/config/AllDataCusomerList')();
+// require('./db/dbMongo/config/AllDataCustomer')();
+
 
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
 const authenticationVerify = require('./controllers/authentication/2.authunticatinVerify')
 const { hashPassword } = require('./controllers/hashPassword')
+const {authenticationSignup}=require('./controllers/authentication/authenticationSignup')
 const authunticationLogout = require('./controllers/authentication/authunticationLogout')
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 4663;
+const port = process.env.PORT || 5555;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
 const { getList } = require("./controllers/list/getList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
+
 const { getMeals } = require("./controllers/list/getMeals");
  
+// const appendItem = require('./controllers/list/appendItem')
+const removeItem = require('./controllers/list/removeItem');
+const createList = require('./controllers/list/createList')
+const removeList = require('./controllers/list/removeList')
+const getIdsItems = require('./controllers/list/getIdsItems')
+const getIdsList = require('./controllers/list/getIdsList')
+const getIdsCustomers = require('./controllers/authentication/getIdsCustomers')
+
+const getItemId = require('./controllers/list/getItemId')
+const getDataItemTypeahead = require('./controllers/list/getDataItemTypeahead')
+
+
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(cookie());
@@ -120,7 +137,8 @@ app.get('/terms-of-service', (req, res) => {
 //     console.log("Gets in client builds index");
 //     res.sendFile(path.join(__dirname+'/client/build/'));
 //   });
-app.get('/getLists/:customerId', getList)
+app.get('/getList/:customerId', getList)
+
 app.get('/api/get-all-data-lists', getAllDataLists)
 app.get('/api/get-meals', getMeals)
 
@@ -278,7 +296,23 @@ app.get('/find', function (req, res) {
 
 
 app.post('/api/login', authenticationLogin);
-app.get('/api/grocery', authenticationVerify ,isAuthenticated);
+// app.use(authenticationVerify)
+app.post ('/api/signup/:newcustomerId',authenticationSignup)
+app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
+app.get('/api/getList/:customerId',authenticationVerify,getList)
+app.get('/api/get-all-data-lists', getAllDataLists)
+// app.post('/api/appendItem',appendItem)
+app.delete('/api/remove-list/:customerId',removeList)
+app.delete('/api/remove-item/:idItem/:customerId',removeItem)
+app.post('/api/create-list/:idItem/:customerId',createList)
+app.get('/api/get-ids-items/:customerId',getIdsItems)
+app.get('/api/get-ids-list',getIdsList)
+app.get('/api/get-ids-customers',getIdsCustomers)
+
+app.get('/api/get-data-item/:idItem',getItemId)
+
+app.get('/api/get-data-typeahead/:option',getDataItemTypeahead)
+
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 

@@ -24,10 +24,10 @@ module.exports = async () => {
             price_per_ounce: 3.2
         }, {
             id:4,
-            product_name: "Spinach",
-            product_image: 'garri.jpg',
-            product_price: 2.99,
-            sizes: '0.5lbs',
+            product_name: null,
+            product_image: null,
+            product_price:null,
+            sizes: null,
             price_per_ounce:null
         },
         {
@@ -96,9 +96,8 @@ module.exports = async () => {
             sizes: '2 lbs',
             price_per_ounce: 3.2
         }
-       
+
     ]
 
     return list.create(allDataList)
 }
-

@@ -1,5 +1,8 @@
+/* eslint-disable no-dupe-class-members */
 import React, { Component } from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
+
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
@@ -17,8 +20,10 @@ import IngredientSection from './components/mealMenu/IngredientSection';
 import ProductsSection from './components/productSection/ProductsPage';
 //import Collapse from 'react-bootstrap/Collapse';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import CartPage from './components/GroceryPage/CartPage';
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
+import Signup from './components/Signup'
 class App extends Component {
 
 
@@ -33,6 +38,13 @@ class App extends Component {
         // this.myFunction = this.myFunction.bind(this);
 
         this.state = {
+            showSignup: false,
+            itemTypeaheadState: '',
+            itemState: '',
+            optionState: '',
+            nameItem: '',
+            valueDataUpdate: '',
+            infoCartState: '',
             suggestMealPopOver: false,
             mealsListed: false,
             mealSelected: false,
@@ -51,18 +63,23 @@ class App extends Component {
             mealsLength: null,
             base_index: 0,
             topNav_className: "w3-bar w3-dark-grey w3-green topnav",
-            
+
             valueAllDataLists: [],
             message: null,
-            userInfo:null,
-            isAuthenticated:false
-
+            userInfo: null,
+            isAuthenticated: false,
+            infoCart: null,
+            infoItem: null,
+            nameItems: [],
+            itemOptionState: [],
+            dataTypeahead: ''
         }
     }
 
     meal_popups = [];
 
     componentDidMount() {
+
         this.auth();
         console.log("Comes in apps component did mount")
         var url = "http://localhost:5000/get_products"
@@ -79,6 +96,10 @@ class App extends Component {
             .catch(err => {
                 console.log(err);
             });
+        // this.setInfoCart = (data) => {
+        //     this.setState({ infoCart: data })
+        // }
+
     }
 
     showIngredients = (event) => {
@@ -149,24 +170,76 @@ class App extends Component {
 
 
     componentDidMount() {
-         this.auth()
+        fetch('/api/grocery', {
+            method: 'GET',
+            headers: {
+              'Content-type': 'application/json',
+            },
+          })
+            .then(res => {
+      
+              return res.json()
+      
+            })
+            .then(response => {
+              if (response.success && response.data) {
+                  this.setState({ Authentication: true });
+              } else {
+                this.setState({ Authenticated: false })
+              }
+              this.setState({ customerId: response.data })
+              const { customerId } = this.state;
+              fetch(`/api/getList/${customerId}`, {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+      
+              })
+                .then(res => {
+                  return res.json()
+                })
+                .then(response => {
+                  if (response) {//all lists for this customer
+                    this.setState({ valueData: response.data })
+                  }
+      
+                }).catch(() => {
+                  this.setState({ message: 'Sorry , Internal Server ERROR' })
+                })
+      
+      
+            })
+      
+        this.auth()
+        const { valueAllDataLists } = this.state
         fetch('/api/get-all-data-lists', {
             method: 'GET',
             credentials: 'same-origin',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
 
         })
             .then(res => res.json())
             .then(response => {
                 if (response) {
-                    let arrAllData =[];
-                    for (let i = 15; i <= 29; i++) {
+
+                    let arrAllData = [];
+                    let resArr = response.data
+                    console.log(response.data);
+
+                    for (let i = 6; i <= resArr.length - 1; i++) {
                         arrAllData.push(response.data[i].product_name);
                         this.setState({ valueAllDataLists: arrAllData })
+                        valueAllDataLists.map(item => {
+                            this.setState({ itemState: item })
+
+                        })
                     }
                 }
+                // }
             }).catch(() => {
                 this.setState({ message: 'Sorry , Internal Server ERROR' })
             })
@@ -196,51 +269,72 @@ class App extends Component {
         
     }
 
-   
-auth(){
-    fetch('/api/grocery', {
-        method: 'GET',
-        credentials: 'same-origin',
-        headers: {
-            'Content-type': 'application/json',
-        },
-    })
-    .then(res => res.json())
-    .then(res => {
-        console.log(res.success);
-        if (res.success) {
-            this.setState({isAuthenticated: true})
-        }
-    }).catch(er => console.log(er))
-    
-}
 
-handleLogout = () => {
-   fetch('/api/logout',{
-       method:"GET",
-       credentials:'same-origin',
-       headers:{
-        'Content-type': 'application/json',
-        
-       }
-   }).then(res=>{
-       
-    res.json()
-   .then(response=>{
-       if(response.data){
-           this.setState({isAuthenticated:false})
-       }
-   })
-})
-   .catch(()=>{
-    this.setState({ message: 'Sorry , Internal Server ERROR' })
+    auth() {
+        fetch('/api/grocery', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json',
+            },
+        })
+            .then(res => res.json())
+            .then(res => {
+                // console.log(res.success);
+                if (res.success) {
+                    this.setState({ isAuthenticated: true })
+                }
+            }).catch(er => console.log(er))
 
-   })
-}
+    }
 
+    handleLogout = () => {
+        fetch('/api/logout', {
+            method: "GET",
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json',
+
+            }
+        }).then(res => {
+
+            res.json()
+                .then(response => {
+                    if (response.data) {
+                        this.setState({ isAuthenticated: false })
+                    }
+                })
+        })
+            .catch(() => {
+                this.setState({ message: 'Sorry , Internal Server ERROR' })
+
+            })
+    }
+
+    handleInputChange = itemState => {
+        console.log('itemTypeahead in fetch', itemState);
+
+        fetch(`/api/get-data-typeahead/${itemState}`, {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(res => {
+                console.log('res', res);
+
+                return res.json()
+            })
+            .then(response => {
+                //  console.log('response for item in typeahead',response);
+                this.setState({ dataTypeahead: response.data })
+
+            })
+    };
     render() {
-        const { valueData, valueAllDataLists, message,isLogged,isAuthenticated} = this.state;
-        
+        const { itemState, dataTypeahead, valueAllDataLists, isAuthenticated, itemOptionState } = this.state;
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -267,28 +361,31 @@ handleLogout = () => {
             // console.log(this.meal_popups);
             // console.log(index);
             items.push(
-                <div className="col-sm-12 col-md-6 col-lg-4 mealContainer" key={value.id} >
-                    <div>
-                        <div style={containerStyle} onClick={() => {
-                            this.meal_popups[index] = !this.meal_popups[index];
-                            // console.log(this.meal_popups);
-                            var x = document.getElementById(value.id);
-                            var y = document.getElementById(value.id + "products")
-                            if (this.meal_popups[index]) {
-                                x.style.display = "block";
-                                y.style.display = "block";
+                <>
+                    <div className="col-sm-12 col-md-6 col-lg-4 mealContainer" key={value.id} >
+                        <div>
+                            <div style={containerStyle} onClick={() => {
+                                this.meal_popups[index] = !this.meal_popups[index];
+                                // console.log(this.meal_popups);
+                                var x = document.getElementById(value.id);
+                                var y = document.getElementById(value.id + "products")
+                                if (this.meal_popups[index]) {
+                                    x.style.display = "block";
+                                    y.style.display = "block";
 
-                            }
-                            else {
-                                x.style.display = "none";
-                                y.style.display = "none";
-                            }
-                        }}>
-                            <img src={value.imageSrc} className="images" style={{ width: "100%" }} alt={value.id}></img>
-                            {/* <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={this.showIngredient(index)}></img> */}
-                            <div style={{ color: "black" }}> <b> {value.label} | {value.cookTime}  </b>| <span style={{ color: "grey" }}> View Details</span></div>
+                                }
+                                else {
+                                    x.style.display = "none";
+                                    y.style.display = "none";
+                                }
+                            }}>
+                                <img src={value.imageSrc} className="images" style={{ width: "100%" }} alt={value.id}></img>
+                                {/* <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={this.showIngredient(index)}></img> */}
+                                <div style={{ color: "black" }}> <b> {value.label} | {value.cookTime}  </b>| <span style={{ color: "grey" }}> View Details</span></div>
+                            </div>
                         </div>
                     </div>
+
                     <Popup
                         trigger={
                             <div id={value.id} style={{ display: "none" }}>
@@ -297,10 +394,22 @@ handleLogout = () => {
                                 <br></br>
                                 <button style={{ backgroundColor: "orange" }}>View Steps</button>
                                 <br></br>
-
                             </div>
+
+
                         } modal closeOnDocumentClick contentStyle={contentStyle}>
 
+                        {/* Inside Pop - up */}
+
+                        <div className="container ">
+                            <div className="row">
+                                <div className="col-sm-6">
+                                    <div><b>Ingredients</b></div>
+                                    <div className="col align-items-center"><ol>{ingredientsList}</ol></div>
+                                </div>
+                                } modal closeOnDocumentClick contentStyle={contentStyle}>
+                        </div>
+                        </div>
                         {/* Inside Pop - up */}
                         <div className="container">
                             <div className="row">
@@ -349,20 +458,21 @@ handleLogout = () => {
                     </div>
                     </div>
                     */}
+
                     </Popup>
                     <div id={value.id + "products"} style={{ display: "none" }}>
                         <b>Ingredients 1</b>
                         <br></br>
                         {value.products}
-                        <WithScrollbar products={value.product_slider} ingredients={[{"name": "sugar","image": "/images/products/sugar.jpeg"}, {"name": "onion","image": "/images/products/onion.jpg"}, {"name": "tomato","image": "/images/products/tomato.jpg"}, {"name": "water","image": "/images/products/water.jpeg"}, {"name": "vegetable oil","image": "/images/products/vegetable_oil.jpg"}]}/>
-                        <br/>
-                        
-                </div>
-            </div>
+                        <WithScrollbar products={value.product_slider} ingredients={[{ "name": "sugar", "image": "/images/products/sugar.jpeg" }, { "name": "onion", "image": "/images/products/onion.jpg" }, { "name": "tomato", "image": "/images/products/tomato.jpg" }, { "name": "water", "image": "/images/products/water.jpeg" }, { "name": "vegetable oil", "image": "/images/products/vegetable_oil.jpg" }]} />
+                        <br />
+
+                    </div>
+                </>
             )
         }
 
-         /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */ 
+        /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
         function myFunction() {
             var x = document.getElementById("myTopnav");
             console.log(x);
@@ -386,6 +496,7 @@ handleLogout = () => {
 
 
         return (
+
             <div>
                 {/* <div> */}
 
@@ -393,14 +504,11 @@ handleLogout = () => {
                 <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
                     {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
                     <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
-                    {/* {!isAuthenticated?(
-                        <Link to="/login"  >Login</Link>
-                        ):}
-                         */}
-                     
-                     <Link to = "/grocery" onClick={this.onClick} >GroceryPage</Link>
+
                     <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
-                    
+
+                    <Link to="/grocery" onClick={this.handleClickGrocery} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
+
 
                     <div className="w3-dropdown-hover w3-mobile">
                         <button className="w3-button w3-hover-orange w3-mobile">
@@ -419,10 +527,10 @@ handleLogout = () => {
                     <Link to="#" className="icon" onClick={() => { console.log("Comes thru here"); myFunction() }} >
                         <i className="fa fa-bars" ></i>
                     </Link>
-                    {isAuthenticated?(
+                    {isAuthenticated ? (
 
-                        <Link to='/logout' onClick={this.handleLogout}>Logout</Link>
-                    ):null}
+                        <Link to='/' onClick={this.handleLogout} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Logout</Link>
+                    ) : null}
 
                 </div>
 
@@ -446,14 +554,37 @@ handleLogout = () => {
     <i className="fa fa-bars" ></i>
     </Link>
 </div> */}
+                {/* // {console.log('valueAllDataLists',valueAllDataLists) */}
+                {/* } */}
+                {/* {valueAllDataLists.map(optionItem=>{ 
+    //   console.log('popoppoop',optionItem);
+      let varOptionItem = optionItem
+    //   console.log('inside varOptionItem',varOptionItem);
+       
+    //   this.setState({optionState:optionItem}) 
+    // console.log('outside varOptionItem',varOptionItem)
+ })
+ 
+}  */}
 
-                <Typeahead
+
+                {/* <Typeahead
+                    onInputChange={this.handleInputChange(itemState)}
                     options={valueAllDataLists}
+                    // filterBy={nameItems}
                     placeholder="Find Meals (and Ingredients) here.."
-                    id="typeahead"
-                />
+                    valueKey="id"
+                    labelKey="name"
+                    selected={valueAllDataLists}
+                    id={`auto${itemState}`}
+                    ref="typeahead"
+                /> */}
+                {/* <button onClick={() =>{
 
-
+    this.refs.typeahead.getInstance().blur
+    } }>
+  Clear Typeahead
+</button> */}
 
 
                 <Switch>
@@ -462,6 +593,13 @@ handleLogout = () => {
                         path="/login"
                         render={props => (
                             <Login {...props} />
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/signup"
+                        render={props => (
+                            <Signup {...props} />
                         )}
                     />
                     <Route exact path="/" render={(props) => (
@@ -530,19 +668,71 @@ handleLogout = () => {
                         </div>
                     )} />
 
-                    <Route 
-                    exact 
-                    path="/grocery" 
-                    render={props=>(
-                        <GroceryPage
-                        showLogin={!isAuthenticated}
-                        auth={isAuthenticated}
-                        /> 
-                        
+
+
+                    <Route
+                        exact
+                        path="/grocery"
+                        render={props => (
+                            <GroceryPage
+                                auth={isAuthenticated}
+                                infoItemOption={itemOptionState}
+                                dataTypeaheadProps={dataTypeahead}
+                            />
+
                         )}
 
-                        />
-                        
+                    />
+
+                    )}
+
+                />
+                    <Route
+                        path='/test'
+                        render={() =>
+
+                            // valueDataUpdate.forEach(infoCart => {
+                            //         let idItem = infoCart.id;
+                            // })    
+
+                            // valueDataUpdate.map((itemList) => {
+                            //     let idItem = itemList.id;
+                            //     return <>
+
+                            //     {console.log('infooooo',idItem)}
+                            //     </>
+                            // })
+
+
+
+
+                            <h1>this is the component</h1>
+                            // <div className='yourlist__card-text-add'>No.List>>{infoCart.id}>></div>
+                            // <div className='yourlist__card-text-add'>Name Product : {valueDataUpdate.map(item=>{
+                            // item
+                            // })}</div>
+                            // <div className='yourlist__card-text-add'> Product Price :  {infoCart.product_price}</div>
+                            // <div className='yourlist__card-text-add'> Product Size : {infoCart.sizes}</div>
+
+                        }
+
+                    />
+                    <Route
+                        exact
+                        path="/grocery-empty"
+                        render={props => (
+
+                            <span className="grocery-page-empty__message">Sorry you must make log in to seen grocery list </span>
+
+
+
+                        )} />
+                    <Route
+                        exact
+                        path="/cart-page/:idItem"
+                        component={CartPage}
+
+                    />
                     <Route path="/products" render={(props) => (
                         <ProductsSection />
                     )} />
@@ -589,11 +779,10 @@ const contentStyle = {
     // borderRadius: "25px",
     maxWidth: "100vw",
     maxHeight: "100vh",
-    overflow: "scroll"
-    // width: "90%",
-    // height: "50%",
-
+    overflow: "scroll",
+    width: "80%",
 };
+
 
 /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
 // function myFunction() {

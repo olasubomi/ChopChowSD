@@ -7,10 +7,12 @@ exports.list = mongoose.model('list', new Schema({
     product_name: String,
     product_image:String,
     product_price:Number,
-    sizes:String
+    sizes:String,
+    price_per_ounce:Number,
+
 }))
 
-exports.Customer = mongoose.model('Customer', new Schema({
+exports.customer = mongoose.model('customer', new Schema({
     id: Number,
     firstname: String,
     lastname: String,
@@ -21,7 +23,12 @@ exports.Customer = mongoose.model('Customer', new Schema({
     city: String,
     zipCode: Number,
     ipsid: Number,
-    listid: [{ type: Schema.Types.ObjectId, ref: 'list' }],
+}))
+exports.customer_list = mongoose.model('customer_list', new Schema({
+    id: Number,
+    customer_id: Number,
+    list_id:Number,
+
 }))
 
 exports.admin = mongoose.model('admin', new Schema({

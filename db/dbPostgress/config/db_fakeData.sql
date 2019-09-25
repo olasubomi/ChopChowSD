@@ -29,6 +29,7 @@ VALUES
     12.00,
     '2 lbs',
     3.2
+
   ),(
     4,
     'Spinach',
@@ -45,15 +46,15 @@ VALUES
     null
   ),(
     6,
-    'Blueberries',
-    'beans.jpeg',
+    'Oregano',
+    'oregano.jpeg',
     1.00,
     '1lbs',
     null
   ),(
     7,
     'Squash Potatoes',
-    'potatoes.jpg',
+    'red_potatoes.jpg',
     8.99,
     '50lbs',
     null
@@ -111,8 +112,7 @@ INSERT INTO
     street,
     city,
     zipcode,
-    ipsid,
-    listid
+    ipsid
   )
 VALUES
   (
@@ -125,8 +125,7 @@ VALUES
     'salah',
     'gaza',
     12334,
-    4566,
-    1
+    4566
   ),
   (
     2,
@@ -138,8 +137,7 @@ VALUES
     'areha',
     'american',
     12334,
-    4566,
-    1
+    4566
   ),  (
     3,
     'alaa',
@@ -150,8 +148,7 @@ VALUES
     'salah',
     'gaza',
     12334,
-    4566,
-    2
+    4566
   ),
   (
     4,
@@ -163,8 +160,7 @@ VALUES
     'areha',
     'american',
     12334,
-    4566,
-    2
+    4566
   ) , (
     5,
     'alaa',
@@ -175,8 +171,7 @@ VALUES
     'salah',
     'gaza',
     12334,
-    4566,
-    3
+    4566
   ),
   (
     6,
@@ -188,8 +183,7 @@ VALUES
     'areha',
     'american',
     12334,
-    4566,
-    3
+    4566
   ) , (
     7,
     'alaa',
@@ -200,8 +194,7 @@ VALUES
     'salah',
     'gaza',
     12334,
-    4566,
-    5
+    4566
   ),
   (
     8,
@@ -213,8 +206,7 @@ VALUES
     'areha',
     'american',
     12334,
-    4566,
-    5
+    4566
   ),  (
     9,
     'alaa',
@@ -225,8 +217,7 @@ VALUES
     'salah',
     'gaza',
     12334,
-    4566,
-    6
+    4566
   ),
   (
     10,
@@ -238,8 +229,7 @@ VALUES
     'areha',
     'american',
     12334,
-    4566,
-    6
+    4566
   ),  (
     11,
     'alaa',
@@ -250,8 +240,7 @@ VALUES
     'salah',
     'gaza',
     12334,
-    4566,
-    8
+    4566
   ),
   (
     12,
@@ -263,8 +252,7 @@ VALUES
     'areha',
     'american',
     12334,
-    4566,
-    13
+    4566
   ) , (
     13,
     'alaa',
@@ -275,9 +263,64 @@ VALUES
     'salah',
     'gaza',
     12334,
-    4566,
-    13
+    4566
   );
+  INSERT INTO
+  customer_list (
+    id,
+    customer_id,
+    list_id
+  )
+VALUES(
+1,1,3
+),(
+  3,1,5
+),
+(
+  4,1,7
+),(
+  6,2,5
+),(
+  7,3,9
+),(
+  8,3,5
+),(
+  9,4,7
+),(
+  10,4,6
+),(
+  11,4,9
+),(
+  12,5,10
+),(
+  14,6,2
+),(
+  15,6,7
+),(
+  16,6,8
+),(
+  17,7,2
+),(
+  18,7,3
+),(
+  19,8,6
+),(
+  20,9,10
+),(
+  21,9,11
+),(
+  22,10,null
+),(
+  23,11,null
+),(
+  24,12,null
+),(
+  25,13,5
+),(
+  26,13,7
+),(
+  27,13,1
+);
 INSERT INTO
   admin (id, name)
 VALUES

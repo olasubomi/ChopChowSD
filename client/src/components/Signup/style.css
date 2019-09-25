@@ -1,0 +1,112 @@
+.signup__form__text-muted {
+    padding: 5px 0 40px;
+    text-align: center;
+    font-size: 15px;
+    opacity: .8;
+  }
+.content-signup__star{
+    color:red;
+}
+  .link-signup-word {
+  color: #4c4646 !important;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  }
+.content-signup__form-label{
+    margin-left: 10px
+}
+  .link-signup-word:hover {
+    text-decoration: none;
+    color: #104d58 !important;
+  }
+  
+   .content-signup__form-input{
+    width: 275px;
+    margin-right: 37px;
+    margin-left: 24px;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.03em;
+    color: black;
+    border-radius: 3px;
+  }
+  
+  
+   .form-group {
+    margin-bottom: 2rem;
+    margin-left: 360px;
+    margin-right: 40px;
+    margin-top: 36px;
+  }
+  .form-text {
+  display: block;
+  margin-left: -110px;
+  margin-right: -355px;
+  margin-top: 35px;
+  }
+  
+   .msg-err {
+    text-align: center;
+    padding: 0 22px;
+    margin-left: 360px;
+    margin-right: 40px;
+    color: red;
+  }
+  .msg-success{
+    text-align: center;
+    padding: 0 22px;
+    margin-left: 360px;
+    margin-right: 40px;
+    color: green;
+  }
+  
+   .signup__form {
+    width: 53%;
+    margin-left: 335px;
+    margin-top: 96px;
+    /* height: 320px; */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 4px transparent;
+  }
+  .signup__form-title {
+  margin-top: -119px;
+  padding: 20px 0;
+  font-weight: 600;
+  align-items: center;
+  text-align: center;
+  letter-spacing: .04em;
+  color: #5d5756;
+  width: 91%;
+  margin-left: 17px;
+  background: #fff;
+  }
+  
+  .btn:hover {
+  opacity: 1;
+  }
+  .signup__form-btn {
+  width: 20%;
+  background-color: #c3bebe!important;
+  background: #e6e4e1;
+  border-radius: 7px;
+  border: 2px solid #54514d;
+  margin-top: 83px;
+  height: 40px;
+  border-radius: 21px;
+  font-size: 20px!important;
+  }
+  
+  
+  @media screen and (max-width: 650px) {
+  
+  }
+  @media only screen and (max-width: 992px) {
+    .signup__form {
+      width: 95%;
+    }
+  }
+  
