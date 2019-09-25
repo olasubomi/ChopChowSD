@@ -68,6 +68,53 @@ export default class GroceryPage extends React.Component {
 
 
   componentDidMount() {
+    const { auth, dataTypeaheadProps } = this.props;
+
+    this.setState({ Authentication: auth })
+    fetch('/api/grocery', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+
+        return res.json()
+
+      })
+      .then(response => {
+        if (response.success && response.data) {
+          this.setState({ Authentication: true });
+        } else {
+          this.setState({ Authenticated: false })
+        }
+        this.setState({ customerId: response.data })
+        const { customerId } = this.state;
+        fetch(`/api/getList/${customerId}`, {
+          method: 'GET',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+
+        })
+          .then(res => {
+            return res.json()
+          })
+          .then(response => {
+            if (response) {//all lists for this customer
+              
+              let arrRes=[...this.state.valueData, dataTypeaheadProps];
+              this.setState({option:dataTypeaheadProps})
+              this.setState({ valueData: arrRes })
+            }
+
+          }).catch(() => {
+            this.setState({ message: 'Sorry , Internal Server ERROR' })
+          })
+
+
+      })
     this.handleClick = () => {
       const { email, password } = this.state;
       if (email && password) {
@@ -104,51 +151,7 @@ export default class GroceryPage extends React.Component {
         this.setState({ messageErr: 'Please enter all fields' });
       }
     };
-    const { auth, dataTypeaheadProps } = this.props;
-
-    this.setState({ Authentication: auth })
-    fetch('/api/grocery', {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json',
-      },
-    })
-      .then(res => {
-
-        return res.json()
-
-      })
-      .then(response => {
-        if (response.success && response.data) {
-          this.setState({ Authentication: true });
-        } else {
-          this.setState({ Authenticated: false })
-        }
-        this.setState({ customerId: response.data })
-        const { customerId } = this.state;
-        fetch(`/api/getList/${customerId}`, {
-          method: 'GET',
-          credentials: 'same-origin',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-
-        })
-          .then(res => {
-            return res.json()
-          })
-          .then(response => {
-            if (response) {//all lists for this customer
-              this.setState({ valueData: response.data })
-              this.setState({ valueData: dataTypeaheadProps[0] })
-            }
-
-          }).catch(() => {
-            this.setState({ message: 'Sorry , Internal Server ERROR' })
-          })
-
-
-      })
+    
 
     this.handleClose = e => {
       const { customerId } = this.state;
@@ -166,6 +169,7 @@ export default class GroceryPage extends React.Component {
           return res.json()
         })
         .then(response => {
+          
           if (response) {//all lists for this customer
             this.setState({ valueData: response.data })
           }
@@ -294,6 +298,7 @@ export default class GroceryPage extends React.Component {
             },
           })
             .then(res => {
+              
               return res.json();
             })
             .then(response => {
@@ -346,12 +351,29 @@ export default class GroceryPage extends React.Component {
         this.setState({ newcustomerId: lasIdCustomer + 1 })
 
       })
+      // const {option}=this.props;
+      // fetch(`/api/get-data-typeahead/${option}`, {
+      //   method: 'GET',
+      //   credentials: 'same-origin',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+  
+      // })
+      //   .then(res => {
 
+      //     return res.json()
+      //   })
+      //   // .then(response => {
+      //   //   log
+      //   // })
   }
 
   render() {
-    const { firstname, lastname, email, password, phoneNumber, street, city, zipCode, ipsid, confPassword, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
-    const { auth } = this.props;
+    const {Authentication, firstname, lastname, email, password, phoneNumber, street, city, zipCode, ipsid, confPassword, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
+    const { auth ,dataTypeaheadProps} = this.props;
+    
+    
     return (
       <>
         {auth ? (

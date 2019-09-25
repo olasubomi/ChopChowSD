@@ -37,8 +37,9 @@ class App extends Component {
         // this.myFunction = this.myFunction.bind(this);
 
         this.state = {
+            option:'',
             showSignup: false,
-            itemTypeaheadState: '',
+            itemTypeahead: '',
             itemState: '',
             optionState: '',
             nameItem: '',
@@ -227,12 +228,14 @@ class App extends Component {
 
                     let arrAllData = [];
                     let resArr = response.data
-                    console.log(response.data);
 
-                    for (let i = 6; i <= resArr.length - 1; i++) {
+                    for (let i = 0; i <= resArr.length - 1; i++) {
+                        
                         arrAllData.push(response.data[i].product_name);
+                        
                         this.setState({ valueAllDataLists: arrAllData })
-                        valueAllDataLists.map(item => {
+                        arrAllData.map(item => {
+                            
                             this.setState({ itemState: item })
 
                         })
@@ -279,7 +282,6 @@ class App extends Component {
         })
             .then(res => res.json())
             .then(res => {
-                // console.log(res.success);
                 if (res.success) {
                     this.setState({ isAuthenticated: true })
                 }
@@ -310,30 +312,11 @@ class App extends Component {
             })
     }
 
-    handleInputChange = itemState => {
-        console.log('itemTypeahead in fetch', itemState);
-
-        fetch(`/api/get-data-typeahead/${itemState}`, {
-            method: 'GET',
-            credentials: 'same-origin',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(res => {
-                console.log('res', res);
-
-                return res.json()
-            })
-            .then(response => {
-                //  console.log('response for item in typeahead',response);
-                this.setState({ dataTypeahead: response.data })
-
-            })
-    };
+    
     render() {
-        const { itemState, dataTypeahead, valueAllDataLists, isAuthenticated, itemOptionState } = this.state;
+        const {option, itemTypeahead,itemState, dataTypeahead, valueAllDataLists, isAuthenticated, itemOptionState } = this.state;
+       
+        
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -567,17 +550,35 @@ class App extends Component {
 }  */}
 
 
-                {/* <Typeahead
-                    onInputChange={this.handleInputChange(itemState)}
+                <Typeahead
+                    onChange={(item) => {
+                        console.log(item[0])
+                        this.setState({option:item[0]})
+                        const {option} = this.state;
+                        fetch(`/api/get-data-typeahead/${option}`, {
+                            method: 'GET',
+                            credentials: 'same-origin',
+                            headers: {
+                                Accept: 'application/json',
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                            .then(res => {
+                                console.log('res', res);
+                
+                                return res.json()
+                            })
+                            .then(response => {
+                                this.setState({itemTypeahead:response.data})
+                            })
+                    }}
                     options={valueAllDataLists}
-                    // filterBy={nameItems}
                     placeholder="Find Meals (and Ingredients) here.."
                     valueKey="id"
                     labelKey="name"
-                    selected={valueAllDataLists}
                     id={`auto${itemState}`}
                     ref="typeahead"
-                /> */}
+                />
                 {/* <button onClick={() =>{
 
     this.refs.typeahead.getInstance().blur
@@ -670,7 +671,7 @@ class App extends Component {
                             <GroceryPage
                                 auth={isAuthenticated}
                                 infoItemOption={itemOptionState}
-                                dataTypeaheadProps={dataTypeahead}
+                                dataTypeaheadProps={itemTypeahead}
                             />
 
                         )}
