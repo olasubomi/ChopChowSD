@@ -30,6 +30,9 @@ const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
 const { getList } = require("./controllers/list/getList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
+
+const { getMeals } = require("./controllers/list/getMeals");
+ 
 // const appendItem = require('./controllers/list/appendItem')
 const removeItem = require('./controllers/list/removeItem');
 const createList = require('./controllers/list/createList')
@@ -137,7 +140,7 @@ app.get('/terms-of-service', (req, res) => {
 app.get('/getList/:customerId', getList)
 
 app.get('/api/get-all-data-lists', getAllDataLists)
-
+app.get('/api/get-meals', getMeals)
 
 
 // on enetering landing page
