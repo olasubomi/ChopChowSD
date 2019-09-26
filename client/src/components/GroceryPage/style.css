@@ -62,11 +62,7 @@
   width: 74px;
   height: 34px;
 }
-  /* .insert { */
-    /* width: 1359px;
-    height: 533px; */
-    /* margin-left: -176px; */
-/* } */
+
 .modal-body {
   position: relative;
   width: 221%;
@@ -137,7 +133,27 @@
  .yourlist__card-text-add{
    margin-left:370px
  }
+/*item typeahead*/
+.yourlist__item-typeahead__card-div{
+  margin-left: 174px
+}
+.yourlist__item-typeahead__card-header{
+  margin-left: 10px
 
+}
+.yourlist__item-typeahead__header__name-product{
+  border-bottom: none !important;
+  background: rgba(243, 243, 116, 0.47) !important;
+  margin-left: -19px;
+  margin-top: 2px;
+  padding-left: 19px;
+  width: 233px;
+
+}
+.yourlist__item-typeahead__card-text{
+  margin-left: 29px;
+  margin-top: 23px;
+}
   .modal-content {
     width: 154%;
     margin-left: -139px;

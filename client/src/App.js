@@ -234,11 +234,11 @@ class App extends Component {
                         arrAllData.push(response.data[i].product_name);
                         
                         this.setState({ valueAllDataLists: arrAllData })
-                        arrAllData.map(item => {
+                        // arrAllData.map(item => {
                             
-                            this.setState({ itemState: item })
+                        //     this.setState({ itemState: item })
 
-                        })
+                        // })
                     }
                 }
                 // }
@@ -316,6 +316,7 @@ class App extends Component {
     render() {
         const {option, itemTypeahead,itemState, dataTypeahead, valueAllDataLists, isAuthenticated, itemOptionState } = this.state;
        
+        console.log('itemTypeaheadvvvv',itemTypeahead);
         
         // Render your page inside
         // the layout provider
@@ -536,25 +537,11 @@ class App extends Component {
     <i className="fa fa-bars" ></i>
     </Link>
 </div> */}
-                {/* // {console.log('valueAllDataLists',valueAllDataLists) */}
-                {/* } */}
-                {/* {valueAllDataLists.map(optionItem=>{ 
-    //   console.log('popoppoop',optionItem);
-      let varOptionItem = optionItem
-    //   console.log('inside varOptionItem',varOptionItem);
-       
-    //   this.setState({optionState:optionItem}) 
-    // console.log('outside varOptionItem',varOptionItem)
- })
- 
-}  */}
+                
 
 
-                {/* <Typeahead
-                    onChange={(item) => {
-                        console.log(item[0])
-                        this.setState({option:item[0]})
-                        const {option} = this.state;
+                <Typeahead
+                    allowNew={(option) => {
                         fetch(`/api/get-data-typeahead/${option}`, {
                             method: 'GET',
                             credentials: 'same-origin',
@@ -564,8 +551,6 @@ class App extends Component {
                             },
                         })
                             .then(res => {
-                                console.log('res', res);
-                
                                 return res.json()
                             })
                             .then(response => {
@@ -578,13 +563,8 @@ class App extends Component {
                     labelKey="name"
                     id={`auto${itemState}`}
                     ref="typeahead"
-                /> */}
-                {/* <button onClick={() =>{
-
-    this.refs.typeahead.getInstance().blur
-    } }>
-  Clear Typeahead
-</button> */}
+                />
+               
 
 
                 <Switch>

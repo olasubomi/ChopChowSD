@@ -69,8 +69,7 @@ export default class GroceryPage extends React.Component {
 
   componentDidMount() {
     const { auth, dataTypeaheadProps } = this.props;
-    console.log(22222,dataTypeaheadProps);
-    console.log(33333,auth);
+
 
     this.setState({ Authentication: auth })
     fetch('/api/grocery', {
@@ -105,8 +104,6 @@ export default class GroceryPage extends React.Component {
           })
           .then(response => {
             if (response) {//all lists for this customer
-              console.log(22222,dataTypeaheadProps);
-              
               let arrRes=[...response.data, dataTypeaheadProps];
               this.setState({valueData:arrRes})
             }
@@ -359,7 +356,8 @@ export default class GroceryPage extends React.Component {
   render() {
     const {email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
     const { dataTypeaheadProps,auth } = this.props;
-
+    
+    
     return (
       <>
     
@@ -373,8 +371,9 @@ export default class GroceryPage extends React.Component {
             <Container className="page__container">
            
               {valueData &&valueData.length ? (
+                
                 <Row>
-                 
+                
                   <Button className='yourlist__buttonDeleteList'
                     variant="danger"
                     onClick={e => {
@@ -418,7 +417,30 @@ export default class GroceryPage extends React.Component {
                         </Col>
                       </>
                     })) : <Spinner animation="border" variant="info" />}
+                    {dataTypeaheadProps?(
+                      <>
+                        {dataTypeaheadProps.map(itemList=>{
+                         return <>
+
+                       <div>{dataTypeaheadProps.product_name}</div>
+                        <img src={`/images/products/${itemList.product_image}`} className="card-img" />
+                          <div className="yourlist__item-typeahead__card-div">
+                            <Card.Header className="yourlist__item-typeahead__card-header">
+                              <div className="yourlist__item-typeahead__header__name-product">Name Product : {itemList.product_name}</div>
+                            </Card.Header>
+                            <Card.Text className="yourlist__item-typeahead__card-text">
+                              Product Price :  {itemList && itemList.product_price}
+                            </Card.Text>
+                            <Card.Text className="yourlist__item-typeahead__card-text">
+                              Product Size : {itemList.sizes}
+                            </Card.Text>
+                          </div>
+                          </>
+                        })}
+                      </>
+                    ):null}
                 </Row>
+                
               ) : (
                   <>
                     <span>There is no list until now</span>
