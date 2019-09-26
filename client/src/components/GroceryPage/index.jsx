@@ -69,6 +69,8 @@ export default class GroceryPage extends React.Component {
 
   componentDidMount() {
     const { auth, dataTypeaheadProps } = this.props;
+    console.log(22222,dataTypeaheadProps);
+    console.log(33333,auth);
 
     this.setState({ Authentication: auth })
     fetch('/api/grocery', {
@@ -103,10 +105,10 @@ export default class GroceryPage extends React.Component {
           })
           .then(response => {
             if (response) {//all lists for this customer
+              console.log(22222,dataTypeaheadProps);
               
-              // let arrRes=[...this.state.valueData, dataTypeaheadProps];
-              // this.setState({option:dataTypeaheadProps})
-              this.setState({ valueData: response.data })
+              let arrRes=[...response.data, dataTypeaheadProps];
+              this.setState({valueData:arrRes})
             }
 
           }).catch(() => {
@@ -355,13 +357,12 @@ export default class GroceryPage extends React.Component {
   }
 
   render() {
-    const {dataTypeaheadProps,email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
-    const { auth } = this.props;
-    console.log('dataTypeaheadPropsvvvv',dataTypeaheadProps);
-    
-    
+    const {email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
+    const { dataTypeaheadProps,auth } = this.props;
+
     return (
       <>
+    
         {auth ? (
           <>
 
@@ -370,8 +371,10 @@ export default class GroceryPage extends React.Component {
               {messageAlert}
             </Alert>
             <Container className="page__container">
-              {valueData && valueData.length ? (
+           
+              {valueData &&valueData.length ? (
                 <Row>
+                 
                   <Button className='yourlist__buttonDeleteList'
                     variant="danger"
                     onClick={e => {
@@ -383,7 +386,6 @@ export default class GroceryPage extends React.Component {
                     Delete All Items
                   </Button>
 
-
                   {valueData ? (
                     valueData.map((itemList) => {
                       let idItem = itemList.id;
@@ -393,11 +395,10 @@ export default class GroceryPage extends React.Component {
                           <img src={`/images/products/${itemList.product_image}`} className="card-img" />
                           <div className="yourlist__card-div">
                             <Card.Header className="yourlist__card-header">
-                              <div>No.List>>{itemList.id}>></div>
                               <div className="header__name-product">Name Product : {itemList.product_name}</div>
                             </Card.Header>
                             <Card.Text className="yourlist__card-text">
-                              Product Price :  {itemList.product_price}
+                              Product Price :  {itemList && itemList.product_price}
                             </Card.Text>
                             <Card.Text className="yourlist__card-text">
                               Product Size : {itemList.sizes}
@@ -612,7 +613,6 @@ export default class GroceryPage extends React.Component {
                           <img src={`/images/products/${itemList.product_image}`} className="card-img" />
                           <div className="yourlist__card-div">
                             <Card.Header className="yourlist__card-header">
-                              <div>No.List>>{itemList.id}>></div>
                               <div className="header__name-product">Name Product : {itemList.product_name}</div>
                             </Card.Header>
                             <Card.Text className="yourlist__card-text">
