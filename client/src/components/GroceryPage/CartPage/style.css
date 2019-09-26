@@ -17,10 +17,14 @@
     }
     .cart-page__price-product {
         margin-left: 10px;
-        margin-top: -39px;
+        margin-top: -38px;
     }
     .cart-page__size-product {
         margin-left: -145px;
         margin-top: -19px;
+    }
+    .cart-page__pice-per-ounce-product{
+        margin-left: -48px;
+        margin-top: -38px;
     }
 }
