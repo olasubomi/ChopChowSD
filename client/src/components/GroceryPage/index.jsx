@@ -354,8 +354,9 @@ export default class GroceryPage extends React.Component {
   }
 
   render() {
-    const {email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
+    const {Authentication,email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
     const { dataTypeaheadProps,auth } = this.props;
+    console.log('auuuuu',Authentication);
     
     
     return (
@@ -421,11 +422,11 @@ export default class GroceryPage extends React.Component {
                       <>
                         {dataTypeaheadProps.map(itemList=>{
                          return <>
-
+                            <h5 className="yourlist__item-typeahead__word">Item From SearchBar</h5>
                        <div>{dataTypeaheadProps.product_name}</div>
-                        <img src={`/images/products/${itemList.product_image}`} className="card-img" />
+                        <img src={`/images/products/${itemList.product_image}`} className="yourlist__item-typeahead__card-img" />
                           <div className="yourlist__item-typeahead__card-div">
-                            <Card.Header className="yourlist__item-typeahead__card-header">
+                            <Card.Header className="yourlist__card-header">
                               <div className="yourlist__item-typeahead__header__name-product">Name Product : {itemList.product_name}</div>
                             </Card.Header>
                             <Card.Text className="yourlist__item-typeahead__card-text">
@@ -625,30 +626,6 @@ export default class GroceryPage extends React.Component {
               </Container>
 
 
-              <PageTitle title=" Your Grocery List" />
-              <Container className="page__container">
-                <Row>
-                  {valueData ? (
-                    valueData.map((itemList) => {
-                      return <>
-                        <Col xs={12} md={12} lg={12} key={itemList.id}>
-                          <img src={`/images/products/${itemList.product_image}`} className="card-img" />
-                          <div className="yourlist__card-div">
-                            <Card.Header className="yourlist__card-header">
-                              <div className="header__name-product">Name Product : {itemList.product_name}</div>
-                            </Card.Header>
-                            <Card.Text className="yourlist__card-text">
-                              Product Price :  {itemList.product_price}
-                            </Card.Text>
-                            <Card.Text className="yourlist__card-text">
-                              Product Size : {itemList.sizes}
-                            </Card.Text>
-                          </div>
-                        </Col>
-                      </>
-                    })) : <Spinner animation="border" variant="info" />}
-                </Row>
-              </Container>
 
             </>
           )}

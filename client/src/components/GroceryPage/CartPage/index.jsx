@@ -42,7 +42,6 @@ export default class CartPage extends React.Component {
     return (
       <>
             <h3 className="cart-page__title">Current Order</h3>
-              <h6 className="cart-page__title__name-product">Jollof {cartInfo.product_name} :</h6>
               <Col xs={12} md={12} lg={12} key={cartInfo.id}>
                 <div className="cart-page__card-div">
                     <div className="cart-page__name-product"> {cartInfo.product_name}</div>

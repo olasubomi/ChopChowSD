@@ -26,16 +26,16 @@
   .card-img {
     box-shadow: 0 0 25px rgba(0, 0, 0, .25);
     width: 160px;
-    height: 52%;
+    height: 67%;
     margin-top: 0px;
-    margin-bottom: -103px;
+    margin-bottom: -343px;
     margin-left: 50px;
   }
 
   .yourlist__card-div {
-    margin-top: 0rem;
+    margin-top: 7rem;
     margin-left: 393px;
-    margin-bottom: 14rem;
+    margin-bottom: 17rem;
 }
 
   .modal-content {
@@ -50,9 +50,10 @@
   color: #fff;
   background-color: #dc3545;
   border-color: #dc3545;
-  margin-left: 851px;
-  height: 51px;
-  width: 225px;
+  margin-left: 679px;
+  border-radius: 37px;
+  height: 38px;
+  width: 140px;
 }
 .create-input {
   margin-left: -2px;
@@ -107,8 +108,8 @@
     margin-top: -421px;
 }
   .yourlist__buttonDelete {
-    margin-top: -141px;
-    margin-left: 732px;
+    margin-top: -258px;
+    margin-left: 850px;
     cursor: pointer;
 }
 .yourlist__buttonAdd{
@@ -134,16 +135,37 @@
    margin-left:370px
  }
 /*item typeahead*/
+.yourlist__item-typeahead__word{
+  margin-left: 15px;
+    margin-top: 82px;
+}
+.card-header {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0;
+  color: inherit;
+
+}
 .yourlist__item-typeahead__card-div{
-  margin-left: 174px
+  margin-top: 10rem;
+  margin-left: 138px;
+  /* margin-bottom: 17rem; */
+  /* width: 270px; */
+
 }
 .yourlist__item-typeahead__card-header{
   margin-left: 10px
 
 }
+.yourlist__item-typeahead__card-img{
+  box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+  width: 160px;
+  height: 109px;
+  margin-top: 157px;
+  margin-bottom: -312px;
+  margin-left: -161px;
+}
 .yourlist__item-typeahead__header__name-product{
   border-bottom: none !important;
-  background: rgba(243, 243, 116, 0.47) !important;
   margin-left: -19px;
   margin-top: 2px;
   padding-left: 19px;
@@ -207,8 +229,8 @@
     cursor: pointer;
   }
   .fa-remove {
-    margin-left: -22px;
-    margin-top: 3px;
+    margin-left: -36px;
+    margin-top: -11px;
   }
   .modal-body {
     position: relative;
@@ -246,7 +268,7 @@
 }
 }
 
-@media screen and (max-width: 1024px) {
+ @media screen and (max-width: 1024px) {
 
   .fa-remove {
     margin-left: -21px;
@@ -264,13 +286,13 @@
 @media screen and (max-width: 768px) {
   .yourlist__buttonAdd{
     margin-left: 605px;
-    margin-top: -201px;
+    margin-top: 19px;
     width: 52px;
     height: 107px;
   }
   .yourlist__buttonDelete {
-    margin-left: 663px;
-    margin-top: -163px;
+    margin-left: 608px;
+    margin-top: -393px;
   
   }
   .card-img {
@@ -278,9 +300,12 @@
     height: 108px;
     margin-left: 144px;
   }
+  .btn-danger{
+    margin-right: 18px
+  }
   .fa-remove {
     margin-left: 21px;
-    margin-top: 2px;
+    margin-top: 186px;
   }
   .yourlist__card-div {
     margin-left: 303px;
@@ -294,7 +319,7 @@
   }
   .page__container {
     width: 574px;
-    margin-left: 31px;
+    margin-left: 100px;
   }
 }
 
@@ -329,22 +354,24 @@
     color: #fff;
     background-color: #dc3545;
     border-color: #dc3545;
-    margin-left: 851px;
-    height: 51px;
-    width: 225px;
+    margin-left: 750px;
+    margin-right:99px; 
+    border-radius: 37px;
+    height: 38px;
+    width: 140px;
 }
 }
 
 @media screen and (max-width: 414px) {
   .yourlist__buttonAdd{
-    margin-left: 330px;
-    margin-top: -241px;
+    margin-left: 327px;
+    margin-top: -35px;
     width: 52px;
     height: 107px;
   }
   .yourlist__buttonDelete {
-    margin-left: 308px;
-    margin-top: -300px;
+    margin-left: 324px;
+    margin-top: -419px;
 
   
   }
@@ -365,9 +392,12 @@
   .yourlist__card-header {
     width: 140px
   }
+  .btn-danger{
+    margin-left: 320px
+  }
   .page__container {
-    width: 273px;
-    margin-left: -25px;
+    width: 351px;
+    margin-left: -31px;
   }
 }
 
@@ -379,13 +409,17 @@
 }
 
 @media screen and (max-width: 320px) {
+  .page__container{
+    margin-left: 50px
+  }
   .yourlist__buttonDelete {
-    margin-left: 232px;
-    margin-top: -316px;
+    margin-left: 293px;
+    margin-top: -383px;
   }
   .yourlist__card-div {
-    margin-left: 120px;
+    margin-left: 184px;
     width: 83x;
+    height: 341px;
   }
   .yourlist__button {
     margin-top: 80px;
@@ -395,7 +429,7 @@
   .card-img {
     width: 51px;
     height: 91px;
-    margin-left: 32px;
+    margin-left: 110px;
     margin-top: 149px;
   }
   .yourlist__card-header {
@@ -406,11 +440,17 @@
     margin-left: -1px;
   }
   .yourlist__buttonAdd {
-    margin-left: 253px;
-    margin-top: -241px;
-    width: 52px;
+    margin-left: 291px;
+    margin-top: -212px;
+    /* width: -57px; */
     height: 107px;
   }
+  .yourlist__buttonDeleteList{
+    margin-right: 204px;
+    width: 81px;
+    margin-top: -3px;
+    height: 91px;
+}
 }
 @media screen and (max-width: 411px) {
   .page__container {
@@ -424,7 +464,7 @@
     width: 351px;
     margin-left: 19px;
   }
-}
+} 
 
 /******** design log in page ******/
 
