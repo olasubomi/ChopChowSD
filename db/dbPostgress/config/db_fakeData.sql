@@ -18,7 +18,7 @@ VALUES
   ),(
     2,
     'Brown Beans',
-    'beans.jpeg',
+    'beans.jpg',
     12.00,
     '2 lbs',
     3.2
@@ -33,70 +33,70 @@ VALUES
   ),(
     4,
     'Spinach',
-    'garri.jpg',
+    'spinach.jpeg',
     2.99,
     '0.5lbs',
     null
   ),(
     5,
     'Kale',
-    'garri.jpg',
+    'kale.jpg',
     2.99,
     '0.5lbs',
     null
   ),(
     6,
     'Oregano',
-    'oregano.jpeg',
+    'oregano.jpg',
     1.00,
     '1lbs',
     null
   ),(
     7,
     'Squash Potatoes',
-    'red_potatoes.jpg',
+    'squash_poatoes.jpeg',
     8.99,
     '50lbs',
     null
   ),(
     8,
     'Water',
-    'garri.jpg',
+    'water.jpeg',
     8.99,
     '50lbs',
     null
   ),(
     9,
     'Plantain Chips',
-    'beans.jpeg',
+    'plantain_chips.jpg',
     12.00,
     '2 lbs',
     3.2
   ),(
     10,
     'Cashews',
-    'beans.jpeg',
+    'cashews.jpg',
     12.00,
     '2 lbs',
     3.2
   ),(
     11,
     'Peanuts',
-    'garri.jpg',
+    'peanuts.jpeg',
     8.99,
     '50lbs',
     null
   ),(
     12,
     'Watermelon',
-    'beans.jpeg',
+    'watermelon.jpg',
     12.00,
     '2 lbs',
     3.2
   ),(
     13,
     'Pineapple',
-    'beans.jpeg',
+    'pineapple.jpeg',
     12.00,
     '2 lbs',
     3.2
