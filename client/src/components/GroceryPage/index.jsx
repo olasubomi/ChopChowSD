@@ -11,6 +11,7 @@ import signupValidation from './validationSignup';
 import validationCreateList from './validationCreateList'
 export default class GroceryPage extends React.Component {
   state = {
+    error: '',
     newcustomerId: '',
     dataTypeaheadState: '',
     cartTrue: false,
@@ -22,12 +23,14 @@ export default class GroceryPage extends React.Component {
     password: '',
     messageErr: false,
     messageSuccess: false,
+    messageSuccessCreate: false,
     showAlert: false,
     messageAlert: '',
     variant: '',
     showSignup: false,
     loading: false,
     valueItemId: null,
+    visibleSuccessCreatereate: false,
 
     idItem: '',
     deleteListClick: false,
@@ -58,6 +61,7 @@ export default class GroceryPage extends React.Component {
     zipCode: '',
     ipsid: '',
     errormsg: '',
+    errormsgImage: '',
     showSignupState: false
   }
 
@@ -66,11 +70,8 @@ export default class GroceryPage extends React.Component {
     this.setState({ [name]: value });
 
 
-
   componentDidMount() {
     const { auth, dataTypeaheadProps } = this.props;
-
-
     this.setState({ Authentication: auth })
     fetch('/api/grocery', {
       method: 'GET',
@@ -104,8 +105,8 @@ export default class GroceryPage extends React.Component {
           })
           .then(response => {
             if (response) {//all lists for this customer
-              let arrRes=[...response.data, dataTypeaheadProps];
-              this.setState({valueData:arrRes})
+              let arrRes = [...response.data, dataTypeaheadProps];
+              this.setState({ valueData: arrRes })
             }
 
           }).catch(() => {
@@ -150,7 +151,7 @@ export default class GroceryPage extends React.Component {
         this.setState({ messageErr: 'Please enter all fields' });
       }
     };
-    
+
 
     this.handleClose = e => {
       const { customerId } = this.state;
@@ -165,10 +166,11 @@ export default class GroceryPage extends React.Component {
 
       })
         .then(res => {
+
           return res.json()
         })
         .then(response => {
-          
+
           if (response) {//all lists for this customer
             this.setState({ valueData: response.data })
           }
@@ -297,11 +299,19 @@ export default class GroceryPage extends React.Component {
             },
           })
             .then(res => {
-              
-              return res.json();
+              if (res.status === 400) {
+                this.setState({ errormsgImage: 'must be  valid image ' });
+
+              } else {
+
+                return res.json();
+              }
             })
             .then(response => {
-              this.setState({ messageSuccess: 'add successfull' });
+              if (response) {
+
+                this.setState({ messageSuccessCreate: 'add successfull', errormsgImage: '', errormsg: '' });
+              }
 
             })
         })
@@ -311,7 +321,7 @@ export default class GroceryPage extends React.Component {
               (acc, item) => ({ ...acc, [item.path]: item.message }),
               {}
             );
-            this.setState({ errormsg: { ...errors } });
+            this.setState({ errormsg: { ...errors }, visibleSuccessCreate: false });
           }
         });
     }
@@ -350,18 +360,17 @@ export default class GroceryPage extends React.Component {
         this.setState({ newcustomerId: lasIdCustomer + 1 })
 
       })
-      
+
   }
 
   render() {
-    const {Authentication,email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess } = this.state;
-    const { dataTypeaheadProps,auth } = this.props;
-    console.log('auuuuu',Authentication);
-    
-    
+    const { errormsgImage, Authentication, email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess, messageSuccessCreate, visibleSuccessCreate } = this.state;
+    const { dataTypeaheadProps, auth } = this.props;
+
+
     return (
       <>
-    
+
         {auth ? (
           <>
 
@@ -370,11 +379,11 @@ export default class GroceryPage extends React.Component {
               {messageAlert}
             </Alert>
             <Container className="page__container">
-           
-              {valueData &&valueData.length ? (
-                
+
+              {valueData && valueData.length ? (
+
                 <Row>
-                
+
                   <Button className='yourlist__buttonDeleteList'
                     variant="danger"
                     onClick={e => {
@@ -418,13 +427,13 @@ export default class GroceryPage extends React.Component {
                         </Col>
                       </>
                     })) : <Spinner animation="border" variant="info" />}
-                    {dataTypeaheadProps?(
-                      <>
-                        {dataTypeaheadProps.map(itemList=>{
-                         return <>
-                            <h5 className="yourlist__item-typeahead__word">Item From SearchBar</h5>
-                       <div>{dataTypeaheadProps.product_name}</div>
-                        <img src={`/images/products/${itemList.product_image}`} className="yourlist__item-typeahead__card-img" />
+                  {dataTypeaheadProps ? (
+                    <>
+                      {dataTypeaheadProps.map(itemList => {
+                        return <>
+                          <h5 className="yourlist__item-typeahead__word">Item From SearchBar</h5>
+                          <div>{dataTypeaheadProps.product_name}</div>
+                          <img src={`/images/products/${itemList.product_image}`} className="yourlist__item-typeahead__card-img" />
                           <div className="yourlist__item-typeahead__card-div">
                             <Card.Header className="yourlist__card-header">
                               <div className="yourlist__item-typeahead__header__name-product">Name Product : {itemList.product_name}</div>
@@ -436,24 +445,24 @@ export default class GroceryPage extends React.Component {
                               Product Size : {itemList.sizes}
                             </Card.Text>
                           </div>
-                          </>
-                        })}
-                      </>
-                    ):null}
+                        </>
+                      })}
+                    </>
+                  ) : null}
                 </Row>
-                
+
               ) : (
                   <>
                     <span>There is no list until now</span>
-                    <Button className="yourlist__button" onClick={this.handleShowCreateList}>create list</Button>
+                    <Button className="yourlist__button-create" onClick={this.handleShowCreateList}>create list</Button>
                     {showCreate ? (
-                      <Modal show={showCreate} onHide={this.handleClose} className="modal" backdrop="static">
+                      <Modal show={showCreate} onHide={this.handleClose} className="modal-create" backdrop="static">
                         <Modal.Body>
                           <Form.Group>
-                            <Form.Label>Product Id: {lasIdListState}</Form.Label>
+                            <Form.Label className="yourlist__group-label">Product Id: {lasIdListState}</Form.Label>
                           </Form.Group>
-                          <Form.Group>
-                            <Form.Label>Product Name :</Form.Label>
+                          <Form.Group >
+                            <Form.Label className="yourlist__group-label">Product Name :</Form.Label>
                             <Form.Control
                               className='create-input'
                               type="text"
@@ -463,9 +472,12 @@ export default class GroceryPage extends React.Component {
                               onChange={this.handleChange}
                             />
                           </Form.Group>
-                          {errormsg && <span className="errormsg">{errormsg.valueProductName}</span>}
-                          <Form.Group>
-                            <Form.Label>Product Image :</Form.Label>
+                          {errormsg ? (
+
+                            <span className="errormsg">{errormsg.valueProductName}</span>
+                          ) : null}
+                          <Form.Group >
+                            <Form.Label className="yourlist__group-label">Product Image :</Form.Label>
                             <Form.Control
                               className='create-input'
                               type="text"
@@ -475,10 +487,12 @@ export default class GroceryPage extends React.Component {
                               onChange={this.handleChange}
                             />
                           </Form.Group>
-                          {errormsg && <span className="errormsg">{errormsg.valueProductImage}</span>}
+                          {errormsgImage ? (
 
-                          <Form.Group>
-                            <Form.Label>Product Price :</Form.Label>
+                            <span className="errormsg">{errormsgImage}</span>
+                          ) : null}
+                          <Form.Group className="yourlist__group-label">
+                            <Form.Label className="yourlist__group-label">Product Price :</Form.Label>
                             <Form.Control
                               className='create-input'
                               type="number"
@@ -488,10 +502,13 @@ export default class GroceryPage extends React.Component {
                               onChange={this.handleChange}
                             />
                           </Form.Group>
-                          {errormsg && <span className="errormsg">{errormsg.valueProductPrice}</span>}
+                          {errormsg ? (
 
-                          <Form.Group>
-                            <Form.Label>Product Size :</Form.Label>
+                            <span className="errormsg">{errormsg.valueProductPrice}</span>
+                          ) : null}
+
+                          <Form.Group className="yourlist__group-label">
+                            <Form.Label className="yourlist__group-label">Product Size :</Form.Label>
                             <Form.Control
                               className='create-input'
                               type="text"
@@ -501,10 +518,13 @@ export default class GroceryPage extends React.Component {
                               onChange={this.handleChange}
                             />
                           </Form.Group>
-                          {errormsg && <span className="errormsg">{errormsg.valueProductSize}</span>}
+                          {errormsg ? (
 
-                          <Form.Group>
-                            <Form.Label>Product Price Per Ounce :</Form.Label>
+                            <span className="errormsg">{errormsg.valueProductSize}</span>
+                          ) : null}
+
+                          <Form.Group className="yourlist__group-label">
+                            <Form.Label className="yourlist__group-label">Product Price Per Ounce :</Form.Label>
                             <Form.Control
                               className='create-input'
                               type="number"
@@ -514,9 +534,13 @@ export default class GroceryPage extends React.Component {
                               onChange={this.handleChange}
                             />
                           </Form.Group>
-                          {errormsg && <span className="errormsg">{errormsg.valuePricePerOunce}</span>}
+                          {errormsg ? (
 
-                          <p className="msg-success">{messageSuccess}</p>
+                            <span className="errormsg">{errormsg.valuePricePerOunce}</span>
+                          ) : null}
+                          {messageSuccessCreate ? (
+                            <p className="msg-success">{messageSuccessCreate}</p>
+                          ) : null}
                         </Modal.Body>
                         <Modal.Footer className="confirm__success">
                           <Button

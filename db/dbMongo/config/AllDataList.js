@@ -25,7 +25,7 @@ module.exports = async () => {
         }, {
             id:4,
             product_name: 'Spinach',
-            product_image: 'garri.jpg',
+            product_image: 'spinach.jpg',
             product_price: 2.99,
             sizes:'0.5lbs',
             price_per_ounce:null
@@ -61,7 +61,7 @@ module.exports = async () => {
         {
             id:8,
             product_name: "Water",
-            product_image: 'garri.jpg',
+            product_image: 'water.jpg',
             product_price: 8.99,
             sizes: '50lbs',
             price_per_ounce:null
