@@ -46,9 +46,6 @@
     border-radius: -2.7rem;
     outline: 0;
 }
-.modal-create{
-  margin-left: 10px
-}
 .btn-danger {
   color: #fff;
   background-color: #dc3545;
@@ -58,12 +55,9 @@
   height: 38px;
   width: 140px;
 }
-.yourlist__group-label{
-  margin-left: 10px
-}
 .create-input {
-  margin-left: 180px;
-  width: 401px;
+  margin-left: -2px;
+  width: 723px;
 }
 .create-button{
   width: 74px;
@@ -132,8 +126,14 @@
     background-color: #c1c5ca;
     border-color: #525456;
     border: 51px;
+    /* margin-top: 10px; */
     border-radius: 33px;
+    width: 141px;
+    height: 37px;
   }
+  .yourlist__button-create {
+    margin-top: 0px;
+}
   .yourlist__card-header-add{
     margin-left: 0px
   }
@@ -183,7 +183,7 @@
   margin-top: 23px;
 }
   .modal-content {
-    width: 637px;
+    width: 154%;
     margin-left: -139px;
     pointer-events: auto;
     background-clip: padding-box;
