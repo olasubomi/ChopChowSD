@@ -81,14 +81,14 @@ module.exports = async () => {
             price_per_ounce: 3.2
         }, {
             id:11,
-            product_name: "Peanuts",
-            product_image: 'peanuts.jpeg',
+            product_name: "Palm Oil",
+            product_image: 'oil.jpg',
             product_price: 8.99,
             sizes: '50lbs'
         }, {
             id:12,
-            product_name: "Watermelon",
-            product_image: 'watermelon.jpg',
+            product_name: "Onions",
+            product_image: 'onion.jpg',
             product_price: 12.00,
             sizes: '2 lbs',
             pric3_per_ounce: 3.2
