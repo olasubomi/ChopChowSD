@@ -105,8 +105,8 @@ export default class GroceryPage extends React.Component {
           })
           .then(response => {
             if (response) {//all lists for this customer
-              let arrRes = [...response.data, dataTypeaheadProps];
-              this.setState({ valueData: arrRes })
+              // let arrRes = [...response.data, dataTypeaheadProps];
+              this.setState({ valueData: response.data })
             }
 
           }).catch(() => {
@@ -380,7 +380,7 @@ export default class GroceryPage extends React.Component {
             </Alert>
             <Container className="page__container">
 
-              {valueData && valueData.length ? (
+              {valueData && valueData.length !== 0 ? (
 
                 <Row>
 
@@ -396,8 +396,11 @@ export default class GroceryPage extends React.Component {
                   </Button>
 
                   {valueData ? (
+           
                     valueData.map((itemList) => {
                       let idItem = itemList.id;
+                      console.log(5555,itemList);
+                      
                       return <>
 
                         <Col xs={12} md={12} lg={12} key={itemList.id}>
@@ -426,7 +429,8 @@ export default class GroceryPage extends React.Component {
 
                         </Col>
                       </>
-                    })) : <Spinner animation="border" variant="info" />}
+                    })
+                    ) : <Spinner animation="border" variant="info" />}
                   {dataTypeaheadProps ? (
                     <>
                       {dataTypeaheadProps.map(itemList => {

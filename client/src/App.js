@@ -170,6 +170,28 @@ class App extends Component {
 
 
     componentDidMount() {
+        this.handleClickTypeahead=(option)=>{
+            console.log('Called ',option)
+
+            option = option[0]
+            if(!option) return;
+            fetch(`/api/get-data-typeahead/${option}`, {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+
+       
+            })
+                .then(res => {
+                    return res.json()
+                })
+                .then(response => {
+                    this.setState({itemTypeahead:response.data})
+                })
+        }
         fetch('/api/grocery', {
             method: 'GET',
             headers: {
@@ -541,22 +563,9 @@ class App extends Component {
 
 
                 <Typeahead
-                    allowNew={(option) => {
-                        fetch(`/api/get-data-typeahead/${option}`, {
-                            method: 'GET',
-                            credentials: 'same-origin',
-                            headers: {
-                                Accept: 'application/json',
-                                'Content-Type': 'application/json',
-                            },
-                        })
-                            .then(res => {
-                                return res.json()
-                            })
-                            .then(response => {
-                                this.setState({itemTypeahead:response.data})
-                            })
-                    }}
+                    onChange={this.handleClickTypeahead}
+
+
                     options={valueAllDataLists}
                     placeholder="Find Meals (and Ingredients) here.."
                     valueKey="id"
