@@ -170,9 +170,12 @@ export default class GroceryPage extends React.Component {
           return res.json()
         })
         .then(response => {
-
+          console.log('responseada',response.data);
+          
+          
           if (response) {//all lists for this customer
             this.setState({ valueData: response.data })
+            console.log('valueData',this.state.valueData);
           }
 
         }).catch(() => {
@@ -300,7 +303,7 @@ export default class GroceryPage extends React.Component {
           })
             .then(res => {
               if (res.status === 400) {
-                this.setState({ errormsgImage: 'must be  valid image ' });
+                this.setState({ errormsgImage: 'must be  valid image (start of http://www. and end of .png or .gif or jpg) ',messageSuccessCreate:'' });
 
               } else {
 
@@ -309,7 +312,8 @@ export default class GroceryPage extends React.Component {
             })
             .then(response => {
               if (response) {
-
+                console.log('rrr',response)
+                this.setState({valueData:response.data})
                 this.setState({ messageSuccessCreate: 'add successfull', errormsgImage: '', errormsg: '' });
               }
 
@@ -367,6 +371,7 @@ export default class GroceryPage extends React.Component {
     const { errormsgImage, Authentication, email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess, messageSuccessCreate, visibleSuccessCreate } = this.state;
     const { dataTypeaheadProps, auth } = this.props;
 
+    console.log('vvvvv',valueData)
 
     return (
       <>

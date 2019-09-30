@@ -96,9 +96,7 @@ class App extends Component {
             .catch(err => {
                 console.log(err);
             });
-        // this.setInfoCart = (data) => {
-        //     this.setState({ infoCart: data })
-        // }
+  
 
     }
 
@@ -256,14 +254,9 @@ class App extends Component {
                         arrAllData.push(response.data[i].product_name);
                         
                         this.setState({ valueAllDataLists: arrAllData })
-                        // arrAllData.map(item => {
-                            
-                        //     this.setState({ itemState: item })
-
-                        // })
+                       
                     }
                 }
-                // }
             }).catch(() => {
                 this.setState({ message: 'Sorry , Internal Server ERROR' })
             })
