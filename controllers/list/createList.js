@@ -15,7 +15,7 @@ module.exports = (req, res) => {
                         // console.log(666666);
     console.log(444444,result.rows);
     
-                        // addListCustomer(idItem, customerId).then(resu => {
+                        addListCustomer(idItem, customerId).then(resu => {
     
                         createList.save((err, resultList) => {
                             // console.log(5555);
@@ -31,7 +31,7 @@ module.exports = (req, res) => {
                             })
                         })
     
-                        // })
+                        })
                     })
                 
 
