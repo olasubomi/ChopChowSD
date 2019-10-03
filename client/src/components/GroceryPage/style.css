@@ -1,476 +1,5 @@
-/* grocery page */
 
-@media screen and (max-width: 1920px) {
 
-  .page__container {
-
-    margin-left: 164px;
-    margin-top: 1rem;
-    height: 393px;
-    width: 73%;
-  }
-  .yourlist__card {
-    border: 1px solid rgba(234, 234, 234, 0.9) !important;
-    border-radius: 0.3rem !important;
-    cursor: pointer;
-    margin-left: -98px;
-    margin-top: 79px;
-    margin-bottom: 1rem;
-    padding: 44px;
-    width: 307px;
-  }
-  .yourlist__card:hover {
-    box-shadow: 0 0 30px -15px rgba(0, 0, 0, 0.3);
-  }
- 
-  .card-img {
-    box-shadow: 0 0 25px rgba(0, 0, 0, .25);
-    width: 160px;
-    height: 67%;
-    margin-top: 0px;
-    margin-bottom: -343px;
-    margin-left: 50px;
-  }
-
-  .yourlist__card-div {
-    margin-top: 7rem;
-    margin-left: 393px;
-    margin-bottom: 17rem;
-}
-
-  .modal-content {
-    width: 1346px;
-    /* margin-left: -424px; */
-    pointer-events: auto;
-    background-clip: padding-box;
-    border-radius: -2.7rem;
-    outline: 0;
-}
-.btn-danger {
-  color: #fff;
-  background-color: #dc3545;
-  border-color: #dc3545;
-  margin-left: 679px;
-  border-radius: 37px;
-  height: 38px;
-  width: 140px;
-}
-.create-input {
-  margin-left: -2px;
-  width: 723px;
-}
-.create-button{
-  width: 74px;
-  height: 34px;
-}
-
-.modal-body {
-  position: relative;
-  width: 221%;
-  margin-left: -350px;
-  width: 184%;
-  display: block;
-  background-color: #fff0;
-  margin-left: 28px;
-}
-  @media (min-width: 992px){
-.col-lg-12 {
-    -ms-flex: 0 0 100%;
-    flex: 0 0 100%;
-    max-width: 100%;
-    margin-bottom: 2rem;
-}
-  }
-
-  .yourlist__card-header {
-    border-bottom: none !important;
-    background: rgba(243, 243, 116, 0.47) !important;
-    margin-left: -19px;
-    margin-top: -27px;
-    padding-left: 19px;
-    width: 257px;
-  }
-  .modal.show .modal-dialog {
-    -webkit-transform: none;
-    transform: none;
-  }
-  .yourlist__card-text {
-    margin-top: 24px;
-  }
-  .btn-primary {
-    color: #2f2c2c;
-    margin-left: -217px;
-    background-color: #c1c5ca;
-    border-color: #525456;
-    border: 51px;
-    border-radius: 33px;
-    width: 136px;
-    margin-top: -421px;
-}
-  .yourlist__buttonDelete {
-    margin-top: -258px;
-    margin-left: 850px;
-    cursor: pointer;
-}
-.yourlist__buttonAdd{
-  margin-left: 10px
-}
-  .fa-remove:before, .fa-close:before, .fa-times:before {
-    content: "\f00d";
-    font-size: 255%;
-    margin-left: 9px;
-  }
-  .btn-primary {
-    color: #2f2c2c;
-    margin-left: -15px;
-    background-color: #c1c5ca;
-    border-color: #525456;
-    border: 51px;
-    /* margin-top: 10px; */
-    border-radius: 33px;
-    width: 141px;
-    height: 37px;
-  }
-  .yourlist__button-create {
-    margin-top: 0px;
-}
-  .yourlist__card-header-add{
-    margin-left: 0px
-  }
- .yourlist__card-text-add{
-   margin-left:370px
- }
-/*item typeahead*/
-.yourlist__item-typeahead__word{
-  margin-left: 15px;
-    margin-top: 82px;
-}
-.card-header {
-  padding: 0.75rem 1rem;
-  margin-bottom: 0;
-  color: inherit;
-
-}
-.yourlist__item-typeahead__card-div{
-  margin-top: 10rem;
-  margin-left: 138px;
-  /* margin-bottom: 17rem; */
-  /* width: 270px; */
-
-}
-.yourlist__item-typeahead__card-header{
-  margin-left: 10px
-
-}
-.yourlist__item-typeahead__card-img{
-  box-shadow: 0 0 25px rgba(0, 0, 0, .25);
-  width: 160px;
-  height: 109px;
-  margin-top: 157px;
-  margin-bottom: -312px;
-  margin-left: -161px;
-}
-.yourlist__item-typeahead__header__name-product{
-  border-bottom: none !important;
-  margin-left: -19px;
-  margin-top: 2px;
-  padding-left: 19px;
-  width: 233px;
-
-}
-.yourlist__item-typeahead__card-text{
-  margin-left: 29px;
-  margin-top: 23px;
-}
-  .modal-content {
-    width: 154%;
-    margin-left: -139px;
-    pointer-events: auto;
-    background-clip: padding-box;
-    border-radius: 1.3rem;
-    outline: 0;
-  }
-  .login__form-div-title {
-    width: 649px;
-    margin-left: 134px;
-  }
-  .modal-body {
-    position: relative;
-    width: 221%;
-    margin-left: 26px;
-    width: 184%;
-    display: block;
-    background-color: #fff0;
-}
-  .fa {
-    display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    margin-top: -38px;
-    margin-left: 2px;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  .fa-facebook-f:before, .fa-facebook:before {
-    content: "\f09a";
-    margin-left: -22px;
-  }
-  .fa-google:before {
-    content: "\f1a0";
-    margin-left: -32px;
-  }
-  .fa-close:before, .fa-remove:before, .fa-times:before {
-    content: "\F00D";
-    font-size: 255%;
-    margin-left: 9px;
-    margin-top: 91px;
-    cursor: pointer;
-  }
-  .yourlist__buttonAdd {
-    margin-top: -145px;
-    margin-left: 685px;
-    width: 154px;
-    height: 35px;
-    cursor: pointer;
-  }
-  .fa-remove {
-    margin-left: -36px;
-    margin-top: -11px;
-  }
-  .modal-body {
-    position: relative;
-    width: 221%;
-    margin-left: -350px;
-    width: 184%;
-    display: block;
-    background-color: #fff0;
-  }
-  .yourlist__button{
-    margin-top: 80px;
-    margin-left: -13px;
-    width: 154px;
-    height: 35px
-  }
-  .fa-remove {
-    margin-left: -22px;
-    margin-top: 3px;
-  }
-  .card {
-    position: relative;
-    display: -ms-flexbox;
-    margin-left: 403px;
-    width: 260px;
-    margin-top: -135px;
-    display: flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 1px solid rgba(0,0,0,.125);
-    border-radius: .25rem;
-}
-}
-
- @media screen and (max-width: 1024px) {
-
-  .fa-remove {
-    margin-left: -21px;
-    margin-top: -7px;
-  }
-  .yourlist__card-div {
-    margin-left: 23rem
-  }
-  .yourlist__button {
-    margin-top: 80px;
-    margin-left: 92px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .yourlist__buttonAdd{
-    margin-left: 605px;
-    margin-top: 19px;
-    width: 52px;
-    height: 107px;
-  }
-  .yourlist__buttonDelete {
-    margin-left: 608px;
-    margin-top: -393px;
-  
-  }
-  .card-img {
-    width: 54px;
-    height: 108px;
-    margin-left: 144px;
-  }
-  .btn-danger{
-    margin-right: 18px
-  }
-  .fa-remove {
-    margin-left: 21px;
-    margin-top: 186px;
-  }
-  .yourlist__card-div {
-    margin-left: 303px;
-    margin-right: -121px;
-    margin-bottom: 7rem;
-}
-  .yourlist__button {
-    margin-top: 80px;
-    margin-left: 159px;
-    width: 104px;
-  }
-  .page__container {
-    width: 574px;
-    margin-left: 100px;
-  }
-}
-
-@media screen and (max-width: 375px) {
-  
-  .yourlist__buttonDelete {
-    margin-left: 177px;
-    margin-top: -200px;
-  }
-  .yourlist__card-div {
-    margin-left: 28px;
-    width: 114px;
-  }
-  .yourlist__button {
-    margin-top: -375px;
-    margin-left: 156px;
-    width: 49px;
-  }
-  .card-img {
-    width: 71px;
-    height: 131px;
-    margin-left: 71px;
-  }
-  .yourlist__card-header {
-    width: 140px
-  }
-  .page__container {
-    width: 356px;
-    margin-left: 13px;
-  }
-  .btn-danger {
-    color: #fff;
-    background-color: #dc3545;
-    border-color: #dc3545;
-    margin-left: 750px;
-    margin-right:99px; 
-    border-radius: 37px;
-    height: 38px;
-    width: 140px;
-}
-}
-
-@media screen and (max-width: 414px) {
-  .yourlist__buttonAdd{
-    margin-left: 327px;
-    margin-top: -35px;
-    width: 52px;
-    height: 107px;
-  }
-  .yourlist__buttonDelete {
-    margin-left: 324px;
-    margin-top: -419px;
-
-  
-  }
-  .yourlist__card-div {
-    margin-left: 188px;
-    width: 114px;
-  }
-  .yourlist__button {
-    margin-top: 80px;
-    margin-left: 0px;
-    width: 120px;
-  }
-  .card-img {
-    width: 71px;
-    height: 131px;
-    margin-left: 71px;
-  }
-  .yourlist__card-header {
-    width: 140px
-  }
-  .btn-danger{
-    margin-left: 320px
-  }
-  .page__container {
-    width: 351px;
-    margin-left: -31px;
-  }
-}
-
-@media screen and (max-width: 360px) {
-  .page__container {
-    width: 303px;
-    margin-left: 13px;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .page__container{
-    margin-left: 50px
-  }
-  .yourlist__buttonDelete {
-    margin-left: 293px;
-    margin-top: -383px;
-  }
-  .yourlist__card-div {
-    margin-left: 184px;
-    width: 83x;
-    height: 341px;
-  }
-  .yourlist__button {
-    margin-top: 80px;
-    margin-left: -152px;
-    width: 106px;
-  }
-  .card-img {
-    width: 51px;
-    height: 91px;
-    margin-left: 110px;
-    margin-top: 149px;
-  }
-  .yourlist__card-header {
-    width: 109px
-  }
-  .page__container {
-    width: 310px;
-    margin-left: -1px;
-  }
-  .yourlist__buttonAdd {
-    margin-left: 291px;
-    margin-top: -212px;
-    /* width: -57px; */
-    height: 107px;
-  }
-  .yourlist__buttonDeleteList{
-    margin-right: 204px;
-    width: 81px;
-    margin-top: -3px;
-    height: 91px;
-}
-}
-@media screen and (max-width: 411px) {
-  .page__container {
-    width: 351px;
-    margin-left: 19px;
-  }
-}
-
-@media screen and (max-width: 414px) {
-  .page__container {
-    width: 351px;
-    margin-left: 19px;
-  }
-} 
 
 /******** design log in page ******/
 
@@ -895,3 +424,740 @@
     width: 95%;
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .google {
+    margin-left: 35px;
+    padding-left: 4px;
+  }
+  
+}
+@media screen and (max-width: 414px) {
+  .google {
+    margin-left: 35px;
+    padding-left: 4px;
+  }
+  .form-group{
+    margin-right: 36px;
+  }
+  .col {
+    margin-left: 44px;
+    margin-top: 21px;
+}
+.form-control{
+  margin-left: -14px
+}
+
+}
+
+@media screen and (max-width: 375px) {
+  .google {
+    margin-left: 30px;
+    padding-left: 4px;
+    width: 200px
+  }
+  .fb {
+    width: 200px;
+    margin-left: 34px
+  }
+  .col {
+    margin-left: 45px
+  }
+  .form-group {
+    margin-right: 10px
+  }
+  .login__form-btn {
+    margin-left: 274px;
+    margin-top: 10px;
+  }
+  .link-forgot-password {
+    margin-left: 258px
+  }
+  .login__form-title {
+    margin-left: -34px;
+    width: 398px
+  }
+  .form-text {
+    display: block;
+    margin-left: 6px;
+    margin-right: -157px;
+    margin-top: 14px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .google {
+    margin-left: 30px;
+    padding-left: 4px;
+    width: 200px
+  }
+  .fb {
+    width: 200px;
+    margin-left: 34px
+  }
+  .col {
+    margin-left: 45px
+  }
+  .form-group {
+    margin-right: 10px
+  }
+  .login__form-btn {
+    margin-left: 274px;
+    margin-top: 10px;
+  }
+  .link-forgot-password {
+    margin-left: 258px
+  }
+  .login__form-title {
+    margin-left: -34px;
+    width: 398px
+  }
+  .form-text {
+    display: block;
+    margin-left: 6px;
+    margin-right: -157px;
+    margin-top: 14px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .google {
+    margin-left: 30px;
+    padding-left: 4px;
+    width: 200px
+  }
+  .fb {
+    width: 192px;
+    margin-left: 34px
+  }
+  .col {
+    margin-left: 45px;
+    margin-top: 28px
+  }
+  .form-group {
+    margin-right: -30px
+  }
+  .login__form-btn {
+    margin-left: 274px;
+    margin-top: 10px;
+    width: 99px;
+  }
+  .link-forgot-password {
+    margin-left: 258px
+  }
+  .login__form-title {
+    margin-left: -34px;
+    width: 326px
+  }
+  .form-text {
+    display: block;
+    margin-left: 6px;
+    margin-right: -157px;
+    margin-top: 14px;
+  }
+}
+
+
+/* signup page*/
+.content-signup {
+  width: 55%;
+  height: auto;
+  border-radius: 2px;
+  padding: 20px;
+  margin-left: 336px;
+  margin-bottom: 3px
+}
+
+.content-signup__word-sigup {
+  padding: 20px 0;
+  font-weight: 600;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.04em;
+  color: #3d9caf;
+  background: #FFFFFF;
+}
+.content-signup__form-input{
+  margin-left: -331px;
+  width: 661px;
+}
+.content-signup__form-label{
+  margin-left: -325px
+}
+.content-signup__username {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.03em;
+  color: black;
+  border-radius: 3px;
+}
+
+.content-signup__username-star, .content-signup__email-star, .content-signup__password-star, .content-signup__confirm-password-star {
+  color: red;
+}
+
+.content-signup__email {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.03em;
+  color: black;
+  border-radius: 3px;
+}
+
+.content-signup__password {
+  color: black;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.03em;
+  color: black;
+  border-radius: 3px;
+}
+
+.content-signup__confirm-password {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.03em;
+  color: black;
+  border-radius: 3px;
+}
+
+.content-signup__submit {
+  height: 40px;
+  letter-spacing: 0.04em;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: bold !important;
+  margin-bottom: -570px;
+  width: 20%;
+  margin-left: 281px;
+    background-color: #c3bebe!important;
+    background: #e6e4e1;
+    border: 2px solid #54514d;
+    height: 40px;
+    border-radius: 21px;
+}
+
+.content-signup__submit:hover {
+  background-color: rgb(12, 120, 134) !important;
+}
+
+.content-signup__text-muted {
+  text-align: center;
+  padding: 10px 0;
+  margin-left: -364px;
+}
+
+.content-signup__word-login {
+  color: #1b7688 !important;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.content-signup__word-login:hover {
+  text-decoration: none;
+  color: #104d58 !important;
+}
+
+.errormsg {
+  color: red;
+  margin-left: 363px
+}
+
+@media only screen and (max-width: 992px) {
+  .content-signup {
+    width: 95%;
+  }
+}
+
+
+/* grocery page */
+
+@media screen and (max-width: 1920px) {
+
+  .page__container {
+
+    margin-left: 164px;
+    margin-top: 1rem;
+    height: 393px;
+    width: 73%;
+  }
+  .yourlist__card {
+    border: 1px solid rgba(234, 234, 234, 0.9) !important;
+    border-radius: 0.3rem !important;
+    cursor: pointer;
+    margin-left: -98px;
+    margin-top: 79px;
+    margin-bottom: 1rem;
+    padding: 44px;
+    width: 307px;
+  }
+  .yourlist__card:hover {
+    box-shadow: 0 0 30px -15px rgba(0, 0, 0, 0.3);
+  }
+ 
+  .card-img {
+    box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+    width: 160px;
+    height: 67%;
+    margin-top: 0px;
+    margin-bottom: -343px;
+    margin-left: 50px;
+  }
+
+  .yourlist__card-div {
+    margin-top: 7rem;
+    margin-left: 393px;
+    margin-bottom: 17rem;
+}
+
+  .modal-content {
+    width: 1346px;
+    /* margin-left: -424px; */
+    pointer-events: auto;
+    background-clip: padding-box;
+    border-radius: -2.7rem;
+    outline: 0;
+}
+.btn-danger {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  margin-left: 679px;
+  border-radius: 37px;
+  height: 38px;
+  width: 140px;
+}
+.create-input {
+  margin-left: 293px;
+  width: 349px;
+  margin-top: 4px;
+}
+.create-button{
+  width: 74px;
+  height: 34px;
+}
+
+.modal-body {
+  position: relative;
+  width: 221%;
+  margin-left: -350px;
+  width: 184%;
+  display: block;
+  background-color: #fff0;
+  margin-left: 28px;
+}
+  @media (min-width: 992px){
+.col-lg-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 2rem;
+}
+  }
+
+  .yourlist__card-header {
+    border-bottom: none !important;
+    background: rgba(243, 243, 116, 0.47) !important;
+    margin-left: -19px;
+    margin-top: -27px;
+    padding-left: 19px;
+    width: 257px;
+  }
+  .modal.show .modal-dialog {
+    -webkit-transform: none;
+    transform: none;
+  }
+  .yourlist__card-text {
+    margin-top: 24px;
+  }
+  .btn-primary {
+    color: #2f2c2c;
+    margin-left: -217px;
+    background-color: #c1c5ca;
+    border-color: #525456;
+    border: 51px;
+    border-radius: 33px;
+    width: 136px;
+    margin-top: -421px;
+}
+  .yourlist__buttonDelete {
+    margin-top: -258px;
+    margin-left: 850px;
+    cursor: pointer;
+}
+.yourlist__buttonAdd{
+  margin-left: 10px
+}
+  .fa-remove:before, .fa-close:before, .fa-times:before {
+    content: "\f00d";
+    font-size: 255%;
+    margin-left: 9px;
+  }
+  /* .btn-primary {
+    color: #2f2c2c;
+    margin-left: -15px;
+    background-color: #c1c5ca;
+    border-color: #525456;
+    border: 51px;
+    margin-top: 10px;
+    border-radius: 33px;
+    width: 141px;
+    height: 37px;
+  } */
+  .yourlist__button-create {
+    margin-top: 0px;
+}
+  .yourlist__card-header-add{
+    margin-left: 0px
+  }
+ .yourlist__card-text-add{
+   margin-left:370px
+ }
+/*item typeahead*/
+.yourlist__item-typeahead__word{
+  margin-left: 15px;
+    margin-top: 82px;
+}
+.card-header {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0;
+  color: inherit;
+
+}
+.yourlist__item-typeahead__card-div{
+  margin-top: 10rem;
+  margin-left: 138px;
+  /* margin-bottom: 17rem; */
+  /* width: 270px; */
+
+}
+.yourlist__item-typeahead__card-header{
+  margin-left: 10px
+
+}
+.yourlist__item-typeahead__card-img{
+  box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+  width: 160px;
+  height: 109px;
+  margin-top: 157px;
+  margin-bottom: -312px;
+  margin-left: -161px;
+}
+.yourlist__item-typeahead__header__name-product{
+  border-bottom: none !important;
+  margin-left: -19px;
+  margin-top: 2px;
+  padding-left: 19px;
+  width: 233px;
+
+}
+.yourlist__item-typeahead__card-text{
+  margin-left: 29px;
+  margin-top: 23px;
+}
+  .modal-content {
+    width: 154%;
+    margin-left: -139px;
+    pointer-events: auto;
+    background-clip: padding-box;
+    border-radius: 1.3rem;
+    outline: 0;
+  }
+  .login__form-div-title {
+    width: 649px;
+    margin-left: 134px;
+  }
+  .modal-body {
+    position: relative;
+    width: 221%;
+    margin-left: 26px;
+    width: 184%;
+    display: block;
+    background-color: #fff0;
+}
+  .fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    margin-top: -38px;
+    margin-left: 2px;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .fa-facebook-f:before, .fa-facebook:before {
+    content: "\f09a";
+    margin-left: -22px;
+  }
+  .fa-google:before {
+    content: "\f1a0";
+    margin-left: -32px;
+  }
+  .fa-close:before, .fa-remove:before, .fa-times:before {
+    content: "\F00D";
+    font-size: 255%;
+    margin-left: 9px;
+    margin-top: 91px;
+    cursor: pointer;
+  }
+  .yourlist__buttonAdd {
+    margin-top: -145px;
+    margin-left: 685px;
+    width: 154px;
+    height: 35px;
+    cursor: pointer;
+  }
+  .fa-remove {
+    margin-left: -36px;
+    margin-top: -11px;
+  }
+  .modal-body {
+    position: relative;
+    width: 221%;
+    margin-left: -350px;
+    width: 184%;
+    display: block;
+    background-color: #fff0;
+  }
+  .yourlist__button{
+    margin-top: 80px;
+    margin-left: -13px;
+    width: 154px;
+    height: 35px
+  }
+  .fa-remove {
+    margin-left: -22px;
+    margin-top: 3px;
+  }
+  .card {
+    position: relative;
+    display: -ms-flexbox;
+    margin-left: 403px;
+    width: 260px;
+    margin-top: -135px;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+}
+
+ @media screen and (max-width: 1024px) {
+
+  .fa-remove {
+    margin-left: -21px;
+    margin-top: -7px;
+  }
+  .yourlist__card-div {
+    margin-left: 23rem
+  }
+  .yourlist__button {
+    margin-top: 80px;
+    margin-left: 92px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .yourlist__buttonAdd{
+    margin-left: 605px;
+    margin-top: 19px;
+    width: 52px;
+    height: 107px;
+  }
+  .yourlist__buttonDelete {
+    margin-left: 608px;
+    margin-top: -393px;
+  
+  }
+  .card-img {
+    width: 54px;
+    height: 108px;
+    margin-left: 144px;
+  }
+  .btn-danger{
+    margin-right: 18px
+  }
+  .fa-remove {
+    margin-left: 21px;
+    margin-top: 186px;
+  }
+  .yourlist__card-div {
+    margin-left: 303px;
+    margin-right: -121px;
+    margin-bottom: 7rem;
+}
+  .yourlist__button {
+    margin-top: 80px;
+    margin-left: 159px;
+    width: 104px;
+  }
+  .page__container {
+    width: 574px;
+    margin-left: 100px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  
+  .yourlist__buttonDelete {
+    margin-left: 177px;
+    margin-top: -200px;
+  }
+  .yourlist__card-div {
+    margin-left: 28px;
+    width: 114px;
+  }
+  .yourlist__button {
+    margin-top: -375px;
+    margin-left: 156px;
+    width: 49px;
+  }
+  .card-img {
+    width: 71px;
+    height: 131px;
+    margin-left: 71px;
+  }
+  .yourlist__card-header {
+    width: 140px
+  }
+  .page__container {
+    width: 356px;
+    margin-left: 13px;
+  }
+  .btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    margin-left: 750px;
+    margin-right:99px; 
+    border-radius: 37px;
+    height: 38px;
+    width: 140px;
+}
+}
+
+@media screen and (max-width: 414px) {
+  .yourlist__buttonAdd{
+    margin-left: 327px;
+    margin-top: -35px;
+    width: 52px;
+    height: 107px;
+  }
+  .yourlist__buttonDelete {
+    margin-left: 324px;
+    margin-top: -419px;
+
+  
+  }
+  .yourlist__card-div {
+    margin-left: 188px;
+    width: 114px;
+  }
+  .yourlist__button {
+    margin-top: 80px;
+    margin-left: 0px;
+    width: 120px;
+  }
+  .card-img {
+    width: 71px;
+    height: 131px;
+    margin-left: 71px;
+  }
+  .yourlist__card-header {
+    width: 140px
+  }
+  .btn-danger{
+    margin-left: 320px
+  }
+  .page__container {
+    width: 351px;
+    margin-left: -31px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .page__container {
+    width: 303px;
+    margin-left: 13px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .page__container{
+    margin-left: 50px
+  }
+  .yourlist__buttonDelete {
+    margin-left: 293px;
+    margin-top: -383px;
+  }
+  .yourlist__card-div {
+    margin-left: 184px;
+    width: 83x;
+    height: 341px;
+  }
+  .yourlist__button {
+    margin-top: 80px;
+    margin-left: -152px;
+    width: 106px;
+  }
+  .card-img {
+    width: 51px;
+    height: 91px;
+    margin-left: 110px;
+    margin-top: 149px;
+  }
+  .yourlist__card-header {
+    width: 109px
+  }
+  .page__container {
+    width: 310px;
+    margin-left: -1px;
+  }
+  .yourlist__buttonAdd {
+    margin-left: 291px;
+    margin-top: -212px;
+    /* width: -57px; */
+    height: 107px;
+  }
+  .yourlist__buttonDeleteList{
+    margin-right: 204px;
+    width: 81px;
+    margin-top: -3px;
+    height: 91px;
+}
+}
+@media screen and (max-width: 411px) {
+  .page__container {
+    width: 351px;
+    margin-left: 19px;
+  }
+}
+label {
+  display: inline-block;
+  margin-bottom: .5rem;
+  margin-left: 121px;
+  /* margin-top: -18px; */
+}
+@media screen and (max-width: 414px) {
+  .page__container {
+    width: 351px;
+    margin-left: 19px;
+  
+  }
+  .btn-success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    margin-right: 86px;
+}
+} 

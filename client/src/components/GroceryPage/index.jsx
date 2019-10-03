@@ -258,55 +258,39 @@ export default class GroceryPage extends React.Component {
       const { lasIdListState, valueProductName, valueProductImage, valueProductPrice, valuePricePerOunce, valueProductSize } = this.state;
       const { customerId } = this.state;
       const idItem = lasIdListState;
-      // validationCreateList.validate(
-      //   { valueProductName, valueProductImage, valueProductPrice, valueProductSize, valuePricePerOunce },
-      //   { abortEarly: false }
-      // )
-      //   .then(() => {
-          fetch(`/api/create-list/${idItem}/${customerId}`, {
-            method: 'POST',
-            body: JSON.stringify({
-              valueProductName,
-              valueProductImage,
-              valueProductPrice,
-              valueProductSize,
-              valuePricePerOunce,
+  
+      fetch(`/api/create-list/${idItem}/${customerId}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          valueProductName,
+          valueProductImage,
+          valueProductPrice,
+          valueProductSize,
+          valuePricePerOunce,
 
-            }),
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          })
-            .then(res => {
-              if (res.status === 400) {
-                this.setState({ errormsgImage: 'must be  valid image (start of http:// and end of .png or .gif or jpg) ', messageSuccessCreate: '' });
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(res => {
+          if (res.status === 400) {
+            this.setState({ errormsgImage: 'must be  valid image (start of http:// and end of .png or .gif or jpg) ', messageSuccessCreate: '' });
 
-              } else {
+          } else {
 
-                return res.json();
-              }
-            })
-            .then(response => {
-              if (response) {
-                console.log('rrr', response)
-                // this.setState({valueData:response.data})
-                this.setState({ valueDataForCreate: response.data })
+            return res.json();
+          }
+        })
+        .then(response => {
+          if (response) {
+            this.setState({ valueData: response.data })
+            this.setState({ messageSuccessCreate: 'add successfull', errormsgImage: '', errormsg: '' });
+          }
 
-                this.setState({ messageSuccessCreate: 'add successfull', errormsgImage: '', errormsg: '' });
-              }
+        })
 
-            })
-        // })
-        // .catch(({ inner }) => {
-        //   if (inner) {
-        //     const errors = inner.reduce(
-        //       (acc, item) => ({ ...acc, [item.path]: item.message }),
-        //       {}
-        //     );
-        //     this.setState({ errormsg: { ...errors }, visibleSuccessCreate: false });
-        //   }
-        // });
     }
 
     fetch('/api/get-ids-list', {
@@ -350,8 +334,7 @@ export default class GroceryPage extends React.Component {
     const { valueDataForCreate, errormsgImage, Authentication, email, password, errormsg, valueProductName, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess, messageSuccessCreate, visibleSuccessCreate } = this.state;
     const { dataTypeaheadProps, auth } = this.props;
 
-    console.log('vvvvv', valueData)
-    console.log('valueDataForCreate', valueDataForCreate);
+   
 
 
     return (
@@ -366,7 +349,7 @@ export default class GroceryPage extends React.Component {
             </Alert>
             <Container className="page__container">
 
-              {!valueDataForCreate &&valueData && valueData.length !== 0 ? (
+              {valueData && valueData.length !== 0 ? (
 
                 <Row>
 
@@ -380,17 +363,19 @@ export default class GroceryPage extends React.Component {
                   >
                     Delete All Items
                   </Button>
-                 
+
                   {valueData ? (
 
                     valueData.map((itemList) => {
                       let idItem = itemList.id;
-                      console.log(5555, itemList);
-
                       return <>
 
                         <Col xs={12} md={12} lg={12} key={itemList.id}>
-                          <img src={`/images/products/${itemList.product_image}`} className="card-img" />
+                          {itemList.product_image.startsWith('http://')||itemList.product_image.startsWith('data') ? (
+                            <img src={`${itemList.product_image}`} className="card-img" />
+                          ) : (
+                              <img src={`/images/products/${itemList.product_image}`} className="card-img" />
+                            )}
                           <div className="yourlist__card-div">
                             <Card.Header className="yourlist__card-header">
                               <div className="header__name-product">Name Product : {itemList.product_name}</div>
@@ -425,7 +410,6 @@ export default class GroceryPage extends React.Component {
                     <>
                       {dataTypeaheadProps.map(itemList => {
                         return <>
-                          <h5 className="yourlist__item-typeahead__word">Item From SearchBar</h5>
                           <div>{dataTypeaheadProps.product_name}</div>
                           <img src={`/images/products/${itemList.product_image}`} className="yourlist__item-typeahead__card-img" />
                           <div className="yourlist__item-typeahead__card-div">
@@ -447,154 +431,123 @@ export default class GroceryPage extends React.Component {
 
               ) : (
                   <>
-                    {valueDataForCreate ? (
-                      <>
 
-                  <Button className='yourlist__buttonDeleteList'
-                    variant="danger"
-                    onClick={e => {
-                      e.stopPropagation();
-                      this.handleShowDeleteList(idsItems);
-                    }}
 
-                  >
-                    Delete All Items
-                  </Button>
-                        {valueDataForCreate.map(itemList => {
-                          return <>
-                            <h5 className="yourlist__item-typeahead__word">Your Item that you add it </h5>
-                            <div>{itemList.product_name}</div>
-                            <img src={`${itemList.product_image}`} className="yourlist__item-typeahead__card-img" />
-                            <div className="yourlist__item-typeahead__card-div">
-                              <Card.Header className="yourlist__card-header">
-                                <div className="yourlist__item-typeahead__header__name-product">Name Product : {itemList.product_name}</div>
-                              </Card.Header>
-                              <Card.Text className="yourlist__item-typeahead__card-text">
-                                Product Price :  {itemList && itemList.product_price}
-                              </Card.Text>
-                              <Card.Text className="yourlist__item-typeahead__card-text">
-                                Product Size : {itemList.sizes}
-                              </Card.Text>
-                            </div>
-                          </>
-                        })}
-                      </>
-                    ) : (
-                        <>
+                    <span>There is no list until now</span>
+                    <Button className="yourlist__button-create" onClick={this.handleShowCreateList}>create list</Button>
+                    {showCreate ? (
+                      <Modal show={showCreate} onHide={this.handleClose}  backdrop="static" className="modal-create">
+                        <Modal.Body className="modal-create__body">
+                          <Form.Group>
+                            <Form.Label className="yourlist__group-label">Product Id: {lasIdListState}</Form.Label>
+                          </Form.Group>
+                          <Form.Group >
+                            <Form.Label className="yourlist__group-label">Product Name :</Form.Label>
+                            <Form.Control
+                              className='create-input'
+                              type="text"
+                              name="valueProductName"
+                              value={valueProductName}
+                              placeholder="Enter name list"
+                              onChange={this.handleChange}
+                            />
+                          </Form.Group>
+                          {errormsg ? (
 
-                          <span>There is no list until now</span>
-                          <Button className="yourlist__button-create" onClick={this.handleShowCreateList}>create list</Button>
-                          {showCreate ? (
-                            <Modal show={showCreate} onHide={this.handleClose} className="modal-create" backdrop="static">
-                              <Modal.Body>
-                                <Form.Group>
-                                  <Form.Label className="yourlist__group-label">Product Id: {lasIdListState}</Form.Label>
-                                </Form.Group>
-                                <Form.Group >
-                                  <Form.Label className="yourlist__group-label">Product Name :</Form.Label>
-                                  <Form.Control
-                                    className='create-input'
-                                    type="text"
-                                    name="valueProductName"
-                                    value={valueProductName}
-                                    placeholder="Enter name list"
-                                    onChange={this.handleChange}
-                                  />
-                                </Form.Group>
-                                {errormsg ? (
-
-                                  <span className="errormsg">{errormsg.valueProductName}</span>
-                                ) : null}
-                                <Form.Group >
-                                  <Form.Label className="yourlist__group-label">Product Image :</Form.Label>
-                                  <Form.Control
-                                    className='create-input'
-                                    type="text"
-                                    name="valueProductImage"
-                                    value={valueProductImage}
-                                    placeholder="Enter image list"
-                                    onChange={this.handleChange}
-                                  />
-                                </Form.Group>
-                                {errormsgImage ? (
-
-                                  <span className="errormsg">{errormsgImage}</span>
-                                ) : null}
-                                <Form.Group className="yourlist__group-label">
-                                  <Form.Label className="yourlist__group-label">Product Price :</Form.Label>
-                                  <Form.Control
-                                    className='create-input'
-                                    type="number"
-                                    name="valueProductPrice"
-                                    value={valueProductPrice}
-                                    placeholder="Enter price list"
-                                    onChange={this.handleChange}
-                                  />
-                                </Form.Group>
-                                {errormsg ? (
-
-                                  <span className="errormsg">{errormsg.valueProductPrice}</span>
-                                ) : null}
-
-                                <Form.Group className="yourlist__group-label">
-                                  <Form.Label className="yourlist__group-label">Product Size :</Form.Label>
-                                  <Form.Control
-                                    className='create-input'
-                                    type="text"
-                                    name="valueProductSize"
-                                    value={valueProductSize}
-                                    placeholder="Enter size list"
-                                    onChange={this.handleChange}
-                                  />
-                                </Form.Group>
-                                {errormsg ? (
-
-                                  <span className="errormsg">{errormsg.valueProductSize}</span>
-                                ) : null}
-
-                                <Form.Group className="yourlist__group-label">
-                                  <Form.Label className="yourlist__group-label">Product Price Per Ounce :</Form.Label>
-                                  <Form.Control
-                                    className='create-input'
-                                    type="number"
-                                    name="valuePricePerOunce"
-                                    value={valuePricePerOunce}
-                                    placeholder="Enter Price Per Ounce list"
-                                    onChange={this.handleChange}
-                                  />
-                                </Form.Group>
-                                {errormsg ? (
-
-                                  <span className="errormsg">{errormsg.valuePricePerOunce}</span>
-                                ) : null}
-                                {messageSuccessCreate ? (
-                                  <p className="msg-success">{messageSuccessCreate}</p>
-                                ) : null}
-                              </Modal.Body>
-                              <Modal.Footer className="confirm__success">
-                                <Button
-                                  variant="secondary"
-                                  onClick={this.handleClose}
-                                >
-                                  Close
-                          </Button>
-                                <Button
-                                  className='create-button'
-                                  variant="success"
-                                  onClick={this.handleCreateList}
-                                >
-                                  create
-                          </Button>
-                              </Modal.Footer>
-                            </Modal>
+                            <span className="errormsg">{errormsg.valueProductName}</span>
                           ) : null}
-                        </>
-                      )}
-                        {dataTypeaheadProps ? (
+                          <Form.Group >
+                            <Form.Label className="yourlist__group-label">Product Image :</Form.Label>
+                            <Form.Control
+                              className='create-input'
+                              type="text"
+                              name="valueProductImage"
+                              value={valueProductImage}
+                              placeholder="Enter image list"
+                              onChange={this.handleChange}
+                            />
+                          </Form.Group>
+                          {errormsgImage ? (
+
+                            <span className="errormsg">{errormsgImage}</span>
+                          ) : null}
+                          <Form.Group className="yourlist__group-label">
+                            <Form.Label className="yourlist__group-label">Product Price :</Form.Label>
+                            <Form.Control
+                              className='create-input'
+                              type="number"
+                              name="valueProductPrice"
+                              value={valueProductPrice}
+                              placeholder="Enter price list"
+                              onChange={this.handleChange}
+                            />
+                          </Form.Group>
+                          {errormsg ? (
+
+                            <span className="errormsg">{errormsg.valueProductPrice}</span>
+                          ) : null}
+
+                          <Form.Group className="yourlist__group-label">
+                            <Form.Label className="yourlist__group-label">Product Size :</Form.Label>
+                            <Form.Control
+                              className='create-input'
+                              type="text"
+                              name="valueProductSize"
+                              value={valueProductSize}
+                              placeholder="Enter size list"
+                              onChange={this.handleChange}
+                              
+                            />
+                          </Form.Group>
+                          {errormsg ? (
+
+                            <span className="errormsg">{errormsg.valueProductSize}</span>
+                          ) : null}
+
+                          <Form.Group className="yourlist__group-label">
+                            <Form.Label className="yourlist__group-label">Product Price Per Ounce :</Form.Label>
+                            <Form.Control
+                              className='create-input'
+                              type="number"
+                              name="valuePricePerOunce"
+                              value={valuePricePerOunce}
+                              placeholder="Enter Price Per Ounce list"
+                              onChange={this.handleChange}
+                            />
+                          </Form.Group>
+                          {errormsg ? (
+
+                            <span className="errormsg">{errormsg.valuePricePerOunce}</span>
+                          ) : null}
+                          {messageSuccessCreate ? (
+                            <p className="msg-success">{messageSuccessCreate}</p>
+                          ) : null}
+                        </Modal.Body>
+                        <Modal.Footer className="confirm__success">
+                          <Button
+                            variant="secondary"
+                            onClick={this.handleClose}
+                          >
+                            Close
+                          </Button>
+                          <Button
+                            className='create-button'
+                            variant="success"
+                            onClick={this.handleCreateList}
+                          >
+                            create
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
+                    ) : null}
+                  </>
+
+                )}
+            </Container>
+              {dataTypeaheadProps ? (
                     <>
                       {dataTypeaheadProps.map(itemList => {
                         return <>
-                          <h5 className="yourlist__item-typeahead__word">Item From SearchBar</h5>
                           <div>{dataTypeaheadProps.product_name}</div>
                           <img src={`/images/products/${itemList.product_image}`} className="yourlist__item-typeahead__card-img" />
                           <div className="yourlist__item-typeahead__card-div">
@@ -612,96 +565,81 @@ export default class GroceryPage extends React.Component {
                       })}
                     </>
                   ) : null}
-                  </>
-                )}
-            </Container>
           </>
         ) : (
 
-            <>
-
-              <Container>
-                <Modal show={true} onHide={this.handleClose} className="modal" backdrop="static">
-                  <Modal.Body>
-
-                    <Form className="login__form">
-                      <div className="login__form-div-title">
-                        <h2 className="login__form-title">Log in to View Grocery List</h2>
-
-                      </div>
-
-
-
-                      <div className="vl">
-                        <span className="vl-innertext">or</span>
-                      </div>
-
-                      <div className="col">
-                        <a href="#" className="fb btn">
-                          <i class="fa fa-facebook fa-fw"></i> Login with Facebook
-                                                  </a>
-                        <a href="#" className="google btn"><i class="fa fa-google fa-fw">
-                        </i> Login with Google+
-                                                  </a>
-                      </div>
-
-                      <div className="col">
-                        <div className="hide-md-lg">
-                          <p>Or sign in manually:</p>
-                        </div>
-                      </div>
-                      <Form.Group>
-                        <Form.Label>Email :</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="email"
-                          value={email}
-                          placeholder="Enter your email"
-                          onChange={this.handleChange}
-                        />
-                      </Form.Group>
-                      <Form.Group>
-                        <Form.Label>Password :</Form.Label>
-                        <Form.Control
-                          type="password"
-                          name="password"
-                          value={password}
-                          placeholder="Enter your password"
-                          onChange={this.handleChange}
-                        />
-                      </Form.Group>
-                      <p className="msg-success">{messageSuccess}</p>
-                      <p className="msg-err">{messageErr}</p>
-                      <Link>
-                        <span className="link-forgot-password">Forget Password  ?</span>
-                      </Link>
-
-                      <Button
-                        type="button"
-                        className="login__form-btn"
-                        onClick={this.handleClick}
-                      >
-                        Log in
-                              </Button>
-                      <Form.Text className="login__form__text-muted">
-                        Don’t have an account? {''}
-
-                        <Link className="link-signup-word" to="/signup">
-                          Sign Up
-                            </Link>
-                        <br />
-                        or
-
-                             <Link className="link-guest-word" to="/aguest">
-                          continue as guest
-                            </Link>
-
-                      </Form.Text>
-                    </Form>
-                  </Modal.Body>
-                </Modal>
-              </Container>
-
+            
+          <>
+          <Container>
+            <Modal show={true} onHide={this.handleClose} className="modal" backdrop="static">
+              <Modal.Body>
+                <Form className="login__form">
+                  <div className="login__form-div-title">
+                    <h2 className="login__form-title">Log in to View Grocery List</h2>
+                  </div>
+                  <div className="vl">
+                    <span className="vl-innertext">or</span>
+                  </div>
+                  <div className="col">
+                    <a href="#" className="fb btn">
+                      <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+                                              </a>
+                    <a href="#" className="google btn"><i class="fa fa-google fa-fw">
+                    </i> Login with Google+
+                                              </a>
+                  </div>
+                  <div className="col">
+                    <div className="hide-md-lg">
+                      <p>Or sign in manually:</p>
+                    </div>
+                  </div>
+                  <Form.Group>
+                    <Form.Label>Email :</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="email"
+                      value={email}
+                      placeholder="Enter your email"
+                      onChange={this.handleChange}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label>Password :</Form.Label>
+                    <Form.Control
+                      type="password"
+                      name="password"
+                      value={password}
+                      placeholder="Enter your password"
+                      onChange={this.handleChange}
+                    />
+                  </Form.Group>
+                  <p className="msg-success">{messageSuccess}</p>
+                  <p className="msg-err">{messageErr}</p>
+                  <Link>
+                    <span className="link-forgot-password">Forget Password  ?</span>
+                  </Link>
+                  <Button
+                    type="button"
+                    className="login__form-btn"
+                    onClick={this.handleClick}
+                  >
+                    Log in
+                          </Button>
+                  <Form.Text className="login__form__text-muted">
+                    Don’t have an account? {''}
+                    <Link className="link-signup-word" to="/signup">
+                      Sign Up
+                        </Link>
+                    <br />
+                    or
+                         <Link className="link-guest-word" to="/aguest">
+                      continue as guest
+                        </Link>
+                  </Form.Text>
+                </Form>
+              </Modal.Body>
+            </Modal>
+          </Container>
 
 
             </>
