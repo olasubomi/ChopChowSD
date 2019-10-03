@@ -110,17 +110,7 @@
   .btn:hover {
     opacity: 1;
   }
-  .login__form-btn {
-    width: 20%;
-    background-color: #c3bebe!important;
-    background: #e6e4e1;
-    border-radius: 7px;
-    border: 2px solid #54514d;
-    margin-top: 83px;
-    height: 40px;
-    border-radius: 21px;
-    font-size: 20px!important;
-  }
+ 
   .google {
     background-color: #dd4b39;
     color: #fff;
@@ -133,7 +123,7 @@
     background-color: #3b5998;
     color: #fff;
     margin-left: 36px;
-    margin-top: 40px;
+    margin-top: 56px;
     margin-bottom: -1px;
   }
   .vl {
@@ -703,7 +693,7 @@
   .card-img {
     box-shadow: 0 0 25px rgba(0, 0, 0, .25);
     width: 160px;
-    height: 67%;
+    height: 50%;
     margin-top: 0px;
     margin-bottom: -343px;
     margin-left: 50px;
@@ -777,7 +767,7 @@
   }
   .btn-primary {
     color: #2f2c2c;
-    margin-left: -217px;
+    margin-left: -9px;
     background-color: #c1c5ca;
     border-color: #525456;
     border: 51px;
@@ -809,8 +799,20 @@
     width: 141px;
     height: 37px;
   } */
+  .login__form-btn {
+    width: 20%;
+    background-color: #c3bebe!important;
+    background: #e6e4e1;
+    border-radius: 7px;
+    border: 2px solid #54514d;
+    margin-top: 83px;
+    height: 40px;
+    border-radius: 21px;
+    font-size: 20px!important;
+  }
   .yourlist__button-create {
     margin-top: 0px;
+    height: 48px;
 }
   .yourlist__card-header-add{
     margin-left: 0px

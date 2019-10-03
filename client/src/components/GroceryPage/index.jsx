@@ -410,19 +410,23 @@ export default class GroceryPage extends React.Component {
                     <>
                       {dataTypeaheadProps.map(itemList => {
                         return <>
-                          <div>{dataTypeaheadProps.product_name}</div>
-                          <img src={`/images/products/${itemList.product_image}`} className="yourlist__item-typeahead__card-img" />
-                          <div className="yourlist__item-typeahead__card-div">
+                        
+                        <Col xs={12} md={12} lg={12} key={itemList.id}>
+                              <img src={`/images/products/${itemList.product_image}`} className="card-img" />
+                          <div className="yourlist__card-div">
                             <Card.Header className="yourlist__card-header">
-                              <div className="yourlist__item-typeahead__header__name-product">Name Product : {itemList.product_name}</div>
+                              <div className="header__name-product">Name Product : {itemList.product_name}</div>
                             </Card.Header>
-                            <Card.Text className="yourlist__item-typeahead__card-text">
+                            <Card.Text className="yourlist__card-text">
                               Product Price :  {itemList && itemList.product_price}
                             </Card.Text>
-                            <Card.Text className="yourlist__item-typeahead__card-text">
+                            <Card.Text className="yourlist__card-text">
                               Product Size : {itemList.sizes}
                             </Card.Text>
                           </div>
+                         
+
+                        </Col>
                         </>
                       })}
                     </>
@@ -544,27 +548,7 @@ export default class GroceryPage extends React.Component {
 
                 )}
             </Container>
-              {dataTypeaheadProps ? (
-                    <>
-                      {dataTypeaheadProps.map(itemList => {
-                        return <>
-                          <div>{dataTypeaheadProps.product_name}</div>
-                          <img src={`/images/products/${itemList.product_image}`} className="yourlist__item-typeahead__card-img" />
-                          <div className="yourlist__item-typeahead__card-div">
-                            <Card.Header className="yourlist__card-header">
-                              <div className="yourlist__item-typeahead__header__name-product">Name Product : {itemList.product_name}</div>
-                            </Card.Header>
-                            <Card.Text className="yourlist__item-typeahead__card-text">
-                              Product Price :  {itemList && itemList.product_price}
-                            </Card.Text>
-                            <Card.Text className="yourlist__item-typeahead__card-text">
-                              Product Size : {itemList.sizes}
-                            </Card.Text>
-                          </div>
-                        </>
-                      })}
-                    </>
-                  ) : null}
+    
           </>
         ) : (
 
@@ -632,7 +616,7 @@ export default class GroceryPage extends React.Component {
                         </Link>
                     <br />
                     or
-                         <Link className="link-guest-word" to="/aguest">
+                         <Link className="link-guest-word" >
                       continue as guest
                         </Link>
                   </Form.Text>
