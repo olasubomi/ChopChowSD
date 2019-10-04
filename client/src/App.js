@@ -38,13 +38,11 @@ class App extends Component {
 
         this.state = {
             option:'',
-            showSignup: false,
             itemTypeahead: '',
-            itemState: '',
-            optionState: '',
-            nameItem: '',
-            valueDataUpdate: '',
-            infoCartState: '',
+            valueAllDataLists: [],
+            message: null,
+            isAuthenticated: false,
+            
             suggestMealPopOver: false,
             mealsListed: false,
             mealSelected: false,
@@ -63,16 +61,6 @@ class App extends Component {
             mealsLength: null,
             base_index: 0,
             topNav_className: "w3-bar w3-dark-grey w3-green topnav",
-
-            valueAllDataLists: [],
-            message: null,
-            userInfo: null,
-            isAuthenticated: false,
-            infoCart: null,
-            infoItem: null,
-            nameItems: [],
-            itemOptionState: [],
-            dataTypeahead: ''
         }
     }
 
@@ -165,12 +153,50 @@ class App extends Component {
         //console.log("Updating base index on click to: " +this.state.base_index);
     }
 
+    auth() {
+        fetch('/api/grocery', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json',
+            },
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    this.setState({ isAuthenticated: true })
+                }
+            }).catch(er => console.log(er))
 
+    }
+
+    handleLogout = () => {
+        fetch('/api/logout', {
+            method: "GET",
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json',
+
+            }
+        }).then(res => {
+
+            res.json()
+                .then(response => {
+                    if (response.data) {
+                        this.setState({ isAuthenticated: false })
+                    }
+                })
+        })
+            .catch(() => {
+                this.setState({ message: 'Sorry , Internal Server ERROR' })
+
+            })
+    }
 
     componentDidMount() {
+        this.handleLogout();
+        this.auth();
         this.handleClickTypeahead=(option)=>{
-            console.log('Called ',option)
-
             option = option[0]
             if(!option) return;
             fetch(`/api/get-data-typeahead/${option}`, {
@@ -190,14 +216,15 @@ class App extends Component {
                     this.setState({itemTypeahead:response.data})
                 })
         }
+
+
         fetch('/api/grocery', {
             method: 'GET',
             headers: {
               'Content-type': 'application/json',
             },
           })
-            .then(res => {
-      
+            .then(res => {      
               return res.json()
       
             })
@@ -230,10 +257,9 @@ class App extends Component {
                 })
       
       
-            })
-      
-        this.auth()
-        const { valueAllDataLists } = this.state
+            })      
+
+
         fetch('/api/get-all-data-lists', {
             method: 'GET',
             credentials: 'same-origin',
@@ -287,52 +313,9 @@ class App extends Component {
     }
 
 
-    auth() {
-        fetch('/api/grocery', {
-            method: 'GET',
-            credentials: 'same-origin',
-            headers: {
-                'Content-type': 'application/json',
-            },
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (res.success) {
-                    this.setState({ isAuthenticated: true })
-                }
-            }).catch(er => console.log(er))
-
-    }
-
-    handleLogout = () => {
-        fetch('/api/logout', {
-            method: "GET",
-            credentials: 'same-origin',
-            headers: {
-                'Content-type': 'application/json',
-
-            }
-        }).then(res => {
-
-            res.json()
-                .then(response => {
-                    if (response.data) {
-                        this.setState({ isAuthenticated: false })
-                    }
-                })
-        })
-            .catch(() => {
-                this.setState({ message: 'Sorry , Internal Server ERROR' })
-
-            })
-    }
-
     
     render() {
-        const {option, itemTypeahead,itemState, dataTypeahead, valueAllDataLists, isAuthenticated, itemOptionState } = this.state;
-       
-        console.log('itemTypeaheadvvvv',itemTypeahead);
-        
+        const { itemTypeahead,valueAllDataLists, isAuthenticated } = this.state;
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -557,14 +540,8 @@ class App extends Component {
 
                 <Typeahead
                     onChange={this.handleClickTypeahead}
-
-
                     options={valueAllDataLists}
                     placeholder="Find Meals (and Ingredients) here.."
-                    valueKey="id"
-                    labelKey="name"
-                    id={`auto${itemState}`}
-                    ref="typeahead"
                 />
                
 
@@ -652,7 +629,6 @@ class App extends Component {
                         render={props => (
                             <GroceryPage
                                 auth={isAuthenticated}
-                                infoItemOption={itemOptionState}
                                 dataTypeaheadProps={itemTypeahead}
                             />
 
@@ -663,36 +639,7 @@ class App extends Component {
                     )}
 
                 />
-                    <Route
-                        path='/test'
-                        render={() =>
-
-                            // valueDataUpdate.forEach(infoCart => {
-                            //         let idItem = infoCart.id;
-                            // })    
-
-                            // valueDataUpdate.map((itemList) => {
-                            //     let idItem = itemList.id;
-                            //     return <>
-
-                            //     {console.log('infooooo',idItem)}
-                            //     </>
-                            // })
-
-
-
-
-                            <h1>this is the component</h1>
-                            // <div className='yourlist__card-text-add'>No.List>>{infoCart.id}>></div>
-                            // <div className='yourlist__card-text-add'>Name Product : {valueDataUpdate.map(item=>{
-                            // item
-                            // })}</div>
-                            // <div className='yourlist__card-text-add'> Product Price :  {infoCart.product_price}</div>
-                            // <div className='yourlist__card-text-add'> Product Size : {infoCart.sizes}</div>
-
-                        }
-
-                    />
+                   
                     <Route
                         exact
                         path="/grocery-empty"
