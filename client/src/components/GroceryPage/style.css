@@ -698,6 +698,16 @@
     margin-bottom: -343px;
     margin-left: 50px;
   }
+  .dataTypeahead__card-img{
+    width: 19%;
+    height: 115px;
+    margin-left: 45px;
+    margin-top: 153px;
+  }
+  .dataTypeahead__card-div{
+    margin-left: 343px;
+    margin-top: -111px;
+  }
 
   .yourlist__card-div {
     margin-top: 7rem;

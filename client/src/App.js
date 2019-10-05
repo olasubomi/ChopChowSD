@@ -42,7 +42,7 @@ class App extends Component {
             valueAllDataLists: [],
             message: null,
             isAuthenticated: false,
-            
+
             suggestMealPopOver: false,
             mealsListed: false,
             mealSelected: false,
@@ -542,7 +542,9 @@ class App extends Component {
                     onChange={this.handleClickTypeahead}
                     options={valueAllDataLists}
                     placeholder="Find Meals (and Ingredients) here.."
+                    id="typeahead"
                 />
+                
                
 
 

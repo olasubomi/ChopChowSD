@@ -207,7 +207,7 @@ export default class GroceryPage extends React.Component {
         .then(response => {
           if (response) {//all lists for this customer
             let arrResItemDelete = response.data
-            arrResItemDelete.map((resDelete) => 
+            arrResItemDelete.map((resDelete) =>
               this.setState({ deletedItemsId: resDelete })
             )
           }
@@ -348,7 +348,7 @@ export default class GroceryPage extends React.Component {
   }
 
   render() {
-    const { email, password, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductName,valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess, messageSuccessCreate } = this.state;
+    const { email, password, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess, messageSuccessCreate } = this.state;
     const { dataTypeaheadProps, auth } = this.props;
 
     return (
@@ -386,9 +386,9 @@ export default class GroceryPage extends React.Component {
 
                         <Col xs={12} md={12} lg={12} key={itemList.id}>
                           {itemList.product_image.startsWith('http://') || itemList.product_image.startsWith('data') ? (
-                            <img src={`${itemList.product_image}`} alt ="image product " className="card-img" />
+                            <img src={`${itemList.product_image}`} alt="image product " className="card-img" />
                           ) : (
-                              <img src={`/images/products/${itemList.product_image}`}  alt ="image product " className="card-img" />
+                              <img src={`/images/products/${itemList.product_image}`} alt="image product " className="card-img" />
                             )}
                           <div className="yourlist__card-div">
                             <Card.Header className="yourlist__card-header">
@@ -416,15 +416,15 @@ export default class GroceryPage extends React.Component {
                       </>
                     })
                   ) : <Spinner animation="border" variant="info" />}
-                  
+
                   {dataTypeaheadProps ? (
                     <>
                       {dataTypeaheadProps.map(itemList => {
                         return <>
 
                           <Col xs={12} md={12} lg={12} key={itemList.id}>
-                            <img src={`/images/products/${itemList.product_image}`} className="card-img" />
-                            <div className="yourlist__card-div">
+                            <img src={`/images/products/${itemList.product_image}`} className="dataTypeahead__card-img" />
+                            <div className="dataTypeahead__card-div">
                               <Card.Header className="yourlist__card-header">
                                 <div className="header__name-product">Name Product : {itemList.product_name}</div>
                               </Card.Header>
@@ -551,10 +551,10 @@ export default class GroceryPage extends React.Component {
                       </div>
                       <div className="col">
                         <a href="#" className="fb btn">
-                          <i class="fa fa-facebook fa-fw"></i> Login with Facebook
-                                              </a>
-                        <a href="#" className="google btn"><i class="fa fa-google fa-fw">
-                        </i> Login with Google+
+                          <i className="fa fa-facebook fa-fw"></i> Login with Facebook
+                        </a>
+                        <a href="#" className="google btn"><i className="fa fa-google fa-fw">
+                        </i> Login with Google+ 
                                               </a>
                       </div>
                       <div className="col">
