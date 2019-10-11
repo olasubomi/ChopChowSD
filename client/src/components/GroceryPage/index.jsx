@@ -437,6 +437,16 @@ export default class GroceryPage extends React.Component {
                                 Product Size : {itemList.sizes}
                               </Card.Text>
                             </div>
+                            <div className="yourlist__buttonAdd"><Button onClick={e => {
+                            e.stopPropagation();
+                            this.handleShowAddItem(itemList.id);
+                          }}> Add To Cart</Button> </div>
+
+                          <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={e => {
+                            e.stopPropagation();
+                            this.handleShowDeleteItem(itemList.id);
+
+                          }} ></i></div>
                           </Col>
                         </>
                       })}

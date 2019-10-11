@@ -37,8 +37,10 @@ class App extends Component {
         // this.myFunction = this.myFunction.bind(this);
 
         this.state = {
+            customerId:'',
+            idItem:'',
             option:'',
-            itemTypeahead: '',
+            itemTypeahead: [],
             valueAllDataLists: [],
             message: null,
             isAuthenticated: false,
@@ -196,25 +198,53 @@ class App extends Component {
     componentDidMount() {
         this.handleLogout();
         this.auth();
-        this.handleClickTypeahead=(option)=>{
-            option = option[0]
-            if(!option) return;
-            fetch(`/api/get-data-typeahead/${option}`, {
-                method: 'GET',
-                credentials: 'same-origin',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-
-       
+        this.handleClickTypeahead=(optionItem)=>{
+            const {itemTypeahead} = this.state;
+            if(!optionItem) return;
+            console.log(optionItem)
+            optionItem.map(option => {
+                fetch(`/api/get-data-typeahead/${option}`, {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+    
+           
+                })
+                    .then(res => {
+                        return res.json()
+                    })
+                    .then(response => {
+                        console.log('resssss',response.data[0].id);
+                        this.setState({idItem:response.data[0].id})
+                        this.setState({itemTypeahead:[]})
+                        this.setState({itemTypeahead:[...itemTypeahead, ...response.data]})
+                        const {customerId,idItem}=this.state;
+                        fetch(`/api/add-data-typeahead-for-customer/${idItem}/${customerId}`, {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            headers: {
+                                Accept: 'application/json',
+                                'Content-Type': 'application/json',
+                            },
+            
+                   
+                        })
+                            .then(res => {
+                                console.log('resadddbb',res);
+                                
+                                return res.json()
+                            })
+                            .then(response => {
+                                console.log('readddd',response);
+                                
+                               
+                               
+                            })
+                    })
             })
-                .then(res => {
-                    return res.json()
-                })
-                .then(response => {
-                    this.setState({itemTypeahead:response.data})
-                })
         }
 
 
@@ -316,6 +346,8 @@ class App extends Component {
     
     render() {
         const { itemTypeahead,valueAllDataLists, isAuthenticated } = this.state;
+        console.log(777,itemTypeahead);
+        
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -540,6 +572,7 @@ class App extends Component {
 
                 <Typeahead
                     onChange={this.handleClickTypeahead}
+                    multiple
                     options={valueAllDataLists}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
