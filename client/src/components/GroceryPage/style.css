@@ -704,9 +704,19 @@
     margin-left: 45px;
     margin-top: 153px;
   }
+  .dataTypeahead__card-img-create{
+    width: 11%;
+    height: 115px;
+    margin-left: 221px;
+    margin-top: 236px;
+  }
   .dataTypeahead__card-div{
     margin-left: 343px;
     margin-top: -111px;
+  }
+  .dataTypeahead__card-div-create{
+    margin-left: 426px;
+    margin-top: -135px;
   }
 
   .yourlist__card-div {
@@ -714,7 +724,9 @@
     margin-left: 393px;
     margin-bottom: 17rem;
 }
-
+.yourlist__button-create-span{
+  margin-left: 10px
+}
   .modal-content {
     width: 1346px;
     /* margin-left: -424px; */
@@ -768,12 +780,31 @@
     padding-left: 19px;
     width: 257px;
   }
+  .yourlist__card-header-create{
+    border-bottom: none !important;
+    background: rgba(243, 243, 116, 0.47) !important;
+    margin-left: -19px;
+    margin-top: -27px;
+    padding-left: 19px;
+    width: 257px;
+  }
+  .header__name-product-create{
+    border-bottom: none !important;
+    margin-left: -19px;
+    margin-top: 2px;
+    padding-left: 19px;
+    width: 233px;
+  }
   .modal.show .modal-dialog {
     -webkit-transform: none;
     transform: none;
   }
   .yourlist__card-text {
     margin-top: 24px;
+  }
+  .yourlist__card-text-create{
+    margin-top: 24px;
+
   }
   .btn-primary {
     color: #2f2c2c;

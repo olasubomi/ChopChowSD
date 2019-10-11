@@ -291,7 +291,9 @@ export default class GroceryPage extends React.Component {
         })
         .then(response => {
           if (response) {
-            this.setState({ valueData: response.data, messageSuccessCreate: 'add successfull', errormsgImage: '', errormsg: '', valueProductName: '', valueProductImage: '', valueProductSize: '', valueProductPrice: '', valuePricePerOunce: '', idItem: lasIdListState + 1 });
+            console.log('iddd',lasIdListState);
+            
+            this.setState({ valueData: response.data, messageSuccessCreate: 'add successfull', errormsgImage: '', errormsg: '', valueProductName: '', valueProductImage: '', valueProductSize: '', valueProductPrice: '', valuePricePerOunce: '', lasIdListState: lasIdListState + 1 });
           }
 
         })
@@ -435,8 +437,6 @@ export default class GroceryPage extends React.Component {
                                 Product Size : {itemList.sizes}
                               </Card.Text>
                             </div>
-
-
                           </Col>
                         </>
                       })}
@@ -446,8 +446,32 @@ export default class GroceryPage extends React.Component {
 
               ) : (
                   <>
-                    <span>There is no list until now</span>
+                
+                    <span className="yourlist__button-create-span">There is no list until now</span>
                     <Button className="yourlist__button-create" onClick={this.handleShowCreateList}>create list</Button>
+                    {dataTypeaheadProps ? (
+                    <>
+                      {dataTypeaheadProps.map(itemList => {
+                        return <>
+
+                          <Col xs={12} md={12} lg={12} key={itemList.id}>
+                            <img src={`/images/products/${itemList.product_image}`} className="dataTypeahead__card-img-create" />
+                            <div className="dataTypeahead__card-div-create">
+                              <Card.Header className="yourlist__card-header-create">
+                                <div className="header__name-product-create">Name Product : {itemList.product_name}</div>
+                              </Card.Header>
+                              <Card.Text className="yourlist__card-text-create">
+                                Product Price :  {itemList && itemList.product_price}
+                              </Card.Text>
+                              <Card.Text className="yourlist__card-text-create">
+                                Product Size : {itemList.sizes}
+                              </Card.Text>
+                            </div>
+                          </Col>
+                        </>
+                      })}
+                    </>
+                  ) : null}
                     {showCreate ? (
                       <Modal show={showCreate} onHide={this.handleClose} backdrop="static" className="modal-create">
                         <Modal.Body className="modal-create__body">
@@ -531,11 +555,11 @@ export default class GroceryPage extends React.Component {
                         </Modal.Footer>
                       </Modal>
                     ) : null}
+            
+            
                   </>
-
-                )}
+)}
             </Container>
-
           </>
         ) : (
             <>
@@ -554,7 +578,7 @@ export default class GroceryPage extends React.Component {
                           <i className="fa fa-facebook fa-fw"></i> Login with Facebook
                         </a>
                         <a href="#" className="google btn"><i className="fa fa-google fa-fw">
-                        </i> Login with Google+ 
+                        </i> Login with Google+
                                               </a>
                       </div>
                       <div className="col">
