@@ -700,9 +700,8 @@
   }
 .dataTypeahead__card-div{
 
-  margin-top: 7rem;
-  margin-left: 393px;
-  margin-bottom: 17rem;
+  margin-left: 343px;
+  margin-top: 90px;
 }
 .dataTypeahead__yourlist__card-header{
   border-bottom: none !important;
@@ -713,10 +712,13 @@
   width: 257px;
 }
   .dataTypeahead__card-img{
-    width: 19%;
-    height: 115px;
-    margin-left: 45px;
-    margin-top: 153px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+    width: 160px;
+    height: 50%;
+    margin-top: 0px;
+    margin-bottom: -343px;
+    margin-left: 50px;
+
   }
   .dataTypeahead__buttonAdd{
     margin-left: 671px;
@@ -733,8 +735,8 @@
     margin-top: 236px;
   }
   .dataTypeahead__card-div{
-    margin-left: 343px;
-    margin-top: -111px;
+    margin-left: 407px;
+    margin-top: 127px;
   }
   .dataTypeahead__card-div-create{
     margin-left: 426px;
