@@ -698,11 +698,33 @@
     margin-bottom: -343px;
     margin-left: 50px;
   }
+.dataTypeahead__card-div{
+
+  margin-top: 7rem;
+  margin-left: 393px;
+  margin-bottom: 17rem;
+}
+.dataTypeahead__yourlist__card-header{
+  border-bottom: none !important;
+  background: rgba(243, 243, 116, 0.47) !important;
+  margin-left: -19px;
+  margin-top: -27px;
+  padding-left: 19px;
+  width: 257px;
+}
   .dataTypeahead__card-img{
     width: 19%;
     height: 115px;
     margin-left: 45px;
     margin-top: 153px;
+  }
+  .dataTypeahead__buttonAdd{
+    margin-left: 671px;
+    margin-top: 116px;
+  }
+  .dataTypeahead__buttonDelete{
+    margin-left: 830px;
+    margin-top: -244px;
   }
   .dataTypeahead__card-img-create{
     width: 11%;
