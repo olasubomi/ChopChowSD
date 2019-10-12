@@ -56,7 +56,7 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
    render() {
     const { email, password, messageErr, messageSuccess } = this.state;
     return (
-      <>
+      <> 
         <Container>
         <Modal show="true" onHide={this.handleClose} className="modal" backdrop="static">
                         <Modal.Body>

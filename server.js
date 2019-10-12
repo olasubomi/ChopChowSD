@@ -21,6 +21,7 @@ const authenticationVerify = require('./controllers/authentication/2.authunticat
 const { hashPassword } = require('./controllers/hashPassword')
 const {authenticationSignup}=require('./controllers/authentication/authenticationSignup')
 const authunticationLogout = require('./controllers/authentication/authunticationLogout')
+const { signupCustomer } = require('./controllers/authentication/signup');
 const app = express();
 
 const path = require('path');
@@ -297,6 +298,7 @@ app.get('/find', function (req, res) {
 
 app.post('/api/login', authenticationLogin);
 // app.use(authenticationVerify)
+app.post ('/api/signupuser',signupCustomer)
 app.post ('/api/signup/:newcustomerId',authenticationSignup)
 app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
 app.get('/api/getList/:customerId',authenticationVerify,getList)

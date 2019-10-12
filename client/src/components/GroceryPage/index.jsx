@@ -531,7 +531,7 @@ export default class GroceryPage extends React.Component {
         ) : (
             <>
               <Container>
-                <Modal show={true} onHide={this.handleClose} className="modal" backdrop="static">
+                <Modal show={true} onHide={this.handleClose} className="modal loginformmm" backdrop="static">
                   <Modal.Body>
                     <Form className="login__form">
                       <div className="login__form-div-title">

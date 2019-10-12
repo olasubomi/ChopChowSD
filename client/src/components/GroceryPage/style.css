@@ -387,7 +387,7 @@
   height: 34px;
 }
 
-.modal-body {
+.loginformmm .modal-body {
   position: relative;
   width: 221%;
   margin-left: -350px;
@@ -532,7 +532,7 @@
     width: 649px;
     margin-left: 134px;
   }
-  .modal-body {
+  .loginformmm .modal-body {
     position: relative;
     width: 221%;
     margin-left: 26px;
@@ -576,7 +576,7 @@
     margin-left: -36px;
     margin-top: -11px;
   }
-  .modal-body {
+  .loginformmm .modal-body {
     position: relative;
     width: 221%;
     margin-left: -350px;

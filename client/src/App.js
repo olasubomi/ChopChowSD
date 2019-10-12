@@ -24,6 +24,7 @@ import ProductsSection from './components/productSection/ProductsPage';
 import CartPage from './components/GroceryPage/CartPage';
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
+import SignUp from './components/signup';
 class App extends Component {
 
 
@@ -642,6 +643,14 @@ class App extends Component {
                         )}
                     />
 
+          <Route
+                        exact
+                        path="/signup"
+                        render={props => (
+                            <SignUp {...props} />
+                        )}
+                    />
+                    
                     <Route exact path="/" render={(props) => (
                         <div>
                             <div id="title">

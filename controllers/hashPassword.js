@@ -14,3 +14,14 @@ exports.hashPassword = (req, res, next) => {
   });
 };
 
+exports.getHashPassword = (password) => {
+  return new Promise((success, failed) => {
+    bcrypt.hash(password, 5, (error, hash) => {
+      if (error) {
+        failed(error);
+      } else {
+        success(hash);
+      }
+    });
+  })
+};
