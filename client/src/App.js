@@ -214,7 +214,12 @@ class App extends Component {
            
                 })
                     .then(res => {
-                        return res.json()
+                        if(res.status===400){
+                            this.setState({messageErr:'this item is found in your list'})
+                        }else{
+
+                            return res.json()
+                        }
                     })
                     .then(response => {
                         console.log('resssss',response.data[0].id);

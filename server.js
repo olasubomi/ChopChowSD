@@ -24,7 +24,7 @@ const authunticationLogout = require('./controllers/authentication/authunticatio
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 5544;
+const port = process.env.PORT || 5000;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
@@ -43,7 +43,7 @@ const getIdsCustomers = require('./controllers/authentication/getIdsCustomers')
 
 const getItemId = require('./controllers/list/getItemId')
 const getDataItemTypeahead = require('./controllers/list/getDataItemTypeahead')
-
+const addDataForThisCustomer = require('./controllers/list/addDataForThisCustomer')
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -305,6 +305,9 @@ app.get('/api/get-all-data-lists', getAllDataLists)
 app.delete('/api/remove-list/:customerId',removeList)
 app.delete('/api/remove-item/:idItem/:customerId',removeItem)
 app.post('/api/create-list/:idItem/:customerId',createList)
+
+app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer)
+
 app.get('/api/get-ids-items/:customerId',getIdsItems)
 app.get('/api/get-ids-list',getIdsList)
 app.get('/api/get-ids-customers',getIdsCustomers)

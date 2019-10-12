@@ -74,7 +74,8 @@ export default class GroceryPage extends React.Component {
           })
           .then(response => {
             if (response) {//all lists for this customer
-
+              console.log('response id ',response);
+              
               this.setState({ valueData: response.data })
             }
           })
@@ -159,6 +160,8 @@ export default class GroceryPage extends React.Component {
 
         })
         .then(response => {
+          console.log('remove item',response);
+          
           this.setState({
             messageAlert: 'deleted successfully',
             showAlert: true,
@@ -207,6 +210,8 @@ export default class GroceryPage extends React.Component {
         .then(res => res.json())
         .then(response => {
           if (response) {//all lists for this customer
+            console.log('get-ids-items',response);
+            
             let arrResItemDelete = response.data
             arrResItemDelete.map((resDelete) =>
               this.setState({ deletedItemsId: resDelete })
@@ -238,6 +243,8 @@ export default class GroceryPage extends React.Component {
           return res.json()
         })
         .then(response => {
+          console.log('remove list',response);
+          
           this.setState({
             messageAlert: 'deleted successfully',
             showAlert: true,
@@ -291,6 +298,8 @@ export default class GroceryPage extends React.Component {
           return res.json();
         })
         .then(response => {
+          console.log('create list',response);
+          
           if (response) {
             const {valueData} = this.state;
             console.log('iddd',lasIdListState);
@@ -314,6 +323,8 @@ export default class GroceryPage extends React.Component {
         return res.json()
       })
       .then(response => {
+        console.log('get-ids-list',response);
+        
         let arrResponse = response.data;
         const lasIdList = arrResponse[arrResponse.length - 1]
         this.setState({ lasIdListState: lasIdList + 1 })
@@ -331,6 +342,7 @@ export default class GroceryPage extends React.Component {
         return res.json()
       })
       .then(response => {
+        
         let arrResponse = response.data;
         const lasIdCustomer = arrResponse[arrResponse.length - 1]
         this.setState({ newcustomerId: lasIdCustomer + 1 })
