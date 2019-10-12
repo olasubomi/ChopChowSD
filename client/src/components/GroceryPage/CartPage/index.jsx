@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from 'react';
 import './style.css';
-import {  Card, Col} from 'react-bootstrap'
+import {Container,  Card, Col} from 'react-bootstrap'
 
 export default class CartPage extends React.Component {
   state = {
@@ -41,21 +41,22 @@ export default class CartPage extends React.Component {
 
     return (
       <>
+            <h3 className="cart-page__title">Current Order</h3>
               <Col xs={12} md={12} lg={12} key={cartInfo.id}>
-                <img src={`/images/products/${cartInfo.product_image}`} alt='image' className="card-img" />
-                <div className="yourlist__card-div">
-                  <Card.Header className="yourlist__card-header">
-                    <div>No.List>>{cartInfo.id}>></div>
-                    <div className="header__name-product">Name Product : {cartInfo.product_name}</div>
-                  </Card.Header>
-                  <Card.Text className="yourlist__card-text">
-                    Product Price :  {cartInfo.product_price}
+                <div className="cart-page__card-div">
+                    <div className="cart-page__name-product"> {cartInfo.product_name}</div>
+                  <Card.Text className="cart-page__size-product">
+                    {cartInfo.sizes}
                   </Card.Text>
-                  <Card.Text className="yourlist__card-text">
-                    Product Size : {cartInfo.sizes}
+                  <Card.Text className="cart-page__pice-per-ounce-product">
+                    {cartInfo.price_per_ounce}
+                  </Card.Text>
+                  <Card.Text className="cart-page__price-product">
+                    ${cartInfo.product_price}
                   </Card.Text>
                 </div>
                 </Col>    
+              
             </>
     )
         }

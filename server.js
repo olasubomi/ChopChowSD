@@ -24,7 +24,7 @@ const authunticationLogout = require('./controllers/authentication/authunticatio
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 5555;
+const port = process.env.PORT || 5544;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');

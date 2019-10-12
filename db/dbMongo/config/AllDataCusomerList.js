@@ -4,12 +4,12 @@ module.exports = async () => {
         {
             id:1,
             customer_id: 1,
-            list_id: 3,
+            list_id: 11,
 
         }, {
             id:3,
             customer_id: 1,
-            list_id: 5,
+            list_id: 12,
 
         }, {
             id:4,
