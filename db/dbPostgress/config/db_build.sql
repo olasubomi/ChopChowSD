@@ -22,7 +22,9 @@ CREATE TABLE customer(
   street TEXT,
   city TEXT,
   zipCode INTEGER,
-  ipsid INTEGER
+  ipsid INTEGER,
+  username TEXT,
+  emailnotifcation BOOLEAN
 );
 CREATE TABLE customer_list (
   customer_id INTEGER REFERENCES customer(id),
