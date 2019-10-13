@@ -324,6 +324,7 @@ app.get('/api/get-data-typeahead/:option',getDataItemTypeahead)
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 
+
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 app.get('*', (_req, res) => {
