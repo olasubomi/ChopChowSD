@@ -321,7 +321,6 @@ app.get('/api/get-ids-customers',getIdsCustomers)
 app.get('/api/get-data-item/:idItem',getItemId)
 
 app.get('/api/get-data-typeahead/:option',getDataItemTypeahead)
-
 app.get('/hash', hashPassword);
 app.get('/api/logout',authunticationLogout)
 
