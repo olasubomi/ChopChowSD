@@ -306,7 +306,7 @@ app.delete('/api/remove-list/:customerId',removeList)
 app.delete('/api/remove-item/:idItem/:customerId',removeItem)
 app.post('/api/create-list/:idItem/:customerId',createList)
 
-app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer)
+app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer.add)
 
 app.get('/api/get-ids-items/:customerId',getIdsItems)
 app.get('/api/get-ids-list',getIdsList)

@@ -559,7 +559,10 @@ export default class GroceryPage extends React.Component {
                   
                 </Row>
 
-              ) :null}
+              ) :(
+                <div>here not found any items , you can add item from searchbar after hat make refresh he page to show adding items</div>
+              )
+            }
             </Container>
           </>
         ) : (

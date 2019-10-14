@@ -1,5 +1,9 @@
 BEGIN;
-DROP TABLE IF EXISTS customer,admin,supplier,list,customer_list ;
+DROP TABLE IF EXISTS customer,
+admin,
+supplier,
+list,
+customer_list;
 CREATE TABLE list (
   id SERIAL PRIMARY KEY,
   product_name TEXT NOT NULL,
@@ -20,13 +24,10 @@ CREATE TABLE customer(
   zipCode INTEGER,
   ipsid INTEGER
 );
-CREATE  TABLE customer_list (
-  id SERIAL PRIMARY KEY,
-customer_id INTEGER REFERENCES customer(id), 
-list_id INTEGER REFERENCES list(id)
-
+CREATE TABLE customer_list (
+  customer_id INTEGER REFERENCES customer(id),
+  list_id INTEGER REFERENCES list(id)
 );
-
 CREATE TABLE admin(id INTEGER, name TEXT PRIMARY KEY) WITH (OIDS = FALSE);
 CREATE TABLE supplier (
   id SERIAL PRIMARY KEY,
