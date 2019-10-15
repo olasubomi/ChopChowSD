@@ -69,12 +69,12 @@
     /* margin-bottom: 20px; */
     color: red;
   }
-  .msg-success {
+  .create__msg-err {
     text-align: center;
     padding: 0 22px;
     margin-bottom: -6px;
-    margin-right: 30px;
-    color: green;
+    margin-right: -104px;
+    color: red;
   }
   .login__form {
     width: 53%;
