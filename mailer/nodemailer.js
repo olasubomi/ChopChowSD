@@ -5,35 +5,42 @@ require('dotenv').config();
  let { EMAIL_USER: user, EMAIL_PASSWORD: pass } = process.env;
  
 // async..await is not allowed in global scope, must use a wrapper
-async function main() {
+function main(to) {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
     //let testAccount = await nodemailer.createTestAccount();
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: user, // generated ethereal user
-            pass: pass // generated ethereal password
-        }
+        service: "Gmail",
+        host: "smtp.gmail.com",
+        port: 25,
+       secure: false, 
+     tls: {
+        rejectUnauthorized: false
+     },
+     auth: {
+        user,
+        pass
+     }
     });
 
     // send mail with defined transport object
-    let info = await transporter.sendMail({
+    let info = transporter.sendMail({
         from: user, // sender address
-        to: user, // list of receivers
-        subject: 'Hello ✔', // Subject line
-        text: 'Hello world?', // plain text body
-        html: '<b>Hello world?</b>' // html body
+        to: to, // list of receivers
+        subject: 'Sign Up successful!!!', // Subject line
+        text: 'Thanks for sing up. You can login now.?', // plain text body
+        html: '<b>Thanks for sing up. You can login now.?</b>' // html body
     });
 
-    console.log('Message sent: %s', info.messageId);
+/*     console.log('Message sent: %s', info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
     // Preview only available when sending through an Ethereal account
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou... */
 }
 
-main().catch(console.error);
+//main().catch(console.error);
+module.exports = main;

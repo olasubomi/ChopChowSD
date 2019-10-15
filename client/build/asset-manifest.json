@@ -1,5 +1,6 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   "files": {
     "main.css": "/static/css/main.90862bdf.chunk.css",
     "main.js": "/static/js/main.829daf19.chunk.js",
@@ -19,15 +20,25 @@
   "main.css": "/static/css/main.a9e03a84.chunk.css",
   "main.js": "/static/js/main.82095682.chunk.js",
   "main.js.map": "/static/js/main.82095682.chunk.js.map",
+=======
+  "main.css": "/static/css/main.9e882417.chunk.css",
+  "main.js": "/static/js/main.4d8dfa30.chunk.js",
+  "main.js.map": "/static/js/main.4d8dfa30.chunk.js.map",
+>>>>>>> sign up
   "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
   "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
-  "static/css/2.811a5e5a.chunk.css": "/static/css/2.811a5e5a.chunk.css",
-  "static/js/2.4d5e702f.chunk.js": "/static/js/2.4d5e702f.chunk.js",
-  "static/js/2.4d5e702f.chunk.js.map": "/static/js/2.4d5e702f.chunk.js.map",
+  "static/css/2.c48ae796.chunk.css": "/static/css/2.c48ae796.chunk.css",
+  "static/js/2.586325fe.chunk.js": "/static/js/2.586325fe.chunk.js",
+  "static/js/2.586325fe.chunk.js.map": "/static/js/2.586325fe.chunk.js.map",
   "index.html": "/index.html",
-  "precache-manifest.156a8d1cab65d8744141c4bf0db06569.js": "/precache-manifest.156a8d1cab65d8744141c4bf0db06569.js",
+  "precache-manifest.7f3108322d315503deae6fff9224ef51.js": "/precache-manifest.7f3108322d315503deae6fff9224ef51.js",
   "service-worker.js": "/service-worker.js",
+<<<<<<< HEAD
   "static/css/2.811a5e5a.chunk.css.map": "/static/css/2.811a5e5a.chunk.css.map",
   "static/css/main.a9e03a84.chunk.css.map": "/static/css/main.a9e03a84.chunk.css.map"
 >>>>>>> Done registartion
+=======
+  "static/css/2.c48ae796.chunk.css.map": "/static/css/2.c48ae796.chunk.css.map",
+  "static/css/main.9e882417.chunk.css.map": "/static/css/main.9e882417.chunk.css.map"
+>>>>>>> sign up
 }

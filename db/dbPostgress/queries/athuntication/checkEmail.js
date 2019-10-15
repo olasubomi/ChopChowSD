@@ -20,7 +20,7 @@ const checkEmailUser = (email) => {
   let conn; 
   try {
     const sql = {
-      text: 'SELECT * FROM users WHERE email = $1',
+      text: 'SELECT * FROM customer WHERE email = $1',
       values: [email],
     };
     conn = dbconnection.query(sql);

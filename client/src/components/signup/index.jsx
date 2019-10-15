@@ -3,6 +3,7 @@ import './style.css';
 import { Form, Button, Container, Modal, Row, Col, ButtonToolbar } from 'react-bootstrap';
 
 import { Link, Redirect } from 'react-router-dom';
+import { setTimeout } from 'timers';
 
 export default class SignUp extends React.Component {
   state = {
@@ -18,7 +19,6 @@ export default class SignUp extends React.Component {
 
 
   handleChange = (e) => {
-    debugger
     let name = e.currentTarget.name;
     let value = e.currentTarget.value;
     name === "emailNotification" ? this.setState({emailNotification: e.currentTarget.checked}) : this.setState({ [name]: value });
@@ -26,8 +26,10 @@ export default class SignUp extends React.Component {
   }
 
 
-  handleClose = () => {
-    this.props.history.push('/grocery');
+  handleClose = (delay) => {
+    setTimeout(() => {
+      this.props.history.push('/grocery');
+    }, delay || 0);
   };
 
   formSubmit = (e) => {
@@ -49,7 +51,6 @@ export default class SignUp extends React.Component {
       body: JSON.stringify(this.state),
     }).then(response => {
         if (response.status === 400 || response.status === 404) {
-          debugger
           this.setState({ messageErr: 'Bad Request , Check username or password ... !!' });
         } else if (response.status === 401) {
           this.setState({ messageErr: 'you are UnAuthorized' });
@@ -57,7 +58,7 @@ export default class SignUp extends React.Component {
           this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
         } else {
           this.setState({ messageErr: '', isAuthenticated: true, messageSuccess: 'You are sign up!!! ' });
-          setTimeout(this.handleClose(), 500);
+          this.handleClose(5000);
         }
       })
   };
@@ -75,7 +76,7 @@ export default class SignUp extends React.Component {
   <Modal.Body>
     <Container>
       <Row className="justify-content-md-center">
-        <Col xs lg="2">
+        <Col xs lg>
           <Form className="" onSubmit={this.formSubmit}>
             <Form.Group>
                 <Form.Control
