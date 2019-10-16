@@ -96,7 +96,7 @@ VALUES
   ),(
     13,
     'Pineapple',
-    'pineapple.jpeg',
+    'pineapple.jpg',
     12.00,
     '2 lbs',
     3.2

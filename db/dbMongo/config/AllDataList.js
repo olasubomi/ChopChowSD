@@ -95,7 +95,7 @@ module.exports = async () => {
         }, {
             id:13,
             product_name: "Pineapple",
-            product_image: 'pineapple.jpeg',
+            product_image: 'pineapple.jpg',
             product_price: 12.00,
             sizes: '2 lbs',
             price_per_ounce: 3.2
