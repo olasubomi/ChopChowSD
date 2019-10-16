@@ -711,15 +711,14 @@
   padding-left: 19px;
   width: 257px;
 }
-  .dataTypeahead__card-img{
-    box-shadow: 0 0 25px rgba(0, 0, 0, .25);
-    width: 160px;
-    height: 50%;
-    margin-top: 0px;
-    margin-bottom: -343px;
-    margin-left: 50px;
-
-  }
+.dataTypeahead__card-img {
+  box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+  width: 160px;
+  height: 50%;
+  margin-top: 0px;
+  margin-bottom: -343px;
+  margin-left: 50px;
+}
   .dataTypeahead__buttonAdd{
     margin-left: 681px;
     margin-top: 116px;
@@ -763,7 +762,7 @@
   color: #fff;
   background-color: #dc3545;
   border-color: #dc3545;
-  margin-left: 679px;
+  margin-left: 686px;
   border-radius: 37px;
   height: 38px;
   width: 140px;
@@ -853,17 +852,6 @@
     font-size: 255%;
     margin-left: 9px;
   }
-  /* .btn-primary {
-    color: #2f2c2c;
-    margin-left: -15px;
-    background-color: #c1c5ca;
-    border-color: #525456;
-    border: 51px;
-    margin-top: 10px;
-    border-radius: 33px;
-    width: 141px;
-    height: 37px;
-  } */
   .login__form-btn {
     width: 20%;
     background-color: #c3bebe!important;
@@ -899,8 +887,6 @@
 .yourlist__item-typeahead__card-div{
   margin-top: 10rem;
   margin-left: 138px;
-  /* margin-bottom: 17rem; */
-  /* width: 270px; */
 
 }
 .yourlist__item-typeahead__card-header{
@@ -1020,7 +1006,27 @@
 }
 
  @media screen and (max-width: 1024px) {
+  .dataTypeahead__buttonDelete {
+    margin-left: 616px;
+    margin-top: -244px;
+}   
+  .dataTypeahead__buttonAdd {
+    margin-left: 598px;
+    margin-top: 116px;
+}
+  .dataTypeahead__card-img {
+    box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+    width: 160px;
+    height: 50%;
+    margin-top: 0px;
+    margin-bottom: -343px;
+    margin-left: 50px;
+}
+  .dataTypeahead__card-div{
 
+    margin-left: 343px;
+    margin-top: 90px;
+  }
   .fa-remove {
     margin-left: -21px;
     margin-top: -7px;
@@ -1035,6 +1041,24 @@
 }
 
 @media screen and (max-width: 768px) {
+  .dataTypeahead__buttonDelete {
+    margin-left: 616px;
+    margin-top: -244px;
+}
+  .dataTypeahead__buttonAdd {
+    margin-left: 598px;
+    margin-top: 116px;
+}
+  .dataTypeahead__card-img {
+     width: 54px;
+    height: 108px;
+    margin-left: 144px;
+}
+  .dataTypeahead__card-div{
+
+    margin-left: 299px;
+    margin-top: 90px;
+  }
   .yourlist__buttonAdd{
     margin-left: 605px;
     margin-top: 19px;
@@ -1052,7 +1076,7 @@
     margin-left: 144px;
   }
   .btn-danger{
-    margin-right: 18px
+    margin-right: 77px
   }
   .fa-remove {
     margin-left: 21px;
@@ -1075,7 +1099,27 @@
 }
 
 @media screen and (max-width: 375px) {
-  
+  .dataTypeahead__buttonDelete {
+    margin-left: 616px;
+    margin-top: -244px;
+}
+  .dataTypeahead__buttonAdd {
+    margin-left: 598px;
+    margin-top: 116px;
+}
+  .dataTypeahead__card-img {
+    box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+    width: 160px;
+    height: 50%;
+    margin-top: 0px;
+    margin-bottom: -343px;
+    margin-left: 50px;
+}
+  .dataTypeahead__card-div{
+
+    margin-left: 343px;
+    margin-top: 90px;
+  }
   .yourlist__buttonDelete {
     margin-left: 177px;
     margin-top: -200px;
@@ -1114,21 +1158,46 @@
 }
 
 @media screen and (max-width: 414px) {
+  .dataTypeahead__buttonDelete {
+    margin-left: 463px;
+    margin-top: -419px;
+}
+  .dataTypeahead__buttonAdd {
+    margin-left: 427px;
+    margin-top: 24px;
+    width: 52px;
+    height: 107px;
+}
+.dataTypeahead__yourlist__card-header{
+  width: 140px; 
+}
+  .dataTypeahead__card-img {
+    box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+    width: 108px;
+    height: 22%;
+    margin-top: 0px;
+    margin-bottom: -343px;
+    margin-left: 186px;
+}
+  .dataTypeahead__card-div{
+    margin-left: 394px;
+    width: 27px;
+  }
   .yourlist__buttonAdd{
-    margin-left: 327px;
-    margin-top: -35px;
+    margin-left: 451px;
+    margin-top: 24px;
     width: 52px;
     height: 107px;
   }
   .yourlist__buttonDelete {
-    margin-left: 324px;
+    margin-left: 463px;
     margin-top: -419px;
 
   
   }
   .yourlist__card-div {
-    margin-left: 188px;
-    width: 114px;
+    margin-left: 394px;
+    width: 27px;
   }
   .yourlist__button {
     margin-top: 80px;
@@ -1138,7 +1207,7 @@
   .card-img {
     width: 71px;
     height: 131px;
-    margin-left: 71px;
+    margin-left: 195px;
   }
   .yourlist__card-header {
     width: 140px
@@ -1153,6 +1222,27 @@
 }
 
 @media screen and (max-width: 360px) {
+  .dataTypeahead__buttonDelete {
+    margin-left: 616px;
+    margin-top: -244px;
+}
+  .dataTypeahead__buttonAdd {
+    margin-left: 598px;
+    margin-top: 116px;
+}
+  .dataTypeahead__card-img {
+    box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+    width: 160px;
+    height: 50%;
+    margin-top: 0px;
+    margin-bottom: -343px;
+    margin-left: 50px;
+}
+  .dataTypeahead__card-div{
+
+    margin-left: 343px;
+    margin-top: 90px;
+  }
   .page__container {
     width: 303px;
     margin-left: 13px;
@@ -1160,6 +1250,23 @@
 }
 
 @media screen and (max-width: 320px) {
+  .dataTypeahead__buttonDelete {
+    margin-left: 616px;
+    margin-top: -244px;
+}
+  .dataTypeahead__card-img {
+    box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+    width: 119px;
+    height: 17%;
+    margin-top: 0px;
+    margin-bottom: -343px;
+    margin-left: 173px;
+}
+  .dataTypeahead__card-div{
+
+    margin-left: 343px;
+    margin-top: 90px;
+  }
   .page__container{
     margin-left: 50px
   }
@@ -1204,6 +1311,19 @@
 }
 }
 @media screen and (max-width: 411px) {
+  .dataTypeahead__buttonDelete {
+    margin-left: 616px;
+    margin-top: -244px;
+}
+  .dataTypeahead__buttonAdd {
+    margin-left: 598px;
+    margin-top: 116px;
+}
+  .dataTypeahead__card-div{
+
+    margin-left: 343px;
+    margin-top: 90px;
+  }
   .page__container {
     width: 351px;
     margin-left: 19px;
@@ -1216,6 +1336,19 @@ label {
   /* margin-top: -18px; */
 }
 @media screen and (max-width: 414px) {
+  .dataTypeahead__buttonDelete {
+    margin-left: 616px;
+    margin-top: -244px;
+}
+  .dataTypeahead__buttonAdd {
+    margin-left: 598px;
+    margin-top: 116px;
+}
+  .dataTypeahead__card-div{
+
+    margin-left: 343px;
+    margin-top: 90px;
+  }
   .page__container {
     width: 351px;
     margin-left: 19px;
