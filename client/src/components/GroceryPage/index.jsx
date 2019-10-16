@@ -7,7 +7,6 @@ import { Container, Alert, Card, Col, Row, Form, Button, Modal } from 'react-boo
 import { Link } from 'react-router-dom';
 export default class GroceryPage extends React.Component {
   state = {
-    dataTypeaheadState:'',
     newcustomerId: '',
     valueData: null,
     Authentication: false,
@@ -269,37 +268,42 @@ export default class GroceryPage extends React.Component {
     }
 
     this.handleCreateList = () => {
-      const {messageErr, lasIdListState, valueProductName, valueProductImage, valueProductPrice, valuePricePerOunce, valueProductSize } = this.state;
-      if(valueProductImage.startsWith('http://') || valueProductImage.startsWith('data') || valueProductImage.endsWith('png') ||valueProductImage.endsWith('jpg') || valueProductImage.endsWith('gif')){
+      const { messageErr, lasIdListState, valueProductName, valueProductImage, valueProductPrice, valuePricePerOunce, valueProductSize } = this.state;
+      if (valueProductName && valueProductImage && valueProductPrice && valueProductSize && valuePricePerOunce) {
+        if (valueProductImage.startsWith('http://') || valueProductImage.startsWith('data') || valueProductImage.endsWith('png') || valueProductImage.endsWith('jpg') || valueProductImage.endsWith('gif')) {
 
-        const { customerId } = this.state;
-        const idItem = lasIdListState;
-        fetch(`/api/create-list/${idItem}/${customerId}`, {
-          method: 'POST',
-          body: JSON.stringify({
-            valueProductName,
-            valueProductImage,
-            valueProductPrice,
-            valueProductSize,
-            valuePricePerOunce,
-          }),
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        })
-          .then(res => {
-            return res.json();
+          const { customerId } = this.state;
+          const idItem = lasIdListState;
+          fetch(`/api/create-list/${idItem}/${customerId}`, {
+            method: 'POST',
+            body: JSON.stringify({
+              valueProductName,
+              valueProductImage,
+              valueProductPrice,
+              valueProductSize,
+              valuePricePerOunce,
+            }),
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
           })
-          .then(response => {
-            if (response) {
-              const {valueData} = this.state;
-              this.setState({valueData:[...valueData, ...response.data], messageErrCreate: 'add successfull', errormsgImage: '', errormsg: '', valueProductName: '', valueProductImage: '', valueProductSize: '', valueProductPrice: '', valuePricePerOunce: '', lasIdListState: lasIdListState + 1 })
-              this.setState({messageErrCreate:''})
-            }
-          })
-      }else{
-        this.setState({messageErrCreate:'should be the image start word  "data" or "http" or end word "png" , "jpg","gif" '})
+            .then(res => {
+              return res.json();
+            })
+            .then(response => {
+              if (response) {
+                const { valueData } = this.state;
+                this.setState({ valueData: [...valueData, ...response.data], messageErrCreate: 'add successfull', errormsgImage: '', errormsg: '', valueProductName: '', valueProductImage: '', valueProductSize: '', valueProductPrice: '', valuePricePerOunce: '', lasIdListState: lasIdListState + 1 })
+                this.setState({ messageErrCreate: '' })
+              }
+            })
+        } else {
+          this.setState({ messageErrCreate: 'should be the image start word  "data" or "http" or end word "png" , "jpg","gif" ' })
+        }
+      } else {
+        this.setState({ messageErrCreate: 'should be sure fill all fields ' })
+
       }
 
     }
@@ -319,7 +323,6 @@ export default class GroceryPage extends React.Component {
         let arrResponse = response.data;
         const lasIdList = arrResponse[arrResponse.length - 1]
         this.setState({ lasIdListState: lasIdList + 1 })
-
       })
     fetch('/api/get-ids-customers', {
       method: 'GET',
@@ -333,7 +336,7 @@ export default class GroceryPage extends React.Component {
         return res.json()
       })
       .then(response => {
-        
+
         let arrResponse = response.data;
         const lasIdCustomer = arrResponse[arrResponse.length - 1]
         this.setState({ newcustomerId: lasIdCustomer + 1 })
@@ -355,10 +358,9 @@ export default class GroceryPage extends React.Component {
   }
 
   render() {
-    const {dataTypeaheadState,email, password, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess, messageErrCreate } = this.state;
+    const { email, password, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess, messageErrCreate } = this.state;
     const { dataTypeaheadProps, auth } = this.props;
-    // this.setState({dataTypeaheadState:[...valueData, ...dataTypeaheadProps]})
-   
+
     return (
       <>
 
@@ -371,7 +373,7 @@ export default class GroceryPage extends React.Component {
             </Alert>
             <Container className="page__container">
 
-              {valueData && valueData.length !== 0  ? (
+              {valueData && valueData.length !== 0 ? (
 
                 <Row>
 
@@ -386,37 +388,37 @@ export default class GroceryPage extends React.Component {
                     Delete All Items
                   </Button>
                   {dataTypeaheadProps ? (
-                          <>
-                            {dataTypeaheadProps.map(itemList => {
-                              return <>
-                                <Col xs={12} md={12} lg={12} key={itemList.id}>
-                                  <img src={`/images/products/${itemList.product_image}`} className="dataTypeahead__card-img" />
-                                  <div className="dataTypeahead__card-div">
-                                    <Card.Header className="dataTypeahead__yourlist__card-header">
-                                      <div className="dataTypeahead__header__name-product">Name Product : {itemList.product_name}</div>
-                                    </Card.Header>
-                                    <Card.Text className="dataTypeahead__yourlist__card-text">
-                                      Product Price :  {itemList && itemList.product_price}
-                                    </Card.Text>
-                                    <Card.Text className="dataTypeahead__yourlist__card-text">
-                                      Product Size : {itemList.sizes}
-                                    </Card.Text>
-                                  </div>
-                                  <div className="dataTypeahead__buttonAdd"><Button onClick={e => {
-                                  e.stopPropagation();
-                                  this.handleShowAddItem(itemList.id);
-                                }}> Add To Cart</Button> </div>
-      
-                                <div className="dataTypeahead__buttonDelete"><i class="fa fa-remove" onClick={e => {
-                                  e.stopPropagation();
-                                  this.handleShowDeleteItem(itemList.id);
-      
-                                }} ></i></div>
-                                </Col>
-                              </>
-                            })}
-                          </>
-                        ) : null}
+                    <>
+                      {dataTypeaheadProps.map(itemList => {
+                        return <>
+                          <Col xs={12} md={12} lg={12} key={itemList.id}>
+                            <img src={`/images/products/${itemList.product_image}`} className="dataTypeahead__card-img" />
+                            <div className="dataTypeahead__card-div">
+                              <Card.Header className="dataTypeahead__yourlist__card-header">
+                                <div className="dataTypeahead__header__name-product">Name Product : {itemList.product_name}</div>
+                              </Card.Header>
+                              <Card.Text className="dataTypeahead__yourlist__card-text">
+                                Product Price :  {itemList && itemList.product_price}
+                              </Card.Text>
+                              <Card.Text className="dataTypeahead__yourlist__card-text">
+                                Product Size : {itemList.sizes}
+                              </Card.Text>
+                            </div>
+                            <div className="dataTypeahead__buttonAdd"><Button onClick={e => {
+                              e.stopPropagation();
+                              this.handleShowAddItem(itemList.id);
+                            }}> Add To Cart</Button> </div>
+
+                            <div className="dataTypeahead__buttonDelete"><i class="fa fa-remove" onClick={e => {
+                              e.stopPropagation();
+                              this.handleShowDeleteItem(itemList.id);
+
+                            }} ></i></div>
+                          </Col>
+                        </>
+                      })}
+                    </>
+                  ) : null}
                   {valueData ? (
 
                     valueData.map((itemList) => {
@@ -451,106 +453,106 @@ export default class GroceryPage extends React.Component {
 
                           }} ></i></div>
 
-                       
+
                         </Col>
                       </>
                     })
-                    
+
                   ) : <Spinner animation="border" variant="info" />}
 
-                  
+
                 </Row>
 
-              ) :(
-                <>
-                <div>here not found any items , you can add item from searchBar after that make refresh for page to show adding items</div>
-                <Button className="yourlist__button-create" onClick={this.handleShowCreateList}>create list</Button>
-                  {showCreate ? (
-                <Modal show={showCreate} onHide={this.handleClose} backdrop="static" className="modal-create">
-                  <Modal.Body className="modal-create__body">
-                    <Form.Group>
-                      <Form.Label className="yourlist__group-label">Product Id: {lasIdListState}</Form.Label>
-                    </Form.Group>
-                    <Form.Group >
-                      <Form.Label className="yourlist__group-label">Product Name :</Form.Label>
-                      <Form.Control
-                        className='create-input'
-                        type="text"
-                        name="valueProductName"
-                        value={valueProductName}
-                        placeholder="Enter name list"
-                        onChange={this.handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group >
-                      <Form.Label className="yourlist__group-label">Product Image :</Form.Label>
-                      <Form.Control
-                        className='create-input'
-                        type="text"
-                        name="valueProductImage"
-                        value={valueProductImage}
-                        placeholder="Enter image list"
-                        onChange={this.handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group className="yourlist__group-label">
-                      <Form.Label className="yourlist__group-label">Product Price :</Form.Label>
-                      <Form.Control
-                        className='create-input'
-                        type="number"
-                        name="valueProductPrice"
-                        value={valueProductPrice}
-                        placeholder="Enter price list"
-                        onChange={this.handleChange}
-                      />
-                    </Form.Group>
-                    <Form.Group className="yourlist__group-label">
-                      <Form.Label className="yourlist__group-label">Product Size :</Form.Label>
-                      <Form.Control
-                        className='create-input'
-                        type="text"
-                        name="valueProductSize"
-                        value={valueProductSize}
-                        placeholder="Enter size list"
-                        onChange={this.handleChange}
+              ) : (
+                  <>
+                    <div>here not found any items , you can add item from searchBar after that make refresh for page to show adding items</div>
+                    <Button className="yourlist__button-create" onClick={this.handleShowCreateList}>create list</Button>
+                    {showCreate ? (
+                      <Modal show={showCreate} onHide={this.handleClose} backdrop="static" className="modal-create">
+                        <Modal.Body className="modal-create__body">
+                          <Form.Group>
+                            <Form.Label className="yourlist__group-label">Product Id: {lasIdListState}</Form.Label>
+                          </Form.Group>
+                          <Form.Group >
+                            <Form.Label className="yourlist__group-label">Product Name :</Form.Label>
+                            <Form.Control
+                              className='create-input'
+                              type="text"
+                              name="valueProductName"
+                              value={valueProductName}
+                              placeholder="Enter name list"
+                              onChange={this.handleChange}
+                            />
+                          </Form.Group>
+                          <Form.Group >
+                            <Form.Label className="yourlist__group-label">Product Image :</Form.Label>
+                            <Form.Control
+                              className='create-input'
+                              type="text"
+                              name="valueProductImage"
+                              value={valueProductImage}
+                              placeholder="Enter image list"
+                              onChange={this.handleChange}
+                            />
+                          </Form.Group>
+                          <Form.Group className="yourlist__group-label">
+                            <Form.Label className="yourlist__group-label">Product Price :</Form.Label>
+                            <Form.Control
+                              className='create-input'
+                              type="number"
+                              name="valueProductPrice"
+                              value={valueProductPrice}
+                              placeholder="Enter price list"
+                              onChange={this.handleChange}
+                            />
+                          </Form.Group>
+                          <Form.Group className="yourlist__group-label">
+                            <Form.Label className="yourlist__group-label">Product Size :</Form.Label>
+                            <Form.Control
+                              className='create-input'
+                              type="text"
+                              name="valueProductSize"
+                              value={valueProductSize}
+                              placeholder="Enter size list"
+                              onChange={this.handleChange}
 
-                      />
-                    </Form.Group>
-                    <Form.Group className="yourlist__group-label">
-                      <Form.Label className="yourlist__group-label">Product Price Per Ounce :</Form.Label>
-                      <Form.Control
-                        className='create-input'
-                        type="number"
-                        name="valuePricePerOunce"
-                        value={valuePricePerOunce}
-                        placeholder="Enter Price Per Ounce list"
-                        onChange={this.handleChange}
-                      />
-                    </Form.Group>
-                    {messageErrCreate ? (
-                      <p className="create__msg-err">{messageErrCreate}</p>
+                            />
+                          </Form.Group>
+                          <Form.Group className="yourlist__group-label">
+                            <Form.Label className="yourlist__group-label">Product Price Per Ounce :</Form.Label>
+                            <Form.Control
+                              className='create-input'
+                              type="number"
+                              name="valuePricePerOunce"
+                              value={valuePricePerOunce}
+                              placeholder="Enter Price Per Ounce list"
+                              onChange={this.handleChange}
+                            />
+                          </Form.Group>
+                          {messageErrCreate ? (
+                            <p className="create__msg-err">{messageErrCreate}</p>
+                          ) : null}
+                        </Modal.Body>
+                        <Modal.Footer className="confirm__success">
+                          <Button
+                            variant="secondary"
+                            onClick={this.handleClose}
+                          >
+                            Close
+                    </Button>
+                          <Button
+                            className='create-button'
+                            variant="success"
+                            onClick={this.handleCreateList}
+                          >
+                            create
+                    </Button>
+                        </Modal.Footer>
+                      </Modal>
                     ) : null}
-                  </Modal.Body>
-                  <Modal.Footer className="confirm__success">
-                    <Button
-                      variant="secondary"
-                      onClick={this.handleClose}
-                    >
-                      Close
-                    </Button>
-                    <Button
-                      className='create-button'
-                      variant="success"
-                      onClick={this.handleCreateList}
-                    >
-                      create
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
-              ) : null}
-                </>
-              )
-            }
+                  </>
+                )
+              }
             </Container>
           </>
         ) : (
