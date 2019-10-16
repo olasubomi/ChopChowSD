@@ -16,12 +16,11 @@ module.exports = (req, res) => {
                         res.send({
                             data: 'delete all items'
                         })
-                            .catch(() => next({ code: 500, msg: 'sorry , found Inernal server error' }))
 
                     })
-                        .catch(() => next({ code: 500, msg: 'sorry , found Inernal server error' }))
-
+                    
                 })
+                .catch(() => next({ code: 500, msg: 'sorry , found Internal server error' }))
         })
     })
 }
