@@ -392,7 +392,7 @@ export default class GroceryPage extends React.Component {
                       {dataTypeaheadProps.map(itemList => {
                         return <>
                           <Col xs={12} md={12} lg={12} key={itemList.id}>
-                            <img src={`/images/products/${itemList.product_image}`} className="dataTypeahead__card-img" />
+                            <img src={`/images/products/${itemList.product_image}`} className="dataTypeahead__card-img" alt="image product" />
                             <div className="dataTypeahead__card-div">
                               <Card.Header className="dataTypeahead__yourlist__card-header">
                                 <div className="dataTypeahead__header__name-product">Name Product : {itemList.product_name}</div>
