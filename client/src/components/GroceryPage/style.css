@@ -698,6 +698,9 @@
     margin-bottom: -343px;
     margin-left: 50px;
   }
+  .dataTypeahead__buttonAdd{
+    margin-left: 10px
+  }
 .dataTypeahead__card-div{
 
   margin-left: 343px;
@@ -1158,15 +1161,10 @@
 }
 
 @media screen and (max-width: 414px) {
-  .dataTypeahead__buttonDelete {
-    margin-left: 463px;
-    margin-top: -419px;
-}
-  .dataTypeahead__buttonAdd {
-    margin-left: 427px;
-    margin-top: 24px;
-    width: 52px;
-    height: 107px;
+  .dataTypeahead__card-div {
+    margin-left: 233px !important;
+    margin-top: 90px;
+    width: 75px;
 }
 .dataTypeahead__yourlist__card-header{
   width: 140px; 
@@ -1177,48 +1175,53 @@
     height: 22%;
     margin-top: 0px;
     margin-bottom: -343px;
-    margin-left: 186px;
+    margin-left: 86px;
 }
-  .dataTypeahead__card-div{
-    margin-left: 394px;
-    width: 27px;
-  }
-  .yourlist__buttonAdd{
-    margin-left: 451px;
-    margin-top: 24px;
-    width: 52px;
-    height: 107px;
-  }
-  .yourlist__buttonDelete {
-    margin-left: 463px;
-    margin-top: -419px;
+.dataTypeahead__buttonAdd  {
+  margin-left: 342px !important;
+  margin-top: 116px;
+}  
 
-  
-  }
-  .yourlist__card-div {
-    margin-left: 394px;
-    width: 27px;
-  }
+.yourlist__buttonAdd {
+  margin-left: 342px;
+  margin-top: -95px;
+  width: 52px;
+  height: 107px;
+}
+
+.yourlist__card-div {
+  margin-left: 250px;
+  width: 27px;
+}
   .yourlist__button {
     margin-top: 80px;
     margin-left: 0px;
     width: 120px;
   }
-  .card-img {
-    width: 71px;
-    height: 131px;
-    margin-left: 195px;
-  }
+  .yourlist__buttonDelete {
+    margin-left: 363px;
+    margin-top: -393px;
+}
+.card-img {
+  width: 108px;
+  height: 22%;
+  margin-left: 104px;
+}
+.dataTypeahead__buttonDelete {
+  margin-left: 363px !important;
+  margin-top: -244px;
+}
   .yourlist__card-header {
     width: 140px
   }
-  .btn-danger{
-    margin-left: 320px
-  }
+  .btn-danger {
+    margin-left: 350px;
+}
   .page__container {
     width: 351px;
     margin-left: -31px;
   }
+  
 }
 
 @media screen and (max-width: 360px) {
@@ -1250,17 +1253,18 @@
 }
 
 @media screen and (max-width: 320px) {
+  
   .dataTypeahead__buttonDelete {
-    margin-left: 616px;
+    margin-left: 359px !important;
     margin-top: -244px;
 }
-  .dataTypeahead__card-img {
-    box-shadow: 0 0 25px rgba(0, 0, 0, .25);
-    width: 119px;
-    height: 17%;
-    margin-top: 0px;
-    margin-bottom: -343px;
-    margin-left: 173px;
+.dataTypeahead__card-img {
+  box-shadow: 0 0 25px rgba(0, 0, 0, .25);
+  width: 83px !important;
+  height: 17%;
+  margin-top: 0px;
+  margin-bottom: -343px;
+  margin-left: 119px !important;
 }
   .dataTypeahead__card-div{
 

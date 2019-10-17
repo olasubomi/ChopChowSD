@@ -447,7 +447,7 @@ export default class GroceryPage extends React.Component {
                             this.handleShowAddItem(idItem);
                           }}> Add To Cart</Button> </div>
 
-                          <div className="yourlist__buttonDelete"><i class="fa fa-remove" onClick={e => {
+                          <div className="yourlist__buttonDelete"><i className="fa fa-remove" onClick={e => {
                             e.stopPropagation();
                             this.handleShowDeleteItem(itemList.id);
 
@@ -602,9 +602,7 @@ export default class GroceryPage extends React.Component {
                       </Form.Group>
                       <p className="msg-success">{messageSuccess}</p>
                       <p className="msg-err">{messageErr}</p>
-                      <Link>
                         <span className="link-forgot-password">Forget Password  ?</span>
-                      </Link>
                       <Button
                         type="button"
                         className="login__form-btn"
