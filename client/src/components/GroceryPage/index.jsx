@@ -569,19 +569,15 @@ export default class GroceryPage extends React.Component {
                       </div>
                       <div className="col">
                         <a href="#" className="fb btn">
-                          <i className="fa fa-facebook fa-fw"></i> Login with Facebook
-                        </a>
-                        <a href="#" className="google btn"><i className="fa fa-google fa-fw">
+                          <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+                                              </a>
+                        <a href="#" className="google btn"><i class="fa fa-google fa-fw">
                         </i> Login with Google+
                                               </a>
                       </div>
-                      <div className="col">
-                        <div className="hide-md-lg">
-                          <p>Or sign in manually:</p>
-                        </div>
-                      </div>
+                     
                       <Form.Group>
-                        <Form.Label>Email :</Form.Label>
+                        <Form.Label className="login__form__label">Email :</Form.Label>
                         <Form.Control
                           type="text"
                           name="email"
@@ -591,7 +587,7 @@ export default class GroceryPage extends React.Component {
                         />
                       </Form.Group>
                       <Form.Group>
-                        <Form.Label>Password :</Form.Label>
+                        <Form.Label  className="login__form__label">Password :</Form.Label>
                         <Form.Control
                           type="password"
                           name="password"
