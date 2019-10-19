@@ -6,9 +6,10 @@ import 'react-bootstrap-typeahead/css/Typeahead.css';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
-import { Nav, Navbar, NavDropdown, Form, FormControl } from 'react-bootstrap'
+import { Nav, Navbar,Alert, NavDropdown, Form, FormControl } from 'react-bootstrap'
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
+
 import { Link, Route, Switch } from "react-router-dom";
 import { Spinner } from 'react-bootstrap'
 import InfiniteCarousel from 'react-leaf-carousel';
@@ -37,6 +38,11 @@ class App extends Component {
         // this.myFunction = this.myFunction.bind(this);
 
         this.state = {
+        messageVisible:false,
+
+            showAlert:'',
+            messageAlert:'',
+            variant:'',
             customerId:'',
             idItem:'',
             option:'',
@@ -168,7 +174,9 @@ class App extends Component {
                 if (res.success) {
                     this.setState({ isAuthenticated: true })
                 }
-            }).catch(er => console.log(er))
+            }).catch((err)=>
+               console.log('err',err)
+                )
 
     }
 
@@ -190,7 +198,19 @@ class App extends Component {
                 })
         })
             .catch(() => {
-                this.setState({ message: 'Sorry , Internal Server ERROR' })
+                this.setState({
+                    messageAlert: 'internal server error',
+                    showAlert: true,
+                    variant: 'danger'
+                  },
+                    () =>
+                      setTimeout(() => {
+                        this.setState({ messageAlert: '', showAlert: false })
+                      }, 6000)
+                  )
+
+        
+        
 
             })
     }
@@ -214,18 +234,14 @@ class App extends Component {
            
                 })
                     .then(res => {
-                        if(res.status===400){
-                            this.setState({messageErr:'this item is found in your list'})
-                        }else{
+                   
 
                             return res.json()
-                        }
+                    
                     })
-                    .then(response => {
-                        console.log('resssss',response.data[0].id);
-                        this.setState({idItem:response.data[0].id})
-                        this.setState({itemTypeahead:[]})
-                        this.setState({itemTypeahead:[...itemTypeahead, ...response.data]})
+                    .then(responseGet => {
+                        this.setState({idItem:responseGet.data[0].id})
+                       
                         const {customerId,idItem}=this.state;
                         fetch(`/api/add-data-typeahead-for-customer/${idItem}/${customerId}`, {
                             method: 'POST',
@@ -238,15 +254,40 @@ class App extends Component {
                    
                         })
                             .then(res => {
-                                console.log('resadddbb',res);
+                                if(res){
+                                   if (res.status===500){
+                                                this.setState({
+                                                    messageAlert: 'internal server error',
+                                                    showAlert: true,
+                                                    variant: 'danger'
+                                                  },
+                                                    () =>
+                                                      setTimeout(() => {
+                                                        this.setState({ messageAlert: '', showAlert: false })
+                                                      }, 6000)
+                                                  )
+
+                                    }else if(res.status===200){
+                                        return res.json()
+                                        .then(response => {
+                                            this.setState({itemTypeahead:[]})
+                                            this.setState({itemTypeahead:[...itemTypeahead, ...responseGet.data]})
+                                            
+                                           
+                                           
+                                        })
+                                    }else if(res.status===304){
+                                        return res.json()
+                                        .then(response => {
+                                            this.setState({itemTypeahead:[]})
+                                            this.setState({itemTypeahead:[...itemTypeahead]})
+                                            
+                                           
+                                           
+                                        })
+                                    }
+                                }
                                 
-                                return res.json()
-                            })
-                            .then(response => {
-                                console.log('readddd',response);
-                                
-                               
-                               
                             })
                     })
             })
@@ -288,7 +329,18 @@ class App extends Component {
                   }
       
                 }).catch(() => {
-                  this.setState({ message: 'Sorry , Internal Server ERROR' })
+                    this.setState({
+                        messageAlert: 'internal server error',
+                        showAlert: true,
+                        variant: 'danger'
+                      },
+                        () =>
+                          setTimeout(() => {
+                            this.setState({ messageAlert: '', showAlert: false })
+                          }, 6000)
+                      )
+    
+            
                 })
       
       
@@ -319,7 +371,18 @@ class App extends Component {
                     }
                 }
             }).catch(() => {
-                this.setState({ message: 'Sorry , Internal Server ERROR' })
+                this.setState({
+                    messageAlert: 'internal server error',
+                    showAlert: true,
+                    variant: 'danger'
+                  },
+                    () =>
+                      setTimeout(() => {
+                        this.setState({ messageAlert: '', showAlert: false })
+                      }, 6000)
+                  )
+
+            
             })
 
 
@@ -340,9 +403,11 @@ class App extends Component {
                                     mealsLength: response.data.length
                     });
                 }
-            }).catch(() => {
-                this.setState({ message: 'Sorry , Internal Server ERROR' })
+            }).catch((err) => {
+               console.log('err',err);
+               
             })
+            
 
         
     }
@@ -350,8 +415,7 @@ class App extends Component {
 
     
     render() {
-        const { itemTypeahead,valueAllDataLists, isAuthenticated } = this.state;
-        console.log(777,itemTypeahead);
+        const { messageAlert,showAlert,variant, itemTypeahead,valueAllDataLists, isAuthenticated ,} = this.state;
         
         // Render your page inside
         // the layout provider
@@ -516,6 +580,7 @@ class App extends Component {
         return (
 
             <div>
+           
                 {/* <div> */}
 
                 {/* <div className={this.state.topNav_className} id="myTopnav"> */}
@@ -582,9 +647,13 @@ class App extends Component {
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
                 />
-                
+            <Alert show={showAlert} key={1} variant={variant}>
+              {messageAlert}
+            </Alert>     
                
-
+                {this.state.messageVisible?(
+                    <div>you can not addin this item because is found for this customer</div>
+                ):null}
 
                 <Switch>
                     <Route
@@ -666,7 +735,7 @@ class App extends Component {
                     <Route
                         exact
                         path="/grocery"
-                        render={props => (
+                        render={() => (
                             <GroceryPage
                                 auth={isAuthenticated}
                                 dataTypeaheadProps={itemTypeahead}
