@@ -33,10 +33,8 @@ export default class GroceryPage extends React.Component {
     errormsg: '',
   }
 
-
   handleChange = ({ target: { value, name } }) =>
     this.setState({ [name]: value });
-
 
   componentDidMount() {
     const { auth } = this.props;
@@ -48,9 +46,7 @@ export default class GroceryPage extends React.Component {
       },
     })
       .then(res => {
-
         return res.json()
-
       })
       .then(response => {
         if (response.success && response.data) {
@@ -72,7 +68,7 @@ export default class GroceryPage extends React.Component {
             return res.json()
           })
           .then(response => {
-            if (response) {//all lists for this customer
+            if (response) {
               this.setState({ valueData: response.data })
             }
           })
@@ -88,12 +84,11 @@ export default class GroceryPage extends React.Component {
                 }, 8000)
             )
           })
-
       })
+
     this.handleClick = () => {
       const { email, password } = this.state;
       if (email && password) {
-        // make a requset to the back with method post and data{email , password}
         fetch('/api/login', {
           method: 'POST',
           credentials: 'include',
@@ -204,13 +199,12 @@ export default class GroceryPage extends React.Component {
       })
         .then(res => res.json())
         .then(response => {
-          if (response) {//all lists for this customer
+          if (response) {
             let arrResItemDelete = response.data
             arrResItemDelete.map((resDelete) =>
               this.setState({ deletedItemsId: resDelete })
             )
           }
-
         })
         .catch(() => {
           this.setState({
@@ -268,7 +262,7 @@ export default class GroceryPage extends React.Component {
     }
 
     this.handleCreateList = () => {
-      const { messageErr, lasIdListState, valueProductName, valueProductImage, valueProductPrice, valuePricePerOunce, valueProductSize } = this.state;
+      const { lasIdListState, valueProductName, valueProductImage, valueProductPrice, valuePricePerOunce, valueProductSize } = this.state;
       if (valueProductName && valueProductImage && valueProductPrice && valueProductSize && valuePricePerOunce) {
         if (valueProductImage.startsWith('http://') || valueProductImage.startsWith('data') || valueProductImage.endsWith('png') || valueProductImage.endsWith('jpg') || valueProductImage.endsWith('gif')) {
 
@@ -294,8 +288,7 @@ export default class GroceryPage extends React.Component {
             .then(response => {
               if (response) {
                 const { valueData } = this.state;
-                this.setState({ valueData: [...valueData, ...response.data], messageErrCreate: 'add successfull', errormsgImage: '', errormsg: '', valueProductName: '', valueProductImage: '', valueProductSize: '', valueProductPrice: '', valuePricePerOunce: '', lasIdListState: lasIdListState + 1 })
-                this.setState({ messageErrCreate: '' })
+                this.setState({ valueData: [...valueData, ...response.data], errormsgImage: '', errormsg: '', valueProductName: '', valueProductImage: '', valueProductSize: '', valueProductPrice: '', valuePricePerOunce: '', lasIdListState: lasIdListState + 1 })
               }
             })
         } else {
@@ -336,11 +329,9 @@ export default class GroceryPage extends React.Component {
         return res.json()
       })
       .then(response => {
-
         let arrResponse = response.data;
         const lasIdCustomer = arrResponse[arrResponse.length - 1]
         this.setState({ newcustomerId: lasIdCustomer + 1 })
-
       })
       .catch(() => {
         this.setState({
@@ -354,36 +345,28 @@ export default class GroceryPage extends React.Component {
             }, 8000)
         )
       })
-
   }
 
   render() {
     const { email, password, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess, messageErrCreate } = this.state;
     const { dataTypeaheadProps, auth } = this.props;
-
     return (
       <>
-
         {auth ? (
           <>
-
             <PageTitle title=" Your Grocery List" />
             <Alert show={showAlert} key={1} variant={variant}>
               {messageAlert}
             </Alert>
             <Container className="page__container">
-
               {valueData && valueData.length !== 0 ? (
-
                 <Row>
-
                   <Button className='yourlist__buttonDeleteList'
                     variant="danger"
                     onClick={e => {
                       e.stopPropagation();
                       this.handleShowDeleteList(idsItems);
                     }}
-
                   >
                     Delete All Items
                   </Button>
@@ -420,11 +403,9 @@ export default class GroceryPage extends React.Component {
                     </>
                   ) : null}
                   {valueData ? (
-
                     valueData.map((itemList) => {
                       let idItem = itemList.id;
                       return <>
-
                         <Col xs={12} md={12} lg={12} key={itemList.id}>
                           {itemList.product_image.startsWith('http://') || itemList.product_image.startsWith('data') ? (
                             <img src={`${itemList.product_image}`} alt="image product " className="card-img" />
@@ -446,23 +427,15 @@ export default class GroceryPage extends React.Component {
                             e.stopPropagation();
                             this.handleShowAddItem(idItem);
                           }}> Add To Cart</Button> </div>
-
                           <div className="yourlist__buttonDelete"><i className="fa fa-remove" onClick={e => {
                             e.stopPropagation();
                             this.handleShowDeleteItem(itemList.id);
-
                           }} ></i></div>
-
-
                         </Col>
                       </>
                     })
-
                   ) : <Spinner animation="border" variant="info" />}
-
-
                 </Row>
-
               ) : (
                   <>
                     <div>here not found any items , you can add item from searchBar after that make refresh for page to show adding items</div>
@@ -570,12 +543,12 @@ export default class GroceryPage extends React.Component {
                       <div className="col">
                         <a href="#" className="fb btn">
                           <i class="fa fa-facebook fa-fw"></i> Login with Facebook
-                                              </a>
-                        <a href="#" className="google btn"><i class="fa fa-google fa-fw">
+                        </a>
+                        <a  className="google btn"><i class="fa fa-google fa-fw">
                         </i> Login with Google+
-                                              </a>
+                        </a>
                       </div>
-                     
+
                       <Form.Group>
                         <Form.Label className="login__form__label">Email</Form.Label>
                         <Form.Control
@@ -588,7 +561,7 @@ export default class GroceryPage extends React.Component {
                         />
                       </Form.Group>
                       <Form.Group>
-                        <Form.Label  className="login__form__label">Password</Form.Label>
+                        <Form.Label className="login__form__label">Password</Form.Label>
                         <Form.Control
                           type="password"
                           name="password"
@@ -601,7 +574,7 @@ export default class GroceryPage extends React.Component {
                       </Form.Group>
                       <p className="msg-success">{messageSuccess}</p>
                       <p className="msg-err">{messageErr}</p>
-                        <span className="link-forgot-password">Forget Password  ?</span>
+                      <span className="link-forgot-password">Forget Password  ?</span>
                       <Button
                         type="button"
                         className="login__form-btn"
@@ -624,8 +597,6 @@ export default class GroceryPage extends React.Component {
                   </Modal.Body>
                 </Modal>
               </Container>
-
-
             </>
           )}
       </>

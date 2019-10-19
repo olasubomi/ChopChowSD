@@ -6,7 +6,7 @@ import 'react-bootstrap-typeahead/css/Typeahead.css';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
-import { Nav, Navbar,Alert, NavDropdown, Form, FormControl } from 'react-bootstrap'
+import { Nav, Navbar, Alert, NavDropdown, Form, FormControl } from 'react-bootstrap'
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
 
@@ -38,14 +38,14 @@ class App extends Component {
         // this.myFunction = this.myFunction.bind(this);
 
         this.state = {
-        messageVisible:false,
+            messageVisible: false,
 
-            showAlert:'',
-            messageAlert:'',
-            variant:'',
-            customerId:'',
-            idItem:'',
-            option:'',
+            showAlert: '',
+            messageAlert: '',
+            variant: '',
+            customerId: '',
+            idItem: '',
+            option: '',
             itemTypeahead: [],
             valueAllDataLists: [],
             message: null,
@@ -92,7 +92,7 @@ class App extends Component {
             .catch(err => {
                 console.log(err);
             });
-  
+
 
     }
 
@@ -174,9 +174,9 @@ class App extends Component {
                 if (res.success) {
                     this.setState({ isAuthenticated: true })
                 }
-            }).catch((err)=>
-               console.log('err',err)
-                )
+            }).catch((err) =>
+                console.log('err', err)
+            )
 
     }
 
@@ -202,15 +202,15 @@ class App extends Component {
                     messageAlert: 'internal server error',
                     showAlert: true,
                     variant: 'danger'
-                  },
+                },
                     () =>
-                      setTimeout(() => {
-                        this.setState({ messageAlert: '', showAlert: false })
-                      }, 6000)
-                  )
+                        setTimeout(() => {
+                            this.setState({ messageAlert: '', showAlert: false })
+                        }, 6000)
+                )
 
-        
-        
+
+
 
             })
     }
@@ -218,9 +218,9 @@ class App extends Component {
     componentDidMount() {
         this.handleLogout();
         this.auth();
-        this.handleClickTypeahead=(optionItem)=>{
-            const {itemTypeahead} = this.state;
-            if(!optionItem) return;
+        this.handleClickTypeahead = (optionItem) => {
+            const { itemTypeahead } = this.state;
+            if (!optionItem) return;
             console.log(optionItem)
             optionItem.map(option => {
                 fetch(`/api/get-data-typeahead/${option}`, {
@@ -230,19 +230,13 @@ class App extends Component {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                     },
-    
-           
                 })
                     .then(res => {
-                   
-
-                            return res.json()
-                    
+                        return res.json()
                     })
                     .then(responseGet => {
-                        this.setState({idItem:responseGet.data[0].id})
-                       
-                        const {customerId,idItem}=this.state;
+                        this.setState({ idItem: responseGet.data[0].id })
+                        const { customerId, idItem } = this.state;
                         fetch(`/api/add-data-typeahead-for-customer/${idItem}/${customerId}`, {
                             method: 'POST',
                             credentials: 'same-origin',
@@ -250,101 +244,86 @@ class App extends Component {
                                 Accept: 'application/json',
                                 'Content-Type': 'application/json',
                             },
-            
-                   
                         })
                             .then(res => {
-                                if(res){
-                                   if (res.status===500){
-                                                this.setState({
-                                                    messageAlert: 'internal server error',
-                                                    showAlert: true,
-                                                    variant: 'danger'
-                                                  },
-                                                    () =>
-                                                      setTimeout(() => {
-                                                        this.setState({ messageAlert: '', showAlert: false })
-                                                      }, 6000)
-                                                  )
+                                if (res) {
+                                    if (res.status === 500) {
+                                        this.setState({
+                                            messageAlert: 'internal server error',
+                                            showAlert: true,
+                                            variant: 'danger'
+                                        },
+                                            () =>
+                                                setTimeout(() => {
+                                                    this.setState({ messageAlert: '', showAlert: false })
+                                                }, 6000)
+                                        )
 
-                                    }else if(res.status===200){
+                                    } else if (res.status === 200) {
                                         return res.json()
-                                        .then(response => {
-                                            this.setState({itemTypeahead:[]})
-                                            this.setState({itemTypeahead:[...itemTypeahead, ...responseGet.data]})
-                                            
-                                           
-                                           
-                                        })
-                                    }else if(res.status===304){
+                                            .then(response => {
+                                                this.setState({ itemTypeahead: [] })
+                                                this.setState({ itemTypeahead: [...itemTypeahead, ...responseGet.data] })
+                                            })
+                                    } else if (res.status === 304) {
                                         return res.json()
-                                        .then(response => {
-                                            this.setState({itemTypeahead:[]})
-                                            this.setState({itemTypeahead:[...itemTypeahead]})
-                                            
-                                           
-                                           
-                                        })
+                                            .then(response => {
+                                                this.setState({ itemTypeahead: [] })
+                                                this.setState({ itemTypeahead: [...itemTypeahead] })
+                                            })
                                     }
                                 }
-                                
                             })
                     })
             })
         }
 
-
         fetch('/api/grocery', {
             method: 'GET',
             headers: {
-              'Content-type': 'application/json',
+                'Content-type': 'application/json',
             },
-          })
-            .then(res => {      
-              return res.json()
-      
+        })
+            .then(res => {
+                return res.json()
+
             })
             .then(response => {
-              if (response.success && response.data) {
-                  this.setState({ Authentication: true });
-              } else {
-                this.setState({ Authenticated: false })
-              }
-              this.setState({ customerId: response.data })
-              const { customerId } = this.state;
-              fetch(`/api/getList/${customerId}`, {
-                method: 'GET',
-                credentials: 'same-origin',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-      
-              })
-                .then(res => {
-                  return res.json()
+                if (response.success && response.data) {
+                    this.setState({ Authentication: true });
+                } else {
+                    this.setState({ Authenticated: false })
+                }
+                this.setState({ customerId: response.data })
+                const { customerId } = this.state;
+                fetch(`/api/getList/${customerId}`, {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+
                 })
-                .then(response => {
-                  if (response) {//all lists for this customer
-                    this.setState({ valueData: response.data })
-                  }
-      
-                }).catch(() => {
-                    this.setState({
-                        messageAlert: 'internal server error',
-                        showAlert: true,
-                        variant: 'danger'
-                      },
-                        () =>
-                          setTimeout(() => {
-                            this.setState({ messageAlert: '', showAlert: false })
-                          }, 6000)
-                      )
-    
-            
-                })
-      
-      
-            })      
+                    .then(res => {
+                        return res.json()
+                    })
+                    .then(response => {
+                        if (response) {
+                            this.setState({ valueData: response.data })
+                        }
+                    }).catch(() => {
+                        this.setState({
+                            messageAlert: 'internal server error',
+                            showAlert: true,
+                            variant: 'danger'
+                        },
+                            () =>
+                                setTimeout(() => {
+                                    this.setState({ messageAlert: '', showAlert: false })
+                                }, 6000)
+                        )
+                    })
+            })
 
 
         fetch('/api/get-all-data-lists', {
@@ -358,16 +337,14 @@ class App extends Component {
             .then(res => res.json())
             .then(response => {
                 if (response) {
-
                     let arrAllData = [];
                     let resArr = response.data
 
                     for (let i = 0; i <= resArr.length - 1; i++) {
-                        
+
                         arrAllData.push(response.data[i].product_name);
-                        
+
                         this.setState({ valueAllDataLists: arrAllData })
-                       
                     }
                 }
             }).catch(() => {
@@ -375,14 +352,14 @@ class App extends Component {
                     messageAlert: 'internal server error',
                     showAlert: true,
                     variant: 'danger'
-                  },
+                },
                     () =>
-                      setTimeout(() => {
-                        this.setState({ messageAlert: '', showAlert: false })
-                      }, 6000)
-                  )
+                        setTimeout(() => {
+                            this.setState({ messageAlert: '', showAlert: false })
+                        }, 6000)
+                )
 
-            
+
             })
 
 
@@ -397,26 +374,27 @@ class App extends Component {
             .then(res => res.json())
             .then(response => {
                 if (response) {
-                    this.setState({ recipes: response.data,
-                                    selectedMealIngredients: response.data[0].new_ingredients,
-                                    selectedMeal: response.data[0],
-                                    mealsLength: response.data.length
+                    this.setState({
+                        recipes: response.data,
+                        selectedMealIngredients: response.data[0].new_ingredients,
+                        selectedMeal: response.data[0],
+                        mealsLength: response.data.length
                     });
                 }
             }).catch((err) => {
-               console.log('err',err);
-               
-            })
-            
+                console.log('err', err);
 
-        
+            })
+
+
+
     }
 
 
-    
+
     render() {
-        const { messageAlert,showAlert,variant, itemTypeahead,valueAllDataLists, isAuthenticated ,} = this.state;
-        
+        const { messageAlert, showAlert, variant, itemTypeahead, valueAllDataLists, isAuthenticated, } = this.state;
+
         // Render your page inside
         // the layout provider
         //const elements = ['one', 'two', 'three'];
@@ -580,7 +558,7 @@ class App extends Component {
         return (
 
             <div>
-           
+
                 {/* <div> */}
 
                 {/* <div className={this.state.topNav_className} id="myTopnav"> */}
@@ -637,7 +615,7 @@ class App extends Component {
     <i className="fa fa-bars" ></i>
     </Link>
 </div> */}
-                
+
 
 
                 <Typeahead
@@ -647,13 +625,13 @@ class App extends Component {
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
                 />
-            <Alert show={showAlert} key={1} variant={variant}>
-              {messageAlert}
-            </Alert>     
-               
-                {this.state.messageVisible?(
+                <Alert show={showAlert} key={1} variant={variant}>
+                    {messageAlert}
+                </Alert>
+
+                {this.state.messageVisible ? (
                     <div>you can not addin this item because is found for this customer</div>
-                ):null}
+                ) : null}
 
                 <Switch>
                     <Route
@@ -663,7 +641,7 @@ class App extends Component {
                             <Login {...props} />
                         )}
                     />
-                    
+
                     <Route exact path="/" render={(props) => (
                         <div>
                             <div id="title">
@@ -748,7 +726,7 @@ class App extends Component {
                     )}
 
                 />
-                   
+
                     <Route
                         exact
                         path="/grocery-empty"

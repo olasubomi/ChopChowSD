@@ -1,7 +1,4 @@
-
-
-/******** design log in page ******/
-
+/* login page */
 @media only screen and (max-width: 1920px) {
   .google_btn{
     margin-left: 10px;
@@ -61,8 +58,6 @@
     color: black;
     border-radius: 3px;
   }
-
-
   .form-group {
     margin-bottom: 2rem;
     margin-left: 361px;
@@ -77,10 +72,7 @@
   }
   .msg-err {
     text-align: center;
-    /* padding: 0 22px; */
     margin-left: 9px;
-    /* margin-right: 40px; */
-    /* margin-bottom: 20px; */
     color: red;
   }
   .msg-success {
@@ -135,22 +127,6 @@
     border-radius: 21px;
     font-size: 20px!important;
   }
-  /* .google {
-    background-color: #dd4b39;
-    color: #fff;
-    margin-top: 60px;
-    margin-left: -51px;
-    margin-right: 3px;
-    width: 145%;  }
-  .fb {
-    background-color: #3b5998;
-    color: #fff;
-    margin-left: -50px;
-    margin-top: 40px;
-    margin-right: -32px;
-    margin-bottom: -1px;
-    width: 189px;
-  } */
   .vl {
     position: absolute;
     left: 62%;
@@ -167,7 +143,6 @@
     padding: 0 50px;
     margin-top: 6px;
   }
-  /* vertical line */
   .vl {
     position: absolute;
     left: 50%;
@@ -175,7 +150,6 @@
     border: 2px solid #ddd;
     height: 175px;
   }
-  /* text inside the vertical line */
   .vl-innertext {
     position: absolute;
     top: 50%;
@@ -185,11 +159,9 @@
     border-radius: 50%;
     padding: 8px 10px;
   }
-  /* hide some text on medium and large screens */
   .hide-md-lg {
     display: none;
   }
-
 }
 
 @media screen and (max-width: 1024px) {
@@ -211,11 +183,6 @@
     width: 470px;
     margin-left: 113px;
   }
-  /* .google {
-    margin-left: -50px;
-    padding-left: 4px;
-  } */
-  
 }
 
 @media screen and (max-width: 600px) {
@@ -253,14 +220,8 @@
   .link-forgot-password{
     margin-left: 267px
   }
-  /* .google {
-    margin-left: -50px;
-    padding-left: 4px;
-  } */
   
 }
-
-
 
 @media screen and (max-width: 375px){
   .login__form__input {
@@ -276,6 +237,7 @@
   margin-left: 84px;
 }
 }
+
 @media screen and (max-width: 360px){
   .login__form__input {
     margin-left: -5px;
@@ -291,6 +253,7 @@
   margin-left: 84px;
 }
 }
+
 @media screen and (max-width: 320px){
   .login__form-title{
     margin-left: -52px
@@ -309,16 +272,18 @@
   margin-left: 70px !important;
 }
 }
+
 /* grocery page */
-
 @media screen and (max-width: 1920px) {
-
   .page__container {
-
     margin-left: 164px;
     margin-top: 1rem;
     height: 393px;
     width: 73%;
+  }
+  .create__msg-err{
+    margin-left: 585px;
+    color: red;
   }
   .yourlist__card {
     border: 1px solid rgba(234, 234, 234, 0.9) !important;
@@ -333,7 +298,6 @@
   .yourlist__card:hover {
     box-shadow: 0 0 30px -15px rgba(0, 0, 0, 0.3);
   }
- 
   .card-img {
     box-shadow: 0 0 25px rgba(0, 0, 0, .25);
     width: 160px;
@@ -399,7 +363,6 @@
 }
   .modal-content {
     width: 1346px;
-    /* margin-left: -424px; */
     pointer-events: auto;
     background-clip: padding-box;
     border-radius: -2.7rem;
@@ -474,7 +437,6 @@
   }
   .yourlist__card-text-create{
     margin-top: 24px;
-
   }
   .btn-primary {
     color: #2f2c2c;
@@ -520,7 +482,6 @@
  .yourlist__card-text-add{
    margin-left:370px
  }
-/*item typeahead*/
 .yourlist__item-typeahead__word{
   margin-left: 15px;
     margin-top: 82px;
@@ -554,7 +515,6 @@
   margin-top: 2px;
   padding-left: 19px;
   width: 233px;
-
 }
 .yourlist__item-typeahead__card-text{
   margin-left: 29px;
@@ -670,7 +630,6 @@
     margin-left: 50px;
 }
   .dataTypeahead__card-div{
-
     margin-left: 343px;
     margin-top: 90px;
   }
@@ -957,6 +916,7 @@
     height: 91px;
 }
 }
+
 @media screen and (max-width: 411px) {
   .dataTypeahead__buttonDelete {
     margin-left: 616px;
@@ -980,8 +940,8 @@ label {
   display: inline-block;
   margin-bottom: .5rem;
   margin-left: 121px;
-  /* margin-top: -18px; */
 }
+
 @media screen and (max-width: 414px) {
   .dataTypeahead__buttonDelete {
     margin-left: 616px;
