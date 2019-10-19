@@ -1,6 +1,5 @@
 
 
-
 /******** design log in page ******/
 
 @media only screen and (max-width: 1920px) {
@@ -23,6 +22,7 @@
     text-align: center;
     font-size: 15px;
     opacity: .8;
+    margin-left: -202px !important;
   }
   .link-forgot-password {
     color: black !important;
@@ -125,7 +125,7 @@
     opacity: 1;
   }
   .login__form-btn {
-    width: 23%;
+    width: 26% !important;
     background-color: #c3bebe!important;
     background: #e6e4e1;
     border-radius: 7px;
@@ -191,498 +191,124 @@
   }
 
 }
-@media screen and (max-width: 650px) {
-  .col {
-    width: 100%;
-    margin-top: 0;
-  }
-  /* hide the vertical line */
-  .vl {
-    display: none;
-  }
-  /* show the hidden text on small screens */
-  .hide-md-lg {
-    display: block;
-    text-align: center;
-  }
-}
+
 @media screen and (max-width: 1024px) {
-  /* .google {
-    margin-left: 311px;
-    padding-left: 4px;
-    margin-top: -57px;
-} */
-  .form-group{
-    margin-right: 36px;
+  .google_btn{
+    margin-left: 10px;
   }
-  /* .col {
-    margin-left: 44px;
-    margin-top: 21px;
-} */
-.form-control{
-  margin-left: -14px
+  .fa_btn{
+    margin-left: 10px;
+  }
+  .login__label{
+    margin-right: 30px;
+    margin-left: -78px;
+  }
+  .login__input{
+    margin-left: -84px;
+    width: 186px;
+  }
+  .login__form-div-title {
+    width: 470px;
+    margin-left: 113px;
+  }
+  /* .google {
+    margin-left: -50px;
+    padding-left: 4px;
+  } */
+  
 }
 
-}
-
-@media only screen and (max-width: 600px) {
-  .login__form__p{
-    margin-left: 10px
+@media screen and (max-width: 600px) {
+  .login__form-title{
+    margin-left: -129px
   }
   .google {
-    margin-left: 185px;
-    padding-left: 4px;
-    width: 116px;
-    margin-top: 13px;
+    background-color: #dd4b39;
+    color: #fff;
+    margin-top: 24px;
+    margin-left: 84px !important;
+    margin-right: 3px;
+    width: 201px !important;
 }
 .fb {
-  width: 129px;
-  margin-left: 41px;
-  margin-top: -70px;
-  margin-bottom: -169px;
+  margin-top: 72px;
+  margin-left: 84px;
+  width: 201px;
 }
-  .col {
-    margin-left: 45px
-  }
-  .form-group {
-    margin-right: 10px
-  }
-  .login__form-btn {
-    margin-left: 274px;
-    margin-top: 10px;
-  }
-  .link-forgot-password {
-    margin-left: 258px
-  }
-  .login__form-title {
-    margin-left: -34px;
-    width: 398px
-  }
-  .form-text {
-    display: block;
-    margin-left: 6px;
-    margin-right: -157px;
-    margin-top: 14px;
-  }
+.login__form__label {
+  margin-right: 60px;
+  margin-left: -1px;
 }
-
-@media screen and (max-width: 414px) {
+.login__form__input {
+  margin-left: -5px;
+  width: 145px;
+}
+  .login__form-div-title {
+    width: 470px;
+    margin-left: 113px;
+  }
+  .login__form-btn{
+    margin-left: 287px !important
+  }
+  .link-forgot-password{
+    margin-left: 267px
+  }
   /* .google {
-    margin-left: 30px;
+    margin-left: -50px;
     padding-left: 4px;
-    width: 200px
-  }
-  .fb {
-    width: 200px;
-    margin-left: 34px
-  }
-  .col {
-    margin-left: 45px
   } */
-  label {
-    display: inline-block;
-    margin-bottom: .5rem;
-    margin-left: -43px;
-    /* margin-top: -18px; */
-}
-.form-control {
-  margin-left: -177px;
-  width: 243px;
-  margin-top: 18px;
-}
-  .form-group {
-    margin-right: 10px
-  }
-  .login__form-btn {
-    margin-left: 274px !important;
-    margin-top: 10px !important;
-  }
-  .link-forgot-password {
-    margin-left: 258px
-  }
- 
-  .login__form-title {
-    margin-left: -34px;
-    width: 398px
-  }
-  .form-text {
-    display: block;
-    margin-left: 6px;
-    margin-right: -157px;
-    margin-top: 14px;
-  }  
-}
-
-/* signup page*/
-.content-signup {
-  width: 55%;
-  height: auto;
-  border-radius: 2px;
-  padding: 20px;
-  margin-left: 336px;
-  margin-bottom: 3px
-}
-
-.content-signup__word-sigup {
-  padding: 20px 0;
-  font-weight: 600;
-  align-items: center;
-  text-align: center;
-  letter-spacing: 0.04em;
-  color: #3d9caf;
-  background: #FFFFFF;
-}
-.content-signup__form-input{
-  margin-left: -331px;
-  width: 661px;
-}
-.content-signup__form-label{
-  margin-left: -325px
-}
-.content-signup__username {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__username-star, .content-signup__email-star, .content-signup__password-star, .content-signup__confirm-password-star {
-  color: red;
-}
-
-.content-signup__email {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__password {
-  color: black;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__confirm-password {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__submit {
-  height: 40px;
-  letter-spacing: 0.04em;
-  font-size: 18px;
-  line-height: 22px;
-  font-weight: bold !important;
-  margin-bottom: -570px;
-  width: 20%;
-  margin-left: 281px;
-    background-color: #c3bebe!important;
-    background: #e6e4e1;
-    border: 2px solid #54514d;
-    height: 40px;
-    border-radius: 21px;
-}
-
-.content-signup__submit:hover {
-  background-color: rgb(12, 120, 134) !important;
-}
-
-.content-signup__text-muted {
-  text-align: center;
-  padding: 10px 0;
-  margin-left: -364px;
-}
-
-.content-signup__word-login {
-  color: #1b7688 !important;
-  font-weight: 600;
-  font-size: 16px;
-  text-decoration: none;
-}
-
-.content-signup__word-login:hover {
-  text-decoration: none;
-  color: #104d58 !important;
-}
-
-.errormsg {
-  color: red;
-  margin-left: 363px
-}
-
-@media only screen and (max-width: 992px) {
-  .content-signup {
-    width: 95%;
-  }
-}
-
-/* @media screen and (max-width: 1024px) {
-  .google {
-    margin-left: 35px;
-    padding-left: 4px;
-  }
   
-} */
-@media screen and (max-width: 414px) {
-  /* .google {
-    margin-left: 35px;
-    padding-left: 4px;
-  }
-  .form-group{
-    margin-right: 36px;
-  }
-  .col {
-    margin-left: 44px;
-    margin-top: 21px;
-} */
-.form-control{
-  margin-left: -14px
-}
-
-}
-
-@media screen and (max-width: 375px) {
-  /* .google {
-    margin-left: 30px;
-    padding-left: 4px;
-    width: 200px
-  }
-  .fb {
-    width: 200px;
-    margin-left: 34px
-  } */
-  /* .col {
-    margin-left: 45px
-  } */
-  .form-group {
-    margin-right: 10px
-  }
-  .login__form-btn {
-    margin-left: 274px !important;
-    margin-top: 10px !important;
-  }
-  .link-forgot-password {
-    margin-left: 258px
-  }
-  .login__form-title {
-    margin-left: -34px;
-    width: 398px
-  }
-  .form-text {
-    display: block;
-    margin-left: 6px;
-    margin-right: -157px;
-    margin-top: 14px;
-  }
-}
-
-@media screen and (max-width: 414px) {
-  /* .google {
-    margin-left: 30px;
-    padding-left: 4px;
-    width: 200px
-  }
-  .fb {
-    width: 200px;
-    margin-left: 34px
-  }
-  .col {
-    margin-left: 45px
-  } */
-  .form-group {
-    margin-right: 10px
-  }
-  .login__form-btn {
-    margin-left: 274px;
-    margin-top: 10px;
-  }
-  .link-forgot-password {
-    margin-left: 258px
-  }
-  .login__form-title {
-    margin-left: -34px;
-    width: 398px
-  }
-  .form-text {
-    display: block;
-    margin-left: 6px;
-    margin-right: -157px;
-    margin-top: 14px;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .login__form-btn {
-    margin-left: 274px !important;
-    margin-top: 10px !important;
-  }
-  /* .google {
-    margin-left: 30px;
-    padding-left: 4px;
-    width: 200px
-  }
-  .fb {
-    width: 192px;
-    margin-left: 34px
-  }
-  .col {
-    margin-left: 45px;
-    margin-top: 28px
-  } */
-  .form-group {
-    margin-right: -30px
-  }
-  .login__form-btn {
-    margin-left: 274px;
-    margin-top: 10px;
-    width: 99px;
-  }
-  .link-forgot-password {
-    margin-left: 258px
-  }
-  .login__form-title {
-    margin-left: -34px;
-    width: 326px
-  }
-  .form-text {
-    display: block;
-    margin-left: 6px;
-    margin-right: -157px;
-    margin-top: 14px;
-  }
 }
 
 
-/* signup page*/
-.content-signup {
-  width: 55%;
-  height: auto;
-  border-radius: 2px;
-  padding: 20px;
-  margin-left: 336px;
-  margin-bottom: 3px
+
+@media screen and (max-width: 375px){
+  .login__form__input {
+    margin-left: -5px;
+    width: 111px;
+}
+.fb {
+  margin-top: 52px !important;
+  margin-left: 84px;
+}
+.google {
+  margin-top: 72px;
+  margin-left: 84px;
+}
+}
+@media screen and (max-width: 360px){
+  .login__form__input {
+    margin-left: -5px;
+    width: 94px;
 }
 
-.content-signup__word-sigup {
-  padding: 20px 0;
-  font-weight: 600;
-  align-items: center;
-  text-align: center;
-  letter-spacing: 0.04em;
-  color: #3d9caf;
-  background: #FFFFFF;
+.fb {
+  margin-top: 66px;
+  margin-left: 84px;
 }
-.content-signup__form-input{
-  margin-left: -331px;
-  width: 661px;
+.google {
+  margin-top: 33px;
+  margin-left: 84px;
 }
-.content-signup__form-label{
-  margin-left: -325px
 }
-.content-signup__username {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__username-star, .content-signup__email-star, .content-signup__password-star, .content-signup__confirm-password-star {
-  color: red;
-}
-
-.content-signup__email {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__password {
-  color: black;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__confirm-password {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__submit {
-  height: 40px;
-  letter-spacing: 0.04em;
-  font-size: 18px;
-  line-height: 22px;
-  font-weight: bold !important;
-  margin-bottom: -570px;
-  width: 20%;
-  margin-left: 281px;
-    background-color: #c3bebe!important;
-    background: #e6e4e1;
-    border: 2px solid #54514d;
-    height: 40px;
-    border-radius: 21px;
-}
-
-.content-signup__submit:hover {
-  background-color: rgb(12, 120, 134) !important;
-}
-
-.content-signup__text-muted {
-  text-align: center;
-  padding: 10px 0;
-  margin-left: -364px;
-}
-
-.content-signup__word-login {
-  color: #1b7688 !important;
-  font-weight: 600;
-  font-size: 16px;
-  text-decoration: none;
-}
-
-.content-signup__word-login:hover {
-  text-decoration: none;
-  color: #104d58 !important;
-}
-
-.errormsg {
-  color: red;
-  margin-left: 363px
-}
-
-@media only screen and (max-width: 992px) {
-  .content-signup {
-    width: 95%;
+@media screen and (max-width: 320px){
+  .login__form-title{
+    margin-left: -52px
   }
+  .login__form__input {
+    margin-left: -5px;
+    width: 63px;
 }
 
-
+.fb {
+  margin-top: 66px;
+  margin-left: 70px !important;
+}
+.google {
+  margin-top: 33px;
+  margin-left: 70px !important;
+}
+}
 /* grocery page */
 
 @media screen and (max-width: 1920px) {

@@ -562,7 +562,7 @@ export default class GroceryPage extends React.Component {
                   <Modal.Body>
                     <Form className="login__form">
                       <div className="login__form-div-title">
-                        <h2 className="login__form-title">Log in to View Grocery List</h2>
+                        <h2 className="login__form-title">Log in to View Grocery</h2>
                       </div>
                       <div className="vl">
                         <span className="vl-innertext">or</span>
@@ -577,23 +577,26 @@ export default class GroceryPage extends React.Component {
                       </div>
                      
                       <Form.Group>
-                        <Form.Label className="login__form__label">Email :</Form.Label>
+                        <Form.Label className="login__form__label">Email</Form.Label>
                         <Form.Control
                           type="text"
                           name="email"
                           value={email}
                           placeholder="Enter your email"
                           onChange={this.handleChange}
+                          className='login__form__input'
                         />
                       </Form.Group>
                       <Form.Group>
-                        <Form.Label  className="login__form__label">Password :</Form.Label>
+                        <Form.Label  className="login__form__label">Password</Form.Label>
                         <Form.Control
                           type="password"
                           name="password"
                           value={password}
                           placeholder="Enter your password"
                           onChange={this.handleChange}
+                          className='login__form__input'
+
                         />
                       </Form.Group>
                       <p className="msg-success">{messageSuccess}</p>
