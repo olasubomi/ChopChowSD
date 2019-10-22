@@ -1,14 +1,25 @@
-
-
-
-/******** design log in page ******/
-
+/* login page */
 @media only screen and (max-width: 1920px) {
+  .google_btn{
+    margin-left: 10px;
+  }
+  .fa_btn{
+    margin-left: 10px;
+  }
+  .login__label{
+    margin-right: 30px;
+    margin-left: -78px;
+  }
+  .login__input{
+    margin-left: -84px;
+    width: 186px;
+  }
   .login__form__text-muted {
     padding: 5px 0 40px;
     text-align: center;
     font-size: 15px;
     opacity: .8;
+    margin-left: -202px !important;
   }
   .link-forgot-password {
     color: black !important;
@@ -47,12 +58,10 @@
     color: black;
     border-radius: 3px;
   }
-
-
   .form-group {
     margin-bottom: 2rem;
-    margin-left: 360px;
-    margin-right: 40px;
+    margin-left: 361px;
+    margin-right: 20px;
     margin-top: 36px;
   }
   .form-text {
@@ -63,18 +72,15 @@
   }
   .msg-err {
     text-align: center;
-    /* padding: 0 22px; */
     margin-left: 9px;
-    /* margin-right: 40px; */
-    /* margin-bottom: 20px; */
     color: red;
   }
-  .create__msg-err {
+  .msg-success {
     text-align: center;
     padding: 0 22px;
     margin-bottom: -6px;
-    margin-right: -104px;
-    color: red;
+    margin-right: 30px;
+    color: green;
   }
   .login__form {
     width: 53%;
@@ -110,25 +116,20 @@
   .btn:hover {
     opacity: 1;
   }
- 
-  .google {
-    background-color: #dd4b39;
-    color: #fff;
-    margin-top: 60px;
-    margin-left: 34px;
-    margin-right: 3px;
-    width: 77%;
-  }
-  .fb {
-    background-color: #3b5998;
-    color: #fff;
-    margin-left: 36px;
-    margin-top: 56px;
-    margin-bottom: -1px;
+  .login__form-btn {
+    width: 26% !important;
+    background-color: #c3bebe!important;
+    background: #e6e4e1;
+    border-radius: 7px;
+    border: 2px solid #54514d;
+    margin-top: 83px;
+    height: 40px;
+    border-radius: 21px;
+    font-size: 20px!important;
   }
   .vl {
     position: absolute;
-    left: 50%;
+    left: 62%;
     -webkit-transform: translate(-50%);
     transform: translate(-50%);
     border: 2px solid #ddd;
@@ -142,7 +143,6 @@
     padding: 0 50px;
     margin-top: 6px;
   }
-  /* vertical line */
   .vl {
     position: absolute;
     left: 50%;
@@ -150,7 +150,6 @@
     border: 2px solid #ddd;
     height: 175px;
   }
-  /* text inside the vertical line */
   .vl-innertext {
     position: absolute;
     top: 50%;
@@ -160,485 +159,131 @@
     border-radius: 50%;
     padding: 8px 10px;
   }
-  /* hide some text on medium and large screens */
   .hide-md-lg {
     display: none;
   }
 }
 
 @media screen and (max-width: 1024px) {
+  .google_btn{
+    margin-left: 10px;
+  }
+  .fa_btn{
+    margin-left: 10px;
+  }
+  .login__label{
+    margin-right: 30px;
+    margin-left: -78px;
+  }
+  .login__input{
+    margin-left: -84px;
+    width: 186px;
+  }
+  .login__form-div-title {
+    width: 470px;
+    margin-left: 113px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .login__form-title{
+    margin-left: -129px
+  }
   .google {
-    margin-left: 35px;
-    padding-left: 4px;
+    background-color: #dd4b39;
+    color: #fff;
+    margin-top: 24px;
+    margin-left: 84px !important;
+    margin-right: 3px;
+    width: 201px !important;
+}
+.fb {
+  margin-top: 72px;
+  margin-left: 84px;
+  width: 201px;
+}
+.login__form__label {
+  margin-right: 60px;
+  margin-left: -1px;
+}
+.login__form__input {
+  margin-left: -5px;
+  width: 145px;
+}
+  .login__form-div-title {
+    width: 470px;
+    margin-left: 113px;
   }
-  .google {
-    margin-left: 35px;
-    padding-left: 4px;
+  .login__form-btn{
+    margin-left: 287px !important
   }
-  .form-group{
-    margin-right: 36px;
-  }
-  .col {
-    margin-left: 44px;
-    margin-top: 21px;
-}
-.form-control{
-  margin-left: -14px
-}
-
-}
-
-@media only screen and (max-width: 600px) {
-  .google {
-    margin-left: 30px;
-    padding-left: 4px;
-    width: 200px
-  }
-  .fb {
-    width: 200px;
-    margin-left: 34px
-  }
-  .col {
-    margin-left: 45px
-  }
-  .form-group {
-    margin-right: 10px
-  }
-  .login__form-btn {
-    margin-left: 274px;
-    margin-top: 10px;
-  }
-  .link-forgot-password {
-    margin-left: 258px
-  }
-  .login__form-title {
-    margin-left: -34px;
-    width: 398px
-  }
-  .form-text {
-    display: block;
-    margin-left: 6px;
-    margin-right: -157px;
-    margin-top: 14px;
-  }
-}
-
-@media screen and (max-width: 414px) {
-  .google {
-    margin-left: 30px;
-    padding-left: 4px;
-    width: 200px
-  }
-  .fb {
-    width: 200px;
-    margin-left: 34px
-  }
-  .col {
-    margin-left: 45px
-  }
-  .form-group {
-    margin-right: 10px
-  }
-  .login__form-btn {
-    margin-left: 274px !important;
-    margin-top: 10px !important;
-  }
-  .link-forgot-password {
-    margin-left: 258px
-  }
- 
-  .login__form-title {
-    margin-left: -34px;
-    width: 398px
-  }
-  .form-text {
-    display: block;
-    margin-left: 6px;
-    margin-right: -157px;
-    margin-top: 14px;
-  }  
-}
-
-/* signup page*/
-.content-signup {
-  width: 55%;
-  height: auto;
-  border-radius: 2px;
-  padding: 20px;
-  margin-left: 336px;
-  margin-bottom: 3px
-}
-
-.content-signup__word-sigup {
-  padding: 20px 0;
-  font-weight: 600;
-  align-items: center;
-  text-align: center;
-  letter-spacing: 0.04em;
-  color: #3d9caf;
-  background: #FFFFFF;
-}
-.content-signup__form-input{
-  margin-left: -331px;
-  width: 661px;
-}
-.content-signup__form-label{
-  margin-left: -325px
-}
-.content-signup__username {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__username-star, .content-signup__email-star, .content-signup__password-star, .content-signup__confirm-password-star {
-  color: red;
-}
-
-.content-signup__email {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__password {
-  color: black;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__confirm-password {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__submit {
-  height: 40px;
-  letter-spacing: 0.04em;
-  font-size: 18px;
-  line-height: 22px;
-  font-weight: bold !important;
-  margin-bottom: -570px;
-  width: 20%;
-  margin-left: 281px;
-    background-color: #c3bebe!important;
-    background: #e6e4e1;
-    border: 2px solid #54514d;
-    height: 40px;
-    border-radius: 21px;
-}
-
-.content-signup__submit:hover {
-  background-color: rgb(12, 120, 134) !important;
-}
-
-.content-signup__text-muted {
-  text-align: center;
-  padding: 10px 0;
-  margin-left: -364px;
-}
-
-.content-signup__word-login {
-  color: #1b7688 !important;
-  font-weight: 600;
-  font-size: 16px;
-  text-decoration: none;
-}
-
-.content-signup__word-login:hover {
-  text-decoration: none;
-  color: #104d58 !important;
-}
-
-.errormsg {
-  color: red;
-  margin-left: 363px
-}
-
-@media only screen and (max-width: 992px) {
-  .content-signup {
-    width: 95%;
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  .google {
-    margin-left: 35px;
-    padding-left: 4px;
+  .link-forgot-password{
+    margin-left: 267px
   }
   
 }
-@media screen and (max-width: 414px) {
-  .google {
-    margin-left: 35px;
-    padding-left: 4px;
-  }
-  .form-group{
-    margin-right: 36px;
-  }
-  .col {
-    margin-left: 44px;
-    margin-top: 21px;
+
+@media screen and (max-width: 375px){
+  .login__form__input {
+    margin-left: -5px;
+    width: 111px;
 }
-.form-control{
-  margin-left: -14px
+.fb {
+  margin-top: 52px !important;
+  margin-left: 84px;
+}
+.google {
+  margin-top: 72px;
+  margin-left: 84px;
+}
 }
 
+@media screen and (max-width: 360px){
+  .login__form__input {
+    margin-left: -5px;
+    width: 94px;
 }
 
-@media screen and (max-width: 375px) {
-  .google {
-    margin-left: 30px;
-    padding-left: 4px;
-    width: 200px
-  }
-  .fb {
-    width: 200px;
-    margin-left: 34px
-  }
-  .col {
-    margin-left: 45px
-  }
-  .form-group {
-    margin-right: 10px
-  }
-  .login__form-btn {
-    margin-left: 274px !important;
-    margin-top: 10px !important;
-  }
-  .link-forgot-password {
-    margin-left: 258px
-  }
-  .login__form-title {
-    margin-left: -34px;
-    width: 398px
-  }
-  .form-text {
-    display: block;
-    margin-left: 6px;
-    margin-right: -157px;
-    margin-top: 14px;
-  }
+.fb {
+  margin-top: 66px;
+  margin-left: 84px;
+}
+.google {
+  margin-top: 33px;
+  margin-left: 84px;
+}
 }
 
-@media screen and (max-width: 414px) {
-  .google {
-    margin-left: 30px;
-    padding-left: 4px;
-    width: 200px
+@media screen and (max-width: 320px){
+  .login__form-title{
+    margin-left: -52px
   }
-  .fb {
-    width: 200px;
-    margin-left: 34px
-  }
-  .col {
-    margin-left: 45px
-  }
-  .form-group {
-    margin-right: 10px
-  }
-  .login__form-btn {
-    margin-left: 274px;
-    margin-top: 10px;
-  }
-  .link-forgot-password {
-    margin-left: 258px
-  }
-  .login__form-title {
-    margin-left: -34px;
-    width: 398px
-  }
-  .form-text {
-    display: block;
-    margin-left: 6px;
-    margin-right: -157px;
-    margin-top: 14px;
-  }
+  .login__form__input {
+    margin-left: -5px;
+    width: 63px;
 }
 
-@media screen and (max-width: 320px) {
-  .login__form-btn {
-    margin-left: 274px !important;
-    margin-top: 10px !important;
-  }
-  .google {
-    margin-left: 30px;
-    padding-left: 4px;
-    width: 200px
-  }
-  .fb {
-    width: 192px;
-    margin-left: 34px
-  }
-  .col {
-    margin-left: 45px;
-    margin-top: 28px
-  }
-  .form-group {
-    margin-right: -30px
-  }
-  .login__form-btn {
-    margin-left: 274px;
-    margin-top: 10px;
-    width: 99px;
-  }
-  .link-forgot-password {
-    margin-left: 258px
-  }
-  .login__form-title {
-    margin-left: -34px;
-    width: 326px
-  }
-  .form-text {
-    display: block;
-    margin-left: 6px;
-    margin-right: -157px;
-    margin-top: 14px;
-  }
+.fb {
+  margin-top: 66px;
+  margin-left: 70px !important;
 }
-
-
-/* signup page*/
-.content-signup {
-  width: 55%;
-  height: auto;
-  border-radius: 2px;
-  padding: 20px;
-  margin-left: 336px;
-  margin-bottom: 3px
+.google {
+  margin-top: 33px;
+  margin-left: 70px !important;
 }
-
-.content-signup__word-sigup {
-  padding: 20px 0;
-  font-weight: 600;
-  align-items: center;
-  text-align: center;
-  letter-spacing: 0.04em;
-  color: #3d9caf;
-  background: #FFFFFF;
 }
-.content-signup__form-input{
-  margin-left: -331px;
-  width: 661px;
-}
-.content-signup__form-label{
-  margin-left: -325px
-}
-.content-signup__username {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__username-star, .content-signup__email-star, .content-signup__password-star, .content-signup__confirm-password-star {
-  color: red;
-}
-
-.content-signup__email {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__password {
-  color: black;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__confirm-password {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  letter-spacing: 0.03em;
-  color: black;
-  border-radius: 3px;
-}
-
-.content-signup__submit {
-  height: 40px;
-  letter-spacing: 0.04em;
-  font-size: 18px;
-  line-height: 22px;
-  font-weight: bold !important;
-  margin-bottom: -570px;
-  width: 20%;
-  margin-left: 281px;
-    background-color: #c3bebe!important;
-    background: #e6e4e1;
-    border: 2px solid #54514d;
-    height: 40px;
-    border-radius: 21px;
-}
-
-.content-signup__submit:hover {
-  background-color: rgb(12, 120, 134) !important;
-}
-
-.content-signup__text-muted {
-  text-align: center;
-  padding: 10px 0;
-  margin-left: -364px;
-}
-
-.content-signup__word-login {
-  color: #1b7688 !important;
-  font-weight: 600;
-  font-size: 16px;
-  text-decoration: none;
-}
-
-.content-signup__word-login:hover {
-  text-decoration: none;
-  color: #104d58 !important;
-}
-
-.errormsg {
-  color: red;
-  margin-left: 363px
-}
-
-@media only screen and (max-width: 992px) {
-  .content-signup {
-    width: 95%;
-  }
-}
-
 
 /* grocery page */
-
 @media screen and (max-width: 1920px) {
-
   .page__container {
-
     margin-left: 164px;
     margin-top: 1rem;
     height: 393px;
     width: 73%;
+  }
+  .create__msg-err{
+    margin-left: 585px;
+    color: red;
   }
   .yourlist__card {
     border: 1px solid rgba(234, 234, 234, 0.9) !important;
@@ -653,7 +298,6 @@
   .yourlist__card:hover {
     box-shadow: 0 0 30px -15px rgba(0, 0, 0, 0.3);
   }
- 
   .card-img {
     box-shadow: 0 0 25px rgba(0, 0, 0, .25);
     width: 160px;
@@ -719,7 +363,6 @@
 }
   .modal-content {
     width: 1346px;
-    /* margin-left: -424px; */
     pointer-events: auto;
     background-clip: padding-box;
     border-radius: -2.7rem;
@@ -794,11 +437,10 @@
   }
   .yourlist__card-text-create{
     margin-top: 24px;
-
   }
   .btn-primary {
     color: #2f2c2c;
-    margin-left: -9px;
+    margin-left: -25px;
     background-color: #c1c5ca;
     border-color: #525456;
     border: 51px;
@@ -807,7 +449,7 @@
     margin-top: -421px;
 }
   .yourlist__buttonDelete {
-    margin-top: -258px;
+    margin-top: -247px;
     margin-left: 850px;
     cursor: pointer;
 }
@@ -840,7 +482,6 @@
  .yourlist__card-text-add{
    margin-left:370px
  }
-/*item typeahead*/
 .yourlist__item-typeahead__word{
   margin-left: 15px;
     margin-top: 82px;
@@ -874,7 +515,6 @@
   margin-top: 2px;
   padding-left: 19px;
   width: 233px;
-
 }
 .yourlist__item-typeahead__card-text{
   margin-left: 29px;
@@ -974,11 +614,11 @@
 
  @media screen and (max-width: 1024px) {
   .dataTypeahead__buttonDelete {
-    margin-left: 616px;
-    margin-top: -244px;
+    margin-left: 848px;
+    margin-top: -233px;
 }   
   .dataTypeahead__buttonAdd {
-    margin-left: 598px;
+    margin-left: 689px;
     margin-top: 116px;
 }
   .dataTypeahead__card-img {
@@ -986,11 +626,10 @@
     width: 160px;
     height: 50%;
     margin-top: 0px;
-    margin-bottom: -343px;
+    margin-bottom: -249px;
     margin-left: 50px;
 }
   .dataTypeahead__card-div{
-
     margin-left: 343px;
     margin-top: 90px;
   }
@@ -1148,7 +787,7 @@
 
 .yourlist__buttonAdd {
   margin-left: 342px;
-  margin-top: -95px;
+  margin-top: -86px;
   width: 52px;
   height: 107px;
 }
@@ -1173,13 +812,13 @@
 }
 .dataTypeahead__buttonDelete {
   margin-left: 363px !important;
-  margin-top: -244px;
+  margin-top: -314px;
 }
   .yourlist__card-header {
     width: 140px
   }
   .btn-danger {
-    margin-left: 350px;
+    margin-left: 328px;
 }
   .page__container {
     width: 351px;
@@ -1199,11 +838,11 @@
 }
   .dataTypeahead__card-img {
     box-shadow: 0 0 25px rgba(0, 0, 0, .25);
-    width: 160px;
-    height: 50%;
+    width: 99px;
+    height: 17%;
     margin-top: 0px;
     margin-bottom: -343px;
-    margin-left: 50px;
+    margin-left: 106px;
 }
   .dataTypeahead__card-div{
 
@@ -1239,11 +878,11 @@
     margin-left: 50px
   }
   .yourlist__buttonDelete {
-    margin-left: 293px;
+    margin-left: 353px;
     margin-top: -383px;
   }
   .yourlist__card-div {
-    margin-left: 184px;
+    margin-left: 246px;
     width: 83x;
     height: 341px;
   }
@@ -1253,9 +892,9 @@
     width: 106px;
   }
   .card-img {
-    width: 51px;
-    height: 91px;
-    margin-left: 110px;
+    width: 70px;
+    height: 85px;
+    margin-left: 123px;
     margin-top: 149px;
   }
   .yourlist__card-header {
@@ -1266,9 +905,8 @@
     margin-left: -1px;
   }
   .yourlist__buttonAdd {
-    margin-left: 291px;
-    margin-top: -212px;
-    /* width: -57px; */
+    margin-left: 344px;
+    margin-top: -116px;
     height: 107px;
   }
   .yourlist__buttonDeleteList{
@@ -1278,6 +916,7 @@
     height: 91px;
 }
 }
+
 @media screen and (max-width: 411px) {
   .dataTypeahead__buttonDelete {
     margin-left: 616px;
@@ -1301,12 +940,12 @@ label {
   display: inline-block;
   margin-bottom: .5rem;
   margin-left: 121px;
-  /* margin-top: -18px; */
 }
+
 @media screen and (max-width: 414px) {
   .dataTypeahead__buttonDelete {
     margin-left: 616px;
-    margin-top: -244px;
+    margin-top: -304px;
 }
   .dataTypeahead__buttonAdd {
     margin-left: 598px;
