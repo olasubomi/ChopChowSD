@@ -29,7 +29,6 @@ VALUES
     12.00,
     '2 lbs',
     3.2
-
   ),(
     4,
     'Spinach',
@@ -120,205 +119,51 @@ VALUES
     'alaa',
     'badra',
     'alaabadra4@gmail.com',
-    '$2a$05$6Q1VE6DzhS8Z2pBr1VEPv.sM2dWPKacPv9GFC5M1.auGPlbab38aK',
+    '$2a$05$qLXGE2h8cI2xGDIhVJvuneIOADk89863sqvm.v/tdxqyk3PXs8RXW'
+,
     282,
     'salah',
     'gaza',
     12334,
     4566
-  ),
-  (
+  ),(
     2,
-    'ala',
-    'tare',
-    'aa@hotmail.com',
-    '$2a$05$xuOTwN1iWrraW7Og7cVAWu00RUpEXg6AV8X3Mz8cIUoQcT952FJ7e',
-     234,
+    'Olasubomi',
+    'Awokoya',
+    'olasubomi.awokoya@hotmail.com',
+    '$2a$05$It8ks6FUyy2nkuyd.l3FZOnhHitAvgcczUpwEXI1h7DNWCWj33ToK',
+    234,
     'areha',
     'american',
     12334,
     4566
-  ),  (
+),(
     3,
-    'alaa',
-    'bad',
-    'dim@gmail.com',
-    '$2a$05$mjKkeAAMAaEsORbu.ZQKQurq4nr3pW3n524uwz9uQBrwLt3iGMAQG',
+    'Ola',
+    'Awokoya',
+    'iamsubomi@gmail.com',
+    '$2a$05$fdi/EcpLum8N6m0MMXoTv.awoVUaSzpM8fcIIPG.QCfajEw7BXqtG',
     482,
     'salah',
     'gaza',
     12334,
     4566
-  ),
-  (
-    4,
-    'ala',
-    'tare',
-    'bbb@hotmail.com',
-    '$2a$05$rZ6MiHZcvdMzVwTyJsyJf.o.CXVgP0xt72NO0JzPL3o4uYtSfgJ9C',
-    124,
-    'areha',
-    'american',
-    12334,
-    4566
-  ) , (
-    5,
-    'alaa',
-    'badra',
-    'algg4@gmail.com',
-    '$2a$05$NaOMIHK8COoVXp1xikmcauCal6Cx1K.pTqszE8Gw2RbbgbcjWQ0VO',
-    282,
-    'salah',
-    'gaza',
-    12334,
-    4566
-  ),
-  (
-    6,
-    'ala',
-    'tare',
-    'ajkjl@hotmail.com',
-    '$2a$05$gjz9fzt2CFQK6Zrhm8vUW.P4fQEz/2K4DfEJvlFGt7Gmb/o1xRg32',
-    154,
-    'areha',
-    'american',
-    12334,
-    4566
-  ) , (
-    7,
-    'alaa',
-    'badra',
-    'kja4@gmail.com',
-    '$2a$05$V1KoBQdLmude8L1ZaQbkjux/qcf05Z0/HiPhgdZz7ZZk2Gc4dUa1i',
-    787,
-    'salah',
-    'gaza',
-    12334,
-    4566
-  ),
-  (
-    8,
-    'ala',
-    'tare',
-    'axxxa@hotmmmail.com',
-    '$2a$05$YatyAOyRB6VRqlWVE3xPY.NvCSMDuMo8V4Dh8/uT8hygqGUVVpKCe',
-    157,
-    'areha',
-    'american',
-    12334,
-    4566
-  ),  (
-    9,
-    'alaa',
-    'badra',
-    'afyya4@gmail.com',
-    ' $2a$05$N8bFcn7dxFTo9T3iyuhg7OmyME9NwNCd6EwSJRA62FPRmnzY1QO/q',
-    565,
-    'salah',
-    'gaza',
-    12334,
-    4566
-  ),
-  (
-    10,
-    'ala',
-    'tare',
-    'afffa@mail.com',
-    '$2a$05$dpziTRD44Dy/P1stEJbfuu086NMHE2481zEAVOpyEB3bDAmhySer2',
-    574,
-    'areha',
-    'american',
-    12334,
-    4566
-  ),  (
-    11,
-    'alaa',
-    'badra',
-    'snssm4@gmail.com',
-    '$2a$05$S8/r6KCtDwgvu1un1QgtxuZuNh2IHUm8SY0ZyUsuwapKU3/owa7vS',
-    482,
-    'salah',
-    'gaza',
-    12334,
-    4566
-  ),
-  (
-    12,
-    'ala',
-    'tare',
-    'aaaa@il.com',
-    '$2a$05$h8anTFmZNXG8mK53XPbhW.E54heHCiszhcPqEFBpdYILIqblS2fD2',
-    124,
-    'areha',
-    'american',
-    12334,
-    4566
-  ) , (
-    13,
-    'alaa',
-    'badra',
-    'sabra4@gmail.com',
-    '$2a$05$wvkNaf.YNF7ehwEE1qKncurUM9DjbRFLeAXoXLlM72r3y9Bfr1O9m',
-    482,
-    'salah',
-    'gaza',
-    12334,
-    4566
-  );
+);
   INSERT INTO
   customer_list (
     customer_id,
     list_id
   )
 VALUES(
-1,11
-),(
-  1,12
-),
-(
-  1,7
-),(
-  2,5
-),(
-  3,9
-),(
-  3,5
-),(
-  4,7
-),(
-  4,6
-),(
-  4,9
-),(
-  5,10
-),(
-  6,2
-),(
-  6,7
-),(
-  6,8
-),(
-  7,2
-),(
-  7,3
-),(
-  8,6
-),(
-  9,10
-),(
-  9,11
-),(
-  10,null
-),(
-  11,null
-),(
-  12,null
-),(
-  13,5
-),(
-  13,7
-),(
-  13,1
+  1,
+  1
+), (
+  2,
+  2
+), (
+  3,
+  3
+
 );
 INSERT INTO
   admin (id, name)

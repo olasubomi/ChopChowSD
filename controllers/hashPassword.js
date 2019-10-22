@@ -1,9 +1,13 @@
 const bcrypt = require('bcryptjs');
 exports.hashPassword = (req, res, next) => {
+  console.log(req.body);
   bcrypt.hash(req.body.password, 5, (error, hash) => {
+    console.log(req.body);
     if (error) {
-      res.status(500).send(JSON.stringify({ error: 'Internal Server Error' }));
+
+      res.status(500).send(JSON.stringify({ error: 'Internal Server Error ' + req.body.password }));
     } else {
+      console.log(hash)
       req.body.password = hash;
       res.end()
     }

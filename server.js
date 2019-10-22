@@ -8,7 +8,7 @@ const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
 const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
-
+  
 require('./db/dbMongo/config/db_connection');
 // require('./db/dbMongo/config/AllDataList')();
 // require('./db/dbMongo/config/AllDataCusomerList')();

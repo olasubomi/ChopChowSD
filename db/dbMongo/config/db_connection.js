@@ -13,4 +13,3 @@ db.once('open', function () {
     console.log('We are connected to the Mongo database :)');
 }
 );
-
