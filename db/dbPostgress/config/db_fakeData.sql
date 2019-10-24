@@ -142,13 +142,15 @@ VALUES
     'Ola',
     'Awokoya',
     'iamsubomi@gmail.com',
-    '$2a$05$fdi/EcpLum8N6m0MMXoTv.awoVUaSzpM8fcIIPG.QCfajEw7BXqtG',
-    482,
-    'salah',
-    'gaza',
-    12334,
+    'user1',
+    TRUE,
+    '$2a$05$6Q1VE6DzhS8Z2pBr1VEPv.sM2dWPKacPv9GFC5M1.auGPlbab38aK',
+    282,
+    'street',
+    'city',
+    92131,
     4566
-);
+  );
   INSERT INTO
   customer_list (
     customer_id,
