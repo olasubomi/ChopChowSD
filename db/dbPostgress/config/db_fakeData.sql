@@ -131,7 +131,7 @@ VALUES
     'Olasubomi',
     'Awokoya',
     'olasubomi.awokoya@hotmail.com',
-    '$2a$05$It8ks6FUyy2nkuyd.l3FZOnhHitAvgcczUpwEXI1h7DNWCWj33ToK',
+    '$2a$05$C2OPWtVFkyH/WBayaDmAduMiFVeHTenP8Cb8PVeWa8C.sSdKKE2O.',
     234,
     'areha',
     'american',

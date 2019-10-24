@@ -18,7 +18,7 @@ module.exports = async () => {
             firstname: 'Olasubomi',
             lastname: 'Awokoya',
             email: 'olasubomi.awokoya@hotmail.com',
-            password: '$2a$05$It8ks6FUyy2nkuyd.l3FZOnhHitAvgcczUpwEXI1h7DNWCWj33ToK',
+            password: '$2a$05$C2OPWtVFkyH/WBayaDmAduMiFVeHTenP8Cb8PVeWa8C.sSdKKE2O.',
             phoneNumber: 234,
             street:'areha',
             city:'american',
