@@ -1,60 +1,15 @@
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  "files": {
-    "main.css": "/static/css/main.90862bdf.chunk.css",
-    "main.js": "/static/js/main.829daf19.chunk.js",
-    "main.js.map": "/static/js/main.829daf19.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.4b156530.js",
-    "runtime-main.js.map": "/static/js/runtime-main.4b156530.js.map",
-    "static/css/2.75162327.chunk.css": "/static/css/2.75162327.chunk.css",
-    "static/js/2.8061cd0c.chunk.js": "/static/js/2.8061cd0c.chunk.js",
-    "static/js/2.8061cd0c.chunk.js.map": "/static/js/2.8061cd0c.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.0d3e9df509a6a36a35799d868d1e011a.js": "/precache-manifest.0d3e9df509a6a36a35799d868d1e011a.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/2.75162327.chunk.css.map": "/static/css/2.75162327.chunk.css.map",
-    "static/css/main.90862bdf.chunk.css.map": "/static/css/main.90862bdf.chunk.css.map"
-  }
-=======
-  "main.css": "/static/css/main.a9e03a84.chunk.css",
-  "main.js": "/static/js/main.82095682.chunk.js",
-  "main.js.map": "/static/js/main.82095682.chunk.js.map",
-=======
-  "main.css": "/static/css/main.9e882417.chunk.css",
-  "main.js": "/static/js/main.4d8dfa30.chunk.js",
-  "main.js.map": "/static/js/main.4d8dfa30.chunk.js.map",
->>>>>>> sign up
-  "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
-  "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
-  "static/css/2.c48ae796.chunk.css": "/static/css/2.c48ae796.chunk.css",
-  "static/js/2.586325fe.chunk.js": "/static/js/2.586325fe.chunk.js",
-  "static/js/2.586325fe.chunk.js.map": "/static/js/2.586325fe.chunk.js.map",
-  "index.html": "/index.html",
-  "precache-manifest.7f3108322d315503deae6fff9224ef51.js": "/precache-manifest.7f3108322d315503deae6fff9224ef51.js",
-  "service-worker.js": "/service-worker.js",
-<<<<<<< HEAD
-  "static/css/2.811a5e5a.chunk.css.map": "/static/css/2.811a5e5a.chunk.css.map",
-  "static/css/main.a9e03a84.chunk.css.map": "/static/css/main.a9e03a84.chunk.css.map"
->>>>>>> Done registartion
-=======
-  "static/css/2.c48ae796.chunk.css.map": "/static/css/2.c48ae796.chunk.css.map",
-  "static/css/main.9e882417.chunk.css.map": "/static/css/main.9e882417.chunk.css.map"
->>>>>>> sign up
-=======
-  "main.css": "/static/css/main.452ba1d0.chunk.css",
-  "main.js": "/static/js/main.4867affb.chunk.js",
-  "main.js.map": "/static/js/main.4867affb.chunk.js.map",
+  "main.css": "/static/css/main.915fa494.chunk.css",
+  "main.js": "/static/js/main.5a7c095d.chunk.js",
+  "main.js.map": "/static/js/main.5a7c095d.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
   "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
   "static/css/2.141de4c2.chunk.css": "/static/css/2.141de4c2.chunk.css",
-  "static/js/2.3ed9fcce.chunk.js": "/static/js/2.3ed9fcce.chunk.js",
-  "static/js/2.3ed9fcce.chunk.js.map": "/static/js/2.3ed9fcce.chunk.js.map",
+  "static/js/2.5df82a4d.chunk.js": "/static/js/2.5df82a4d.chunk.js",
+  "static/js/2.5df82a4d.chunk.js.map": "/static/js/2.5df82a4d.chunk.js.map",
   "index.html": "/index.html",
-  "precache-manifest.70fc8ebdd00c682d8fce80c44d3d5cf9.js": "/precache-manifest.70fc8ebdd00c682d8fce80c44d3d5cf9.js",
+  "precache-manifest.9a4f71adb357db3337495a0e2602bd79.js": "/precache-manifest.9a4f71adb357db3337495a0e2602bd79.js",
   "service-worker.js": "/service-worker.js",
   "static/css/2.141de4c2.chunk.css.map": "/static/css/2.141de4c2.chunk.css.map",
-  "static/css/main.452ba1d0.chunk.css.map": "/static/css/main.452ba1d0.chunk.css.map"
->>>>>>> merged
+  "static/css/main.915fa494.chunk.css.map": "/static/css/main.915fa494.chunk.css.map"
 }
