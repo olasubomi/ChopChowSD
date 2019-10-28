@@ -1,6 +1,7 @@
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "files": {
     "main.css": "/static/css/main.90862bdf.chunk.css",
     "main.js": "/static/js/main.829daf19.chunk.js",
@@ -41,4 +42,19 @@
   "static/css/2.c48ae796.chunk.css.map": "/static/css/2.c48ae796.chunk.css.map",
   "static/css/main.9e882417.chunk.css.map": "/static/css/main.9e882417.chunk.css.map"
 >>>>>>> sign up
+=======
+  "main.css": "/static/css/main.452ba1d0.chunk.css",
+  "main.js": "/static/js/main.4867affb.chunk.js",
+  "main.js.map": "/static/js/main.4867affb.chunk.js.map",
+  "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+  "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+  "static/css/2.141de4c2.chunk.css": "/static/css/2.141de4c2.chunk.css",
+  "static/js/2.3ed9fcce.chunk.js": "/static/js/2.3ed9fcce.chunk.js",
+  "static/js/2.3ed9fcce.chunk.js.map": "/static/js/2.3ed9fcce.chunk.js.map",
+  "index.html": "/index.html",
+  "precache-manifest.70fc8ebdd00c682d8fce80c44d3d5cf9.js": "/precache-manifest.70fc8ebdd00c682d8fce80c44d3d5cf9.js",
+  "service-worker.js": "/service-worker.js",
+  "static/css/2.141de4c2.chunk.css.map": "/static/css/2.141de4c2.chunk.css.map",
+  "static/css/main.452ba1d0.chunk.css.map": "/static/css/main.452ba1d0.chunk.css.map"
+>>>>>>> merged
 }

@@ -13,11 +13,12 @@ exports.signupCustomer = (req, res, next) => {
                     getHashPassword(password)
                         .then((hashedPass) => {
                             let sql = {
-                                text: 'insert into customer (email, phone, username, password, emailnotifcation) values($1, $2, $3, $4, $5)',
+                                text: 'insert into customer (email, phone, username, password, emailnotification) values($1, $2, $3, $4, $5) RETURNING id',
                                 values: [email, phone, username, hashedPass, emailNotifcation]
                             };
 
                             pool.query(sql).then(data => {
+                                let id  = data.rows[0].id;
                                 mailer(email);
                                 res.status(200).send(JSON.stringify({ msg: 'User Sign up successfully', done: true }))
                             }, e => {
