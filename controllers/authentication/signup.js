@@ -13,7 +13,7 @@ exports.signupCustomer = (req, res, next) => {
                     getHashPassword(password)
                         .then((hashedPass) => {
                             let sql = {
-                                text: 'insert into customer (email, phone, username, password, emailnotification) values($1, $2, $3, $4, $5) RETURNING id',
+                                text: 'insert into customer (email, phonenumber, username, password, emailnotifcation) values($1, $2, $3, $4, $5) RETURNING id',
                                 values: [email, phone, username, hashedPass, emailNotifcation]
                             };
 

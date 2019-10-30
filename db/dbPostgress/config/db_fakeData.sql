@@ -114,20 +114,8 @@ INSERT INTO
     ipsid
   )
 VALUES
-  (
+(
     1,
-    'alaa',
-    'badra',
-    'alaabadra4@gmail.com',
-    '$2a$05$qLXGE2h8cI2xGDIhVJvuneIOADk89863sqvm.v/tdxqyk3PXs8RXW'
-,
-    282,
-    'salah',
-    'gaza',
-    12334,
-    4566
-  ),(
-    2,
     'Olasubomi',
     'Awokoya',
     'olasubomi.awokoya@hotmail.com',
@@ -138,12 +126,10 @@ VALUES
     12334,
     4566
 ),(
-    3,
+    2,
     'Ola',
     'Awokoya',
     'iamsubomi@gmail.com',
-    'user1',
-    TRUE,
     '$2a$05$6Q1VE6DzhS8Z2pBr1VEPv.sM2dWPKacPv9GFC5M1.auGPlbab38aK',
     282,
     'street',
@@ -162,10 +148,6 @@ VALUES(
 ), (
   2,
   2
-), (
-  3,
-  3
-
 );
 INSERT INTO
   admin (id, name)
