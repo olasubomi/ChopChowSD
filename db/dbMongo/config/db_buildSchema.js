@@ -23,6 +23,8 @@ exports.customer = mongoose.model('customer', new Schema({
     city: String,
     zipCode: Number,
     ipsid: Number,
+    username: String,
+    emailnotifcation: Boolean
 }))
 exports.customer_list = mongoose.model('customer_list', new Schema({
     id: Number,

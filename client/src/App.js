@@ -25,6 +25,9 @@ import CartPage from './components/GroceryPage/CartPage';
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
 import SignUp from './components/signup';
+import ForgotPassword from './components/forgotpassword';
+import ResetPassword from './components/resetpassword';
+
 class App extends Component {
 
 
@@ -650,7 +653,20 @@ class App extends Component {
                             <SignUp {...props} />
                         )}
                     />
-                    
+          <Route
+                        exact
+                        path="/resetpass"
+                        render={props => (
+                            <ResetPassword {...props} />
+                        )}
+                    />
+          <Route
+                        exact
+                        path="/forgotpass"
+                        render={props => (
+                            <ForgotPassword {...props} />
+                        )}
+                    />
                     <Route exact path="/" render={(props) => (
                         <div>
                             <div id="title">

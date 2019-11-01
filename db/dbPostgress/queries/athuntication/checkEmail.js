@@ -32,4 +32,20 @@ const checkEmailUser = (email) => {
   return conn;
 };
 
- module.exports = { checkEmail, checkEmailUser };
+const checkValideToken = (token) => {
+  let conn; 
+  try {
+    const sql = {
+      text: 'SELECT * FROM customer WHERE passwordtoken = $1',
+      values: [token],
+    };
+    conn = dbconnection.query(sql);
+   } catch(e) {
+     console.log(e)
+   }
+
+  return conn;
+};
+
+
+ module.exports = { checkEmail, checkEmailUser, checkValideToken };
