@@ -24,7 +24,9 @@ CREATE TABLE customer(
   zipCode INTEGER,
   ipsid INTEGER,
   username TEXT,
-  emailnotifcation BOOLEAN
+  emailnotifcation BOOLEAN,
+  passwordtoken TEXT,
+  list_id SERIAL
 );
 
 CREATE  TABLE customer_list (

@@ -18,8 +18,9 @@ const {
   password,
   database: pathname.split('/')[1],
   max: process.env.MAX_DB_CONNECTION || 2,
-  ssl:false
+  ssl: true
 };
+
 
  const pool = new Pool(options);
 module.exports = pool;

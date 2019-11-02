@@ -72,6 +72,7 @@ exports.forgotPassword = (req, res, next) => {
             res.status(400).send(JSON.stringify({ msg: 'your email does not exist.' }))
         }
     }).catch((e) => {
+        console.log(e)
         res.status(500).send(JSON.stringify({ msg: 'Internal server error' }))
     })
 };
