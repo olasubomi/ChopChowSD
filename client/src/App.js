@@ -3,9 +3,6 @@ import React, { Component } from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-// import ListedMealsSection from './components/mealMenu/ListedMealsSection';
-// import RecipeContentSection from './components/mealMenu/RecipeContentSection';
-// import IngredientSection from './components/mealMenu/IngredientSection';
 import { Nav, Navbar, Alert, NavDropdown, Form, FormControl } from 'react-bootstrap'
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
@@ -75,27 +72,24 @@ class App extends Component {
 
     meal_popups = [];
 
-    componentDidMount() {
+    // componentDidMount() {
+    //     this.auth();
+    //     console.log("Comes in apps component did mount")
+    //     var url = "http://localhost:5000/get_products"
+    //     fetch(url)
+    //         .then(res => res.text())
+    //         .then(body => {
+    //             var productsList = JSON.parse(body);
 
-        this.auth();
-        console.log("Comes in apps component did mount")
-        var url = "http://localhost:5000/get_products"
-        fetch(url)
-            .then(res => res.text())
-            .then(body => {
-                var productsList = JSON.parse(body);
-
-                for (var i = 0; i < productsList.length; i++) {
-                    this.products.push(productsList[i].product_name);
-                    // console.log(productsList[i].product_name)
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
-
-
-    }
+    //             for (var i = 0; i < productsList.length; i++) {
+    //                 this.products.push(productsList[i].product_name);
+    //                 // console.log(productsList[i].product_name)
+    //             }
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
+    // }
 
     showIngredients = (event) => {
         let mealString = event.target.innerText;
@@ -118,28 +112,6 @@ class App extends Component {
         this.setState({
             suggestMealPopOver: !this.state.suggestMealPopOver
         });
-    }
-
-    meal_popups = [];
-
-    componentDidMount() {
-        console.log("Comes in component did mount")
-        var url = "http://localhost:5000/get_products"
-        var url = "https://chopchowsd.herokuapp.com/get_products" // call in production
-
-        fetch(url)
-            .then(res => res.text())
-            .then(body => {
-                console.log()
-                var productsList = JSON.parse(body)
-                for (var i = 0; i < productsList.length; i++) {
-                    this.products.push(productsList[i].product_name);
-                    console.log(productsList[i].product_name)
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
     }
 
     showIngredient(index) {

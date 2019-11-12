@@ -10,9 +10,9 @@ const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
   
 require('./db/dbMongo/config/db_connection');
-require('./db/dbMongo/config/AllDataList')();
-require('./db/dbMongo/config/AllDataCusomerList')();
-require('./db/dbMongo/config/AllDataCustomer')();
+// require('./db/dbMongo/config/AllDataList')();
+// require('./db/dbMongo/config/AllDataCusomerList')();
+// require('./db/dbMongo/config/AllDataCustomer')();
 
 
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
@@ -32,7 +32,7 @@ var bodyParser = require('body-parser');
 const { getList } = require("./controllers/list/getList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
 
-const { getMeals } = require("./controllers/list/getMeals");
+// const { getMeals } = require("./controllers/list/getMeals");
  
 // const appendItem = require('./controllers/list/appendItem')
 const removeItem = require('./controllers/list/removeItem');
@@ -65,7 +65,7 @@ app.get('/get_products', (req, res) => {
     console.log(uri);
     //const opts  = {db:{authSource: 'users'}};
     // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
-    MongoClient.connect(uri, { useNewUrlParser: true }, function (err, db) {
+    MongoClient.connect(uri, {useUnifiedTopology: true, useNewUrlParser: true}, function (err, db) {
         if (err) throw err;
         // console.log(JSON.stringify(collection));
         // store = JSON.stringify(collection);
@@ -74,6 +74,30 @@ app.get('/get_products', (req, res) => {
         dbo.collection("all_products").find({}).toArray(function (err, result) {
             if (err) throw err;
             // console.log(result);
+            res.send(result);
+            // perform actions on the collection object
+            db.close();
+        });
+    });
+});
+
+app.get('/get_meals', (req, res) => {
+
+    console.log("Calling all Mongo meals");
+    var collection;
+    const client = new MongoClient(uri, { useNewUrlParser: true });
+    console.log(uri);
+    //const opts  = {db:{authSource: 'users'}};
+    // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+    MongoClient.connect(uri, { useNewUrlParser: true }, function (err, db) {
+        if (err) throw err;
+        // console.log(JSON.stringify(collection));
+        // store = JSON.stringify(collection);
+        // res.send(store);
+        var dbo = db.db("Product_Supply");
+        dbo.collection("meals").find({}).toArray(function (err, result) {
+            if (err) throw err;
+            console.log(result);
             res.send(result);
             // perform actions on the collection object
             db.close();
@@ -141,7 +165,7 @@ app.get('/terms-of-service', (req, res) => {
 app.get('/getList/:customerId', getList)
 
 app.get('/api/get-all-data-lists', getAllDataLists)
-app.get('/api/get-meals', getMeals)
+// app.get('/api/get-meals', getMeals)
 
 
 // on enetering landing page
