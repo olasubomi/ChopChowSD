@@ -32,7 +32,7 @@ var bodyParser = require('body-parser');
 const { getList } = require("./controllers/list/getList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
 
-// const { getMeals } = require("./controllers/list/getMeals");
+const { getMeals } = require("./controllers/list/getMeals");
  
 // const appendItem = require('./controllers/list/appendItem')
 const removeItem = require('./controllers/list/removeItem');
@@ -59,7 +59,7 @@ app.use('/facebook', facebook);
 
 // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
 app.get('/get_products', (req, res) => {
-    console.log("Calling all Mongo products");
+    console.log("Calling server's get_products requet function !");
     var collection;
     const client = new MongoClient(uri, { useNewUrlParser: true });
     console.log(uri);
@@ -81,35 +81,11 @@ app.get('/get_products', (req, res) => {
     });
 });
 
-app.get('/get_meals', (req, res) => {
-
-    console.log("Calling all Mongo meals");
-    var collection;
-    const client = new MongoClient(uri, { useNewUrlParser: true });
-    console.log(uri);
-    //const opts  = {db:{authSource: 'users'}};
-    // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
-    MongoClient.connect(uri, { useNewUrlParser: true }, function (err, db) {
-        if (err) throw err;
-        // console.log(JSON.stringify(collection));
-        // store = JSON.stringify(collection);
-        // res.send(store);
-        var dbo = db.db("Product_Supply");
-        dbo.collection("meals").find({}).toArray(function (err, result) {
-            if (err) throw err;
-            console.log(result);
-            res.send(result);
-            // perform actions on the collection object
-            db.close();
-        });
-    });
-});
-
 app.get('/get_store_products', (req, res) => {
 
-    console.log("Calling all Mongo meals");
+    console.log("Calling all Mongo store products");
     var collection;
-    const client = new MongoClient(uri, { useNewUrlParser: true });
+    const client = new MongoClient(uri, { useNewUrlParser: true , useUnifiedTopology: true});
     console.log(uri);
     //const opts  = {db:{authSource: 'users'}};
     // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
@@ -165,16 +141,12 @@ app.get('/terms-of-service', (req, res) => {
 app.get('/getList/:customerId', getList)
 
 app.get('/api/get-all-data-lists', getAllDataLists)
-// app.get('/api/get-meals', getMeals)
+app.get('/api/get-meals', getMeals)
 
 
 // on enetering landing page
 app.get('/find', function (req, res) {
     app.get('/api/get-all-lists', getAllLists)
-
-
-
-
     console.log("Gets in get");
     if (!req.session.cart) {
         console.log("Creates a cart session")

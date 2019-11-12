@@ -43,7 +43,7 @@ exports.supplier = mongoose.model('supplier', new Schema({
 
 
 
-exports.meal = mongoose.model('meal', new Schema({
+exports.meals = mongoose.model('meals', new Schema({
     id: Number,
     label: String,
     imageSrc: String,

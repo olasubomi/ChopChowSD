@@ -72,24 +72,24 @@ class App extends Component {
 
     meal_popups = [];
 
-    // componentDidMount() {
-    //     this.auth();
-    //     console.log("Comes in apps component did mount")
-    //     var url = "http://localhost:5000/get_products"
-    //     fetch(url)
-    //         .then(res => res.text())
-    //         .then(body => {
-    //             var productsList = JSON.parse(body);
+    componentDidMount() {
+        this.auth();
+        console.log("Comes in apps component did mount")
+        var url = "http://localhost:5000/get_products"
+        fetch(url)
+            .then(res => res.text())
+            .then(body => {
+                var productsList = JSON.parse(body);
 
-    //             for (var i = 0; i < productsList.length; i++) {
-    //                 this.products.push(productsList[i].product_name);
-    //                 // console.log(productsList[i].product_name)
-    //             }
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         });
-    // }
+                for (var i = 0; i < productsList.length; i++) {
+                    this.products.push(productsList[i].product_name);
+                    // console.log(productsList[i].product_name)
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
 
     showIngredients = (event) => {
         let mealString = event.target.innerText;
