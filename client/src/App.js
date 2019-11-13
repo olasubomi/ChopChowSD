@@ -1,30 +1,22 @@
 /* eslint-disable no-dupe-class-members */
 import React, { Component } from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
-
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { Nav, Navbar, Alert, NavDropdown, Form, FormControl } from 'react-bootstrap'
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
-
 import { Link, Route, Switch } from "react-router-dom";
-import { Spinner } from 'react-bootstrap'
-import InfiniteCarousel from 'react-leaf-carousel';
-import Slider from './components/product_slider/slider';
 import WithScrollbar from './components/product_slider/WithScrollbar';
 import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 import IngredientSection from './components/mealMenu/IngredientSection';
 import ProductsSection from './components/productSection/ProductsPage';
-//import Collapse from 'react-bootstrap/Collapse';
-// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import CartPage from './components/GroceryPage/CartPage';
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
 import SignUp from './components/signup';
+
 class App extends Component {
-
-
     meals = [];
     // Mongo 
     products = [];
@@ -37,7 +29,6 @@ class App extends Component {
 
         this.state = {
             messageVisible: false,
-
             showAlert: '',
             messageAlert: '',
             variant: '',
@@ -48,7 +39,6 @@ class App extends Component {
             valueAllDataLists: [],
             message: null,
             isAuthenticated: false,
-
             suggestMealPopOver: false,
             mealsListed: false,
             mealSelected: false,
@@ -73,22 +63,174 @@ class App extends Component {
     meal_popups = [];
 
     componentDidMount() {
+        this.handleLogout();
         this.auth();
-        console.log("Comes in apps component did mount")
-        var url = "http://localhost:5000/get_products"
-        fetch(url)
-            .then(res => res.text())
-            .then(body => {
-                var productsList = JSON.parse(body);
 
-                for (var i = 0; i < productsList.length; i++) {
-                    this.products.push(productsList[i].product_name);
-                    // console.log(productsList[i].product_name)
-                }
+        fetch('/api/get-meals', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .then(response => {
+            console.log("Going in component did mounts: api/get_meals")
+            if (response) {
+                this.setState({
+                    recipes: response.data,
+                    selectedMealIngredients: response.data[0].new_ingredients,
+                    selectedMeal: response.data[0],
+                    mealsLength: response.data.length
+                });
+            }
+        }).catch((err) => {
+            console.log('err', err);
+        })
+
+        this.handleClickTypeahead = (optionItem) => {
+            const { itemTypeahead } = this.state;
+            if (!optionItem) return;
+            console.log(optionItem)
+            optionItem.map(option => {
+                fetch(`/api/get-data-typeahead/${option}`, {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                })
+                    .then(res => {
+                        return res.json()
+                    })
+                    .then(responseGet => {
+                        this.setState({ idItem: responseGet.data[0].id })
+                        const { customerId, idItem } = this.state;
+                        fetch(`/api/add-data-typeahead-for-customer/${idItem}/${customerId}`, {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            headers: {
+                                Accept: 'application/json',
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                            .then(res => {
+                                if (res) {
+                                    if (res.status === 500) {
+                                        this.setState({
+                                            messageAlert: 'internal server error',
+                                            showAlert: true,
+                                            variant: 'danger'
+                                        },
+                                            () =>
+                                                setTimeout(() => {
+                                                    this.setState({ messageAlert: '', showAlert: false })
+                                                }, 6000)
+                                        )
+
+                                    } else if (res.status === 200) {
+                                        return res.json()
+                                            .then(response => {
+                                                this.setState({ itemTypeahead: [] })
+                                                this.setState({ itemTypeahead: [...itemTypeahead, ...responseGet.data] })
+                                            })
+                                    } else if (res.status === 304) {
+                                        return res.json()
+                                            .then(response => {
+                                                this.setState({ itemTypeahead: [] })
+                                                this.setState({ itemTypeahead: [...itemTypeahead] })
+                                            })
+                                    }
+                                }
+                            })
+                    })
             })
-            .catch(err => {
-                console.log(err);
-            });
+        }
+
+        // fetch('/api/grocery', {
+        //     method: 'GET',
+        //     headers: {
+        //         'Content-type': 'application/json',
+        //     },
+        // })
+        //     .then(res => {
+        //         return res.json()
+
+        //     })
+        //     .then(response => {
+        //         if (response.success && response.data) {
+        //             this.setState({ Authentication: true });
+        //         } else {
+        //             this.setState({ Authenticated: false })
+        //         }
+        //         this.setState({ customerId: response.data })
+        //         const { customerId } = this.state;
+        //         fetch(`/api/getList/${customerId}`, {
+        //             method: 'GET',
+        //             credentials: 'same-origin',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //             },
+
+        //         })
+        //             .then(res => {
+        //                 return res.json()
+        //             })
+        //             .then(response => {
+        //                 if (response) {
+        //                     this.setState({ valueData: response.data })
+        //                 }
+        //             }).catch(() => {
+        //                 this.setState({
+        //                     messageAlert: 'internal server error',
+        //                     showAlert: true,
+        //                     variant: 'danger'
+        //                 },
+        //                     () =>
+        //                         setTimeout(() => {
+        //                             this.setState({ messageAlert: '', showAlert: false })
+        //                         }, 6000)
+        //                 )
+        //             })
+        //     })
+
+
+        // fetch('/api/get-all-data-lists', {
+        //     method: 'GET',
+        //     credentials: 'same-origin',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+
+        // })
+        //     .then(res => res.json())
+        //     .then(response => {
+        //         if (response) {
+        //             let arrAllData = [];
+        //             let resArr = response.data
+
+        //             for (let i = 0; i <= resArr.length - 1; i++) {
+
+        //                 arrAllData.push(response.data[i].product_name);
+
+        //                 this.setState({ valueAllDataLists: arrAllData })
+        //             }
+        //         }
+        //     }).catch(() => {
+        //         this.setState({
+        //             messageAlert: 'internal server error',
+        //             showAlert: true,
+        //             variant: 'danger'
+        //         },
+        //             () =>
+        //                 setTimeout(() => {
+        //                     this.setState({ messageAlert: '', showAlert: false })
+        //                 }, 6000)
+        //         )
+
+
+        //     })
     }
 
     showIngredients = (event) => {
@@ -188,183 +330,6 @@ class App extends Component {
             })
     }
 
-    componentDidMount() {
-        this.handleLogout();
-        this.auth();
-        this.handleClickTypeahead = (optionItem) => {
-            const { itemTypeahead } = this.state;
-            if (!optionItem) return;
-            console.log(optionItem)
-            optionItem.map(option => {
-                fetch(`/api/get-data-typeahead/${option}`, {
-                    method: 'GET',
-                    credentials: 'same-origin',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                })
-                    .then(res => {
-                        return res.json()
-                    })
-                    .then(responseGet => {
-                        this.setState({ idItem: responseGet.data[0].id })
-                        const { customerId, idItem } = this.state;
-                        fetch(`/api/add-data-typeahead-for-customer/${idItem}/${customerId}`, {
-                            method: 'POST',
-                            credentials: 'same-origin',
-                            headers: {
-                                Accept: 'application/json',
-                                'Content-Type': 'application/json',
-                            },
-                        })
-                            .then(res => {
-                                if (res) {
-                                    if (res.status === 500) {
-                                        this.setState({
-                                            messageAlert: 'internal server error',
-                                            showAlert: true,
-                                            variant: 'danger'
-                                        },
-                                            () =>
-                                                setTimeout(() => {
-                                                    this.setState({ messageAlert: '', showAlert: false })
-                                                }, 6000)
-                                        )
-
-                                    } else if (res.status === 200) {
-                                        return res.json()
-                                            .then(response => {
-                                                this.setState({ itemTypeahead: [] })
-                                                this.setState({ itemTypeahead: [...itemTypeahead, ...responseGet.data] })
-                                            })
-                                    } else if (res.status === 304) {
-                                        return res.json()
-                                            .then(response => {
-                                                this.setState({ itemTypeahead: [] })
-                                                this.setState({ itemTypeahead: [...itemTypeahead] })
-                                            })
-                                    }
-                                }
-                            })
-                    })
-            })
-        }
-
-        fetch('/api/grocery', {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-            },
-        })
-            .then(res => {
-                return res.json()
-
-            })
-            .then(response => {
-                if (response.success && response.data) {
-                    this.setState({ Authentication: true });
-                } else {
-                    this.setState({ Authenticated: false })
-                }
-                this.setState({ customerId: response.data })
-                const { customerId } = this.state;
-                fetch(`/api/getList/${customerId}`, {
-                    method: 'GET',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-
-                })
-                    .then(res => {
-                        return res.json()
-                    })
-                    .then(response => {
-                        if (response) {
-                            this.setState({ valueData: response.data })
-                        }
-                    }).catch(() => {
-                        this.setState({
-                            messageAlert: 'internal server error',
-                            showAlert: true,
-                            variant: 'danger'
-                        },
-                            () =>
-                                setTimeout(() => {
-                                    this.setState({ messageAlert: '', showAlert: false })
-                                }, 6000)
-                        )
-                    })
-            })
-
-
-        fetch('/api/get-all-data-lists', {
-            method: 'GET',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-
-        })
-            .then(res => res.json())
-            .then(response => {
-                if (response) {
-                    let arrAllData = [];
-                    let resArr = response.data
-
-                    for (let i = 0; i <= resArr.length - 1; i++) {
-
-                        arrAllData.push(response.data[i].product_name);
-
-                        this.setState({ valueAllDataLists: arrAllData })
-                    }
-                }
-            }).catch(() => {
-                this.setState({
-                    messageAlert: 'internal server error',
-                    showAlert: true,
-                    variant: 'danger'
-                },
-                    () =>
-                        setTimeout(() => {
-                            this.setState({ messageAlert: '', showAlert: false })
-                        }, 6000)
-                )
-
-
-            })
-
-
-        fetch('/api/get-meals', {
-            method: 'GET',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-
-        })
-            .then(res => res.json())
-            .then(response => {
-                if (response) {
-                    this.setState({
-                        recipes: response.data,
-                        selectedMealIngredients: response.data[0].new_ingredients,
-                        selectedMeal: response.data[0],
-                        mealsLength: response.data.length
-                    });
-                }
-            }).catch((err) => {
-                console.log('err', err);
-
-            })
-
-
-
-    }
-
-
-
     render() {
         const { messageAlert, showAlert, variant, itemTypeahead, valueAllDataLists, isAuthenticated, } = this.state;
 
@@ -382,7 +347,7 @@ class App extends Component {
             var popUpSlides = [];
 
             const instructionsLength = value.instructions.length;
-            //console.log(instructionsLength);
+            console.log(instructionsLength);
 
             // var mealIngredient = value.ingredients ;
             const ingredientsList = value.ingredients.map((step) => <li key={step} > {step} </li>);
@@ -391,8 +356,8 @@ class App extends Component {
                 popUpSlides.push(<button key={i} onClick={this.updateInstructionsDisplayBaseIndex}>Slide {i}  </button>)
             }
             this.meal_popups.push(false);
-            // console.log(this.meal_popups);
-            // console.log(index);
+            console.log(this.meal_popups);
+            console.log(index);
             items.push(
                 <>
                     <div className="col-sm-12 col-md-6 col-lg-4 mealContainer" key={value.id} >
@@ -728,31 +693,6 @@ class App extends Component {
                         <ProductsSection />
                     )} />
                 </Switch>
-
-                {/* <div className="row">
-    <div className="col-sm">
-        <b>Meals</b>
-        <ListedMealsSection 
-        recipes={this.state.recipes} showIngredients={this.showIngredients}
-        selectedMeal={this.state.selectedMeal}/>
-        
-        
-
-        </div>                     
-    <div className="col-sm">
-        <b>Recipe Contents</b>
-        <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
-        
-    </div>
-
-    <div className="col-sm">
-        <b>Ingredients</b>
-        <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}
-        selectedMeal= {this.state.selectedMeal}/>
-    </div>
-    
-    
-</div> */}
             </div>
         );
     }
@@ -773,18 +713,6 @@ const contentStyle = {
     overflow: "scroll",
     width: "80%",
 };
-
-
-/* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
-// function myFunction() {
-//     var x = document.getElementById("myTopnav");
-//     console.log("Hello World 2");
-//     // if (x.className === "topnav") {
-//     //   x.className += " responsive";
-//     // } else {
-//     //   x.className = "topnav";
-//     // }
-//   }
 
 
 export default App;
