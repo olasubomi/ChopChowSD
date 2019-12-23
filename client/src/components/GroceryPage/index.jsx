@@ -21,7 +21,7 @@ export default class GroceryPage extends React.Component {
     variant: '',
     idItem: '',
     deletedItemId: null,
-    showCreate: false,
+    showCreate: true,
     idsItems: null,
     deletedItemsId: null,
     lasIdListState: null,
@@ -292,10 +292,10 @@ export default class GroceryPage extends React.Component {
               }
             })
         } else {
-          this.setState({ messageErrCreate: 'should be the image start word  "data" or "http" or end word "png" , "jpg","gif" ' })
+          this.setState({ messageErrCreate: ' Image check: should start with word:  "data" or "http" or end word "png" , "jpg","gif" ' })
         }
       } else {
-        this.setState({ messageErrCreate: 'should be sure fill all fields ' })
+        this.setState({ messageErrCreate: 'Be sure all fields are filled.' })
 
       }
 
@@ -401,7 +401,7 @@ export default class GroceryPage extends React.Component {
                         </>
                       })}
                     </>
-                  ) : null}
+                  ) :  "Comes in here for datatypeahead dataTypeaheadProps 1"}
                   {valueData ? (
                     valueData.map((itemList) => {
                       let idItem = itemList.id;
@@ -437,9 +437,9 @@ export default class GroceryPage extends React.Component {
                   ) : <Spinner animation="border" variant="info" />}
                 </Row>
               ) : (
-                  <>
-                    <div>here not found any items , you can add item from searchBar after that make refresh for page to show adding items</div>
-                    <Button className="yourlist__button-create" onClick={this.handleShowCreateList}>create list</Button>
+              <>
+                    <div>no items found here , you can add item from searchBar after that, refresh the page to show added items</div>
+                    {/* <Button className="yourlist__button-create" onClick={this.handleShowCreateList}>create list</Button> */}
                     {showCreate ? (
                       <Modal show={showCreate} onHide={this.handleClose} backdrop="static" className="modal-create">
                         <Modal.Body className="modal-create__body">
@@ -496,7 +496,7 @@ export default class GroceryPage extends React.Component {
                             <Form.Control
                               className='create-input'
                               type="number"
-                              name="valuePricePerOunce"
+                               name="valuePricePerOunce"
                               value={valuePricePerOunce}
                               placeholder="Enter Price Per Ounce list"
                               onChange={this.handleChange}
@@ -513,7 +513,7 @@ export default class GroceryPage extends React.Component {
                           >
                             Close
                     </Button>
-                          <Button
+                           <Button
                             className='create-button'
                             variant="success"
                             onClick={this.handleCreateList}
@@ -522,7 +522,7 @@ export default class GroceryPage extends React.Component {
                     </Button>
                         </Modal.Footer>
                       </Modal>
-                    ) : null}
+                    ) : "prints this, nothing here 2"} 
                   </>
                 )
               }
@@ -542,9 +542,9 @@ export default class GroceryPage extends React.Component {
                       </div>
                       <div className="col">
                         <a href="#" className="fb btn">
-                          <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+                          <i className="fa fa-facebook fa-fw"></i> Login with Facebook
                         </a>
-                        <a  className="google btn"><i class="fa fa-google fa-fw">
+                        <a  className="google btn"><i className="fa fa-google fa-fw">
                         </i> Login with Google+
                         </a>
                       </div>

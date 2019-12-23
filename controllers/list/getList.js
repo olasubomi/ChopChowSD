@@ -1,9 +1,9 @@
 
 const { list } = require('../../db/dbMongo/config/db_buildSchema')
-const { getDataCustomerId } = require('../../db/dbPostgress/queries/getDataCustomerId')
+const { getCustomerListId } = require('../../db/dbPostgress/queries/getCustomerListId')
 exports.getList = (req, res) => {
     const { customerId } = req.params
-    getDataCustomerId(customerId).then((result) => {
+    getCustomerListId(customerId).then((result) => {
         let data = {};
         list.find({})
             .then((r) => {

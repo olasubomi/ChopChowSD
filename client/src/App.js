@@ -41,7 +41,7 @@ class App extends Component {
         this.state = {
             messageVisible: false,
 
-            showAlert: '',
+            showAlert: false,
             messageAlert: '',
             variant: '',
             customerId: '',
@@ -410,7 +410,7 @@ class App extends Component {
             var popUpSlides = [];
 
             const instructionsLength = value.instructions.length;
-            //console.log(instructionsLength);
+            // console.log(instructionsLength);
 
             // var mealIngredient = value.ingredients ;
             const ingredientsList = value.ingredients.map((step) => <li key={step} > {step} </li>);
@@ -427,7 +427,7 @@ class App extends Component {
                         <div>
                             <div style={containerStyle} onClick={() => {
                                 this.meal_popups[index] = !this.meal_popups[index];
-                                // console.log(this.meal_popups);
+                                console.log(this.meal_popups);
                                 var x = document.getElementById(value.id);
                                 var y = document.getElementById(value.id + "products")
                                 if (this.meal_popups[index]) {
@@ -460,17 +460,6 @@ class App extends Component {
 
                         } modal closeOnDocumentClick contentStyle={contentStyle}>
 
-                        {/* Inside Pop - up */}
-
-                        <div className="container ">
-                            <div className="row">
-                                <div className="col-sm-6">
-                                    <div><b>Ingredients</b></div>
-                                    <div className="col align-items-center"><ol>{ingredientsList}</ol></div>
-                                </div>
-                                } modal closeOnDocumentClick contentStyle={contentStyle}>
-                        </div>
-                        </div>
                         {/* Inside Pop - up */}
                         <div className="container">
                             <div className="row">
@@ -557,66 +546,63 @@ class App extends Component {
 
 
         return (
-
             <div>
-
-                {/* <div> */}
-
+                {/* Top navbar */}
                 {/* <div className={this.state.topNav_className} id="myTopnav"> */}
-                <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
+                <div className="w3-bar w3-white w3-green topnav " id="myTopnav">
                     {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
+
                     <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
 
-                    <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Recipes</Link>
+                    {/* Searchbar */}
 
-                    <Link to="/grocery" onClick={this.handleClickGrocery} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Grocery List</Link>
+                    <Link to="/" className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile"> Stats</Link>
+
+                    <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile w3-text-black w3-text-align-right">Login/Register</Link>
+
+                    <Link to="/grocery" onClick={this.handleClickGrocery} className="w3-bar-item w3-button w3-hover-orange w3-mobile w3-text-black">Grocery List</Link>
 
 
                     <div className="w3-dropdown-hover w3-mobile">
-                        <button className="w3-button w3-hover-orange w3-mobile">
-                            Shop <i className="fa fa-caret-down"></i>
+                        <button className="w3-button w3-hover-orange w3-mobile w3-text-black">
+                            Shopping Cart <i className="fa fa-caret-down"></i>
                         </button>
                         <div className="w3-dropdown-content w3-bar-block w3-card-4 ">
-                            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Food Products</Link>
-                            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Kitchen Products</Link>
-                            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile">Other Household Items</Link>
+                            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile w3-text-black">Food Products</Link>
+                            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile w3-text-black">Kitchen Products</Link>
+                            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile w3-text-black">Other Household Items</Link>
                         </div>
                     </div>
-                    <Link to="/" className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile"> Stats</Link>
-                    {/* <span onClick={()=>{console.log("Or thru here");myFunction()}} className="icon">
-    <i className="fa fa-bars"> an option</i>
-    </span> */}
+                
                     <Link to="#" className="icon" onClick={() => { console.log("Comes thru here"); myFunction() }} >
                         <i className="fa fa-bars" ></i>
                     </Link>
                     {isAuthenticated ? (
 
-                        <Link to='/' onClick={this.handleLogout} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Logout</Link>
+                        <Link to="/" onClick={this.handleLogout} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Logout</Link>
                     ) : null}
 
                 </div>
 
-                {/* <div className="topnav" id="myTopnav2">
-    <Link to="/">CC</Link>
-    <Link to="/">Recipes</Link>
+                 {/* Bottom navbar */}
+                <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
+                    {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
 
-    <div className="dropdown">
-        <button className="dropbtn"> 
-            Shop <i className="fa fa-caret-down"></i>
-        </button>
-        <div className="dropdown-content">
-            <Link to="/products">Food Products</Link>
-            <Link to="/products">Kitchen Products</Link>
-            <Link to="/products">Other Household Items</Link>
-        </div>
-    </div>
+                    <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Home</Link>
 
-    <Link to="/v1">Stats</Link>
-    <Link to="javascript:void(0);" className="icon" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
-    <i className="fa fa-bars" ></i>
-    </Link>
-</div> */}
+                    <Link to="/products" onClick={this.handleClickGrocery} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Products</Link>
 
+                    <Link to="/" className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile"> Recipes</Link>
+                
+                    <Link to="#" className="icon" onClick={() => { console.log("Comes thru here"); myFunction() }} >
+                        <i className="fa fa-bars" ></i>
+                    </Link>
+                    {isAuthenticated ? (
+
+                        <Link to="/" onClick={this.handleLogout} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Logout</Link>
+                    ) : null}
+
+                </div>
 
 
                 <Typeahead
@@ -643,7 +629,7 @@ class App extends Component {
                         )}
                     />
 
-          <Route
+                    <Route
                         exact
                         path="/signup"
                         render={props => (
@@ -735,16 +721,12 @@ class App extends Component {
                     )}
 
                 />
-
                     <Route
                         exact
                         path="/grocery-empty"
                         render={props => (
 
                             <span className="grocery-page-empty__message">Sorry you must make log in to seen grocery list </span>
-
-
-
                         )} />
                     <Route
                         exact

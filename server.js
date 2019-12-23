@@ -10,9 +10,9 @@ const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
   
 require('./db/dbMongo/config/db_connection');
-require('./db/dbMongo/config/AllDataList')();
-require('./db/dbMongo/config/AllDataCusomerList')();
-require('./db/dbMongo/config/AllDataCustomer')();
+// require('./db/dbMongo/config/AllDataList')();
+// require('./db/dbMongo/config/AllDataCustomer')();
+// require('./db/dbMongo/config/AllDataCusomerList')();
 
 
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
@@ -44,7 +44,7 @@ const getIdsCustomers = require('./controllers/authentication/getIdsCustomers')
 
 const getItemId = require('./controllers/list/getItemId')
 const getDataItemTypeahead = require('./controllers/list/getDataItemTypeahead')
-//const addDataForThisCustomer = require('./controllers/list/addDataForThisCustomer')
+// const addItemToCustomerGroceryList = require('./controllers/list/addItemToCustomerGroceryList')
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -308,7 +308,7 @@ app.delete('/api/remove-list/:customerId',removeList)
 app.delete('/api/remove-item/:idItem/:customerId',removeItem)
 app.post('/api/create-list/:idItem/:customerId',createList)
 
-//app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer)
+// app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addItemToCustomerGroceryList)
 
 
 app.get('/api/get-ids-items/:customerId',getIdsItems)

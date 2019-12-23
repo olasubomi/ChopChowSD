@@ -29,10 +29,6 @@ module.exports = async () => {
             product_price: 2.99,
             sizes:'0.5lbs',
             price_per_ounce:null
-            
-    
-   
-    
         },
         {
             id:5,
@@ -100,7 +96,6 @@ module.exports = async () => {
             sizes: '2 lbs',
             price_per_ounce: 3.2
         }
-
     ]
 
     return list.create(allDataList)
