@@ -19,12 +19,15 @@ import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 import IngredientSection from './components/mealMenu/IngredientSection';
 import ProductsSection from './components/productSection/ProductsPage';
+import './App.css'
 //import Collapse from 'react-bootstrap/Collapse';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import CartPage from './components/GroceryPage/CartPage';
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
 import SignUp from './components/signup';
+import Modal from 'react-modal';
+
 class App extends Component {
 
 
@@ -35,12 +38,16 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.suggestMealToggle = this.suggestMealToggle.bind(this);
+        // this.openModalHandler = this.openModalHandler.bind(this);
         this.updateInstructionsDisplayBaseIndex = this.updateInstructionsDisplayBaseIndex.bind(this);
         // this.myFunction = this.myFunction.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.afterOpenModal = this.afterOpenModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
 
         this.state = {
             messageVisible: false,
-
+            modalIsOpen: false,
             showAlert: false,
             messageAlert: '',
             variant: '',
@@ -51,6 +58,7 @@ class App extends Component {
             valueAllDataLists: [],
             message: null,
             isAuthenticated: false,
+            value : 0,
 
             suggestMealPopOver: false,
             mealsListed: false,
@@ -70,11 +78,36 @@ class App extends Component {
             mealsLength: null,
             base_index: 0,
             topNav_className: "w3-bar w3-dark-grey w3-green topnav",
+            // show_modal : false
         }
     }
 
     meal_popups = [];
+    decrease = () => {
+        this.setState({ value: this.state.value - 1 });
+      }
+    
+      increase = () => {
+        this.setState({ value: this.state.value + 1 });
+      }
 
+      componentWillMount() {
+        Modal.setAppElement('body');
+    }
+
+    openModal() {
+        this.setState({modalIsOpen: true});
+      }
+     
+      afterOpenModal() {
+        // references are now sync'd and can be accessed.
+        this.subtitle.style.color = '#f00';
+      }
+     
+      closeModal() {
+        this.setState({modalIsOpen: false});
+      }
+    
     componentDidMount() {
 
         this.auth();
@@ -113,7 +146,9 @@ class App extends Component {
         }
         //get list of ingredients
     }
-
+    // openModalHandler(){
+    //     this.setState({show_modal: true})
+    // }
     suggestMealToggle() {
         this.setState({
             suggestMealPopOver: !this.state.suggestMealPopOver
@@ -394,7 +429,7 @@ class App extends Component {
 
 
     render() {
-        const { messageAlert, showAlert, variant, itemTypeahead, valueAllDataLists, isAuthenticated, } = this.state;
+        const { messageAlert, showAlert, variant, itemTypeahead, valueAllDataLists, isAuthenticated } = this.state;
 
         // Render your page inside
         // the layout provider
@@ -518,6 +553,46 @@ class App extends Component {
                         <br />
 
                     </div>
+                    <div><button onClick={this.openModal}>ViewSteps</button></div>
+                    <Modal className="modal-edit"
+                        isOpen={this.state.modalIsOpen}
+                        onAfterOpen={this.afterOpenModal}
+                        onRequestClose={this.closeModal}
+                        >
+                
+                        <h2 ref={subtitle => this.subtitle = subtitle}></h2>
+                        <button className="close-button" onClick={this.closeModal}>X</button>
+                        <div className="container">
+                            <div className="row">
+                                <div className=" col-md-6">
+                                    <img src={value.imageSrc} alt='info' style={{ width: "75%", height: "75%", align: "center" }}></img>
+                                    <br/> <br/> 
+                                    <h3> {value.label}</h3>
+                                    <div>{value.readTime} | {value.cookTime}</div>
+                                </div>
+                                <div className=" col-md-6">
+                                    <div className="row">Meal Quantity &nbsp; &nbsp;   
+                                    <div className="def-number-input number-input">
+                                        <button onClick={this.decrease} className="minus"></button>
+                                        <input className="quantity" name="quantity" value={this.state.value} onChange={()=> console.log('change')}
+                                        type="number" />
+                                        <button onClick={this.increase} className="plus"></button>
+                                    </div>&nbsp;&nbsp;
+                                    <button style={{height: "30px", backgroundColor: "green"}}>Add to cart</button>
+                                    </div>
+                                    <div><b>Ingredients</b></div>
+                                    <div><ol>{ingredientsList}</ol></div>
+                                    <hr></hr>
+                                    <div id="mealPrepChunk">
+                                    {mealPrep[this.state.base_index + 0]}
+                                    {mealPrep[this.state.base_index + 1]}
+                                    {mealPrep[this.state.base_index + 2]}
+                                </div>
+                                {popUpSlides}
+                                </div>
+                            </div>
+                        </div>
+                    </Modal>
                 </>
             )
         }
