@@ -1,540 +1,554 @@
 /* eslint-disable no-dupe-class-members */
-import React, { Component } from 'react';
-import { Typeahead } from 'react-bootstrap-typeahead';
+import React, { Component } from "react";
+import { Typeahead } from "react-bootstrap-typeahead";
 
-import 'react-bootstrap-typeahead/css/Typeahead.css';
+import "react-bootstrap-typeahead/css/Typeahead.css";
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
-import { Nav, Navbar, Alert, NavDropdown, Form, FormControl } from 'react-bootstrap'
-import { Popover, PopoverBody } from 'reactstrap';
+import {
+  Nav,
+  Navbar,
+  Alert,
+  NavDropdown,
+  Form,
+  FormControl
+} from "react-bootstrap";
+import { Popover, PopoverBody } from "reactstrap";
 import Popup from "reactjs-popup";
 
 import { Link, Route, Switch } from "react-router-dom";
-import { Spinner } from 'react-bootstrap'
-import InfiniteCarousel from 'react-leaf-carousel';
-import Slider from './components/product_slider/slider';
-import WithScrollbar from './components/product_slider/WithScrollbar';
-import RecipeContentSection from './components/mealMenu/RecipeContentSection';
-import ListedMealsSection from './components/mealMenu/ListedMealsSection';
-import IngredientSection from './components/mealMenu/IngredientSection';
-import ProductsSection from './components/productSection/ProductsPage';
-import './App.css'
+import { Spinner } from "react-bootstrap";
+import InfiniteCarousel from "react-leaf-carousel";
+import Slider from "./components/product_slider/slider";
+import WithScrollbar from "./components/product_slider/WithScrollbar";
+import RecipeContentSection from "./components/mealMenu/RecipeContentSection";
+import ListedMealsSection from "./components/mealMenu/ListedMealsSection";
+import IngredientSection from "./components/mealMenu/IngredientSection";
+import ProductsSection from "./components/productSection/ProductsPage";
+import "./App.css";
+import MyModal from './MyModal'
 //import Collapse from 'react-bootstrap/Collapse';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import CartPage from './components/GroceryPage/CartPage';
-import Login from './components/Login';
-import GroceryPage from './components/GroceryPage';
-import SignUp from './components/signup';
-import Modal from 'react-modal';
+import CartPage from "./components/GroceryPage/CartPage";
+import Login from "./components/Login";
+import GroceryPage from "./components/GroceryPage";
+import SignUp from "./components/signup";
+import Modal from "react-modal";
 
 class App extends Component {
+  meals = [];
+  // Mongo
+  products = [];
+
+  constructor(props) {
+    super(props);
+    this.suggestMealToggle = this.suggestMealToggle.bind(this);
+    // this.openModalHandler = this.openModalHandler.bind(this);
+    this.updateInstructionsDisplayBaseIndex = this.updateInstructionsDisplayBaseIndex.bind(
+      this
+    );
+    // this.myFunction = this.myFunction.bind(this);
+
+    this.state = {
+      messageVisible: false,
+      showAlert: false,
+      messageAlert: "",
+      variant: "",
+      customerId: "",
+      idItem: "",
+      option: "",
+      itemTypeahead: [],
+      valueAllDataLists: [],
+      message: null,
+      isAuthenticated: false,
 
 
-    meals = [];
-    // Mongo 
-    products = [];
+      suggestMealPopOver: false,
+      mealsListed: false,
+      mealSelected: false,
+      IngredientsListed: false,
+      recipes: [], //[this.Garri, this.Jollof_Rice],
+      selectedMealIngredients: null,
+      selectedMeal: null,
+      showIngredients: {
+        hidden: true
+      },
+      showProducts: {
+        hidden: true
+      },
+      //open: false,
 
-    constructor(props) {
-        super(props);
-        this.suggestMealToggle = this.suggestMealToggle.bind(this);
-        // this.openModalHandler = this.openModalHandler.bind(this);
-        this.updateInstructionsDisplayBaseIndex = this.updateInstructionsDisplayBaseIndex.bind(this);
-        // this.myFunction = this.myFunction.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.afterOpenModal = this.afterOpenModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
+      mealsLength: null,
+      base_index: 0,
+      topNav_className: "w3-bar w3-dark-grey w3-green topnav"
+      // show_modal : false
+    };
+  }
 
-        this.state = {
-            messageVisible: false,
-            modalIsOpen: false,
-            showAlert: false,
-            messageAlert: '',
-            variant: '',
-            customerId: '',
-            idItem: '',
-            option: '',
-            itemTypeahead: [],
-            valueAllDataLists: [],
-            message: null,
-            isAuthenticated: false,
-            value : 0,
+  meal_popups = [];
+  
 
-            suggestMealPopOver: false,
-            mealsListed: false,
-            mealSelected: false,
-            IngredientsListed: false,
-            recipes: [], //[this.Garri, this.Jollof_Rice],
-            selectedMealIngredients: null,
-            selectedMeal: null,
-            showIngredients: {
-                hidden: true
-            },
-            showProducts: {
-                hidden: true
-            },
-            //open: false,
+  componentWillMount() {
+    Modal.setAppElement("body");
+  }
 
-            mealsLength: null,
-            base_index: 0,
-            topNav_className: "w3-bar w3-dark-grey w3-green topnav",
-            // show_modal : false
+
+  componentDidMount() {
+    this.auth();
+    console.log("Comes in apps component did mount");
+    var url = "http://localhost:5000/get_products";
+    fetch(url)
+      .then(res => res.text())
+      .then(body => {
+        var productsList = JSON.parse(body);
+
+        for (var i = 0; i < productsList.length; i++) {
+          this.products.push(productsList[i].product_name);
+          // console.log(productsList[i].product_name)
         }
-    }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
-    meal_popups = [];
-    decrease = () => {
-        this.setState({ value: this.state.value - 1 });
-      }
-    
-      increase = () => {
-        this.setState({ value: this.state.value + 1 });
-      }
+  showIngredients = event => {
+    let mealString = event.target.innerText;
+    console.log(mealString);
 
-      componentWillMount() {
-        Modal.setAppElement('body');
-    }
-
-    openModal() {
-        this.setState({modalIsOpen: true});
-      }
-     
-      afterOpenModal() {
-        // references are now sync'd and can be accessed.
-        this.subtitle.style.color = '#f00';
-      }
-     
-      closeModal() {
-        this.setState({modalIsOpen: false});
-      }
-    
-    componentDidMount() {
-
-        this.auth();
-        console.log("Comes in apps component did mount")
-        var url = "http://localhost:5000/get_products"
-        fetch(url)
-            .then(res => res.text())
-            .then(body => {
-                var productsList = JSON.parse(body);
-
-                for (var i = 0; i < productsList.length; i++) {
-                    this.products.push(productsList[i].product_name);
-                    // console.log(productsList[i].product_name)
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
-
-
-    }
-
-    showIngredients = (event) => {
-        let mealString = event.target.innerText;
-        console.log(mealString);
-
-        var meal;
-        for (meal in this.meals) {
-            //console.log(this.meals[meal].label);
-            if (this.meals[meal].label === mealString) {
-                //change selected ingredients
-                this.setState({ selectedMealIngredients: this.meals[meal].ingredients });
-                this.setState({ selectedMeal: this.meals[meal] });
-                break;
-            }
-        }
-        //get list of ingredients
-    }
-    // openModalHandler(){
-    //     this.setState({show_modal: true})
-    // }
-    suggestMealToggle() {
+    var meal;
+    for (meal in this.meals) {
+      //console.log(this.meals[meal].label);
+      if (this.meals[meal].label === mealString) {
+        //change selected ingredients
         this.setState({
-            suggestMealPopOver: !this.state.suggestMealPopOver
+          selectedMealIngredients: this.meals[meal].ingredients
         });
+        this.setState({ selectedMeal: this.meals[meal] });
+        break;
+      }
     }
+    //get list of ingredients
+  };
+  // openModalHandler(){
+  //     this.setState({show_modal: true})
+  // }
+  suggestMealToggle() {
+    this.setState({
+      suggestMealPopOver: !this.state.suggestMealPopOver
+    });
+  }
 
-    meal_popups = [];
+  meal_popups = [];
 
-    componentDidMount() {
-        console.log("Comes in component did mount")
-        var url = "http://localhost:5000/get_products"
-        var url = "https://chopchowsd.herokuapp.com/get_products" // call in production
+  componentDidMount() {
+    console.log("Comes in component did mount");
+    var url = "http://localhost:5000/get_products";
+    var url = "https://chopchowsd.herokuapp.com/get_products"; // call in production
 
-        fetch(url)
-            .then(res => res.text())
-            .then(body => {
-                console.log()
-                var productsList = JSON.parse(body)
-                for (var i = 0; i < productsList.length; i++) {
-                    this.products.push(productsList[i].product_name);
-                    console.log(productsList[i].product_name)
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
-
-    showIngredient(index) {
-        console.log("updating popup boolean");
-        this.meal_popups[index] = !this.meal_popups[index]
-    }
-
-    updateInstructionsDisplayBaseIndex(event) {
-        console.log(event.target.innerText);
-        var button = event.target.innerText;
-        var regExp = '/^w+[ ]/d  $/';
-        var slide_index = button.match(regExp);
-        //console.log(slide_index);
-        var last_chars = button.slice(6, 7);
-
-        var slide_num = Number(last_chars);
-
-        this.setState({ base_index: slide_num * 3 })
-        //var base_index = slide_num*3;
-        //console.log("Updating base index on click to: " +this.state.base_index);
-    }
-
-    auth() {
-        fetch('/api/grocery', {
-            method: 'GET',
-            credentials: 'same-origin',
-            headers: {
-                'Content-type': 'application/json',
-            },
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (res.success) {
-                    this.setState({ isAuthenticated: true })
-                }
-            }).catch((err) =>
-                console.log('err', err)
-            )
-
-    }
-
-    handleLogout = () => {
-        fetch('/api/logout', {
-            method: "GET",
-            credentials: 'same-origin',
-            headers: {
-                'Content-type': 'application/json',
-
-            }
-        }).then(res => {
-
-            res.json()
-                .then(response => {
-                    if (response.data) {
-                        this.setState({ isAuthenticated: false })
-                    }
-                })
-        })
-            .catch(() => {
-                this.setState({
-                    messageAlert: 'internal server error',
-                    showAlert: true,
-                    variant: 'danger'
-                },
-                    () =>
-                        setTimeout(() => {
-                            this.setState({ messageAlert: '', showAlert: false })
-                        }, 6000)
-                )
-
-
-
-
-            })
-    }
-
-    componentDidMount() {
-        this.handleLogout();
-        this.auth();
-        this.handleClickTypeahead = (optionItem) => {
-            const { itemTypeahead } = this.state;
-            if (!optionItem) return;
-            console.log(optionItem)
-            optionItem.map(option => {
-                fetch(`/api/get-data-typeahead/${option}`, {
-                    method: 'GET',
-                    credentials: 'same-origin',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                })
-                    .then(res => {
-                        return res.json()
-                    })
-                    .then(responseGet => {
-                        this.setState({ idItem: responseGet.data[0].id })
-                        const { customerId, idItem } = this.state;
-                        fetch(`/api/add-data-typeahead-for-customer/${idItem}/${customerId}`, {
-                            method: 'POST',
-                            credentials: 'same-origin',
-                            headers: {
-                                Accept: 'application/json',
-                                'Content-Type': 'application/json',
-                            },
-                        })
-                            .then(res => {
-                                if (res) {
-                                    if (res.status === 500) {
-                                        this.setState({
-                                            messageAlert: 'internal server error',
-                                            showAlert: true,
-                                            variant: 'danger'
-                                        },
-                                            () =>
-                                                setTimeout(() => {
-                                                    this.setState({ messageAlert: '', showAlert: false })
-                                                }, 6000)
-                                        )
-
-                                    } else if (res.status === 200) {
-                                        return res.json()
-                                            .then(response => {
-                                                this.setState({ itemTypeahead: [] })
-                                                this.setState({ itemTypeahead: [...itemTypeahead, ...responseGet.data] })
-                                            })
-                                    } else if (res.status === 304) {
-                                        return res.json()
-                                            .then(response => {
-                                                this.setState({ itemTypeahead: [] })
-                                                this.setState({ itemTypeahead: [...itemTypeahead] })
-                                            })
-                                    }
-                                }
-                            })
-                    })
-            })
+    fetch(url)
+      .then(res => res.text())
+      .then(body => {
+        console.log();
+        var productsList = JSON.parse(body);
+        for (var i = 0; i < productsList.length; i++) {
+          this.products.push(productsList[i].product_name);
+          console.log(productsList[i].product_name);
         }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
-        fetch('/api/grocery', {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-            },
+  showIngredient(index) {
+    console.log("updating popup boolean");
+    this.meal_popups[index] = !this.meal_popups[index];
+  }
+
+  updateInstructionsDisplayBaseIndex(event) {
+    console.log(event.target.innerText);
+    var button = event.target.innerText;
+    var regExp = "/^w+[ ]/d  $/";
+    var slide_index = button.match(regExp);
+    //console.log(slide_index);
+    var last_chars = button.slice(6, 7);
+
+    var slide_num = Number(last_chars);
+
+    this.setState({ base_index: slide_num * 3 });
+    //var base_index = slide_num*3;
+    //console.log("Updating base index on click to: " +this.state.base_index);
+  }
+
+  auth() {
+    fetch("/api/grocery", {
+      method: "GET",
+      credentials: "same-origin",
+      headers: {
+        "Content-type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          this.setState({ isAuthenticated: true });
+        }
+      })
+      .catch(err => console.log("err", err));
+  }
+
+  handleLogout = () => {
+    fetch("/api/logout", {
+      method: "GET",
+      credentials: "same-origin",
+      headers: {
+        "Content-type": "application/json"
+      }
+    })
+      .then(res => {
+        res.json().then(response => {
+          if (response.data) {
+            this.setState({ isAuthenticated: false });
+          }
+        });
+      })
+      .catch(() => {
+        this.setState(
+          {
+            messageAlert: "internal server error",
+            showAlert: true,
+            variant: "danger"
+          },
+          () =>
+            setTimeout(() => {
+              this.setState({ messageAlert: "", showAlert: false });
+            }, 6000)
+        );
+      });
+  };
+
+  componentDidMount() {
+    this.handleLogout();
+    this.auth();
+    this.handleClickTypeahead = optionItem => {
+      const { itemTypeahead } = this.state;
+      if (!optionItem) return;
+      console.log(optionItem);
+      optionItem.map(option => {
+        fetch(`/api/get-data-typeahead/${option}`, {
+          method: "GET",
+          credentials: "same-origin",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          }
         })
-            .then(res => {
-                return res.json()
-
-            })
-            .then(response => {
-                if (response.success && response.data) {
-                    this.setState({ Authentication: true });
-                } else {
-                    this.setState({ Authenticated: false })
+          .then(res => {
+            return res.json();
+          })
+          .then(responseGet => {
+            this.setState({ idItem: responseGet.data[0].id });
+            const { customerId, idItem } = this.state;
+            fetch(
+              `/api/add-data-typeahead-for-customer/${idItem}/${customerId}`,
+              {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json"
                 }
-                this.setState({ customerId: response.data })
-                const { customerId } = this.state;
-                fetch(`/api/getList/${customerId}`, {
-                    method: 'GET',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Content-Type': 'application/json',
+              }
+            ).then(res => {
+              if (res) {
+                if (res.status === 500) {
+                  this.setState(
+                    {
+                      messageAlert: "internal server error",
+                      showAlert: true,
+                      variant: "danger"
                     },
-
-                })
-                    .then(res => {
-                        return res.json()
-                    })
-                    .then(response => {
-                        if (response) {
-                            this.setState({ valueData: response.data })
-                        }
-                    }).catch(() => {
-                        this.setState({
-                            messageAlert: 'internal server error',
-                            showAlert: true,
-                            variant: 'danger'
-                        },
-                            () =>
-                                setTimeout(() => {
-                                    this.setState({ messageAlert: '', showAlert: false })
-                                }, 6000)
-                        )
-                    })
-            })
-
-
-        fetch('/api/get-all-data-lists', {
-            method: 'GET',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-
-        })
-            .then(res => res.json())
-            .then(response => {
-                if (response) {
-                    let arrAllData = [];
-                    let resArr = response.data
-
-                    for (let i = 0; i <= resArr.length - 1; i++) {
-
-                        arrAllData.push(response.data[i].product_name);
-
-                        this.setState({ valueAllDataLists: arrAllData })
-                    }
-                }
-            }).catch(() => {
-                this.setState({
-                    messageAlert: 'internal server error',
-                    showAlert: true,
-                    variant: 'danger'
-                },
                     () =>
-                        setTimeout(() => {
-                            this.setState({ messageAlert: '', showAlert: false })
-                        }, 6000)
-                )
-
-
-            })
-
-
-        fetch('/api/get-meals', {
-            method: 'GET',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-
-        })
-            .then(res => res.json())
-            .then(response => {
-                if (response) {
+                      setTimeout(() => {
+                        this.setState({ messageAlert: "", showAlert: false });
+                      }, 6000)
+                  );
+                } else if (res.status === 200) {
+                  return res.json().then(response => {
+                    this.setState({ itemTypeahead: [] });
                     this.setState({
-                        recipes: response.data,
-                        selectedMealIngredients: response.data[0].new_ingredients,
-                        selectedMeal: response.data[0],
-                        mealsLength: response.data.length
+                      itemTypeahead: [...itemTypeahead, ...responseGet.data]
                     });
+                  });
+                } else if (res.status === 304) {
+                  return res.json().then(response => {
+                    this.setState({ itemTypeahead: [] });
+                    this.setState({ itemTypeahead: [...itemTypeahead] });
+                  });
                 }
-            }).catch((err) => {
-                console.log('err', err);
+              }
+            });
+          });
+      });
+    };
 
-            })
-
-
-
-    }
-
-
-
-    render() {
-        const { messageAlert, showAlert, variant, itemTypeahead, valueAllDataLists, isAuthenticated } = this.state;
-
-        // Render your page inside
-        // the layout provider
-        //const elements = ['one', 'two', 'three'];
-        //const popOverInfo = []
-        const items = []
-
-
-
-        for (const [index, value] of this.state.recipes.entries()) {
-            var base_index = 0;
-            const mealPrep = value.instructions.map((step) => <li key={step} > {step} </li>);
-            var popUpSlides = [];
-
-            const instructionsLength = value.instructions.length;
-            // console.log(instructionsLength);
-
-            // var mealIngredient = value.ingredients ;
-            const ingredientsList = value.ingredients.map((step) => <li key={step} > {step} </li>);
-            var i;
-            for (i = 0; i < instructionsLength / 3; i++) {
-                popUpSlides.push(<button key={i} onClick={this.updateInstructionsDisplayBaseIndex}>Slide {i}  </button>)
+    fetch("/api/grocery", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json"
+      }
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(response => {
+        if (response.success && response.data) {
+          this.setState({ Authentication: true });
+        } else {
+          this.setState({ Authenticated: false });
+        }
+        this.setState({ customerId: response.data });
+        const { customerId } = this.state;
+        fetch(`/api/getList/${customerId}`, {
+          method: "GET",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+          .then(res => {
+            return res.json();
+          })
+          .then(response => {
+            if (response) {
+              this.setState({ valueData: response.data });
             }
-            this.meal_popups.push(false);
-            // console.log(this.meal_popups);
-            // console.log(index);
-            items.push(
-                <>
-                    <div className="col-sm-12 col-md-6 col-lg-4 mealContainer" key={value.id} >
-                        <div>
-                            <div style={containerStyle} onClick={() => {
-                                this.meal_popups[index] = !this.meal_popups[index];
-                                console.log(this.meal_popups);
-                                var x = document.getElementById(value.id);
-                                var y = document.getElementById(value.id + "products")
-                                if (this.meal_popups[index]) {
-                                    x.style.display = "block";
-                                    y.style.display = "block";
+          })
+          .catch(() => {
+            this.setState(
+              {
+                messageAlert: "internal server error",
+                showAlert: true,
+                variant: "danger"
+              },
+              () =>
+                setTimeout(() => {
+                  this.setState({ messageAlert: "", showAlert: false });
+                }, 6000)
+            );
+          });
+      });
 
-                                }
-                                else {
-                                    x.style.display = "none";
-                                    y.style.display = "none";
-                                }
-                            }}>
-                                <img src={value.imageSrc} className="images" style={{ width: "100%" }} alt={value.id}></img>
-                                {/* <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={this.showIngredient(index)}></img> */}
-                                <div style={{ color: "black" }}> <b> {value.label} | {value.cookTime}  </b>| <span style={{ color: "grey" }}> View Details</span></div>
-                            </div>
-                        </div>
+    fetch("/api/get-all-data-lists", {
+      method: "GET",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(response => {
+        if (response) {
+          let arrAllData = [];
+          let resArr = response.data;
+
+          for (let i = 0; i <= resArr.length - 1; i++) {
+            arrAllData.push(response.data[i].product_name);
+
+            this.setState({ valueAllDataLists: arrAllData });
+          }
+        }
+      })
+      .catch(() => {
+        this.setState(
+          {
+            messageAlert: "internal server error",
+            showAlert: true,
+            variant: "danger"
+          },
+          () =>
+            setTimeout(() => {
+              this.setState({ messageAlert: "", showAlert: false });
+            }, 6000)
+        );
+      });
+
+    fetch("/api/get-meals", {
+      method: "GET",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(response => {
+        if (response) {
+          this.setState({
+            recipes: response.data,
+            selectedMealIngredients: response.data[0].new_ingredients,
+            selectedMeal: response.data[0],
+            mealsLength: response.data.length
+          });
+        }
+      })
+      .catch(err => {
+        console.log("err", err);
+      });
+  }
+
+  render() {
+    const {
+      messageAlert,
+      showAlert,
+      variant,
+      itemTypeahead,
+      valueAllDataLists,
+      isAuthenticated
+    } = this.state;
+
+    // Render your page inside
+    // the layout provider
+    //const elements = ['one', 'two', 'three'];
+    //const popOverInfo = []
+    const items = [];
+
+    for (const [index, value] of this.state.recipes.entries()) {
+      var base_index = 0;
+      const mealPrep = value.instructions.map(step => (
+        <li key={step}> {step} </li>
+      ));
+      var popUpSlides = [];
+
+      const instructionsLength = value.instructions.length;
+      // console.log(instructionsLength);
+
+      // var mealIngredient = value.ingredients ;
+      const ingredientsList = value.ingredients.map(step => (
+        <li key={step}> {step} </li>
+      ));
+      var i;
+      for (i = 0; i < instructionsLength / 3; i++) {
+        popUpSlides.push(
+          <button key={i} onClick={this.updateInstructionsDisplayBaseIndex}>
+            Slide {i}{" "}
+          </button>
+        );
+      }
+      this.meal_popups.push(false);
+      // console.log(this.meal_popups);
+      // console.log(index);
+      items.push(
+        <>
+          <div
+            className="col-sm-12 col-md-6 col-lg-4 mealContainer"
+            key={value.id}
+          >
+            <div>
+              <div
+                style={containerStyle}
+                onClick={() => {
+                  this.meal_popups[index] = !this.meal_popups[index];
+                  console.log(this.meal_popups);
+                  var x = document.getElementById(value.id);
+                  var y = document.getElementById(value.id + "products");
+                  if (this.meal_popups[index]) {
+                    x.style.display = "block";
+                    y.style.display = "block";
+                  } else {
+                    x.style.display = "none";
+                    y.style.display = "none";
+                  }
+                }}
+              >
+                <img
+                  src={value.imageSrc}
+                  className="images"
+                  style={{ width: "100%" }}
+                  alt={value.id}
+                ></img>
+                {/* <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={this.showIngredient(index)}></img> */}
+                <div style={{ color: "black" }}>
+                  {" "}
+                  <b>
+                    {" "}
+                    {value.label} | {value.cookTime}{" "}
+                  </b>
+                  | <span style={{ color: "grey" }}> View Details</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Popup
+            trigger={
+              <div id={value.id} style={{ display: "none" }}>
+                {value.intro}
+                <br></br>
+                <br></br>
+                <button style={{ backgroundColor: "orange" }}>
+                  View Steps
+                </button>
+                <br></br>
+              </div>
+            }
+            modal
+            closeOnDocumentClick
+            contentStyle={contentStyle}
+          >
+            {/* Inside Pop - up */}
+            <div className="container">
+              <div className="row">
+                <div className="col-sm-6">
+                  <div>
+                    <b>Ingredients</b>
+                  </div>
+                  <div className="col align-items-center">
+                    <ol>{ingredientsList}</ol>
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <b>
+                    <div className="col">
+                      {value.readTime}
+                      <br></br>
+                      {value.cookTime}
                     </div>
-
-                    <Popup
-                        trigger={
-                            <div id={value.id} style={{ display: "none" }}>
-                                {value.intro}
-                                <br></br>
-                                <br></br>
-                                <button style={{ backgroundColor: "orange" }}>View Steps</button>
-                                <br></br>
-                            </div>
-
-
-                        } modal closeOnDocumentClick contentStyle={contentStyle}>
-
-                        {/* Inside Pop - up */}
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-sm-6">
-                                    <div><b>Ingredients</b></div>
-                                    <div className="col align-items-center"><ol>{ingredientsList}</ol></div>
-                                </div>
-                                <div className="col-sm-6"><b>
-                                    <div className="col">{value.readTime}<br></br>{value.cookTime}</div>
-                                    {/* <div className="col"></div> */}
-                                </b>
-                                </div>
-                                <div id="mealPrepChunk">
-                                    {mealPrep[this.state.base_index + 0]}
-                                    {mealPrep[this.state.base_index + 1]}
-                                    {mealPrep[this.state.base_index + 2]}
-                                </div>
-                            </div>
-                            <br></br>
-                            {/* <div className="row">
+                    {/* <div className="col"></div> */}
+                  </b>
+                </div>
+                <div id="mealPrepChunk">
+                  {mealPrep[this.state.base_index + 0]}
+                  {mealPrep[this.state.base_index + 1]}
+                  {mealPrep[this.state.base_index + 2]}
+                </div>
+              </div>
+              <br></br>
+              {/* <div className="row">
                             <div className="col-sm-12">
                                 <img src={value.imageSrc} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img>
                             </div>
                         </div> */}
-                        </div>
-                        <hr></hr>
-
-                        <span>Overview</span>&nbsp;|&nbsp;<span>Kitchen accessories for this meal</span>&nbsp;|&nbsp;<span>Add To Cart..</span>
-                        <br></br>
-                        {popUpSlides}
-                        <img src={value.imageSrc} alt='info' style={{ width: "100%", height: "100%", align: "center" }}></img>
-                        <hr></hr>
-                        {/* <div className="col">
+            </div>
+            <hr></hr>
+            <span>Overview</span>&nbsp;|&nbsp;
+            <span>Kitchen accessories for this meal</span>&nbsp;|&nbsp;
+            <span>Add To Cart..</span>
+            <br></br>
+            {popUpSlides}
+            <img
+              src={value.imageSrc}
+              alt="info"
+              style={{ width: "100%", height: "100%", align: "center" }}
+            ></img>
+            <hr></hr>
+            {/* <div className="col">
                         <div className="col align-items-center"><ol>{mealPrep}</ol></div>
                     </div> */}
-
-                        {/* </div> */}
-
-                        {/* </div> */}
-                        {/* <div>
+            {/* </div> */}
+            {/* </div> */}
+            {/* <div>
                     <div className="col align-items-left">
                         <img src={value.imageSrc} alt='info'  style={{width:'35%', height:'35%', align:"center"}}></img>
                     </div>
@@ -543,278 +557,327 @@ class App extends Component {
                     </div>
                     </div>
                     */}
+          </Popup>
+          <MyModal value={value} mealPrep= {mealPrep} ingredientsList={ingredientsList} />
+          <div id={value.id + "products"} style={{ display: "none" }}>
+            <b>Ingredients 1</b>
+            <br></br>
+            {value.products}
+            <WithScrollbar
+              products={value.product_slider}
+              ingredients={[
+                { name: "sugar", image: "/images/products/sugar.jpeg" },
+                { name: "onion", image: "/images/products/onion.jpg" },
+                { name: "tomato", image: "/images/products/tomato.jpg" },
+                { name: "water", image: "/images/products/water.jpeg" },
+                {
+                  name: "vegetable oil",
+                  image: "/images/products/vegetable_oil.jpg"
+                }
+              ]}
+            />
+            <br />
+          </div>
+                  </>
+      );
+    }
 
-                    </Popup>
-                    <div id={value.id + "products"} style={{ display: "none" }}>
-                        <b>Ingredients 1</b>
-                        <br></br>
-                        {value.products}
-                        <WithScrollbar products={value.product_slider} ingredients={[{ "name": "sugar", "image": "/images/products/sugar.jpeg" }, { "name": "onion", "image": "/images/products/onion.jpg" }, { "name": "tomato", "image": "/images/products/tomato.jpg" }, { "name": "water", "image": "/images/products/water.jpeg" }, { "name": "vegetable oil", "image": "/images/products/vegetable_oil.jpg" }]} />
-                        <br />
+    /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+    function myFunction() {
+      var x = document.getElementById("myTopnav");
+      console.log(x);
+      // console.log({this.state.topNav_className});
+      if (x.className === "w3-bar w3-dark-grey w3-green topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "w3-bar w3-dark-grey w3-green topnav";
+      }
 
-                    </div>
-                    <div><button onClick={this.openModal}>ViewSteps</button></div>
-                    <Modal className="modal-edit"
-                        isOpen={this.state.modalIsOpen}
-                        onAfterOpen={this.afterOpenModal}
-                        onRequestClose={this.closeModal}
-                        >
-                
-                        <h2 ref={subtitle => this.subtitle = subtitle}></h2>
-                        <button className="close-button" onClick={this.closeModal}>X</button>
-                        <div className="container">
-                            <div className="row">
-                                <div className=" col-md-6">
-                                    <img src={value.imageSrc} alt='info' style={{ width: "75%", height: "75%", align: "center" }}></img>
-                                    <br/> <br/> 
-                                    <h3> {value.label}</h3>
-                                    <div>{value.readTime} | {value.cookTime}</div>
-                                </div>
-                                <div className=" col-md-6">
-                                    <div className="row">Meal Quantity &nbsp; &nbsp;   
-                                    <div className="def-number-input number-input">
-                                        <button onClick={this.decrease} className="minus"></button>
-                                        <input className="quantity" name="quantity" value={this.state.value} onChange={()=> console.log('change')}
-                                        type="number" />
-                                        <button onClick={this.increase} className="plus"></button>
-                                    </div>&nbsp;&nbsp;
-                                    <button style={{height: "30px", backgroundColor: "green"}}>Add to cart</button>
-                                    </div>
-                                    <div><b>Ingredients</b></div>
-                                    <div><ol>{ingredientsList}</ol></div>
-                                    <hr></hr>
-                                    <div id="mealPrepChunk">
-                                    {mealPrep[this.state.base_index + 0]}
-                                    {mealPrep[this.state.base_index + 1]}
-                                    {mealPrep[this.state.base_index + 2]}
-                                </div>
-                                {popUpSlides}
-                                </div>
-                            </div>
-                        </div>
-                    </Modal>
-                </>
-            )
-        }
+      // var y = document.getElementById("myTopnav2");
+      // if (y.className === "topnav"){
+      //     y.className += " responsive";
+      //   }
+      //   else{
+      //       //sync test nav bar as well
+      //       y.className = "topnav";
+      //   }
+    }
 
-        /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
-        function myFunction() {
-            var x = document.getElementById("myTopnav");
-            console.log(x);
-            // console.log({this.state.topNav_className});
-            if (x.className === "w3-bar w3-dark-grey w3-green topnav") {
-                x.className += " responsive";
-            }
-            else {
-                x.className = "w3-bar w3-dark-grey w3-green topnav";
-            }
+    return (
+      <div>
+        {/* Top navbar */}
+        {/* <div className={this.state.topNav_className} id="myTopnav"> */}
+        <div className="w3-bar w3-white w3-green topnav " id="myTopnav">
+          {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
 
-            // var y = document.getElementById("myTopnav2");
-            // if (y.className === "topnav"){
-            //     y.className += " responsive";
-            //   }
-            //   else{
-            //       //sync test nav bar as well
-            //       y.className = "topnav";
-            //   }
-        }
+          <Link
+            to="/v2"
+            className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile"
+          >
+            CC
+          </Link>
 
+          {/* Searchbar */}
 
-        return (
-            <div>
-                {/* Top navbar */}
-                {/* <div className={this.state.topNav_className} id="myTopnav"> */}
-                <div className="w3-bar w3-white w3-green topnav " id="myTopnav">
-                    {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
+          <Link
+            to="/"
+            className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile"
+          >
+            {" "}
+            Stats
+          </Link>
 
-                    <Link to="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</Link>
+          <Link
+            to="/v2"
+            className="w3-bar-item w3-button w3-hover-orange w3-mobile w3-text-black w3-text-align-right"
+          >
+            Login/Register
+          </Link>
 
-                    {/* Searchbar */}
+          <Link
+            to="/grocery"
+            onClick={this.handleClickGrocery}
+            className="w3-bar-item w3-button w3-hover-orange w3-mobile w3-text-black"
+          >
+            Grocery List
+          </Link>
 
-                    <Link to="/" className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile"> Stats</Link>
+          <div className="w3-dropdown-hover w3-mobile">
+            <button className="w3-button w3-hover-orange w3-mobile w3-text-black">
+              Shopping Cart <i className="fa fa-caret-down"></i>
+            </button>
+            <div className="w3-dropdown-content w3-bar-block w3-card-4 ">
+              <Link
+                to="/products"
+                className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile w3-text-black"
+              >
+                Food Products
+              </Link>
+              <Link
+                to="/products"
+                className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile w3-text-black"
+              >
+                Kitchen Products
+              </Link>
+              <Link
+                to="/products"
+                className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile w3-text-black"
+              >
+                Other Household Items
+              </Link>
+            </div>
+          </div>
 
-                    <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile w3-text-black w3-text-align-right">Login/Register</Link>
+          <Link
+            to="#"
+            className="icon"
+            onClick={() => {
+              console.log("Comes thru here");
+              myFunction();
+            }}
+          >
+            <i className="fa fa-bars"></i>
+          </Link>
+          {isAuthenticated ? (
+            <Link
+              to="/"
+              onClick={this.handleLogout}
+              className="w3-bar-item w3-button w3-hover-orange w3-mobile"
+            >
+              Logout
+            </Link>
+          ) : null}
+        </div>
 
-                    <Link to="/grocery" onClick={this.handleClickGrocery} className="w3-bar-item w3-button w3-hover-orange w3-mobile w3-text-black">Grocery List</Link>
+        {/* Bottom navbar */}
+        <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
+          {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
 
+          <Link
+            to="/v2"
+            className="w3-bar-item w3-button w3-hover-orange w3-mobile"
+          >
+            Home
+          </Link>
 
-                    <div className="w3-dropdown-hover w3-mobile">
-                        <button className="w3-button w3-hover-orange w3-mobile w3-text-black">
-                            Shopping Cart <i className="fa fa-caret-down"></i>
-                        </button>
-                        <div className="w3-dropdown-content w3-bar-block w3-card-4 ">
-                            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile w3-text-black">Food Products</Link>
-                            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile w3-text-black">Kitchen Products</Link>
-                            <Link to="/products" className="w3-bar-item w3-button w3-text-black w3-hover-orange w3-mobile w3-text-black">Other Household Items</Link>
-                        </div>
-                    </div>
-                
-                    <Link to="#" className="icon" onClick={() => { console.log("Comes thru here"); myFunction() }} >
-                        <i className="fa fa-bars" ></i>
-                    </Link>
-                    {isAuthenticated ? (
+          <Link
+            to="/products"
+            onClick={this.handleClickGrocery}
+            className="w3-bar-item w3-button w3-hover-orange w3-mobile"
+          >
+            Products
+          </Link>
 
-                        <Link to="/" onClick={this.handleLogout} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Logout</Link>
-                    ) : null}
+          <Link
+            to="/"
+            className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile"
+          >
+            {" "}
+            Recipes
+          </Link>
 
+          <Link
+            to="#"
+            className="icon"
+            onClick={() => {
+              console.log("Comes thru here");
+              myFunction();
+            }}
+          >
+            <i className="fa fa-bars"></i>
+          </Link>
+          {isAuthenticated ? (
+            <Link
+              to="/"
+              onClick={this.handleLogout}
+              className="w3-bar-item w3-button w3-hover-orange w3-mobile"
+            >
+              Logout
+            </Link>
+          ) : null}
+        </div>
+
+        <Typeahead
+          onChange={this.handleClickTypeahead}
+          multiple
+          options={valueAllDataLists}
+          placeholder="Find Meals (and Ingredients) here.."
+          id="typeahead"
+        />
+        <Alert show={showAlert} key={1} variant={variant}>
+          {messageAlert}
+        </Alert>
+
+        {this.state.messageVisible ? (
+          <div>
+            you can not addin this item because is found for this customer
+          </div>
+        ) : null}
+
+        <Switch>
+          <Route exact path="/login" render={props => <Login {...props} />} />
+          <Route exact path="/signup" render={props => <SignUp {...props} />} />
+          <Route
+            exact
+            path="/"
+            render={props => (
+              <div>
+                <div id="title">
+                  <b>Meals</b>
                 </div>
 
-                 {/* Bottom navbar */}
-                <div className="w3-bar w3-dark-grey w3-green topnav" id="myTopnav">
-                    {/* <a href="/v2" className="w3-bar-item w3-button w3-text-orange w3-hover-orange w3-mobile">CC</a> */}
+                <div className="container">
+                  <div className="row">{items}</div>
+                </div>
+              </div>
+            )}
+          />
+          <Route
+            path="/v1"
+            render={props => (
+              <div className="container">
+                <br></br>
+                <div className="row">
+                  <div className="col-sm">
+                    <b>Meals</b>
+                    <ListedMealsSection
+                      recipes={this.state.recipes}
+                      showIngredients={this.showIngredients}
+                      selectedMeal={this.state.selectedMeal}
+                    />
+                    <span>&#43;</span>
+                    <input placeholder="Suggest Meal"></input>
+                    &nbsp;
+                    <button>
+                      Submit{" "}
+                      <span
+                        id="Popover1"
+                        onMouseOver={this.suggestMealToggle}
+                        onMouseOut={this.suggestMealToggle}
+                      >
+                        <img
+                          src="/images/info_icon.png"
+                          alt="info"
+                          style={{ width: "13px", height: "13px" }}
+                        />{" "}
+                      </span>
+                    </button>
+                    {/* onClick={this.suggestMealToggle} */}
+                  </div>
+                  <div className="col-sm">
+                    <b>Recipe Contents</b>
+                    <RecipeContentSection
+                      selectedMeal={this.state.selectedMeal}
+                    />
+                  </div>
 
-                    <Link to="/v2" className="w3-bar-item w3-button w3-hover-orange w3-mobile">Home</Link>
+                  <div className="col-sm">
+                    <b>Ingredients</b>
+                    <IngredientSection
+                      selectedMealIngredients={
+                        this.state.selectedMealIngredients
+                      }
+                      selectedMeal={this.state.selectedMeal}
+                    />
+                    {/* <span>&#43;</span><input placeholder="Suggest Ingredient.."></input> */}
+                  </div>
 
-                    <Link to="/products" onClick={this.handleClickGrocery} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Products</Link>
-
-                    <Link to="/" className="w3-bar-item w3-button w3-text-grey w3-hover-orange w3-mobile"> Recipes</Link>
-                
-                    <Link to="#" className="icon" onClick={() => { console.log("Comes thru here"); myFunction() }} >
-                        <i className="fa fa-bars" ></i>
-                    </Link>
-                    {isAuthenticated ? (
-
-                        <Link to="/" onClick={this.handleLogout} className="w3-bar-item w3-button w3-hover-orange w3-mobile">Logout</Link>
-                    ) : null}
-
+                  <Popover
+                    placement="auto"
+                    isOpen={this.state.suggestMealPopOver}
+                    target="Popover1"
+                    toggle={this.suggestMealToggle}
+                  >
+                    <PopoverBody>
+                      <div className="payback-disclaimer">
+                        Suggestions by Guest Users are recorded, but do not
+                        change the publicly displayed Meals.
+                      </div>
+                    </PopoverBody>
+                  </Popover>
+                </div>
+              </div>
+            )}
+          />
+          <Route
+            path="/v2"
+            render={props => (
+              <div>
+                <div id="title">
+                  <b>Meals</b>
                 </div>
 
+                <div className="container">
+                  <div className="row">{items}</div>
+                </div>
+              </div>
+            )}
+          />
+          <Route
+            exact
+            path="/grocery"
+            render={() => (
+              <GroceryPage
+                auth={isAuthenticated}
+                dataTypeaheadProps={itemTypeahead}
+              />
+            )}
+          />
+          )} />
+          <Route
+            exact
+            path="/grocery-empty"
+            render={props => (
+              <span className="grocery-page-empty__message">
+                Sorry you must make log in to seen grocery list{" "}
+              </span>
+            )}
+          />
+          <Route exact path="/cart-page/:idItem" component={CartPage} />
+          <Route path="/products" render={props => <ProductsSection />} />
+        </Switch>
 
-                <Typeahead
-                    onChange={this.handleClickTypeahead}
-                    multiple
-                    options={valueAllDataLists}
-                    placeholder="Find Meals (and Ingredients) here.."
-                    id="typeahead"
-                />
-                <Alert show={showAlert} key={1} variant={variant}>
-                    {messageAlert}
-                </Alert>
-
-                {this.state.messageVisible ? (
-                    <div>you can not addin this item because is found for this customer</div>
-                ) : null}
-
-                <Switch>
-                    <Route
-                        exact
-                        path="/login"
-                        render={props => (
-                            <Login {...props} />
-                        )}
-                    />
-
-                    <Route
-                        exact
-                        path="/signup"
-                        render={props => (
-                            <SignUp {...props} />
-                        )}
-                    />
-                    
-                    <Route exact path="/" render={(props) => (
-                        <div>
-                            <div id="title">
-                                <b>Meals</b>
-                            </div>
-
-                            <div className="container">
-                                <div className="row">
-                                    {items}
-                                </div>
-                            </div>
-                        </div>
-                    )} />
-
-                    <Route path="/v1" render={(props) => (
-                        <div className="container">
-                            <br></br>
-                            <div className="row">
-                                <div className="col-sm">
-                                    <b>Meals</b>
-                                    <ListedMealsSection
-                                        recipes={this.state.recipes} showIngredients={this.showIngredients}
-                                        selectedMeal={this.state.selectedMeal} />
-                                    <span>&#43;</span><input placeholder="Suggest Meal"></input>
-
-                                    &nbsp;<button>Submit <span id="Popover1" onMouseOver={this.suggestMealToggle} onMouseOut={this.suggestMealToggle} >
-                                        <img src="/images/info_icon.png" alt="info" style={{ width: '13px', height: '13px' }} /> </span></button>
-                                    {/* onClick={this.suggestMealToggle} */}
-                                </div>
-                                <div className="col-sm">
-                                    <b>Recipe Contents</b>
-                                    <RecipeContentSection selectedMeal={this.state.selectedMeal} />
-
-                                </div>
-
-                                <div className="col-sm">
-                                    <b>Ingredients</b>
-                                    <IngredientSection selectedMealIngredients={this.state.selectedMealIngredients}
-                                        selectedMeal={this.state.selectedMeal} />
-                                    {/* <span>&#43;</span><input placeholder="Suggest Ingredient.."></input> */}
-                                </div>
-
-                                <Popover placement="auto" isOpen={this.state.suggestMealPopOver} target="Popover1" toggle={this.suggestMealToggle}>
-                                    <PopoverBody><div className="payback-disclaimer">
-                                        Suggestions by Guest Users are recorded, but do not change the publicly displayed Meals.
-                </div></PopoverBody>
-                                </Popover>
-                            </div>
-                        </div>
-                    )} />
-
-                    <Route path="/v2" render={(props) => (
-                        <div>
-                            <div id="title">
-                                <b>Meals</b>
-                            </div>
-
-
-                            <div className="container">
-                                <div className="row">
-                                    {items}
-                                </div>
-                            </div>
-                        </div>
-                    )} />
-
-
-
-                    <Route
-                        exact
-                        path="/grocery"
-                        render={() => (
-                            <GroceryPage
-                                auth={isAuthenticated}
-                                dataTypeaheadProps={itemTypeahead}
-                            />
-
-                        )}
-
-                    />
-
-                    )}
-
-                />
-                    <Route
-                        exact
-                        path="/grocery-empty"
-                        render={props => (
-
-                            <span className="grocery-page-empty__message">Sorry you must make log in to seen grocery list </span>
-                        )} />
-                    <Route
-                        exact
-                        path="/cart-page/:idItem"
-                        component={CartPage}
-
-                    />
-                    <Route path="/products" render={(props) => (
-                        <ProductsSection />
-                    )} />
-                </Switch>
-
-                {/* <div className="row">
+        {/* <div className="row">
     <div className="col-sm">
         <b>Meals</b>
         <ListedMealsSection 
@@ -838,27 +901,25 @@ class App extends Component {
     
     
 </div> */}
-            </div>
-        );
-    }
+      </div>
+    );
+  }
 }
 
 const containerStyle = {
-    //font: "50px",
-    display: "inline-block",
-    width: "100%",
-    height: "100%",
-
-}
-
-const contentStyle = {
-    // borderRadius: "25px",
-    maxWidth: "100vw",
-    maxHeight: "100vh",
-    overflow: "scroll",
-    width: "80%",
+  //font: "50px",
+  display: "inline-block",
+  width: "100%",
+  height: "100%"
 };
 
+const contentStyle = {
+  // borderRadius: "25px",
+  maxWidth: "100vw",
+  maxHeight: "100vh",
+  overflow: "scroll",
+  width: "80%"
+};
 
 /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
 // function myFunction() {
@@ -871,6 +932,4 @@ const contentStyle = {
 //     // }
 //   }
 
-
 export default App;
-
