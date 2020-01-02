@@ -100,7 +100,7 @@ class MyModal extends Component {
             <div className="row">
               <div className=" col-md-6 padding-col">
                 <ImagePopup value={value}/>
-							<div  style={{marginTop: "90%"}}>
+							<div  style={{marginTop: "95%"}}>
               <br /><br />
                 <h3> {value.label}</h3>
                 <div>
@@ -110,7 +110,7 @@ class MyModal extends Component {
 								<div><button style={{'margin-left': "50%", backgroundColor: 'grey'}}>Compare items</button></div>
               </div>
               </div>
-              <div className=" col-md-6 padding-col1" style={{  "background-color": "lightgrey" , padding:'25px'}}>
+              <div className=" col-md-6 padding-col1" style={{  "background-color": "lightgrey"}}>
 							<button className="close-button" onClick={this.closeModal}>
            				 X
           			</button>
@@ -127,7 +127,7 @@ class MyModal extends Component {
                     />
                     <button onClick={this.increase} className="plus"></button>
                   </div>
-<button style={{ height: "30px", backgroundColor: "green" }}>
+                <button style={{ height: "30px", backgroundColor: "green" }}>Add to Cart</button>
                 </div>
                 <div>
                   <b>Ingredients</b>
