@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
-import HeartCheckbox from 'react-heart-checkbox';
+// import HeartCheckbox from 'react-heart-checkbox';
+import Slider from 'react-animated-slider';
+import 'react-animated-slider/build/horizontal.css';
+// import { Carousel } from 'react-responsive-carousel';
+import ImagePopup from './ImagePopup'
 
 import "./App.css";
 
@@ -60,17 +64,22 @@ class MyModal extends Component {
   render() {
 		const { checked } = this.state;
 		const { value, mealPrep, ingredientsList } = this.props;
-		console.log(mealPrep,'mealp********')
-    const instructionsLength = value.instructions.length;
     var i;
-    var popUpSlides = [];
-    for (i = 0; i < instructionsLength / 3; i++) {
-      popUpSlides.push(
-        <button key={i} onClick={this.updateInstructionsDisplayBaseIndex}>
-          Slide {i}{" "}
-        </button>
-      );
+   var newarray = [];
+    for (i = 1; i < mealPrep.length; i= i+3) {
+      if (mealPrep[i]   === undefined) {
+        newarray.push([mealPrep[i-1],'','']);
+      } 
+      if (mealPrep[i+1]   === undefined) {
+        newarray.push([mealPrep[i-1],mealPrep[i],'']);
+      }
+      else {
+        newarray.push([mealPrep[i-1],mealPrep[i],mealPrep[i+1]]);
+      }
     }
+    const mealPrep1 = newarray.map(step => (
+      <ol key={step}> {step} </ol>
+    ));
 
     return (
       <>
@@ -90,12 +99,9 @@ class MyModal extends Component {
           <div className="container">
             <div className="row">
               <div className=" col-md-6 padding-col">
-                <img
-                  src={value.imageSrc}
-                  alt="info"
-                  style={{ width: "100%", height: "50%" }}
-                ></img>
-								<br /><br />
+                <ImagePopup value={value}/>
+							<div  style={{marginTop: "90%"}}>
+              <br /><br />
                 <h3> {value.label}</h3>
                 <div>
                   {value.readTime} | {value.cookTime}     
@@ -103,12 +109,13 @@ class MyModal extends Component {
                 </div>
 								<div><button style={{'margin-left': "50%", backgroundColor: 'grey'}}>Compare items</button></div>
               </div>
-              <div className=" col-md-6" style={{  "background-color": "lightgrey" , padding:'25px'}}>
+              </div>
+              <div className=" col-md-6 padding-col1" style={{  "background-color": "lightgrey" , padding:'25px'}}>
 							<button className="close-button" onClick={this.closeModal}>
            				 X
           			</button>
                 <div className="row">
-                  Meal Quantity &nbsp; &nbsp;
+                  Meal Quantity 
                   <div className="def-number-input number-input">
                     <button onClick={this.decrease} className="minus"></button>
                     <input
@@ -120,10 +127,7 @@ class MyModal extends Component {
                     />
                     <button onClick={this.increase} className="plus"></button>
                   </div>
-                  &nbsp;&nbsp;
-                  <button style={{ height: "30px", backgroundColor: "green" }}>
-                    Add to cart
-                  </button>
+<button style={{ height: "30px", backgroundColor: "green" }}>
                 </div>
                 <div>
                   <b>Ingredients</b>
@@ -133,9 +137,11 @@ class MyModal extends Component {
                 </div>
                 <hr></hr>
                 <div id="mealPrepChunk">
-                  {mealPrep}
+
+                <Slider>
+                  {mealPrep1}
+                </Slider>
                 </div>
-                {popUpSlides}
               </div>
             </div>
           </div>

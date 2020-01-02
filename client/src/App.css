@@ -240,4 +240,42 @@
 }
 .padding-col{
   padding: 20px;
+  max-height: 45% !important;
+  right: 7%;
 }
+.padding-col1{
+  right: 0%;
+}
+.slide{
+  background: lightgrey !important;
+}
+.slider{
+height: 355px !important;
+}
+.slide.current{
+text-align: center !important;
+padding: 50px !important;
+}
+.slide.previous{
+  text-align: center !important;
+  padding: 50px !important;
+  }
+
+  .slide.next {
+    text-align: center !important;
+    padding: 50px !important;
+    }
+
+.slider a.previousButton {
+	left: -10px !important;
+}
+
+.slider a.nextButton {
+	right: -10px !important;
+}
+.slide.hidden {
+  visibility: hidden;
+  text-align: center !important;
+  padding: 50px !important;
+}
+
