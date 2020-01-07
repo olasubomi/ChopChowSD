@@ -502,16 +502,15 @@ class App extends Component {
                
             </form>
         </li>
-        <li class="nav-item" >
-            
-            <Link to="/grocery" className="nav-link px-2">Login / Register</Link>
-        </li>
+
         <li class="nav-item"  >
             <Link to="/grocery" className="nav-link px-2">Grocery List</Link>
         </li>
         <li class="nav-item"  >
             <Link to="/products" className="nav-link px-2">Shopping Cart</Link>
-            
+        </li>
+        <li class="nav-item" >
+            <Link to="/grocery" className="nav-link px-2">Login / Register</Link>
         </li>
     </ul>
     <Link to="#" className="icon navbar-toggle" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
