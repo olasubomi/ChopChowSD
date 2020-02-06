@@ -485,11 +485,11 @@ class App extends Component {
 {/* <div className={this.state.topNav_className} id="myTopnav"> */}
 
 
-<nav class="navbar navbar-expand-md fixed-top-sm justify-content-start flex-nowrap  navbar-light " style={{backgroundColor:"#FFFFFF",borderBottom:"1px solid #fd7e14"}}>
+<nav className="navbar navbar-expand-md fixed-top-sm justify-content-start flex-nowrap  navbar-light " style={{backgroundColor:"#FFFFFF",borderBottom:"1px solid #fd7e14"}}>
     
     <Link to="/" className="navbar-brand">CHOP CHOW</Link>
-    <ul class="navbar-nav flex-row navbar-first" >
-        <li class="nav-item">
+    <ul className="navbar-nav flex-row navbar-first" >
+        <li className="nav-item">
             <form className="form-inline" style={{padding:"14px 16px"}}>
                 <div className="input-group">
                     <input className="form-control" placeholder="Search meal or category"/>
@@ -503,13 +503,13 @@ class App extends Component {
             </form>
         </li>
 
-        <li class="nav-item"  >
+        <li className="nav-item"  >
             <Link to="/grocery" className="nav-link px-2">Grocery List</Link>
         </li>
-        <li class="nav-item"  >
+        <li className="nav-item"  >
             <Link to="/products" className="nav-link px-2">Shopping Cart</Link>
         </li>
-        <li class="nav-item" >
+        <li className="nav-item" >
             <Link to="/grocery" className="nav-link px-2">Login / Register</Link>
         </li>
     </ul>
@@ -532,41 +532,41 @@ class App extends Component {
                     </div>
                 </form>
             </li>
-            <li class="nav-item" style={{padding:"14px 16px"}} >
+            <li className="nav-item" style={{padding:"14px 16px"}} >
                 <Link to="/grocery" className="nav-link px-2" style={{color:"#FFFFFF"}}>Login / Register</Link>
             </li>
-            <li class="nav-item" style={{padding:"14px 16px"}}>
-                <a class="nav-link px-2" href="#" style={{color:"#FFFFFF"}}>Wishlist</a>
+            <li className="nav-item" style={{padding:"14px 16px"}}>
+                <a className="nav-link px-2" href="#" style={{color:"#FFFFFF"}}>Wishlist</a>
             </li>
-            <li class="nav-item" style={{padding:"14px 16px",borderBottom:"1px solid #FFFFFF"}}>
+            <li className="nav-item" style={{padding:"14px 16px",borderBottom:"1px solid #FFFFFF"}}>
                 
                 <Link to="/products" className="nav-link px-2" style={{color:"#FFFFFF"}}>Shopping Cart</Link>
             </li>
-            <li class="nav-item" style={{padding:"14px 16px"}}>
+            <li className="nav-item" style={{padding:"14px 16px"}}>
                 <Link to="/v2" className="nav-link px-2" style={{color:"#FFFFFF"}}> Receipes</Link>
             </li>
-            <li class="nav-item" style={{padding:"14px 16px"}}>
+            <li className="nav-item" style={{padding:"14px 16px"}}>
                 <Link to="/grocery" className="nav-link px-2" style={{color:"#FFFFFF"}}>Grocery List</Link>
             </li>
-            <li class="nav-item" style={{padding:"14px 16px"}}>
+            <li className="nav-item" style={{padding:"14px 16px"}}>
                 <Link to="/products" className="nav-link px-2" style={{color:"#FFFFFF"}}>Products</Link>
             </li>
-            <li class="nav-item" style={{padding:"14px 16px",borderBottom:"1px solid #FFFFFF"}}>
-                <a class="nav-link px-2" href="#" style={{color:"#FFFFFF"}}>Stats</a>
+            <li className="nav-item" style={{padding:"14px 16px",borderBottom:"1px solid #FFFFFF"}}>
+                <a className="nav-link px-2" href="#" style={{color:"#FFFFFF"}}>Stats</a>
             </li>
         </ul>
     </div>
 </div>
-<nav class="navbar navbar-expand-md  navbar-light navbar-second"  style={{backgroundColor:"#EEEEEE"}}>
-    <div class="navbar-collapse collapse pt-2 pt-md-0" id="navbar2">
-        <ul class="navbar-nav">
-            <li class="nav-item active" style={{marginRight:"50%"}}>
+<nav className="navbar navbar-expand-md  navbar-light navbar-second"  style={{backgroundColor:"#EEEEEE"}}>
+    <div className="navbar-collapse collapse pt-2 pt-md-0" id="navbar2">
+        <ul className="navbar-nav">
+            <li className="nav-item active" style={{marginRight:"50%"}}>
                 <Link to="/v2" className="nav-link px-2">Home</Link>
             </li>
-            <li class="nav-item"  style={{marginRight:"50%"}}>
+            <li className="nav-item"  style={{marginRight:"50%"}}>
                 <Link to="/products" className="nav-link px-2">Products</Link>
             </li>
-            <li class="nav-item"  style={{marginRight:"50%"}}> 
+            <li className="nav-item"  style={{marginRight:"50%"}}> 
                 <Link to="/v2" className="nav-link px-2">Receipes</Link>
             </li>
         </ul>
