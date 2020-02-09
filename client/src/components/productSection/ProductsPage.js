@@ -3,64 +3,7 @@ import Popup from "reactjs-popup";
 
 class ProductSection extends Component {
 
-    storeCollection = [
-    {
-        store_name: "Lizy Gidy",
-        store_image: '/images/store_pics/lizy_gidy.jpg',
-        products:[{
-            product_name: "Garri",
-            product_image: '/images/products/garri.jpg',
-            product_price: 8.99,
-            variations:["Ijebu Garri", "Ghana Garri","Yellow Garri"],
-            sizes:["50lbs"]
-        },{
-        product_name:"Palm Oil",
-        product_image: '/images/products/ola_ola_palm_oil.jpg',
-        product_price: 8.99,
-        sizes:["64 oz","32 oz","17.6 choleterol free", "35.2","105.60"],
-        respective_prices:[ 19.99,10.99,7.99,13.99,29.00]
-        },{
-        product_name:"Beans",
-        product_image: '/images/products/beans.jpeg',
-        product_price: 12.00,
-        variations:["Brown Beans","Honey Beans"],
-        sizes:["2 lbs"],
-        price_per_ounce: 3.2
-        }
-    ]},
-    {
-        store_name:"African Carribean Market",
-        store_image: '/images/store_pics/african_carribean_storefront_people.jpg',
-        products:[{
-            product_name:"Palm Oil",
-            product_image: '/images/products/ola_ola_palm_oil.jpg',
-            product_price: 8.99,
-            variations:["Ola-Ola Palm Oil","Omni Red Palm Oil 100% unrefined"],
-            sizes:["1.32 Gallons","0.9 Gallons","50lbs" ],
-            price_per_gallon: 3.00,
-            price_per_pound: 0.30
-
-        },{
-            product_name:"Beans",
-            product_image: '/images/products/beans.jpg',
-            product_price: 2.25,
-            variations:[ "Black Eyes Peas","Whole Green Peas","Pinto Beans","Red Kidney Beans","Large Lime Beans"],
-            sizes: "0.5 L"       
-        },{
-            product_name:"Egusi",
-            product_image: '/images/products/egusi.jpg',
-            product_price: 9.95,
-            sizes:"5 Lbs"
-        },{
-        product_name:"Garri",
-        product_image: '/images/products/garri.jpg',
-        product_price: 8.99,
-        variations:["Ijebu Garri","Ghana Garri","Yellow Garri"],
-        sizes:"50lbs"
-        }]
-    }     
-]
-// storeCollection = []
+storeCollection = []
 
 componentDidMount(){
     console.log("Comes in product pages component did mount")
@@ -74,7 +17,7 @@ componentDidMount(){
 
              for(var i = 0 ; i < storeList.length; i++){
                  console.log(storeList[i]);
-                this.storeCollection.push(storeList[i].store_name);
+                this.storeCollection.push(storeList[i]);
                 console.log(storeList[i].store_name)
             }
         })
