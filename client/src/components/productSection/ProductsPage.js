@@ -15,7 +15,7 @@ componentDidMount(){
              for(var i = 0 ; i < storeList.length; i++){
                 console.log("Inner fetch loop");
                 console.log(storeList[i]);
-                this.storeCollection.push(storeList[i].store_name);
+                this.storeCollection.push(storeList[i]);
                 console.log(storeList[i].store_name)
             }
         })
