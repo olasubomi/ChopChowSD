@@ -19,6 +19,14 @@ import ProductsSection from './components/productSection/ProductsPage';
 //import Collapse from 'react-bootstrap/Collapse';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+import CartPage from './components/GroceryPage/CartPage';
+import Login from './components/Login';
+import GroceryPage from './components/GroceryPage';
+import SignUp from './components/signup';
+import ForgotPassword from './components/forgotpassword';
+import ResetPassword from './components/resetpassword';
+
+
 class App extends Component {
 
     meals = [
@@ -603,14 +611,134 @@ id="typeahead"
 filterBy={['product_name']}
 />
 
+                <Typeahead
+                    onChange={this.handleClickTypeahead}
+                    multiple
+                    options={valueAllDataLists}
+                    placeholder="Find Meals (and Ingredients) here.."
+                    id="typeahead"
+                />
+                <Alert show={showAlert} key={1} variant={variant}>
+                    {messageAlert}
+                </Alert>
 
-    
-<Switch>
-    <Route exact path="/" render={(props)=>(
-        <div>
-        <div id="title">
-            <b>Meals</b>
-            </div>
+                {this.state.messageVisible ? (
+                    <div>you can not add in this item because is found for this customer</div>
+                ) : null}
+
+                <Switch>
+                    <Route
+                        exact
+                        path="/login"
+                        render={props => (
+                            <Login {...props} />
+                        )}
+                    />
+
+          <Route
+                        exact
+                        path="/signup"
+                        render={props => (
+                            <SignUp {...props} />
+                        )}
+                    />
+          <Route
+                        exact
+                        path="/resetpass"
+                        render={props => (
+                            <ResetPassword {...props} />
+                        )}
+                    />
+          <Route
+                        exact
+                        path="/forgotpass"
+                        render={props => (
+                            <ForgotPassword {...props} />
+                        )}
+                    />
+                    <Route exact path="/" render={(props) => (
+                        <div>
+                            <div id="title">
+                                <b>Meals</b>
+                            </div>
+
+                            <div className="container">
+                                <div className="row">
+                                    {items}
+                                </div>
+                            </div>
+                        </div>
+                    )} />
+
+                    <Route path="/v1" render={(props) => (
+                        <div className="container">
+                            <br></br>
+                            <div className="row">
+                                <div className="col-sm">
+                                    <b>Meals</b>
+                                    <ListedMealsSection
+                                        recipes={this.state.recipes} showIngredients={this.showIngredients}
+                                        selectedMeal={this.state.selectedMeal} />
+                                    <span>&#43;</span><input placeholder="Suggest Meal"></input>
+
+                                    &nbsp;<button>Submit <span id="Popover1" onMouseOver={this.suggestMealToggle} onMouseOut={this.suggestMealToggle} >
+                                        <img src="/images/info_icon.png" alt="info" style={{ width: '13px', height: '13px' }} /> </span></button>
+                                    {/* onClick={this.suggestMealToggle} */}
+                                </div>
+                                <div className="col-sm">
+                                    <b>Recipe Contents</b>
+                                    <RecipeContentSection selectedMeal={this.state.selectedMeal} />
+
+                                </div>
+
+                                <div className="col-sm">
+                                    <b>Ingredients</b>
+                                    <IngredientSection selectedMealIngredients={this.state.selectedMealIngredients}
+                                        selectedMeal={this.state.selectedMeal} />
+                                    {/* <span>&#43;</span><input placeholder="Suggest Ingredient.."></input> */}
+                                </div>
+
+                                <Popover placement="auto" isOpen={this.state.suggestMealPopOver} target="Popover1" toggle={this.suggestMealToggle}>
+                                    <PopoverBody><div className="payback-disclaimer">
+                                        Suggestions by Guest Users are recorded, but do not change the publicly displayed Meals.
+                </div></PopoverBody>
+                                </Popover>
+                            </div>
+                        </div>
+                    )} />
+
+                    <Route path="/v2" render={(props) => (
+                        <div>
+                            <div id="title">
+                                <b>Meals</b>
+                            </div>
+
+
+                            <div className="container">
+                                <div className="row">
+                                    {items}
+                                </div>
+                            </div>
+                        </div>
+                    )} />
+
+
+
+                    <Route
+                        exact
+                        path="/grocery"
+                        render={() => (
+                            <GroceryPage
+                                auth={isAuthenticated}
+                                dataTypeaheadProps={itemTypeahead}
+                            />
+
+                        )}
+
+                    />
+
+                    )}
+
 
         <div className="container">
             <div className="row">

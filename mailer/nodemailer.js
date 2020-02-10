@@ -3,27 +3,27 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 
  let { EMAIL_USER: user, EMAIL_PASSWORD: pass } = process.env;
- 
-// async..await is not allowed in global scope, must use a wrapper
-function main(to) {
+ let transporter = nodemailer.createTransport({
+    service: "Gmail",
+    host: "smtp.gmail.com",
+    port: 25,
+   secure: false, 
+ tls: {
+    rejectUnauthorized: false
+ },
+ auth: {
+    user,
+    pass
+ }
+});
+
+function signUpEmail(to) {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
     //let testAccount = await nodemailer.createTestAccount();
 
     // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport({
-        service: "Gmail",
-        host: "smtp.gmail.com",
-        port: 25,
-       secure: false, 
-     tls: {
-        rejectUnauthorized: false
-     },
-     auth: {
-        user,
-        pass
-     }
-    });
+
 
     // send mail with defined transport object
     let info = transporter.sendMail({
@@ -42,5 +42,27 @@ function main(to) {
     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou... */
 }
 
-//main().catch(console.error);
-module.exports = main;
+function forgotPasswordEmail(toEmail, resetLink) {
+    let info = transporter.sendMail({
+        from: user, // sender address
+        to: toEmail, // list of receivers
+        subject: 'Please reset your password.', // Subject line
+        text: 'Use below link to reset your password. '+resetLink, // plain text body
+        html: '<b>Use below link to reset your password. </b>'+resetLink // html body
+    });
+}
+
+
+
+function passwordResetEmail(toEmail) {
+    let info = transporter.sendMail({
+        from: user, // sender address
+        to: toEmail, // list of receivers
+        subject: 'Password reset successfully.', // Subject line
+        text: 'Your password has reset.', // plain text body
+        html: '<b>Your password has reset. </b>'// html body
+    });
+}
+
+//signUpEmail().catch(console.error);
+module.exports = {signUpEmail, forgotPasswordEmail, passwordResetEmail};

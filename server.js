@@ -22,7 +22,7 @@ const authenticationVerify = require('./controllers/authentication/2.authunticat
 const { hashPassword } = require('./controllers/hashPassword')
 const {authenticationSignup}=require('./controllers/authentication/authenticationSignup')
 const authunticationLogout = require('./controllers/authentication/authunticationLogout')
-const { signupCustomer } = require('./controllers/authentication/signup');
+const { signupCustomer, forgotPassword, resetPassword } = require('./controllers/authentication/signup');
 const app = express();
 
 const path = require('path');
@@ -293,28 +293,39 @@ app.get('*', (_req, res) => {
 //         }
 //     });
 
-// app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
-// app.get('/get_products', (req, res) => {
-//     console.log("Calling server's get_products request function !");
-//     var collection;
-//     const client = new MongoClient(uri, { useNewUrlParser: true });
-//     console.log(uri);
-//     //const opts  = {db:{authSource: 'users'}};
-//     // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
-//     MongoClient.connect(uri, {useUnifiedTopology: true, useNewUrlParser: true}, function (err, db) {
-//         if (err) throw err;
-//         // console.log(JSON.stringify(collection));
-//         // store = JSON.stringify(collection);
-//         // res.send(store);
-//         var dbo = db.db("Product_Supply");
-//         dbo.collection("all_products").find({}).toArray(function (err, result) {
-//             if (err) throw err;
-//             // console.log(result);
-//             res.send(result);
-//             // perform actions on the collection object
-//             db.close();
-//         });
-//     });
-// });
+
+app.post('/api/login', authenticationLogin);
+app.post('/api/forgotpass', forgotPassword)
+app.post('/api/resetpass', resetPassword)
+// app.use(authenticationVerify)
+app.post ('/api/signupuser',signupCustomer)
+app.post ('/api/signup/:newcustomerId',authenticationSignup)
+app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
+app.get('/api/getList/:customerId',authenticationVerify,getList)
+app.get('/api/get-all-data-lists', getAllDataLists)
+// app.post('/api/appendItem',appendItem)
+app.delete('/api/remove-list/:customerId',removeList)
+app.delete('/api/remove-item/:idItem/:customerId',removeItem)
+app.post('/api/create-list/:idItem/:customerId',createList)
+
+//app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer)
+
+
+app.get('/api/get-ids-items/:customerId',getIdsItems)
+app.get('/api/get-ids-list',getIdsList)
+app.get('/api/get-ids-customers',getIdsCustomers)
+
+app.get('/api/get-data-item/:idItem',getItemId)
+
+app.get('/api/get-data-typeahead/:option',getDataItemTypeahead)
+app.get('/hash', hashPassword);
+app.get('/api/logout',authunticationLogout)
+
+
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+app.get('*', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

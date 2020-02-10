@@ -5,7 +5,6 @@ const validationCreateList = yup.object().shape({
     .min(5)
     .required(),
     valueProductImage: yup.string().required() ,
-    
     valueProductPrice: yup.number().required(),
     valueProductSize: yup.string().required(),
     valuePricePerOunce: yup.number().required(),
