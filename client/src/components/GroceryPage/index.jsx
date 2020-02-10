@@ -263,8 +263,8 @@ export default class GroceryPage extends React.Component {
 
     this.handleCreateList = () => {
       const { lasIdListState, valueProductName, valueProductImage, valueProductPrice, valuePricePerOunce, valueProductSize } = this.state;
-      if (valueProductName && valueProductImage && valueProductPrice && valueProductSize && valuePricePerOunce) {
-        if (valueProductImage.startsWith('http://') || valueProductImage.startsWith('data') || valueProductImage.endsWith('png') || valueProductImage.endsWith('jpg') || valueProductImage.endsWith('gif')) {
+      // if (valueProductName && valueProductImage && valueProductPrice && valueProductSize && valuePricePerOunce) {
+      //   if (valueProductImage.startsWith('http://') || valueProductImage.startsWith('data') || valueProductImage.endsWith('png') || valueProductImage.endsWith('jpg') || valueProductImage.endsWith('gif')) {
 
           const { customerId } = this.state;
           const idItem = lasIdListState;
@@ -291,13 +291,13 @@ export default class GroceryPage extends React.Component {
                 this.setState({ valueData: [...valueData, ...response.data], errormsgImage: '', errormsg: '', valueProductName: '', valueProductImage: '', valueProductSize: '', valueProductPrice: '', valuePricePerOunce: '', lasIdListState: lasIdListState + 1 })
               }
             })
-        } else {
-          this.setState({ messageErrCreate: 'should be the image start word  "data" or "http" or end word "png" , "jpg","gif" ' })
-        }
-      } else {
-        this.setState({ messageErrCreate: 'should be sure fill all fields ' })
-
-      }
+        
+      //     } else {
+      //     this.setState({ messageErrCreate: 'should be the image start word  "data" or "http" or end word "png" , "jpg","gif" ' })
+      //   }
+      // } else {
+      //   this.setState({ messageErrCreate: 'should be sure fill all fields ' })
+      // }
 
     }
 
@@ -436,99 +436,105 @@ export default class GroceryPage extends React.Component {
                     })
                   ) : <Spinner animation="border" variant="info" />}
                 </Row>
+              ):(
+              <></>
+              )};
+             </Container>
+             </> 
               ) : (
-                  <>
-                    <div>here not found any items , you can add item from searchBar after that make refresh for page to show adding items</div>
-                    <Button className="yourlist__button-create" onClick={this.handleShowCreateList}>create list</Button>
-                    {showCreate ? (
-                      <Modal show={showCreate} onHide={this.handleClose} backdrop="static" className="modal-create">
-                        <Modal.Body className="modal-create__body">
-                          <Form.Group>
-                            <Form.Label className="yourlist__group-label">Product Id: {lasIdListState}</Form.Label>
-                          </Form.Group>
-                          <Form.Group >
-                            <Form.Label className="yourlist__group-label">Product Name :</Form.Label>
-                            <Form.Control
-                              className='create-input'
-                              type="text"
-                              name="valueProductName"
-                              value={valueProductName}
-                              placeholder="Enter name list"
-                              onChange={this.handleChange}
-                            />
-                          </Form.Group>
-                          <Form.Group >
-                            <Form.Label className="yourlist__group-label">Product Image :</Form.Label>
-                            <Form.Control
-                              className='create-input'
-                              type="text"
-                              name="valueProductImage"
-                              value={valueProductImage}
-                              placeholder="Enter image list"
-                              onChange={this.handleChange}
-                            />
-                          </Form.Group>
-                          <Form.Group className="yourlist__group-label">
-                            <Form.Label className="yourlist__group-label">Product Price :</Form.Label>
-                            <Form.Control
-                              className='create-input'
-                              type="number"
-                              name="valueProductPrice"
-                              value={valueProductPrice}
-                              placeholder="Enter price list"
-                              onChange={this.handleChange}
-                            />
-                          </Form.Group>
-                          <Form.Group className="yourlist__group-label">
-                            <Form.Label className="yourlist__group-label">Product Size :</Form.Label>
-                            <Form.Control
-                              className='create-input'
-                              type="text"
-                              name="valueProductSize"
-                              value={valueProductSize}
-                              placeholder="Enter size list"
-                              onChange={this.handleChange}
+          //       <>
+                  
+          //          <div>here not found any items , you can add item from searchBar after that make refresh for page to show adding items</div>
+          //           <Button className="yourlist__button-create" onClick={this.handleShowCreateList}>create list</Button>
+          //           {showCreate ? (
+          //             <Modal show={showCreate} onHide={this.handleClose} backdrop="static" className="modal-create">
+          //               <Modal.Body className="modal-create__body">
+          //                 <Form.Group>
+          //                   <Form.Label className="yourlist__group-label">Product Id: {lasIdListState}</Form.Label>
+          //                 </Form.Group>
+          //                 <Form.Group >
+          //                   <Form.Label className="yourlist__group-label">Product Name :</Form.Label>
+          //                   <Form.Control
+          //                     className='create-input'
+          //                     type="text"
+          //                     name="valueProductName"
+          //                     value={valueProductName}
+          //                     placeholder="Enter name list"
+          //                     onChange={this.handleChange}
+          //                   />
+          //                 </Form.Group>
+          //                 <Form.Group >
+          //                   <Form.Label className="yourlist__group-label">Product Image :</Form.Label>
+          //                   <Form.Control
+          //                     className='create-input'
+          //                     type="text"
+          //                     name="valueProductImage"
+          //                     value={valueProductImage}
+          //                     placeholder="Enter image list"
+          //                     onChange={this.handleChange}
+          //                   />
+          //                 </Form.Group>
+          //                 <Form.Group className="yourlist__group-label">
+          //                   <Form.Label className="yourlist__group-label">Product Price :</Form.Label>
+          //                   <Form.Control
+          //                     className='create-input'
+          //                     type="number"
+          //                     name="valueProductPrice"
+          //                     value={valueProductPrice}
+          //                     placeholder="Enter price list"
+          //                     onChange={this.handleChange}
+          //                   />
+          //                 </Form.Group>
+          //                 <Form.Group className="yourlist__group-label">
+          //                   <Form.Label className="yourlist__group-label">Product Size :</Form.Label>
+          //                   <Form.Control
+          //                     className='create-input'
+          //                     type="text"
+          //                     name="valueProductSize"
+          //                     value={valueProductSize}
+          //                     placeholder="Enter size list"
+          //                     onChange={this.handleChange}
 
-                            />
-                          </Form.Group>
-                          <Form.Group className="yourlist__group-label">
-                            <Form.Label className="yourlist__group-label">Product Price Per Ounce :</Form.Label>
-                            <Form.Control
-                              className='create-input'
-                              type="number"
-                              name="valuePricePerOunce"
-                              value={valuePricePerOunce}
-                              placeholder="Enter Price Per Ounce list"
-                              onChange={this.handleChange}
-                            />
-                          </Form.Group>
-                          {messageErrCreate ? (
-                            <p className="create__msg-err">{messageErrCreate}</p>
-                          ) : null}
-                        </Modal.Body>
-                        <Modal.Footer className="confirm__success">
-                          <Button
-                            variant="secondary"
-                            onClick={this.handleClose}
-                          >
-                            Close
-                    </Button>
-                          <Button
-                            className='create-button'
-                            variant="success"
-                            onClick={this.handleCreateList}
-                          >
-                            create
-                    </Button>
-                        </Modal.Footer>
-                      </Modal>
-                    ) : null}
-                  </>
-                )
-              }
-            </Container>
-          </>
-        ) : (
+          //                   />
+          //                 </Form.Group>
+          //                 <Form.Group className="yourlist__group-label">
+          //                   <Form.Label className="yourlist__group-label">Product Price Per Ounce :</Form.Label>
+          //                   <Form.Control
+          //                     className='create-input'
+          //                     type="number"
+          //                     name="valuePricePerOunce"
+          //                     value={valuePricePerOunce}
+          //                     placeholder="Enter Price Per Ounce list"
+          //                     onChange={this.handleChange}
+          //                   />
+          //                 </Form.Group>
+          //                 {messageErrCreate ? (
+          //                   <p className="create__msg-err">{messageErrCreate}</p>
+          //                 ) : null}
+          //               </Modal.Body>
+          //               <Modal.Footer className="confirm__success">
+          //                 <Button
+          //                   variant="secondary"
+          //                   onClick={this.handleClose}
+          //                 >
+          //                   Close
+          //           </Button>
+          //                 <Button
+          //                   className='create-button'
+          //                   variant="success"
+          //                   onClick={this.handleCreateList}
+          //                 >
+          //                   create
+          //           </Button>
+          //               </Modal.Footer>
+          //             </Modal>
+          //           ) : null} 
+          //          </>
+          //        )
+          //      }
+          //    </Container>
+          //  </>
+        // ) : (
             <>
               <Container>
                 <Modal show={true} onHide={this.handleClose} className="modal loginformmm" backdrop="static">
