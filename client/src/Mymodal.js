@@ -5,9 +5,9 @@ import React, { Component } from "react";
 // import "react-animated-slider/build/horizontal.css";
 // import { Carousel } from 'react-responsive-carousel';
 // import ImagePopup from "./ImagePopup";
-import {Button, Modal} from 'react-bootstrap';
+import { Button, Modal } from "react-bootstrap";
 // import {Button} from 'react-bootstrap/Button';
-
+import TextSlider from './text_slide'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
@@ -19,10 +19,11 @@ class MyModal extends Component {
     this.state = {
       modalIsOpen: false,
       increment: 0,
-      checked: false
+      checked: false,
+      index: 0
     };
     this.openModal = this.openModal.bind(this);
-    // this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.updateInstructionsDisplayBaseIndex = this.updateInstructionsDisplayBaseIndex.bind(
       this
@@ -55,6 +56,10 @@ class MyModal extends Component {
     this.setState({ modalIsOpen: false });
   }
 
+  handleSelect(selectedIndex, e){
+    this.setState({index: selectedIndex})
+  }
+
   updateInstructionsDisplayBaseIndex(event) {
     console.log(event.target.innerText);
     var button = event.target.innerText;
@@ -83,7 +88,6 @@ class MyModal extends Component {
     }
     const mealPrep1 = newarray.map(step => <ol key={step}> {step} </ol>);
 
-    
     return (
       <>
         <div>
@@ -91,21 +95,25 @@ class MyModal extends Component {
             View Steps
           </button>
         </div>
-        <Modal show={this.state.modalIsOpen}
+        <Modal
+          show={this.state.modalIsOpen}
           // onAfterOpen={this.afterOpenModal}
-          onHide={this.closeModal}>
-        <Modal.Header closeButton>
-          {/* <Modal.Title></Modal.Title> */}
-        </Modal.Header>
-        <Modal.Body> <div className="row">
-              <div className=" col-md-6">
+          onHide={this.closeModal}
+        >
+          <Modal.Header closeButton>
+            {/* <Modal.Title></Modal.Title> */}
+          </Modal.Header>
+          <Modal.Body>
+            <div className="container">
+            <div className="row">
+              <div className="col-md-6 col-xs-12">
                 <Carousel showThumbs={false} infiniteLoop={true}>
                   {content.map(index => (
-                    <img key={index} src={value.imageSrc} />
+                    <img style={{height: '300px'}} alt="pp" key={index} src={value.imageSrc} />
                   ))}
                 </Carousel>
                 <br />
-                <div className="col-md-12">
+                <div className="col-md-12 col-xs-12">
                   <h3> {value.label}</h3>
                   <div>
                     {value.readTime} | {value.cookTime}
@@ -119,20 +127,20 @@ class MyModal extends Component {
                     </button>
                   </div>
                 </div>
+                <hr></hr>
               </div>
-              <div className=" col-md-6">
+              <div className=" col-md-6 col-xs-12">
                 <div className="row">
-                  Meal Quantity
-                  &nbsp;
+                  Meal Quantity &nbsp;
                   <div className="def-number-input number-input">
                     <button onClick={this.decrease} className="minus"></button>
-                        <input
-                        className="quantity"
-                        name="quantity"
-                        value={this.state.increment}
-                        onChange={() => console.log("change")}
-                        type="number"
-                        />
+                    <input
+                      className="quantity"
+                      name="quantity"
+                      value={this.state.increment}
+                      onChange={() => console.log("change")}
+                      type="number"
+                    />
                     <button onClick={this.increase} className="plus"></button>
                   </div>
                   <button style={{ backgroundColor: "green" }}>
@@ -147,19 +155,13 @@ class MyModal extends Component {
                 </div>
                 <hr></hr>
                 <div id="mealPrepChunk">
-                  {/* <Slider>{mealPrep1}</Slider> */}
+                  <TextSlider mealPrep1={mealPrep}/>
                 </div>
               </div>
-            </div></Modal.Body>
-        <Modal.Footer>
-          {/* <Button variant="secondary">
-            Close
-          </Button>
-          <Button variant="secondary">
-            Save Changes
-          </Button> */}
-        </Modal.Footer>
-      </Modal>
+            </div>
+            </div>
+          </Modal.Body>
+        </Modal>
       </>
     );
   }

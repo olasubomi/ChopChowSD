@@ -1,0 +1,46 @@
+import React, { Component } from "react";
+import { Button, Modal, Carousel } from "react-bootstrap";
+
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import "./text_slider.css";
+
+class TextSlider extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalIsOpen: false,
+      increment: 0,
+      checked: false,
+      index: 0
+    };
+    this.handleSelect = this.handleSelect.bind(this);
+  }
+
+  handleSelect(selectedIndex) {
+    this.setState({ index: selectedIndex });
+  }
+
+  render() {
+    const { mealPrep1 } = this.props;
+    console.log({ mealPrep1 }, "pppppppppp");
+    return (
+      <>
+        <Carousel className="poojak" activeIndex={this.state.index} onSelect={this.handleSelect}>
+          {mealPrep1.map(index => (
+            <Carousel.Item>
+              <img
+                className="d-block w-100"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADDCAMAAACxkIT5AAAAA1BMVEX///+nxBvIAAAASElEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+BsYMAAFjd3WkAAAAAElFTkSuQmCC"
+                alt="First slide"
+              />
+              <Carousel.Caption>
+                {index}
+              </Carousel.Caption>
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      </>
+    );
+  }
+}
+export default TextSlider;
