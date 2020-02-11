@@ -18,7 +18,7 @@ require('./db/dbMongo/config/db_connection');
 
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
-const authenticationVerify = require('./controllers/authentication/2.authunticatinVerify')
+const authenticationVerify = require('./controllers/authentication/2.authunticationVerify')
 const { hashPassword } = require('./controllers/hashPassword')
 const {authenticationSignup}=require('./controllers/authentication/authenticationSignup')
 const authunticationLogout = require('./controllers/authentication/authunticationLogout')
@@ -112,42 +112,8 @@ app.get('/terms-of-service', (req, res) => {
 //     res.sendFile(path.join(__dirname+'/client/build/'));
 //   });
 
-app.get('/getList/:customerId', getList)
-
-app.get('/api/get-all-data-lists', getAllDataLists)
 app.get('/api/get-meals', getMeals)
 
-app.post('/api/login', authenticationLogin);
-// app.use(authenticationVerify)
-app.post ('/api/signupuser',signupCustomer)
-app.post ('/api/signup/:newcustomerId',authenticationSignup)
-app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
-app.get('/api/getList/:customerId',authenticationVerify,getList)
-app.get('/api/get-all-data-lists', getAllDataLists)
-// app.post('/api/appendItem',appendItem)
-app.delete('/api/remove-list/:customerId',removeList)
-app.delete('/api/remove-item/:idItem/:customerId',removeItem)
-app.post('/api/create-list/:idItem/:customerId',createList)
-
-//app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer)
-
-
-app.get('/api/get-ids-items/:customerId',getIdsItems)
-app.get('/api/get-ids-list',getIdsList)
-app.get('/api/get-ids-customers',getIdsCustomers)
-
-app.get('/api/get-data-item/:idItem',getItemId)
-
-app.get('/api/get-data-typeahead/:option',getDataItemTypeahead)
-app.get('/hash', hashPassword);
-app.get('/api/logout',authunticationLogout)
-
-
-app.use(express.static(path.join(__dirname, 'client', 'build')));
-
-app.get('*', (_req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
 
 // app.get('/find', function (req, res) {
 //     app.get('/api/get-all-lists', getAllLists)

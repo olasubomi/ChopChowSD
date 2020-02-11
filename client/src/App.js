@@ -3,7 +3,7 @@ import {Typeahead} from 'react-bootstrap-typeahead';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
-import {Nav, Navbar, NavDropdown, Form, FormControl, Button} from 'react-bootstrap'
+import {Nav, Alert, Navbar, NavDropdown, Form, FormControl, Button} from 'react-bootstrap'
 import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
 import { Link, Route, Switch, withRouter } from "react-router-dom";
@@ -237,6 +237,7 @@ class App extends Component {
             recipes: this.meals, //[this.Garri, this.Jollof_Rice],
             selectedMealIngredients: this.meals[0].new_ingredients,
             selectedMeal: this.meals[0],
+            valueAllDataLists: [],
             showIngredients:{
                 hidden: true
             },
@@ -296,25 +297,7 @@ class App extends Component {
 
     meal_popups  = [];
     
-    componentDidMount(){
-        console.log("Comes in component did mount")
-        var url = "http://localhost:5000/get_products"
-        // var url = "https://chopchowsd.herokuapp.com/get_products" // call in production
-
-        fetch(url)
-            .then(res => res.text())
-            .then(body => {
-                console.log()
-                var productsList = JSON.parse(body)
-                for(var i = 0 ; i < productsList.length; i++){
-                    this.products.push(productsList[i].product_name);
-                    console.log(productsList[i].product_name)
-                }
-            })
-            .catch(error =>{
-                console.log(error);
-            });
-    }
+ 
       
     showIngredient(index){
         console.log("updating popup boolean");
@@ -343,6 +326,7 @@ class App extends Component {
         // the layout provider
         //const elements = ['one', 'two', 'three'];
         //const popOverInfo = []
+        const { messageAlert, showAlert, variant, itemTypeahead, valueAllDataLists, isAuthenticated, } = this.state;
         const items = []
 
 
@@ -611,7 +595,7 @@ id="typeahead"
 filterBy={['product_name']}
 />
 
-                <Typeahead
+                {/* <Typeahead
                     onChange={this.handleClickTypeahead}
                     multiple
                     options={valueAllDataLists}
@@ -624,7 +608,7 @@ filterBy={['product_name']}
 
                 {this.state.messageVisible ? (
                     <div>you can not add in this item because is found for this customer</div>
-                ) : null}
+                ) : null} */}
 
                 <Switch>
                     <Route
@@ -635,21 +619,21 @@ filterBy={['product_name']}
                         )}
                     />
 
-          <Route
+                    <Route
                         exact
                         path="/signup"
                         render={props => (
                             <SignUp {...props} />
                         )}
                     />
-          <Route
+                    <Route
                         exact
                         path="/resetpass"
                         render={props => (
                             <ResetPassword {...props} />
                         )}
                     />
-          <Route
+                    <Route
                         exact
                         path="/forgotpass"
                         render={props => (
@@ -701,7 +685,7 @@ filterBy={['product_name']}
                                 <Popover placement="auto" isOpen={this.state.suggestMealPopOver} target="Popover1" toggle={this.suggestMealToggle}>
                                     <PopoverBody><div className="payback-disclaimer">
                                         Suggestions by Guest Users are recorded, but do not change the publicly displayed Meals.
-                </div></PopoverBody>
+                                        </div></PopoverBody>
                                 </Popover>
                             </div>
                         </div>
@@ -737,82 +721,28 @@ filterBy={['product_name']}
 
                     />
 
-                    )}
 
+                    <Route path="/grocery" render={(props)=>(
+                        // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
+                        <div>
+                            <div><b>Your Grocery List</b></div>
+                            <GroceryPage	
+                                auth={isAuthenticated}	
+                                dataTypeaheadProps={itemTypeahead}	
+                            />	
+                            <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                        </div>
+                        
+                    )}/>
 
-        <div className="container">
-            <div className="row">
-                {items} 
-            </div>
-        </div>
-    </div>
-    )}/>
+                    <Route path="/products" render={(props)=>(
+                            <ProductsSection /> 
+                    )}/>
 
-    <Route path="/v1" render={(props)=>(
-        <div className="container">
-        <br></br>
-        <div className="row">
-            <div className="col-sm">
-                <b>Meals</b>
-                <ListedMealsSection 
-                recipes={this.state.recipes} showIngredients={this.showIngredients}
-                selectedMeal={this.state.selectedMeal}/>
-                <span>&#43;</span><input placeholder="Suggest Meal"></input> 
-                
-                &nbsp;<button>Submit <span id="Popover1" onMouseOver={this.suggestMealToggle} onMouseOut={this.suggestMealToggle} >
-                <img src="/images/info_icon.png" alt="info" style={{width:'13px', height:'13px'}}/> </span></button>
-                {/* onClick={this.suggestMealToggle} */}
-                </div>                     
-            <div className="col-sm">
-                <b>Recipe Contents</b>
-                <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
-                
-            </div>
+            </Switch>
 
-            <div className="col-sm">
-                <b>Ingredients</b>
-                <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}
-                selectedMeal= {this.state.selectedMeal}/>
-                {/* <span>&#43;</span><input placeholder="Suggest Ingredient.."></input> */}
-            </div>
-            
-            <Popover placement="auto" isOpen={this.state.suggestMealPopOver} target="Popover1" toggle={this.suggestMealToggle}>
-                <PopoverBody><div className="payback-disclaimer">
-                Suggestions by Guest Users are recorded, but do not change the publicly displayed Meals.
-                </div></PopoverBody>
-            </Popover>
-        </div>
-    </div>
-    )}/>
-
-    <Route path="/v2" render={(props)=>(
-    <div>
-        <div id="title">
-            <b>Meals</b>
-            </div>
-
-        <div className="container">
-            <div className="row">
-                {items} 
-            </div>
-        </div>
-    </div>
-    )}/>
-
-    <Route path="/grocery" render={(props)=>(
-        // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
-        <div>
-            <div><b>Your Grocery List</b></div>
-            <div className="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
-        </div>
-        
-    )}/>
-
-    <Route path="/products" render={(props)=>(
-            <ProductsSection /> 
-    )}/>
-    </Switch>
-
+                    {/* )}
+                    )}/> */}
 
 {/* <div className="row">
     <div className="col-sm">
@@ -820,8 +750,6 @@ filterBy={['product_name']}
         <ListedMealsSection 
         recipes={this.state.recipes} showIngredients={this.showIngredients}
         selectedMeal={this.state.selectedMeal}/>
-        
-        
 
         </div>                     
     <div className="col-sm">

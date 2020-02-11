@@ -54,6 +54,7 @@ export default class GroceryPage extends React.Component {
         } else {
           this.setState({ Authenticated: false })
         }
+        
         this.setState({ customerId: response.data })
         const { customerId } = this.state;
         fetch(`/api/getList/${customerId}`, {
@@ -86,7 +87,52 @@ export default class GroceryPage extends React.Component {
           })
       })
 
-    this.handleClick = () => {
+      fetch('/api/get-ids-list', {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+        .then(res => {
+          return res.json()
+        })
+        .then(response => {
+          let arrResponse = response.data;
+          const lasIdList = arrResponse[arrResponse.length - 1]
+          this.setState({ lasIdListState: lasIdList + 1 })
+        })
+
+      fetch('/api/get-ids-customers', {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+        .then(res => {
+          return res.json()
+        })
+        .then(response => {
+          let arrResponse = response.data;
+          const lasIdCustomer = arrResponse[arrResponse.length - 1]
+          this.setState({ newcustomerId: lasIdCustomer + 1 })
+        })
+        .catch(() => {
+          this.setState({
+            messageAlert: 'Internal Server Error',
+            showAlert: true,
+            variant: 'danger'
+          },
+            () =>
+              setTimeout(() => {
+                this.setState({ messageAlert: '', showAlert: false })
+              }, 8000)
+          )
+        })
+    }
+
+    handleClick = () => {
       const { email, password } = this.state;
       if (email && password) {
         fetch('/api/login', {
@@ -131,12 +177,12 @@ export default class GroceryPage extends React.Component {
       }
     };
 
-
-    this.handleClose = e => {
+    handleClose = e => {
       if (e) e.stopPropagation();
       this.setState({ showCreate: false });
     };
-    this.handleShowDeleteItem = (idItem) => {
+
+    handleShowDeleteItem = (idItem) => {
       this.setState({ deletedItemId: idItem });
       const { customerId, deletedItemId } = this.state;
       fetch(`/api/remove-item/${idItem}/${customerId}`, {
@@ -183,11 +229,12 @@ export default class GroceryPage extends React.Component {
           )
         })
     }
-    this.handleShowAddItem = (idItem) => {
+
+    handleShowAddItem = (idItem) => {
       window.location.href = `cart-page/${idItem}`
     }
 
-    this.handleShowDeleteList = (idsItems) => {
+    handleShowDeleteList = (idsItems) => {
       const { customerId } = this.state;
       fetch(`/api/get-ids-items/${customerId}`, {
         method: 'GET',
@@ -257,11 +304,11 @@ export default class GroceryPage extends React.Component {
         })
     }
 
-    this.handleShowCreateList = () => {
+    handleShowCreateList = () => {
       this.setState({ showCreate: true })
     }
 
-    this.handleCreateList = () => {
+    handleCreateList = () => {
       const { lasIdListState, valueProductName, valueProductImage, valueProductPrice, valuePricePerOunce, valueProductSize } = this.state;
       // if (valueProductName && valueProductImage && valueProductPrice && valueProductSize && valuePricePerOunce) {
       //   if (valueProductImage.startsWith('http://') || valueProductImage.startsWith('data') || valueProductImage.endsWith('png') || valueProductImage.endsWith('jpg') || valueProductImage.endsWith('gif')) {
@@ -300,52 +347,6 @@ export default class GroceryPage extends React.Component {
       // }
 
     }
-
-    fetch('/api/get-ids-list', {
-      method: 'GET',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-
-    })
-      .then(res => {
-        return res.json()
-      })
-      .then(response => {
-        let arrResponse = response.data;
-        const lasIdList = arrResponse[arrResponse.length - 1]
-        this.setState({ lasIdListState: lasIdList + 1 })
-      })
-    fetch('/api/get-ids-customers', {
-      method: 'GET',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-
-    })
-      .then(res => {
-        return res.json()
-      })
-      .then(response => {
-        let arrResponse = response.data;
-        const lasIdCustomer = arrResponse[arrResponse.length - 1]
-        this.setState({ newcustomerId: lasIdCustomer + 1 })
-      })
-      .catch(() => {
-        this.setState({
-          messageAlert: 'Internal Server Error',
-          showAlert: true,
-          variant: 'danger'
-        },
-          () =>
-            setTimeout(() => {
-              this.setState({ messageAlert: '', showAlert: false })
-            }, 8000)
-        )
-      })
-  }
 
   render() {
     const { email, password, showAlert, variant, messageAlert, lasIdListState, valueData, idsItems, showCreate, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, messageErr, messageSuccess, messageErrCreate } = this.state;
@@ -548,9 +549,9 @@ export default class GroceryPage extends React.Component {
                       </div>
                       <div className="col">
                         <a href="#" className="fb btn">
-                          <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+                          <i className="fa fa-facebook fa-fw"></i> Login with Facebook
                         </a>
-                        <a  className="google btn"><i class="fa fa-google fa-fw">
+                        <a  className="google btn"><i className="fa fa-google fa-fw">
                         </i> Login with Google+
                         </a>
                       </div>
