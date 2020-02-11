@@ -25,6 +25,7 @@ import CartPage from './components/GroceryPage/CartPage';
 import Login from './components/Login';
 import GroceryPage from './components/GroceryPage';
 import SignUp from './components/signup';
+import MyModal from './Mymodal'
 class App extends Component {
 
 
@@ -446,7 +447,7 @@ class App extends Component {
                             </div>
                         </div>
                     </div>
-
+                    <MyModal value={value} mealPrep= {mealPrep} ingredientsList={ingredientsList} />
                     <Popup
                         trigger={
                             <div id={value.id} style={{ display: "none" }}>
