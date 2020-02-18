@@ -86,8 +86,20 @@
 } */
 
 /* ============================================= */
-
-
+.close{
+  font-size: 4.5rem;
+}
+.carousel.carousel-slider .control-arrow {
+  margin-top: 150px !important;
+}
+.modal-content{
+  background-color: #bfbfbf;
+}
+@media screen and (max-width: 1920px){
+  .modal-content {
+    border-radius: 0px;
+  }
+}
 .number-input input[type="number"] {
   -webkit-appearance: textfield;
     -moz-appearance: textfield;
@@ -155,16 +167,7 @@
 .number-input input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
-.number-input button {
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin: 0;
-  position: relative;
-}
+
 .number-input button:before,
 .number-input button:after {
   display: inline-block;
@@ -188,8 +191,8 @@
   width: 2.6rem;
   height: .7rem;
 }
-.number-input.number-input button.minus {
-  padding-left: 10px;
+.number-input.number-input button.plus {
+  padding-left: 15px;
 }
 .number-input.number-input button:before,
 .number-input.number-input button:after {

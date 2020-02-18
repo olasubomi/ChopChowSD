@@ -7,7 +7,7 @@ import React, { Component } from "react";
 // import ImagePopup from "./ImagePopup";
 import { Button, Modal } from "react-bootstrap";
 // import {Button} from 'react-bootstrap/Button';
-import TextSlider from './text_slide'
+import TextSlider from "./text_slide";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
@@ -56,8 +56,8 @@ class MyModal extends Component {
     this.setState({ modalIsOpen: false });
   }
 
-  handleSelect(selectedIndex, e){
-    this.setState({index: selectedIndex})
+  handleSelect(selectedIndex, e) {
+    this.setState({ index: selectedIndex });
   }
 
   updateInstructionsDisplayBaseIndex(event) {
@@ -99,66 +99,101 @@ class MyModal extends Component {
           show={this.state.modalIsOpen}
           // onAfterOpen={this.afterOpenModal}
           onHide={this.closeModal}
+          // style={{'backgroundColor': '#bfbfbf'}}
         >
-          <Modal.Header closeButton>
-            {/* <Modal.Title></Modal.Title> */}
-          </Modal.Header>
-          <Modal.Body>
+          {/* <Modal.Header closeButton/> */}
+          <Modal.Body style={{ padding: "0px" }}>
             <div className="container">
-            <div className="row">
-              <div className="col-md-6 col-xs-12">
-                <Carousel showThumbs={false} infiniteLoop={true}>
-                  {content.map(index => (
-                    <img style={{height: '300px'}} alt="pp" key={index} src={value.imageSrc} />
-                  ))}
-                </Carousel>
-                <br />
-                <div className="col-md-12 col-xs-12">
-                  <h3> {value.label}</h3>
-                  <div>
-                    {value.readTime} | {value.cookTime}
-                    {/* <HeartCheckbox checked={checked} onClick={this.onClick} /> */}
+              <div className="row">
+                <div
+                  className="col-md-6 col-xs-12"
+                  style={{
+                    background: "white",
+                    paddingLeft: "0px",
+                    paddingRight: "0px"
+                  }}
+                >
+                  <Carousel showThumbs={false} infiniteLoop={true}>
+                    {content.map(index => (
+                      <img
+                        style={{ height: "300px" }}
+                        alt="pp"
+                        key={index}
+                        src={value.imageSrc}
+                      />
+                    ))}
+                  </Carousel>
+                  <br />
+                  <div className="col-md-12 col-xs-12">
+                    <h3> {value.label}</h3>
+                    <div>
+                      {value.readTime} | {value.cookTime}
+                      {/* <HeartCheckbox checked={checked} onClick={this.onClick} /> */}
+                    </div>
+                    <div>
+                      <button
+                        style={{
+                          "margin-left": "50%",
+                          backgroundColor: "grey",
+                          color: "white"
+                        }}
+                      >
+                        Compare items
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <button
-                      style={{ "margin-left": "50%", backgroundColor: "grey" }}
+                  <br></br>
+                </div>
+                <div
+                  className=" col-md-6 col-xs-12"
+                  style={{ paddingLeft: "25px" }}
+                >
+                  <Modal.Header closeButton style={{'borderBottom': '0px', 'padding': '0px'}}/> 
+                  <div className="row">
+                    Meal Quantity &nbsp;
+                    <div
+                      className="def-number-input number-input"
+                      style={{ backgroundColor: "lightgrey" }}
                     >
-                      Compare items
+                      <button
+                        onClick={this.decrease}
+                        className="minus"
+                      ></button>
+                      <input
+                        className="quantity"
+                        name="quantity"
+                        value={this.state.increment}
+                        onChange={() => console.log("change")}
+                        type="number"
+                      />
+                      <button onClick={this.increase} className="plus"></button>
+                    </div>
+                    &emsp;
+                    <button
+                      style={{ backgroundColor: "green", color: "white" }}
+                    >
+                      Add to Cart
                     </button>
                   </div>
-                </div>
-                <hr></hr>
-              </div>
-              <div className=" col-md-6 col-xs-12">
-                <div className="row">
-                  Meal Quantity &nbsp;
-                  <div className="def-number-input number-input">
-                    <button onClick={this.decrease} className="minus"></button>
-                    <input
-                      className="quantity"
-                      name="quantity"
-                      value={this.state.increment}
-                      onChange={() => console.log("change")}
-                      type="number"
-                    />
-                    <button onClick={this.increase} className="plus"></button>
+                  <br />
+                  <div className="row">
+                    <b>Ingredients</b>
                   </div>
-                  <button style={{ backgroundColor: "green" }}>
-                    Add to Cart
-                  </button>
-                </div>
-                <div>
-                  <b>Ingredients</b>
-                </div>
-                <div>
-                  <ol>{ingredientsList}</ol>
-                </div>
-                <hr></hr>
-                <div id="mealPrepChunk">
-                  <TextSlider mealPrep1={mealPrep}/>
+                  <div className="row">
+                    {ingredientsList.map(ingredient => (
+                      <div className="col-md-6">
+                        <input type="checkbox" value="" />
+                        {ingredient}
+                        <br />
+                      </div>
+                    ))}
+                  </div>
+                  <hr></hr>
+                  <div id="mealPrepChunk">
+                    <TextSlider mealPrep1={mealPrep} />
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
           </Modal.Body>
         </Modal>

@@ -447,7 +447,7 @@ class App extends Component {
                             </div>
                         </div>
                     </div>
-                    <MyModal value={value} mealPrep= {mealPrep} ingredientsList={ingredientsList} />
+                    <MyModal value={value} mealPrep= {mealPrep} ingredientsList={value.ingredients} />
                     <Popup
                         trigger={
                             <div id={value.id} style={{ display: "none" }}>

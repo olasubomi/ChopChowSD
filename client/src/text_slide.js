@@ -25,12 +25,12 @@ class TextSlider extends Component {
     console.log({ mealPrep1 }, "pppppppppp");
     return (
       <>
-        <Carousel className="poojak" activeIndex={this.state.index} onSelect={this.handleSelect}>
+        <Carousel className="poojak">
           {mealPrep1.map(index => (
             <Carousel.Item>
               <img
                 className="d-block w-100"
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADDCAMAAACxkIT5AAAAA1BMVEX///+nxBvIAAAASElEQVR4nO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+BsYMAAFjd3WkAAAAAElFTkSuQmCC"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR-lfg6b47lAgSJe3XaqlzxphwOxXl6TlnTfHT21ArsO9G3BpBO"
                 alt="First slide"
               />
               <Carousel.Caption>
