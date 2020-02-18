@@ -30,7 +30,7 @@ class TextSlider extends Component {
             <Carousel.Item>
               <img
                 className="d-block w-100"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR-lfg6b47lAgSJe3XaqlzxphwOxXl6TlnTfHT21ArsO9G3BpBO"
+                src="https://www.beautycolorcode.com/f6f0f0-2880x1800.png"
                 alt="First slide"
               />
               <Carousel.Caption>
