@@ -433,27 +433,25 @@ class App extends Component {
             key={value.id}
           >
             <div>
-              <div
-                style={containerStyle}
-                onClick={() => {
-                  this.meal_popups[index] = !this.meal_popups[index];
-                  console.log(this.meal_popups);
-                  var x = document.getElementById(value.id);
-                  var y = document.getElementById(value.id + "products");
-                  if (this.meal_popups[index]) {
-                    x.style.display = "block";
-                    y.style.display = "block";
-                  } else {
-                    x.style.display = "none";
-                    y.style.display = "none";
-                  }
-                }}
-              >
+              <div style={containerStyle}>
                 <img
                   src={value.imageSrc}
                   className="images"
                   style={{ width: "100%" }}
                   alt={value.id}
+                  onClick={() => {
+                    this.meal_popups[index] = !this.meal_popups[index];
+                    console.log(this.meal_popups);
+                    var x = document.getElementById(value.id);
+                    var y = document.getElementById(value.id + "products");
+                    if (this.meal_popups[index]) {
+                      x.style.display = "block";
+                      y.style.display = "block";
+                    } else {
+                      x.style.display = "none";
+                      y.style.display = "none";
+                    }
+                  }}
                 ></img>
                 {/* <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={this.showIngredient(index)}></img> */}
                 <div style={{ color: "black" }}>
@@ -462,7 +460,26 @@ class App extends Component {
                     {" "}
                     {value.label} | {value.cookTime}{" "}
                   </b>
-                  | <span style={{ color: "grey" }}> View Details</span>
+                  |{" "}
+                  <span
+                    style={{ color: "grey" }}
+                    onClick={() => {
+                      this.meal_popups[index] = !this.meal_popups[index];
+                      console.log(this.meal_popups);
+                      var x = document.getElementById(value.id);
+                      var y = document.getElementById(value.id + "products");
+                      if (this.meal_popups[index]) {
+                        x.style.display = "block";
+                        y.style.display = "block";
+                      } else {
+                        x.style.display = "none";
+                        y.style.display = "none";
+                      }
+                    }}
+                  >
+                    {" "}
+                    View Details
+                  </span>
                 </div>
                 <MyModal
                   value={value}

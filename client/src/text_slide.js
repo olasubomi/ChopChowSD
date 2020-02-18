@@ -25,7 +25,7 @@ class TextSlider extends Component {
     console.log({ mealPrep1 }, "pppppppppp");
     return (
       <>
-        <Carousel className="poojak">
+        <Carousel className="poojak" activeIndex={this.state.index} onSelect={this.handleSelect}>
           {mealPrep1.map(index => (
             <Carousel.Item>
               <img

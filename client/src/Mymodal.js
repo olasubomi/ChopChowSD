@@ -91,7 +91,13 @@ class MyModal extends Component {
     return (
       <>
         <div>
-          <button key={value.id} onClick={this.openModal}>
+          <button
+          style={{
+            "margin-left": "40%",
+            backgroundColor: "orange",
+            color: "white"
+          }}
+          key={value.id} onClick={this.openModal}>
             View Steps
           </button>
         </div>
