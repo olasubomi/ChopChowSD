@@ -53,7 +53,7 @@
 .container .mealContainer{
   display: flex;
   padding:8px;
-  margin:5px;
+  /* margin:5px; */
   background-color: #fff;
 }
 
@@ -98,6 +98,7 @@
 @media screen and (max-width: 1920px){
   .modal-content {
     border-radius: 0px;
+    margin-top: 25%;
   }
 }
 .number-input input[type="number"] {
