@@ -112,7 +112,7 @@ class MyModal extends Component {
             <div className="container">
               <div className="row">
                 <div
-                  className="col-md-6 col-xs-12"
+                  className="col-md-5 col-xs-12"
                   style={{
                     background: "white",
                     paddingLeft: "0px",
@@ -151,7 +151,7 @@ class MyModal extends Component {
                   <br></br>
                 </div>
                 <div
-                  className=" col-md-6 col-xs-12"
+                  className=" col-md-7 col-xs-12"
                   style={{ paddingLeft: "25px" }}
                 >
                   <Modal.Header closeButton style={{'borderBottom': '0px', 'padding': '0px'}}/> 
