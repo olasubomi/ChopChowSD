@@ -10,7 +10,10 @@
     background-image: url(https://cdn2.iconfinder.com/data/icons/250-perfect-vector-pictograms/48/9.5-512.png);
 }
 .carousel-caption{
-    bottom: 30%;
+    bottom: 10%;
+}
+img.img-responsive.imageHeighgt {
+    height: 150px !important;
 }
 @media screen and (max-width: 767px){
     .modal-content {

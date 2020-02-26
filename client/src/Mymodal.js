@@ -147,8 +147,8 @@ class MyModal extends Component {
                         Compare items
                       </button>
                     </div>
+                    <br />
                   </div>
-                  <br></br>
                 </div>
                 <div
                   className=" col-md-7 col-xs-12"
@@ -195,9 +195,7 @@ class MyModal extends Component {
                     ))}
                   </div>
                   <hr></hr>
-                  <div id="mealPrepChunk">
                     <TextSlider mealPrep1={mealPrep} />
-                  </div>
                 </div>
               </div>
             </div>

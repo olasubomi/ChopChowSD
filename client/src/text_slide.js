@@ -25,11 +25,11 @@ class TextSlider extends Component {
     console.log({ mealPrep1 }, "pppppppppp");
     return (
       <>
-        <Carousel className="poojak" activeIndex={this.state.index} onSelect={this.handleSelect}>
+        <Carousel  activeIndex={this.state.index} onSelect={this.handleSelect}>
           {mealPrep1.map(index => (
             <Carousel.Item>
               <img
-                className="d-block w-100"
+                className="img-responsive imageHeighgt"
                 src="https://www.beautycolorcode.com/f6f0f0-2880x1800.png"
                 alt="First slide"
               />
