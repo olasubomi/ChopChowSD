@@ -188,7 +188,7 @@ class MyModal extends Component {
                   <div className="row">
                     {ingredientsList.map(ingredient => (
                       <div className="col-md-6">
-                        {/* <input type="checkbox" value="" /> */}
+                        <input type="checkbox" value="" />
                         {ingredient}
                         <br />
                       </div>
