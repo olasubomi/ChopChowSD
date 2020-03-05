@@ -576,7 +576,7 @@ class App extends Component {
       items.push(
         <>
           <div
-            className="col-sm-12 col-md-4 col-lg-4 mealContainer"
+            className="col-sm-12 col-md-3 col-lg-3 mealContainer"
             key={value.id}
           >
             <div>
@@ -584,7 +584,7 @@ class App extends Component {
                 <img
                   src={value.imageSrc}
                   className="images"
-                  style={{ width: "100%" }}
+                  style={{ width: "200px", height:"180px" }}
                   alt={value.id}
                   onClick={() => {
                     this.meal_popups[index] = !this.meal_popups[index];
