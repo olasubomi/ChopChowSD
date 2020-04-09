@@ -2,6 +2,7 @@ const { meals } = require('../../db/dbMongo/config/db_buildSchema')
 exports.getMeals = (req, res) => {
     return meals.find()
         .then(resMeals => {
+            // console.log(resMeals);
             res.send({
                 data: resMeals
             })

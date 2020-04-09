@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
-  
+
 require('./db/dbMongo/config/db_connection');
 // require('./db/dbMongo/config/AllDataList')();
 // require('./db/dbMongo/config/AllDataCusomerList')();
@@ -19,9 +19,11 @@ require('./db/dbMongo/config/db_connection');
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
 const authenticationVerify = require('./controllers/authentication/2.authunticationVerify')
+
 const { hashPassword } = require('./controllers/hashPassword')
-const {authenticationSignup}=require('./controllers/authentication/authenticationSignup')
+const { authenticationSignup } = require('./controllers/authentication/authenticationSignup')
 const authunticationLogout = require('./controllers/authentication/authunticationLogout')
+
 const { signupCustomer, forgotPassword, resetPassword } = require('./controllers/authentication/signup');
 const app = express();
 
@@ -34,7 +36,7 @@ const { getList } = require("./controllers/list/getList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
 
 const { getMeals } = require("./controllers/list/getMeals");
- 
+
 // const appendItem = require('./controllers/list/appendItem')
 const removeItem = require('./controllers/list/removeItem');
 const createList = require('./controllers/list/createList')
@@ -52,19 +54,22 @@ app.use(express.json());
 app.use(cookie());
 // app.use(sslRedirect());
 app.use(cors());
-app.use('/facebook', facebook);         
+app.use('/facebook', facebook);
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 // Serve static files from the React app
 
 
-app.get('/get_store_products', (req, res) => {
-
+app.get('/get_store_products', async (req, res) => {
+    mongoose.connect(process.env.MONGO_URI_DEV, { useNewUrlParser: true, useUnifiedTopology: true })
     console.log("Calling servers get_store_products to Mongo");
-    mongoose.connect(process.env.MONGO_URI_DEV, { useNewUrlParser: true, useUnifiedTopology:true })
     //Check if we connected to the database or not
     let db = mongoose.connection;
+    // let vari =  await db.collection("Store_Products").countDocuments();
+    // console.log(vari);
+    // console.log(vari);
     db.on('error', console.error.bind(console, 'Connection error:'));
-    db.once('open', function () {
+    await db.once('open',  function (){
         console.log('We are supposedly connected to the Mongo database');
         // var dbo = db.model("Product_Supply");
         db.collection("Store_Products").find({}).toArray(function (err, result) {
@@ -72,12 +77,48 @@ app.get('/get_store_products', (req, res) => {
             console.log("store products results ate in")
             console.log(result);
             res.send(result);
-            
-    })
-    // perform actions on the collection object
-    db.close();
+            db.close();
+        })
+        // perform actions on the collection object
+    });
+    // const vari = await
+    // console.log(vari);
+
 });
+app.get('/api/get-meals', getMeals);
+
+app.post('/api/login', authenticationLogin);
+app.post('/api/forgotpass', forgotPassword)
+app.post('/api/resetpass', resetPassword)
+// app.use(authenticationVerify)
+app.post('/api/signupuser', signupCustomer)
+app.post('/api/signup/:newcustomerId', authenticationSignup)
+
+// app.post('/api/appendItem',appendItem)
+app.delete('/api/remove-list/:customerId', removeList)
+app.delete('/api/remove-item/:idItem/:customerId', removeItem)
+// app.post('/api/create-list/:idItem/:customerId', createList) // no to create list on grocery page
+
+app.get('/api/get-ids-items/:customerId', getIdsItems)
+app.get('/api/get-ids-list', getIdsList)
+app.get('/api/get-ids-customers', getIdsCustomers)
+
+app.get('/api/get-data-item/:idItem', getItemId)
+
+app.get('/api/get-data-typeahead/:option', getDataItemTypeahead)
+app.get('/hash', hashPassword);
+app.get('/api/logout', authunticationLogout)
+
+app.get('/api/grocery', authenticationVerify, isAuthenticated);
+app.get('/api/getList/:customerId', authenticationVerify, getList)
+app.get('/api/get-all-data-lists', getAllDataLists)
+
+//app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer)
+
+app.get('*', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
+
 
 app.get('/test', (req, res) => {
     console.log("To test page");
@@ -105,15 +146,15 @@ app.get('/terms-of-service', (req, res) => {
     res.render('pages/terms-of-service');
 });
 
+app.listen(port, () => console.log(`Listening on port ${port}`));
+
+
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 // app.get('*', (req, res) => {
 //     console.log("Gets in client builds index");
 //     res.sendFile(path.join(__dirname+'/client/build/'));
 //   });
-
-app.get('/api/get-meals', getMeals)
-
 
 // app.get('/find', function (req, res) {
 //     app.get('/api/get-all-lists', getAllLists)
@@ -258,40 +299,3 @@ app.get('/api/get-meals', getMeals)
 //             res.redirect('/');
 //         }
 //     });
-
-
-app.post('/api/login', authenticationLogin);
-app.post('/api/forgotpass', forgotPassword)
-app.post('/api/resetpass', resetPassword)
-// app.use(authenticationVerify)
-app.post ('/api/signupuser',signupCustomer)
-app.post ('/api/signup/:newcustomerId',authenticationSignup)
-app.get('/api/grocery' ,authenticationVerify,isAuthenticated);
-app.get('/api/getList/:customerId',authenticationVerify,getList)
-app.get('/api/get-all-data-lists', getAllDataLists)
-// app.post('/api/appendItem',appendItem)
-app.delete('/api/remove-list/:customerId',removeList)
-app.delete('/api/remove-item/:idItem/:customerId',removeItem)
-app.post('/api/create-list/:idItem/:customerId',createList)
-
-//app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer)
-
-
-app.get('/api/get-ids-items/:customerId',getIdsItems)
-app.get('/api/get-ids-list',getIdsList)
-app.get('/api/get-ids-customers',getIdsCustomers)
-
-app.get('/api/get-data-item/:idItem',getItemId)
-
-app.get('/api/get-data-typeahead/:option',getDataItemTypeahead)
-app.get('/hash', hashPassword);
-app.get('/api/logout',authunticationLogout)
-
-
-app.use(express.static(path.join(__dirname, 'client', 'build')));
-
-app.get('*', (_req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
-
-app.listen(port, () => console.log(`Listening on port ${port}`));

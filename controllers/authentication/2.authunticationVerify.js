@@ -9,9 +9,9 @@ module.exports = (req, res, next) => {
         next();
       } else {
         res.clearCookie('jwt');
-        res.status(401).send(JSON.stringify({ msg: 'you not authrized in this page' }))
+        res.status(401).send(JSON.stringify({ msg: 'Auth verify failed: verofication not decoded' }))
       }
     });
-  } else res.status(401).send(JSON.stringify({ msg: 'you not authrized in this page' }))
+  } else res.status(401).send(JSON.stringify({ msg: 'Auth verify failed: customer id does not exist' }))
 };
 

@@ -1,8 +1,6 @@
 import React from 'react';
 import './style.css';
 import { Form, Button, Container, Modal, Row, Col, ButtonToolbar } from 'react-bootstrap';
-
-import { Link, Redirect } from 'react-router-dom';
 import { setTimeout } from 'timers';
 
 export default class ResetPassword extends React.Component {

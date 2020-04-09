@@ -5,7 +5,7 @@ import React, { Component } from "react";
 // import "react-animated-slider/build/horizontal.css";
 // import { Carousel } from 'react-responsive-carousel';
 // import ImagePopup from "./ImagePopup";
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 // import {Button} from 'react-bootstrap/Button';
 import TextSlider from "./text_slide";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -25,9 +25,6 @@ class MyModal extends Component {
     this.openModal = this.openModal.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.updateInstructionsDisplayBaseIndex = this.updateInstructionsDisplayBaseIndex.bind(
-      this
-    );
   }
   decrease = () => {
     if (this.state.increment > 0) {
@@ -59,45 +56,18 @@ class MyModal extends Component {
   handleSelect(selectedIndex, e) {
     this.setState({ index: selectedIndex });
   }
-
-  updateInstructionsDisplayBaseIndex(event) {
-    console.log(event.target.innerText);
-    var button = event.target.innerText;
-    var regExp = "/^w+[ ]/d  $/";
-    var slide_index = button.match(regExp);
-    var last_chars = button.slice(6, 7);
-
-    var slide_num = Number(last_chars);
-    this.setState({ base_index: slide_num * 3 });
-  }
-
   render() {
-    const { checked } = this.state;
+    // const { checked } = this.state;
     const { value, mealPrep, ingredientsList } = this.props;
-    var i;
-    var newarray = [];
-    for (i = 1; i < mealPrep.length; i = i + 3) {
-      if (mealPrep[i] === undefined) {
-        newarray.push([mealPrep[i - 1], "", ""]);
-      }
-      if (mealPrep[i + 1] === undefined) {
-        newarray.push([mealPrep[i - 1], mealPrep[i], ""]);
-      } else {
-        newarray.push([mealPrep[i - 1], mealPrep[i], mealPrep[i + 1]]);
-      }
-    }
-    const mealPrep1 = newarray.map(step => <ol key={step}> {step} </ol>);
-
     return (
       <>
-        <div>
+        <div id ={value.name}>
           <button
           style={{
-            "margin-left": "40%",
             backgroundColor: "orange",
             color: "white"
           }}
-          key={value.id} onClick={this.openModal}>
+          key={value.id+value.label} onClick={this.openModal}>
             View Steps
           </button>
         </div>
@@ -108,7 +78,8 @@ class MyModal extends Component {
           // style={{'backgroundColor': '#bfbfbf'}}
         >
           {/* <Modal.Header closeButton/> */}
-          <Modal.Body style={{ padding: "0px" }}>
+          {/* setting position to fixed solves the browser sizing issue on modal body, but then backkkground breaks on modal */}
+          <Modal.Body style={{ padding: "0px" }}> 
             <div className="container">
               <div className="row">
                 <div
@@ -154,7 +125,7 @@ class MyModal extends Component {
                   className=" col-md-7 col-xs-12"
                   style={{ paddingLeft: "25px" }}
                 >
-                  <Modal.Header closeButton style={{'borderBottom': '0px', 'padding': '0px'}}/> 
+                  <Modal.Header closeButton style={{'borderBottom': '20px', 'padding': '0px'}}/> 
                   <div className="row">
                     Meal Quantity &nbsp;
                     <div
@@ -187,7 +158,7 @@ class MyModal extends Component {
                   </div>
                   <div className="row">
                     {ingredientsList.map(ingredient => (
-                      <div className="col-md-6">
+                      <div className="col-md-6" key={value.label + ingredient}>
                         <input type="checkbox" value="" />
                         {ingredient}
                         <br />
@@ -195,7 +166,7 @@ class MyModal extends Component {
                     ))}
                   </div>
                   <hr></hr>
-                    <TextSlider mealPrep1={mealPrep} />
+                    <TextSlider mealPrep1={mealPrep} value={value} />
                 </div>
               </div>
             </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import './style.css';
 import { Form, Button, Container ,Modal} from 'react-bootstrap';
 
- import { Link, Redirect } from 'react-router-dom';
+ import { Link } from 'react-router-dom';
 
  export default class Login extends React.Component {
   state = {
@@ -74,12 +74,12 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
                           </div>
 
                            <div className="col">
-                            <a href="#" className="fb btn">
+                            <button className="fb btn">
                                 <i class="fa fa-facebook fa-fw"></i> Login with Facebook
-                                                  </a>
-                            <a href="#" className="google btn"><i class="fa fa-google fa-fw">
+                                                  </button>
+                            <button className="google btn"><i class="fa fa-google fa-fw">
                             </i> Login with Google+
-                                                  </a>
+                                                  </button>
                           </div>
 
                            <div className="col">

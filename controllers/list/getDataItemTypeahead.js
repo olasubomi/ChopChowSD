@@ -5,10 +5,6 @@ const {option} = req.params;
     .then(result=>{
         res.send({
             data:result
-        })
-        
+        })       
     })
 }
-
-
-

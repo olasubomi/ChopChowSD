@@ -3,7 +3,7 @@ import Popup from "reactjs-popup";
 
 class ProductSection extends Component {
 storeCollection = []
-componentDidMount(){
+componentWillMount(){
     console.log("Comes in product pages component will mount")
     // var url = "https://chopchowsd.herokuapp.com/get_store_products" // for production
     var url = "http://localhost:5000/get_store_products"
@@ -22,6 +22,7 @@ componentDidMount(){
         .catch(error=>{
             console.log(error);
         })
+        console.log("reaches end of product pages component will mount");
 }
 
         render() {
@@ -29,8 +30,9 @@ componentDidMount(){
             console.log(this.storeCollection);
             for (const  [index, value] of this.storeCollection.entries()){
                 var productsMenu = []
-                // console.log(index);
-                console.log(value);
+                // use index to remove warning 
+                console.log(index);
+                // console.log(value);
 
                 for (const [storeProductsIndex, productValue] of value.products.entries()) {
                     console.log("Inner for loop");
