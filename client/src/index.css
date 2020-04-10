@@ -14,8 +14,8 @@ code {
 }
 
 .container{
-  /*display: flex;
-  justify-content: space-around;*/
+  display: flex;
+  justify-content: space-around;
 
   /* width: 100%;
   background-color: #D3D3D3;

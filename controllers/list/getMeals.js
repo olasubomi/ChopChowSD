@@ -7,5 +7,5 @@ exports.getMeals = (req, res) => {
                 data: resMeals
             })
         })
-        .catch(() => next({ code: 500, msg: 'sorry , found Inernal server error' }))
+        .catch(() => ({ code: 500, msg: 'sorry , found Inernal server error' }))
     }

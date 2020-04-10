@@ -37,17 +37,19 @@ class App extends Component {
         // console.log(body);
         var productsList = JSON.parse(body);
         console.log(productsList);
-        if(productsList && productsList.length){
-          for (var i = 0; i < productsList.length; i++) {
-
-            this.products.push(productsList[i].label);
-            console.log(productsList[i].label)
+        if(productsList && productsList.data.length !== 0){
+          console.log("shows products does return");
+          console.log(productsList.data.length);
+          for (var i = 0; i < productsList.data.length; i++) {
+            console.log(productsList.data[i]);
+            this.products.push(productsList.data[i].label);
+            // console.log(productsList[i].label)
           }
+          console.log(this.products);
         }
         else{
           console.log("shows products do not return");
         }
-
       })
       .catch(err => {
         console.log(err);
@@ -333,23 +335,24 @@ class App extends Component {
 </div> */}
 
         <Typeahead
+          multiple
           options={this.products}
           placeholder="Find Meals (and Ingredients) here.."
           id="typeahead"
-          // onChange={(selected) => {
-          //     // Handle selections...
-          //   }}
-          filterBy={["product_name"]}
+          onChange={(selected) => {
+              // Handle selections...
+            }}
+          // filterBy={["label"]}
         />
 
-        {/* <Typeahead
+        {/*<Typeahead
                     onChange={this.handleClickTypeahead}
                     multiple
-                    options={valueAllDataLists}
+                    options={this.products}
                     placeholder="Find Meals (and Ingredients) here.."
                     id="typeahead"
                 />
-                <Alert show={showAlert} key={1} variant={variant}>
+                 <Alert show={showAlert} key={1} variant={variant}>
                     {messageAlert}
                 </Alert>
 

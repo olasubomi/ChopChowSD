@@ -57,17 +57,41 @@ class MealsPage extends Component {
       // console.log(this.meal_popups);
       // console.log(index);
       items.push(
-        <div key = {value.label + value.id}>
-          <div
-            className="col-sm-12 col-md-3 col-lg-3 mealContainer"
-            key={value.label}>
-            <div>
-              <div style={containerStyle}>
-                <img
-                  src={value.imageSrc}
-                  className="images"
-                  style={{ width: "200px", height: "180px" }}
-                  alt={value.id}
+        <div key={value.label + value.id} className="col-sm-12 col-md-4 col-lg-3 mealContainer">
+          <div>
+            <div style={containerStyle}>
+              <img
+                src={value.imageSrc}
+                className="images"
+                style={{ width: "200px", height: "180px" }}
+                alt={value.id}
+                onClick={() => {
+                  this.meal_popups[index] = !this.meal_popups[index];
+                  console.log(this.meal_popups);
+                  var x = document.getElementById(value.id);
+                  var y = document.getElementById(value.id + "products");
+                  if (this.meal_popups[index]) {
+                    x.style.display = "block";
+                    y.style.display = "block";
+                  } else {
+                    x.style.display = "none";
+                    y.style.display = "none";
+                  }
+                }}
+              ></img>
+              {/* <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={this.showIngredient(index)}></img> */}
+              <div>
+                {" "}
+                {/* <b> */}
+                {" "}
+                <span style={{ color: "orange" }} >{value.label}</span> <br></br>
+                {/* </b> */}
+                {" "}
+
+                {" "}
+                <span style={{ color: "grey" }}>View Details | {value.cookTime}</span>
+                <span
+                  style={{ color: "black" }}
                   onClick={() => {
                     this.meal_popups[index] = !this.meal_popups[index];
                     console.log(this.meal_popups);
@@ -81,84 +105,56 @@ class MealsPage extends Component {
                       y.style.display = "none";
                     }
                   }}
-                ></img>
-                {/* <img src={value.imageSrc} className="images" style={{width:"100%"}} alt={value.id} onClick={this.showIngredient(index)}></img> */}
-                <div>
-                  {" "}
-                  {/* <b> */}
-                  {" "}
-                  <span style={{ color: "orange" }} >{value.label}</span> <br></br>
-                  {/* </b> */}
-                  {" "}
+                >
+                </span>
+                <div id={value.id} style={{ display: "none" }}>
+                  {value.intro}
+                  <MyModal
+                    value={value}
+                    mealPrep={mealPrep}
+                    ingredientsList={value.ingredients}
+                  />
 
-                  {" "}
-                  <span style={{ color: "grey" }}>View Details | {value.cookTime}</span>
-                  <span
-                    style={{ color: "black" }}
-                    onClick={() => {
-                      this.meal_popups[index] = !this.meal_popups[index];
-                      console.log(this.meal_popups);
-                      var x = document.getElementById(value.id);
-                      var y = document.getElementById(value.id + "products");
-                      if (this.meal_popups[index]) {
-                        x.style.display = "block";
-                        y.style.display = "block";
-                      } else {
-                        x.style.display = "none";
-                        y.style.display = "none";
-                      }
-                    }}
-                  >
-                  </span>
-                  <div id={value.id} style={{ display: "none" }}>
-                    {value.intro}
-                    <MyModal
-                      value={value}
-                      mealPrep={mealPrep}
-                      ingredientsList={value.ingredients}
-                    />
-
-                  </div>
-                  <br></br>
-                  <br></br>
-                  <br></br>
                 </div>
+                <br></br>
+                <br></br>
+                <br></br>
+              </div>
+              <div id={value.id + "products"} style={{ display: "none" }}>
+                {/* Meal Ingredients */}
+                <br></br>
+                {/* {value.products} */}
+                <WithScrollbar
+                  products={value.product_slider}
+                // ingredients={[
+                //   { name: "sugar", image: "/images/products/sugar.jpeg" },
+                //   { name: "onion", image: "/images/products/onion.jpg" },
+                //   { name: "tomato", image: "/images/products/tomato.jpg" },
+                //   { name: "water", image: "/images/products/water.jpeg" },
+                //   {
+                //     name: "vegetable oil",
+                //     image: "/images/products/vegetable_oil.jpg"
+                //   }
+                // ]}
+                />
+                <br />
               </div>
             </div>
-          </div>
-          <div id={value.id + "products"} style={{ display: "none" }}>
-            {/* Meal Ingredients */}
-            <br></br>
-            {value.products}
-            <WithScrollbar
-              products={value.product_slider}
-            // ingredients={[
-            //   { name: "sugar", image: "/images/products/sugar.jpeg" },
-            //   { name: "onion", image: "/images/products/onion.jpg" },
-            //   { name: "tomato", image: "/images/products/tomato.jpg" },
-            //   { name: "water", image: "/images/products/water.jpeg" },
-            //   {
-            //     name: "vegetable oil",
-            //     image: "/images/products/vegetable_oil.jpg"
-            //   }
-            // ]}
-            />
-            <br />
-          </div>
-          <div />
-          <div />
-        </div>
 
+          </div>
+        </div>
       );
     }
     return (
       <div>
         <div id="title">
           <b>Meals</b>
-
         </div>
         <div className="container">
-          <div className="row">{items}</div>
+          {/* <div className="row"> */}
+            {items}
+            {/* </div> */}
+
         </div>
       </div>
     )
@@ -636,8 +632,8 @@ const containerStyle = {
                 </div>
               </div>
             )}
-          /> 
-        
+          />
+
           showIngredients = event => {
     let mealString = event.target.innerText;
     console.log(mealString);
@@ -660,15 +656,15 @@ const containerStyle = {
          {/* <div className="row">
     <div className="col-sm">
         <b>Meals</b>
-        <ListedMealsSection 
+        <ListedMealsSection
         recipes={this.state.recipes} showIngredients={this.showIngredients}
         selectedMeal={this.state.selectedMeal}/>
 
-        </div>                     
+        </div>
     <div className="col-sm">
         <b>Recipe Contents</b>
         <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
-        
+
     </div>
 
     <div className="col-sm">
@@ -676,9 +672,9 @@ const containerStyle = {
         <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}
         selectedMeal= {this.state.selectedMeal}/>
     </div>
-    
-    
+
+
 </div>
-  
+
 
 */
