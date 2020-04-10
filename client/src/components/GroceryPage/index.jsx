@@ -14,13 +14,15 @@ export default class GroceryPage extends React.Component {
     customerId: null,
     email: '',
     password: '',
+
     messageErr: false,
     messageSuccess: false,
     messageErrCreate: false,
     showAlert: false,
     messageAlert: '',
+
     variant: '',
-    idItem: '',
+    productID: '',
     deletedItemId: null,
     showGroceryList: true,
     idsItems: null,
@@ -139,7 +141,7 @@ export default class GroceryPage extends React.Component {
       })
   }
 
-  handleClick = () => {
+  handleLoginClick = () => {
     const { email, password } = this.state;
     if (email && password) {
       fetch('/api/login', {
@@ -189,10 +191,10 @@ export default class GroceryPage extends React.Component {
     this.setState({ showGroceryList: false });
   };
 
-  handleShowDeleteItem = (idItem) => {
-    this.setState({ deletedItemId: idItem });
+  handleShowDeleteItem = (productID) => {
+    this.setState({ deletedItemId: productID });
     const { customerId, deletedItemId } = this.state;
-    fetch(`/api/remove-item/${idItem}/${customerId}`, {
+    fetch(`/api/remove-item/${productID}/${customerId}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -238,9 +240,9 @@ export default class GroceryPage extends React.Component {
       })
   }
 
-  handleShowAddItem = (idItem) => {
-    window.location.href = `cart-page/${idItem}`
-  }
+  // handleShowAddItem = (productID) => {
+  //   window.location.href = `cart-page/${productID}`
+  // }
 
   handleShowDeleteList = (idsItems) => {
     const { customerId } = this.state;
@@ -356,13 +358,13 @@ export default class GroceryPage extends React.Component {
                           <Col xs={12} md={12} lg={12} key={ingredient_item_grocery_search.id}>
                             <img src={`/images/products/${ingredient_item_grocery_search.product_image}`} className="dataTypeahead__card-img" alt="product_img" />
                             <div className="dataTypeahead__card-div">
-                              <Card.Header className="dataTypeahead__yourlist__card-header">
+                              <Card.Header className="dataTypeahead__grocery_item_card-header">
                                 <div className="dataTypeahead__header__name-product">Product Name: {ingredient_item_grocery_search.product_name}</div>
                               </Card.Header>
-                              <Card.Text className="dataTypeahead__yourlist__card-text">
+                              <Card.Text className="dataTypeahead__grocery_item_card-text">
                                 Product Price :  {ingredient_item_grocery_search && ingredient_item_grocery_search.product_price}
                               </Card.Text>
-                              <Card.Text className="dataTypeahead__yourlist__card-text">
+                              <Card.Text className="dataTypeahead__grocery_item_card-text">
                                 Product Size : {ingredient_item_grocery_search.sizes}
                               </Card.Text>
                             </div>
@@ -383,33 +385,33 @@ export default class GroceryPage extends React.Component {
                   ) : null}
                   {/* display grocery list, for any authenticated customer */}
                   {customerList ? (
-                    customerList.map((ingredient_item_customers_grocery) => {
-                      let idItem = ingredient_item_customers_grocery.id;
+                    customerList.map((customer_grocery_product_item) => {
+                      let productID = customer_grocery_product_item.id;
                       return <>
-                        <Col xs={12} md={12} lg={12} key={ingredient_item_customers_grocery.id}>
-                          {ingredient_item_customers_grocery.product_image.startsWith('http://') || ingredient_item_customers_grocery.product_image.startsWith('data') ? (
-                            <img src={`${ingredient_item_customers_grocery.product_image}`} alt="product_img " className="card-img" />
+                        <Col xs={12} md={12} lg={12} key={customer_grocery_product_item.id}>
+                          {customer_grocery_product_item.product_image.startsWith('http://') || customer_grocery_product_item.product_image.startsWith('data') ? (
+                            <img src={`${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
                           ) : (
-                              <img src={`/images/products/${ingredient_item_customers_grocery.product_image}`} alt="product_img " className="card-img" />
+                              <img src={`/images/products/${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
                             )}
-                          <div className="yourlist__card-div">
-                            <Card.Header className="yourlist__card-header">
-                              <div className="header__name-product">Name Product : {ingredient_item_customers_grocery.product_name}</div>
+                          <div className="grocery_item_card-div">
+                            <Card.Header className="grocery_item_card-header">
+                              <div className="header__name-product"> Product Name : {customer_grocery_product_item.product_name}</div>
                             </Card.Header>
-                            <Card.Text className="yourlist__card-text">
-                              Product Price :  {ingredient_item_customers_grocery && ingredient_item_customers_grocery.product_price}
+                            <Card.Text className="grocery_item_card-text">
+                              Product Price :  {customer_grocery_product_item && customer_grocery_product_item.product_price}
                             </Card.Text>
-                            <Card.Text className="yourlist__card-text">
-                              Product Size : {ingredient_item_customers_grocery.sizes}
+                            <Card.Text className="grocery_item_card-text">
+                              Product Size : {customer_grocery_product_item.sizes}
                             </Card.Text>
                           </div>
                           <div className="yourlist__buttonAdd"><Button onClick={e => {
                             e.stopPropagation();
-                            this.handleShowAddItem(idItem);
+                            this.handleShowAddItem(productID);
                           }}> Add To Cart</Button> </div>
                           <div className="yourlist__buttonDelete"><i className="fa fa-remove" onClick={e => {
                             e.stopPropagation();
-                            this.handleShowDeleteItem(ingredient_item_customers_grocery.id);
+                            this.handleShowDeleteItem(customer_grocery_product_item.id);
                           }} ></i></div>
                         </Col>
                       </>
@@ -478,7 +480,7 @@ export default class GroceryPage extends React.Component {
                       <Button
                         type="button"
                         className="login__form-btn"
-                        onClick={this.handleClick}
+                        onClick={this.handleLoginClick}
                       >
                         Log in
                           </Button>
@@ -595,8 +597,8 @@ export default class GroceryPage extends React.Component {
     //   if (valueProductImage.startsWith('http://') || valueProductImage.startsWith('data') || valueProductImage.endsWith('png') || valueProductImage.endsWith('jpg') || valueProductImage.endsWith('gif')) {
 
     const { customerId } = this.state;
-    const idItem = lasIdListState;
-    fetch(`/api/create-list/${idItem}/${customerId}`, {
+    const productID = lasIdListState;
+    fetch(`/api/create-list/${productID}/${customerId}`, {
       method: 'POST',
       body: JSON.stringify({
         valueProductName,
