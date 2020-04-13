@@ -4,6 +4,10 @@ import WithScrollbar from "./components/product_slider/WithScrollbar";
 
 class MealsPage extends Component {
 
+    // Mongo
+    products = [];
+    entries;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,6 +31,37 @@ class MealsPage extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log("Comes in meal pages component did mount");
+    // var url = "https://chopchowdev.herokuapp.com/api/get-meals";
+    var url = "http://localhost:5000/api/get-meals";
+
+    fetch(url)
+      .then(res => res.text())
+      .then(body => {
+        // console.log("should print body");
+        // console.log(body);
+        var productsList = JSON.parse(body);
+        // console.log(productsList);
+        if(productsList && productsList.data.length !== 0){
+          console.log("shows products does return");
+          console.log(productsList.data.length);
+          for (var i = 0; i < productsList.data.length; i++) {
+            this.products.push(productsList.data[i]);
+          }
+          console.log(this.products);
+          // this.entries = Object.entries(this.products);
+          // console.log(entries);
+        }
+        else{
+          console.log("shows products do not return");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   meal_popups = [];
 
   showIngredient(index) {
@@ -37,10 +72,11 @@ class MealsPage extends Component {
 
   render() {
     const items = [];
-    for (const [index, value] of this.meals.entries()) {
+    for (const [index, value] of this.products.entries()) {
+      
       //console.log();
       // var base_index = 0;
-      // console.log(value);
+      console.log(value);
       const mealPrep = value.instructions.map(step => (
         <text key={value.label + " - " + step}> {step} <br></br></text>
       ));
@@ -123,7 +159,7 @@ class MealsPage extends Component {
               <div id={value.id + "products"} style={{ display: "none" }}>
                 {/* Meal Ingredients */}
                 <br></br>
-                {/* {value.products} */}
+                {value.products}
                 <WithScrollbar
                   products={value.product_slider}
                 // ingredients={[

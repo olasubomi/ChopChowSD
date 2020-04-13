@@ -11,9 +11,6 @@ import ResetPassword from "./components/resetpassword";
 
 class App extends Component {
 
-  // Mongo
-  products = [];
-
   constructor(props) {
     super(props);
     this.suggestMealToggle = this.suggestMealToggle.bind(this);
@@ -28,34 +25,7 @@ class App extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log("Comes in apps component did mount");
-    var url = "https://chopchowdev.herokuapp.com/api/get-meals";
-    fetch(url)
-      .then(res => res.text())
-      .then(body => {
-        // console.log("should print body");
-        // console.log(body);
-        var productsList = JSON.parse(body);
-        // console.log(productsList);
-        if(productsList && productsList.data.length !== 0){
-          console.log("shows products does return");
-          console.log(productsList.data.length);
-          for (var i = 0; i < productsList.data.length; i++) {
-            console.log(productsList.data[i]);
-            this.products.push(productsList.data[i].label);
-            // console.log(productsList[i].label)
-          }
-          console.log(this.products);
-        }
-        else{
-          console.log("shows products do not return");
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+
 
   suggestMealToggle() {
     this.setState({
