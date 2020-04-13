@@ -78,7 +78,8 @@ app.get('/get_store_products', async (req, res) => {
             console.log("store products results ate in")
             console.log(result);
             res.send(result);
-            db.close();
+            //leaving db open to allow for call at any point (eg when changing the page)
+            // db.close();
         })
         // perform actions on the collection object
     });

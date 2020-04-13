@@ -5,8 +5,8 @@ class ProductSection extends Component {
 storeCollection = []
 componentWillMount(){
     console.log("Comes in product pages component will mount")
-    // var url = "https://chopchowsd.herokuapp.com/get_store_products" // for production
-    var url = "http://localhost:5000/get_store_products"
+    var url = "https://chopchowdev.herokuapp.com/get_store_products" // for production
+    // var url = "http://localhost:5000/get_store_products"
 
      fetch(url)
         .then(res => res.text())

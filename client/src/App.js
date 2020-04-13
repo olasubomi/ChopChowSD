@@ -305,16 +305,16 @@ class App extends Component {
     </Link>
 </div> */}
 
-        <Typeahead
+        {/* <Typeahead
           multiple
-          options={this.products}
+          // options={this.products}
           placeholder="Find Meals (and Ingredients) here.."
           id="typeahead"
           onChange={(selected) => {
               // Handle selections...
             }}
           // filterBy={["label"]}
-        />
+        /> */}
 
         {/*<Typeahead
                     onChange={this.handleClickTypeahead}
