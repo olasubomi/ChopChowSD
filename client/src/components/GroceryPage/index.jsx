@@ -152,8 +152,8 @@ export default class GroceryPage extends React.Component {
         )
       })
 
-      // var url = "https://chopchowdev.herokuapp.com/api/get-all-products";
-      var url = "http://localhost:5000/api/get-all-products"
+      var url = "https://chopchowdev.herokuapp.com/api/get-all-products";
+      // var url = "http://localhost:5000/api/get-all-products"
   
       fetch(url)
         .then(res => res.text())
