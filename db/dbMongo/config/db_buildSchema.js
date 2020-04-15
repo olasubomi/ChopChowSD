@@ -2,7 +2,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-exports.meals = mongoose.model('meals', new Schema({
+exports.all_products = mongoose.model('all_products', new Schema({
+    id: Number,
+    product_name: String,
+    product_image: String,
+    product_price: String,
+    sizes: Array,
+    respective_prices: Array
+}))
+
+
+exports.store_products = mongoose.model('store_products', new Schema({
+    id: Number,
+    store_name: String,
+    store_image: String,
+    products: Array
+}))
+
+exports.all_meals = mongoose.model('all_meals', new Schema({
     id: Number,
     label: String,
     imageSrc: String,
@@ -12,28 +29,32 @@ exports.meals = mongoose.model('meals', new Schema({
     ingredients: Array,
     products: Array,
     product_slider: [{ingredient: String, image: String}],
+    categories: Array,
     instructions: Array,
     display: Boolean
 }))
 
-exports.Store_Products = mongoose.model('Store_Products', new Schema({
+exports.all_meal_categories = mongoose.model('all_meal_categories', new Schema({
     id: Number,
-    store_name: String,
-    store_image: String,
-    products: Array
+    category_name: String
 }))
 
-exports.list = mongoose.model('list', new Schema({
+exports.suggested_meals = mongoose.model('suggested_meals', new Schema({
     id: Number,
-    product_name: String,
-    product_image:String,
-    product_price:Number,
-    sizes:String,
-    price_per_ounce:Number,
-
+    label: String,
+    imageSrc: String,
+    readTime: String,
+    cookTime: String,
+    intro: String,
+    ingredients: Array,
+    products: Array,
+    product_slider: [{ingredient: String, image: String}],
+    categories: Array,
+    instructions: Array,
+    display: Boolean
 }))
 
-exports.customer = mongoose.model('customer', new Schema({
+exports.customers = mongoose.model('customers', new Schema({
     id: Number,
     firstname: String,
     lastname: String,
@@ -47,22 +68,43 @@ exports.customer = mongoose.model('customer', new Schema({
     username: String,
     emailnotifcation: Boolean
 }))
-exports.customer_list = mongoose.model('customer_list', new Schema({
+
+exports.customers_lists = mongoose.model('customers_lists', new Schema({
     id: Number,
     customer_id: Number,
-    list_id:Number,
-
+    grocery_list_id:Number,
+    cart_list_id:Number
 }))
 
-exports.admin = mongoose.model('admin', new Schema({
-    id: Schema.Types.ObjectId,
-    name: String,
+exports.customer_cart_list = mongoose.model('customer_cart_list', new Schema({
+    list_id: Number,
+    cart_list: Array
 }))
 
-exports.supplier = mongoose.model('supplier', new Schema({
-    id: Schema.Types.ObjectId,
-    storeName: String,
+exports.customer_grocery_list = mongoose.model('customer_grocery_list', new Schema({
+    list_id: Number,
+    grocery_list:Array
 }))
+
+
+// exports.admin = mongoose.model('admin', new Schema({
+//     id: Schema.Types.ObjectId,
+//     name: String,
+// }))
+
+// exports.supplier = mongoose.model('supplier', new Schema({
+//     id: Schema.Types.ObjectId,
+//     storeName: String,
+// }))
+
+// exports.lists = mongoose.model('lists', new Schema({
+//     id: Number,
+//     product_name: String,
+//     product_image:String,
+//     product_price:Number,
+//     sizes:String,
+//     price_per_ounce:Number,
+// }))
 
 
 

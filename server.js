@@ -11,10 +11,10 @@ const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 
 require('./db/dbMongo/config/db_connection');
-// require('./db/dbMongo/config/AllDataList')();
-// require('./db/dbMongo/config/AllDataCusomerList')();
-// require('./db/dbMongo/config/AllDataCustomer')();
-
+// require('./db/dbMongo/config/AllCustomersLists')();
+// require('./db/dbMongo/config/AllProductsList')();
+// require('./db/dbMongo/config/AllCustomersData')();
+// require('./db/dbMongo/config/OneCustomersGroceryList')();
 
 
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
@@ -33,17 +33,18 @@ const port = process.env.PORT || 5000;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 var bodyParser = require('body-parser');
-const { getList } = require("./controllers/list/getList");
+const { getCustomerGroceryList } = require("./controllers/list/getCustomerGroceryList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
 
-const { getMeals } = require("./controllers/list/getMeals");
+const { getMeals } = require("./db/dbMongo/config/getMeals");
+const { getAllProducts } = require("./db/dbMongo/config/getAllProducts");
 
 // const appendItem = require('./controllers/list/appendItem')
 const removeItem = require('./controllers/list/removeItem');
 const createList = require('./controllers/list/createList')
 const removeList = require('./controllers/list/removeList')
 const getIdsItems = require('./controllers/list/getIdsItems')
-const getIdsList = require('./controllers/list/getIdsList')
+// const getCustomersLists = require('./controllers/list/getCustomersLists') // commented out until needed
 const getIdsCustomers = require('./controllers/authentication/getIdsCustomers')
 
 const getItemId = require('./controllers/list/getItemId')
@@ -88,6 +89,7 @@ app.get('/get_store_products', async (req, res) => {
 
 });
 app.get('/api/get-meals', getMeals);
+app.get('/api/get-all-products', getAllProducts);
 
 app.post('/api/login', authenticationLogin);
 app.post('/api/forgotpass', forgotPassword)
@@ -102,7 +104,7 @@ app.delete('/api/remove-item/:idItem/:customerId', removeItem)
 // app.post('/api/create-list/:idItem/:customerId', createList) // no to create list on grocery page
 
 app.get('/api/get-ids-items/:customerId', getIdsItems)
-app.get('/api/get-ids-list', getIdsList)
+// app.get('/api/get-customers-lists', getCustomersLists) 
 app.get('/api/get-ids-customers', getIdsCustomers)
 
 app.get('/api/get-data-item/:idItem', getItemId)
@@ -112,7 +114,7 @@ app.get('/hash', hashPassword);
 app.get('/api/logout', authunticationLogout)
 
 app.get('/api/grocery', authenticationVerify, isAuthenticated);
-app.get('/api/getList/:customerId', authenticationVerify, getList)
+app.get('/api/getCustomerGroceryList/:customerId', authenticationVerify, getCustomerGroceryList)
 app.get('/api/get-all-data-lists', getAllDataLists)
 
 //app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer)

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Typeahead } from "react-bootstrap-typeahead";
 import { Link, Route, Switch } from "react-router-dom";
 import MealsPage from "./MealsPage";
 import ProductsSection from "./components/productSection/ProductsPage";
@@ -304,32 +303,6 @@ class App extends Component {
     <i className="fa fa-bars" ></i>
     </Link>
 </div> */}
-
-        {/* <Typeahead
-          multiple
-          // options={this.products}
-          placeholder="Find Meals (and Ingredients) here.."
-          id="typeahead"
-          onChange={(selected) => {
-              // Handle selections...
-            }}
-          // filterBy={["label"]}
-        /> */}
-
-        {/*<Typeahead
-                    onChange={this.handleClickTypeahead}
-                    multiple
-                    options={this.products}
-                    placeholder="Find Meals (and Ingredients) here.."
-                    id="typeahead"
-                />
-                 <Alert show={showAlert} key={1} variant={variant}>
-                    {messageAlert}
-                </Alert>
-
-                {this.state.messageVisible ? (
-                    <div>you can not add in this item because is found for this customer</div>
-                ) : null} */}
 
         <Switch>
           <Route exact path="/login" render={props => <Login {...props} />} />

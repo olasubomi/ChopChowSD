@@ -1,6 +1,6 @@
 const { list } = require('../../db/dbMongo/config/db_buildSchema')
 // const { customer_list } = require('../../db/dbMongo/config/db_buildSchema')
-const { getDataCustomerId } = require('../../db/dbPostgress/queries/getDataCustomerId')
+const { getDataCustomerId } = require('../../db/dbPostgress/queries/getListIDFromCustomerId')
 
 module.exports = (req, res) => {
     const { customerId } = req.params

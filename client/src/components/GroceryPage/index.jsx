@@ -4,9 +4,14 @@ import './style.css';
 import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
 import { Container, Alert, Card, Col, Row, Form, Button, Modal } from 'react-bootstrap'
+import { Typeahead } from "react-bootstrap-typeahead";
+
 import { Link } from 'react-router-dom';
 // import { fileLoader } from 'ejs';
 export default class GroceryPage extends React.Component {
+  // Mongo
+  products = [];
+
   state = {
     newcustomerId: '',
     customerList: null,
@@ -25,6 +30,7 @@ export default class GroceryPage extends React.Component {
     productID: '',
     deletedItemId: null,
     showGroceryList: true,
+    selectedProduct: null,
     idsItems: null,
     deletedItemsId: null,
     lasIdListState: null,
@@ -66,7 +72,8 @@ export default class GroceryPage extends React.Component {
 
         this.setState({ customerId: response.data })
         const { customerId } = this.state;
-        fetch(`/api/getList/${customerId}`, {
+        // get Lists, from customer_lists of customerID.
+        fetch(`/api/getCustomerGroceryList/${customerId}`, {
           method: 'GET',
           credentials: 'same-origin',
           headers: {
@@ -96,21 +103,26 @@ export default class GroceryPage extends React.Component {
           })
       })
 
-    fetch('/api/get-ids-list', {
-      method: 'GET',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-      .then(res => {
-        return res.json()
-      })
-      .then(response => {
-        let arrResponse = response.data;
-        const lasIdList = arrResponse[arrResponse.length - 1]
-        this.setState({ lasIdListState: lasIdList + 1 })
-      })
+    // fetch('/api/get-customers-lists', {
+    //   method: 'GET',
+    //   credentials: 'same-origin',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   }
+    // })
+    //   .then(res => {
+    //     return res.json()
+    //   })
+    //   .then(response => {
+    //     console.log("get list ids");
+    //     console.log(response);
+    //     let arrResponse = response.data;
+    //     console.log(arrResponse);
+    //     const lasIdList = arrResponse[arrResponse.length - 1]
+    //     console.log(lasIdList);
+
+    //     this.setState({ lasIdListState: lasIdList + 1 })
+    //   })
 
     fetch('/api/get-ids-customers', {
       method: 'GET',
@@ -139,6 +151,35 @@ export default class GroceryPage extends React.Component {
             }, 8000)
         )
       })
+
+      // var url = "https://chopchowdev.herokuapp.com/api/get-all-products";
+      var url = "http://localhost:5000/api/get-all-products"
+  
+      fetch(url)
+        .then(res => res.text())
+        .then(body => {
+          // console.log("should print body");
+          // console.log(body);
+          var productsList = JSON.parse(body);
+          console.log(productsList);
+          if(productsList && productsList.data.length !== 0){
+            console.log("shows products does return");
+            console.log(productsList.data.length);
+            for (var i = 0; i < productsList.data.length; i++) {
+              this.products.push(productsList.data[i]);
+            }
+            console.log(this.products);
+            // this.entries = Object.entries(this.products);
+            // console.log(entries);
+          }
+          else{
+            console.log("shows products do not return");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
   }
 
   handleLoginClick = () => {
@@ -240,10 +281,6 @@ export default class GroceryPage extends React.Component {
       })
   }
 
-  // handleShowAddItem = (productID) => {
-  //   window.location.href = `cart-page/${productID}`
-  // }
-
   handleShowDeleteList = (idsItems) => {
     const { customerId } = this.state;
     fetch(`/api/get-ids-items/${customerId}`, {
@@ -318,14 +355,48 @@ export default class GroceryPage extends React.Component {
     this.setState({ showGroceryList: true })
   }
 
+  handleClickTypeahead=(selected)=>{
+    this.setState({ selectedProduct: selected })
+
+  }
+
+  // handleShowAddItem = (productID) => {
+  //   window.location.href = `cart-page/${productID}`
+  // }
 
   render() {
     const { email, password, showAlert, variant, messageAlert, customerList, idsItems, messageErr, messageSuccess } = this.state;
     // const { showGroceryList, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, lasIdListState, messageErrCreate } = this.state;
-    const { dataTypeaheadProps } = this.props;
+    const { typeaheadProducts } = this.products;
 
     return (
       <>
+      <Typeahead
+                    multiple
+                    options={this.products}
+                    placeholder="Find Meals (and Ingredients) here.."
+                    id="typeahead"
+                    // onChange={this.handleClickTypeahead}
+                    onChange={(selected) => {
+                      this.handleClickTypeahead(selected)
+                    }}
+                  // filterBy={['product_name']}
+                  />
+
+                  {/*<Typeahead
+                    onChange={this.handleClickTypeahead}
+                    multiple
+                    options={this.products}
+                    placeholder="Find Meals (and Ingredients) here.."
+                    id="typeahead"
+                />*/}
+                 <Alert show={showAlert} key={1} variant={variant}>
+                    {messageAlert}
+                </Alert>
+
+                {this.state.messageVisible ? (
+                    <div>you can not add in this item because it is already in customers grocery list</div>
+                ) : null} 
         {this.state.Authentication ? (
           <>
             <PageTitle title=" Your Grocery List" />
@@ -337,6 +408,7 @@ export default class GroceryPage extends React.Component {
 
             {/* display grocery page typeahead functionalities */}
             <Container className="page__container">
+            
               {customerList && customerList.length !== 0 ? (
                 <Row>
                   <Button className='yourlist__buttonDeleteList'
@@ -348,12 +420,13 @@ export default class GroceryPage extends React.Component {
                   >
                     Delete All Items
                   </Button>
+                  
 
                   {/* display searchbar typeahead items if they exist */}
-                  {dataTypeaheadProps ? (
+                  {typeaheadProducts ? (
                     <>
                       {/* create all search bar options from typeahead's display on grocery list ? */}
-                      {dataTypeaheadProps.map(ingredient_item_grocery_search => {
+                      {typeaheadProducts.map(ingredient_item_grocery_search => {
                         return <>
                           <Col xs={12} md={12} lg={12} key={ingredient_item_grocery_search.id}>
                             <img src={`/images/products/${ingredient_item_grocery_search.product_image}`} className="dataTypeahead__card-img" alt="product_img" />
@@ -427,7 +500,7 @@ export default class GroceryPage extends React.Component {
             <>
               {/* display create list option if customer has no grocery list */}
               <div>Log in as guest or user to load your grocery list</div>
-              <Button className="yourlist__button-create" onClick={this.handleShowGroceryList}>create list</Button>
+              {/* <Button className="yourlist__button-create" onClick={this.handleShowGroceryList}>create list</Button> */}
               {/* display log in pop-up on grocery page. (May be best to separate this into its own fileLoader, to be used on any page) */}
               <Container>
                 <Modal show={true} onHide={this.handleClose} className="modal loginformmm" backdrop="static">
@@ -504,7 +577,7 @@ export default class GroceryPage extends React.Component {
       </>
     )
 
-    /* Move Create List option to suggest meal */ 
+    /* Move Create List option to suggest meal */
     /* <Container>
               {showGroceryList ? (
                 <Modal show={showGroceryList} onHide={this.handleClose} backdrop="static" className="modal-create">
@@ -630,4 +703,5 @@ export default class GroceryPage extends React.Component {
     // }
 
   }
-*/}}
+*/}
+}
