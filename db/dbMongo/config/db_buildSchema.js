@@ -28,7 +28,7 @@ exports.all_meals = mongoose.model('all_meals', new Schema({
     intro: String,
     ingredients: Array,
     products: Array,
-    product_slider: [{ingredient: String, image: String}],
+    product_slider: [{ ingredient: String, image: String }],
     categories: Array,
     instructions: Array,
     display: Boolean
@@ -48,7 +48,7 @@ exports.suggested_meals = mongoose.model('suggested_meals', new Schema({
     intro: String,
     ingredients: Array,
     products: Array,
-    product_slider: [{ingredient: String, image: String}],
+    product_slider: [{ ingredient: String, image: String }],
     categories: Array,
     instructions: Array,
     display: Boolean
@@ -72,8 +72,8 @@ exports.customers = mongoose.model('customers', new Schema({
 exports.customers_lists = mongoose.model('customers_lists', new Schema({
     id: Number,
     customer_id: Number,
-    grocery_list_id:Number,
-    cart_list_id:Number
+    grocery_list_id: Number,
+    cart_list_id: Number
 }))
 
 exports.customer_cart_list = mongoose.model('customer_cart_list', new Schema({
@@ -83,7 +83,7 @@ exports.customer_cart_list = mongoose.model('customer_cart_list', new Schema({
 
 exports.customer_grocery_list = mongoose.model('customer_grocery_list', new Schema({
     list_id: Number,
-    grocery_list:Array
+    grocery_list: Array
 }))
 
 

@@ -1,16 +1,13 @@
-const { customer_list } = require('../../db/dbMongo/config/db_buildSchema')
-const {deleteListCustomer} = require('../../db/dbPostgress/queries/list/deleteListCustomer')
+const { customer_grocery_list } = require('../../db/dbMongo/config/db_buildSchema')
+// const {deleteListCustomer} = require('../../db/dbPostgress/queries/list/deleteListCustomer')
 module.exports = (req, res) => {
-    const { customerId, idItem } = req.params
-    deleteListCustomer(customerId,idItem).then(result=>{
-        customer_list.deleteMany({ $and: [{ list_id: idItem, customer_id: customerId }] }).then(elem => {
-            
+    const { idItem, customerId } = req.params
+    // deleteListCustomer(customerId,idItem).then(result=>{
+        customer_grocery_list.update({list_id: customerId},{ $pull : { grocery_list: Number(idItem) }})
+        .then(() => {
             res.send({
-                data: 'delete  item'
+                data: 'item deleted'
             })
         })
-    })
-        .catch(() => next({ code: 500, msg: 'sorry , found Inernal server error' }))
-
+        .catch(() => next({ code: 500, msg: 'sorry , found Inernal server error when deleting items in grocery list' }))
 }
-

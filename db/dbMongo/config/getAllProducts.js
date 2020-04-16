@@ -2,6 +2,7 @@ const { all_products } = require('./db_buildSchema')
 exports.getAllProducts = (req, res) => {
     return all_products.find()
         .then(productsResp => {
+            console.log("Displays all products here :)")
             console.log(productsResp);
             res.send({
                 data: productsResp

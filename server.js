@@ -41,7 +41,7 @@ const { getAllProducts } = require("./db/dbMongo/config/getAllProducts");
 
 // const appendItem = require('./controllers/list/appendItem')
 const removeItem = require('./controllers/list/removeItem');
-const createList = require('./controllers/list/createList')
+// const createList = require('./controllers/list/createList')
 const removeList = require('./controllers/list/removeList')
 const getIdsItems = require('./controllers/list/getIdsItems')
 // const getCustomersLists = require('./controllers/list/getCustomersLists') // commented out until needed
@@ -49,7 +49,7 @@ const getIdsCustomers = require('./controllers/authentication/getIdsCustomers')
 
 const getItemId = require('./controllers/list/getItemId')
 const getDataItemTypeahead = require('./controllers/list/getDataItemTypeahead')
-//const addDataForThisCustomer = require('./controllers/list/addDataForThisCustomer')
+const addDataForThisCustomer = require('./controllers/list/addDataForThisCustomer')
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -71,7 +71,7 @@ app.get('/get_store_products', async (req, res) => {
     // console.log(vari);
     // console.log(vari);
     db.on('error', console.error.bind(console, 'Connection error:'));
-    await db.once('open',  function (){
+    await db.once('open', function () {
         console.log('We are supposedly connected to the Mongo database');
         // var dbo = db.model("Product_Supply");
         db.collection("Store_Products").find({}).toArray(function (err, result) {
@@ -117,7 +117,7 @@ app.get('/api/grocery', authenticationVerify, isAuthenticated);
 app.get('/api/getCustomerGroceryList/:customerId', authenticationVerify, getCustomerGroceryList)
 app.get('/api/get-all-data-lists', getAllDataLists)
 
-//app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer)
+app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer.add)
 
 app.get('*', (_req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
@@ -175,15 +175,6 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 //         console.log("Cart exists");
 //         console.log(req.session);
 //     }
-//     var products = [{ "_id": { "$oid": "5795e57c7078f66363833977" }, "product_id": 1362.0, "id": "B000H1DF7W", "title": "dragon naturally speaking standard v9", "description": "dragon naturallyspeaking 9 (standard edition) gives small business users and pc enthusiasts the power to create documents reports e-mails and more -- all by speaking! over three times faster than typing and amazingly accurate naturallyspeaking 9 translates your voice dictations into microsoft word and excel corel wordperfect and virtually all windows-based applications. it's never been easier to use -- with no script reading required you can get started right away! naturallyspeaking 9 translates your voice dictations into microsoft word and excel corel wordperfect and virtually all windows-based applications. view larger. three times faster than typing a c/net editor's choice for february 2006 and a pc world 100 best products of 2006 dragon naturallyspeaking 9 is up to 99 percent accurate and often more accurate than typing. dragon naturallyspeaking never makes a spelling mistake and it's actually programmed to get smarter the more your use it. and because most people speak over 120 words per minute but type less than 40 words a minute naturallyspeaking lets you create letters and e-mails about three times faster than typing by hand. dragon naturallyspeaking 9 is extremely easy to use and require no training. a full set of new on-screen tutorials simplify the training process so you can be an expert dragon naturallyspeaking user right away. an included approved free noise-canceling microphone helps you get started immediately. and you can use your voice to dictate edit and control just about any windows-based application which gives you unprecedented flexibility as you work. it even supports mozilla firefox and thunderbird. just talk and you can surf the web open and close applications even control your mouse and the entire desktop. you can also dictate edit and navigate more easily in microsoft word outlook express and corel wordperfect than in previous versions. for web browsing dragon naturallyspeaking 9 lets you search the web access information and navigate web pages by speaking urls and links. the dragonbar includes a select and say indicator that turns green when you are in an application or window where all of naturallyspeaking's functionality is supported. seamless editing functionality we all add unnecessary ums and ahs when we speak and the last thing you want is to spend your time editing all those extraneous insertions from your documents. thanks to its built-in nothing but speech (nbs) technology dragon naturallyspeaking 9 filters out inadvertent fillers and sounds between words keeping your document clean. the program's natural punctuation feature means that when you dictate casual writing styles you no longer have to say period and comma. so why type your emails or fiddle with your mouse to surf the web when you can more easily and quickly use your voice?", "manufacturer": "nuance communications inc.", "price": 99.99, "image": "5.jpeg" }
-//         , { "_id": { "$oid": "5795e57c7078f66363833978" }, "product_id": 1363.0, "id": "B000P9CR66", "title": "mediarecover", "description": "mediarecover gives you the ability to recover files you were positively convinced were gone forever - even if you've deleted them. losing memories of vacations and fun times is bad enough but losing important business files can threaten your livelihood. you owe it to yourself to be prepared. mediarecover's 3-step recovery process ensures you can access your photos music and files when you need to!", "manufacturer": "aladdin systems", "price": 29.99, "image": "1.jpeg" }
-//         , { "_id": { "$oid": "5795e57c7078f66363833979" }, "product_id": 1364.0, "id": "B000J588G4", "title": "photo explosion 3.0", "description": "photo explosion 3.0", "manufacturer": "nova development", "price": 29.99, "image": "8.jpeg" }]
-
-//     res.render('index', {
-//         pageTitle: 'Node.js Shopping Cart',
-//         products: products,
-//         nonce: Security.md5(req.sessionID + req.headers['user-agent'])
-//     });
     // Products.find({price: {'$gt': 0}}).sort({price: -1}).limit(6).then(products => {
     //     console.log(products);
     //     let format = new Intl.NumberFormat(req.app.locals.locale.lang, {style: 'currency', currency: req.app.locals.locale.currency });
