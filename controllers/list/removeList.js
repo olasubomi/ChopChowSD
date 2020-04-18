@@ -23,7 +23,7 @@ module.exports = (req, res) => {
         // })
     // })
 
-    customer_grocery_list.update({list_id: customerId },{$pull:{ $and: [{  }] } }).then(elem => {
+    customer_grocery_list.update({list_id: customerId },{$pullAll:{ grocery_list: [{  }] } }).then(elem => {
         res.send({
             data: 'all items deleted'
         })

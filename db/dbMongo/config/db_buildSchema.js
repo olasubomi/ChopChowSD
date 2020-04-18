@@ -19,7 +19,7 @@ exports.store_products = mongoose.model('store_products', new Schema({
     products: Array
 }))
 
-exports.all_meals = mongoose.model('all_meals', new Schema({
+exports.meals = mongoose.model('meals', new Schema({
     id: Number,
     label: String,
     imageSrc: String,
