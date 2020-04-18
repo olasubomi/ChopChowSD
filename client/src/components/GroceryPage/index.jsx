@@ -162,7 +162,8 @@ export default class GroceryPage extends React.Component {
         // console.log("should print body");
         // console.log(body);
         var productsList = JSON.parse(body);
-        console.log(productsList);
+        console.log("PRINTING ALL PRODUCTS LIST")
+        // console.log(productsList);
         if (productsList && productsList.data.length !== 0) {
           console.log("returns GET ALL PRODUCTS ");
           console.log(productsList.data.length);
@@ -362,45 +363,45 @@ export default class GroceryPage extends React.Component {
 
   handleClickTypeahead = (selected) => {
     this.setState({ selectedProduct: selected });
-    var arrayOfProductNames = Array.from(this.productNamesForTypeahead.keys());
-    console.log("arrayofproduct names is:");
-    console.log(arrayOfProductNames);
+    // var arrayOfProductNames = Array.from(this.productNamesForTypeahead.keys());
+
+
     console.log("selected is:");
     console.log(selected[0]);
-    console.log(typeof(selected[0]));
+    console.log(typeof (selected[0]));
+    console.log("arrayo fproduct names is:");
+    console.log(this.productNamesForTypeahead);
 
     this.productNamesForTypeahead.get(selected)
 
 
-    var productID = arrayOfProductNames.findIndex((el)=>el === selected[0]);
-    console.log("index is: " + productID);
+    // var index = arrayOfProductNames.findIndex((el) => el === selected[0]);
+    var productID = this.productNamesForTypeahead.get(selected[0]);
+    // var productID = index+1;
+    console.log("productID is: " + productID);
+    console.log()
+    if (isNaN(productID)) {
 
-    var url = `http://localhost:5000/api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
+      var url = `http://localhost:5000/api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
 
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => {
-              // .then(res => {
-        // return res.json();
-      // })
-        if (response) {
-          // const { customerList } = this.state;
-          console.log("Comes in handleClickTypeahead's then on client side");
-          // this.setState({ customerList: [...customerList, ...response.data], errormsgImage: '', errormsg: '', valueProductName: '', valueProductImage: '', valueProductSize: '', valueProductPrice: '', valuePricePerOunce: '', lasIdListState: lasIdListState + 1 })
-        }
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
       })
-
-    //     } else {
-    //     this.setState({ messageErrCreate: 'should be the image start word  "data" or "http" or end word "png" , "jpg","gif" ' })
-    //   }
-    // } else {
-    //   this.setState({ messageErrCreate: 'should be sure fill all fields ' })
-    // }
+        .then(response => {
+          // .then(res => {
+          // return res.json();
+          // })
+          if (response) {
+            // const { customerList } = this.state;
+            console.log("Comes in handleClickTypeahead's then on client side");
+            // this.setState({ customerList: [...customerList, ...response.data], errormsgImage: '', errormsg: '', valueProductName: '', valueProductImage: '', valueProductSize: '', valueProductPrice: '', valuePricePerOunce: '', lasIdListState: lasIdListState + 1 })
+          }
+        })
+    }
 
   }
 
@@ -416,7 +417,6 @@ export default class GroceryPage extends React.Component {
           options={Array.from(this.productNamesForTypeahead.keys())}
           placeholder="Find Meals (and Ingredients) here.."
           id="typeahead"
-          // onChange={this.handleClickTypeahead}
           onChange={(selected) => {
             // console.log(selected);
             this.handleClickTypeahead(selected)
@@ -424,13 +424,6 @@ export default class GroceryPage extends React.Component {
         // filterBy={['product_name']}
         />
 
-        {/*<Typeahead
-                    onChange={this.handleClickTypeahead}
-                    multiple
-                    options={this.products}
-                    placeholder="Find Meals (and Ingredients) here.."
-                    id="typeahead"
-                />*/}
         <Alert show={showAlert} key={1} variant={variant}>
           {messageAlert}
         </Alert>
@@ -484,7 +477,7 @@ export default class GroceryPage extends React.Component {
                             </div>
                             <div className="dataTypeahead__buttonAdd"><Button onClick={e => {
                               e.stopPropagation();
-                              this.handleShowAddItem(ingredient_item_grocery_search.id);
+                              this.handleAddItemToCart(ingredient_item_grocery_search.id);
                             }}> Add To Cart</Button> </div>
 
                             <div className="dataTypeahead__buttonDelete"><i class="fa fa-remove" onClick={e => {
@@ -522,7 +515,7 @@ export default class GroceryPage extends React.Component {
                           </div>
                           <div className="yourlist__buttonAdd"><Button onClick={e => {
                             e.stopPropagation();
-                            this.handleShowAddItem(productID);
+                            this.handleAddItemToCart(productID);
                           }}> Add To Cart</Button> </div>
                           <div className="yourlist__buttonDelete"><i className="fa fa-remove" onClick={e => {
                             e.stopPropagation();
