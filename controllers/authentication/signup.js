@@ -1,5 +1,6 @@
 const { checkEmailUser, checkValideToken } = require('../../db/dbPostgress/queries/athuntication/checkEmail');
 const pool = require('../../db/dbPostgress/config/db_connection')
+const {customer_grocery_list} = require('../../db/dbMongo/config/db_buildSchema')
 const { getHashPassword } = require('../hashPassword')
 const { sign } = require('jsonwebtoken')
 const { signUpEmail, forgotPasswordEmail, passwordResetEmail } = require('../../mailer/nodemailer');
@@ -78,7 +79,7 @@ exports.forgotPassword = (req, res, next) => {
 };
 
 exports.signupCustomer = (req, res, next) => {
-    const { email, password, username, phone, emailNotifcation } = req.body;
+    const { email, password, username, phone, emailNotification } = req.body;
     checkEmailUser(email)
         .then((result) => {
 
@@ -87,11 +88,24 @@ exports.signupCustomer = (req, res, next) => {
                     .then((hashedPass) => {
                         let sql = {
                             text: 'insert into customer (email, phonenumber, username, password, emailnotification) values($1, $2, $3, $4, $5) RETURNING id',
-                            values: [email, phone, username, hashedPass, emailNotifcation]
+                            values: [email, phone, username, hashedPass, emailNotification]
                         };
 
                         pool.query(sql).then(data => {
                             let id = data.rows[0].id;
+                            console.log("Created users id is : "+ id);
+                            // use id to set up customer lists and customer grocery lists in mongo.
+                            customer_grocery_list.create({list_id: id, grocery_list: []}, function(error, list) {
+                                if (error) {          
+                                    console.log("Found an error when creating grocery list for new user")
+                                    console.log(err)
+                                } else {
+                                    // console.log(Response)
+                                    console.log("Succesfully creates new grocery list for signed up user!")
+                                    console.log(list)
+                                }})
+
+                            console.log("Added grocery list to mongo db!")
                             signUpEmail(email);
                             res.status(200).send(JSON.stringify({ msg: 'User Sign up successfully', done: true }))
                         }, e => {

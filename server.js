@@ -9,13 +9,11 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:" + pw + "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
-
 require('./db/dbMongo/config/db_connection');
 // require('./db/dbMongo/config/AllCustomersLists')();
 // require('./db/dbMongo/config/AllProductsList')();
 // require('./db/dbMongo/config/AllCustomersData')();
 // require('./db/dbMongo/config/OneCustomersGroceryList')();
-
 
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')

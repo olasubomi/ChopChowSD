@@ -66,7 +66,7 @@ exports.customers = mongoose.model('customers', new Schema({
     zipCode: Number,
     ipsid: Number,
     username: String,
-    emailnotifcation: Boolean
+    emailNotification: Boolean
 }))
 
 exports.customers_lists = mongoose.model('customers_lists', new Schema({

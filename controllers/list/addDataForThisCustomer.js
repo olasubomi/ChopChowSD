@@ -13,7 +13,7 @@ exports.add = (req, res) => {
 
     // getDataCustomerId(customerId).then((result) => {
     let data = {};
-    customer_grocery_list.update( {list_id: customerId },{ $push:  { grocery_list: idItem }}) 
+    // customer_grocery_list.update( {list_id: customerId },{ $push:  { grocery_list: idItem }}) 
     console.log("Comes in server side, after update");
     customer_grocery_list.updateOne( {list_id: customerId },{ $push:  { grocery_list: Number(idItem) }}) 
     .then((Response) => {
