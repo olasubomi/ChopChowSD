@@ -53,8 +53,8 @@ export default class GroceryPage extends React.Component {
     // if (!auth || auth === undefined){}
 
     // api grocery calls authenticationVerify,isAuthenticated
-    // var url = `https://chopchowdev.herokuapp.com/api/grocery`;
-    var url = `./api/grocery`
+    var url = `https://chopchowdev.herokuapp.com/api/grocery`;
+    // var url = `./api/grocery`
 
     fetch(url, {
       method: 'GET',
@@ -77,8 +77,8 @@ export default class GroceryPage extends React.Component {
         this.setState({ customerId: response.data })
         const { customerId } = this.state;
         // get Lists, from customer_lists of customerID.
-        // var url = `https://chopchowdev.herokuapp.com/api/getCustomerGroceryList/${customerId}`;
-        var url = `./api/getCustomerGroceryList/${customerId}`
+        var url = `https://chopchowdev.herokuapp.com/api/getCustomerGroceryList/${customerId}`;
+        // var url = `./api/getCustomerGroceryList/${customerId}`
 
         fetch(url, {
           method: 'GET',
@@ -110,31 +110,8 @@ export default class GroceryPage extends React.Component {
           })
       })
 
-      //var url = "https://chopchowdev.herokuapp.com/api/get-all-products";
-      // var url = "http://localhost:5000/api/get-all-products"
-    // fetch('/api/get-customers-lists', {
-    //   method: 'GET',
-    //   credentials: 'same-origin',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   }
-    // })
-    //   .then(res => {
-    //     return res.json()
-    //   })
-    //   .then(response => {
-    //     console.log("get list ids");
-    //     console.log(response);
-    //     let arrResponse = response.data;
-    //     console.log(arrResponse);
-    //     const lasIdList = arrResponse[arrResponse.length - 1]
-    //     console.log(lasIdList);
-
-    //     this.setState({ lasIdListState: lasIdList + 1 })
-    //   })
-
-    // url = `https://chopchowdev.herokuapp.com/api/get-ids-customers`;
-    url = `./api/get-ids-customers`
+    url = `https://chopchowdev.herokuapp.com/api/get-ids-customers`;
+    // url = `./api/get-ids-customers`
 
     fetch(url, {
       method: 'GET',
@@ -164,8 +141,8 @@ export default class GroceryPage extends React.Component {
         )
       })
 
-    // url = "https://chopchowdev.herokuapp.com/api/get-all-products";
-    url = "./api/get-all-products"
+    url = "https://chopchowdev.herokuapp.com/api/get-all-products";
+    // url = "./api/get-all-products"
 
     fetch(url)
       .then(res => res.text())
@@ -199,8 +176,8 @@ export default class GroceryPage extends React.Component {
   handleLoginClick = () => {
     const { email, password } = this.state;
     if (email && password) {
-      // var url = `https://chopchowdev.herokuapp.com/api/login`;
-    var url = `./api/login`
+      var url = `https://chopchowdev.herokuapp.com/api/login`;
+    // var url = `./api/login`
 
     fetch(url, {
         method: 'POST',
@@ -252,8 +229,8 @@ export default class GroceryPage extends React.Component {
   handleShowDeleteItem = (productID) => {
     this.setState({ deletedItemId: productID });
     const { customerId, deletedItemId } = this.state;
-    // var url = `https://chopchowdev.herokuapp.com/api/remove-item/${productID}/${customerId}`
-    var url = `./api/remove-item/${productID}/${customerId}`
+    var url = `https://chopchowdev.herokuapp.com/api/remove-item/${productID}/${customerId}`
+    // var url = `./api/remove-item/${productID}/${customerId}`
 
     fetch(url, {
       method: 'DELETE',
@@ -304,39 +281,8 @@ export default class GroceryPage extends React.Component {
 
   handleDeleteList = () => {
     const { customerId } = this.state;
-    // var url = "https://chopchowdev.herokuapp.com/api/get-all-products";
-    // var url = "http://localhost:5000/api/get-all-products"
-    // fetch(`/api/get-ids-items/${customerId}`, {
-    //   method: 'GET',
-    //   credentials: 'same-origin',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-
-    // })
-    //   .then(res => res.json())
-    //   .then(response => {
-    //     if (response) {
-    //       let arrResItemDelete = response.data
-    //       arrResItemDelete.map((resDelete) =>
-    //         this.setState({ deletedItemsId: resDelete })
-    //       )
-    //     }
-    //   })
-    //   .catch(() => {
-    //     this.setState({
-    //       messageAlert: 'Internal Server Error while getting item id',
-    //       showAlert: true,
-    //       variant: 'danger'
-    //     },
-    //       () =>
-    //         setTimeout(() => {
-    //           this.setState({ messageAlert: '', showAlert: false })
-    //         }, 8000)
-    //     )
-    //   })
-    // var url = `https://chopchowdev.herokuapp.com/api/remove-list/${customerId}`;
-    var url = `./api/remove-list/${customerId}`
+    var url = `https://chopchowdev.herokuapp.com/api/remove-list/${customerId}`;
+    // var url = `./api/remove-list/${customerId}`
 
     fetch(url, {
       method: 'DELETE',
@@ -399,8 +345,8 @@ export default class GroceryPage extends React.Component {
     console.log("productID is: " + productID);
     console.log("customer id is: "+ this.state.customerId );
     if (!(isNaN(productID))) {
-      // var url = `https://chopchowdev.herokuapp.com/api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
-      var url = `./api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
+      var url = `https://chopchowdev.herokuapp.com/api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
+      // var url = `./api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
       fetch(url, {
         method: 'POST',
         headers: {
