@@ -3,7 +3,15 @@ import Popup from "reactjs-popup";
 
 class ProductSection extends Component {
 storeCollection = []
-componentWillMount(){
+
+constructor(props) {
+    super(props);
+    this.state = {
+      store_products_fetched : false
+    };
+  }
+
+componentDidMount(){
     console.log("Comes in product pages component will mount")
     var url = "https://chopchowdev.herokuapp.com/get_store_products" // for production
     // var url = "http://localhost:5000/get_store_products"
@@ -18,6 +26,10 @@ componentWillMount(){
                 this.storeCollection.push(storeList[i]);
                 console.log(storeList[i].store_name)
             }
+
+            this.setState({store_products_fetched:true});
+
+
         })
         .catch(error=>{
             console.log(error);

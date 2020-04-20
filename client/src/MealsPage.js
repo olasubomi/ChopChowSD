@@ -11,6 +11,7 @@ class MealsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      product_fetched : false,
       suggestMealPopOver: false,
       mealsListed: false,
       mealSelected: false,
@@ -33,8 +34,8 @@ class MealsPage extends Component {
 
   componentDidMount() {
     console.log("Comes in meal pages component did mount");
-    var url = "https://chopchowdev.herokuapp.com/api/get-meals";
-    // var url = "http://localhost:5000/api/get-meals"
+    // var url = "https://chopchowdev.herokuapp.com/api/get-meals";
+    var url = "http://localhost:5000/api/get-meals"
 
     fetch(url)
       .then(res => res.text())
@@ -52,6 +53,7 @@ class MealsPage extends Component {
           console.log(this.products);
           // this.entries = Object.entries(this.products);
           // console.log(entries);
+          this.setState({product_fetched:true});
         }
         else{
           console.log("shows products do not return");
@@ -72,8 +74,9 @@ class MealsPage extends Component {
 
   render() {
     const items = [];
+    console.log("Hello RENDER");
     for (const [index, value] of this.products.entries()) {
-      
+      console.log("COMES IN RENDER");
       //console.log();
       // var base_index = 0;
       console.log(value);
