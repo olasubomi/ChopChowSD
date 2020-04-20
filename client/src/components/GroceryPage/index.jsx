@@ -381,7 +381,7 @@ export default class GroceryPage extends React.Component {
     console.log("selected is:");
     console.log(selected[0]);
     console.log(typeof (selected[0]));
-    console.log("arrayo fproduct names is:");
+    console.log("array of product names is:");
     console.log(this.productNamesForTypeahead);
 
     this.productNamesForTypeahead.get(selected)
@@ -389,10 +389,9 @@ export default class GroceryPage extends React.Component {
 
     // var index = arrayOfProductNames.findIndex((el) => el === selected[0]);
     var productID = this.productNamesForTypeahead.get(selected[0]);
-    // var productID = index+1;
     console.log("productID is: " + productID);
     console.log("customer id is: "+ this.state.customerId );
-    if (isNaN(productID)) {
+    if (!(isNaN(productID))) {
       var url = `https://chopchowdev.herokuapp.com/api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
       // var url = `http://localhost:5000/api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
       fetch(url, {
