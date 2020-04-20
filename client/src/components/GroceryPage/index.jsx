@@ -54,7 +54,8 @@ export default class GroceryPage extends React.Component {
 
     // api grocery calls authenticationVerify,isAuthenticated
     var url = `https://chopchowdev.herokuapp.com/api/grocery`;
-    // var url = `http://localhost:5000/api/grocery`
+    // var url = `./api/grocery`
+
     fetch(url, {
       method: 'GET',
       headers: {
@@ -77,7 +78,8 @@ export default class GroceryPage extends React.Component {
         const { customerId } = this.state;
         // get Lists, from customer_lists of customerID.
         var url = `https://chopchowdev.herokuapp.com/api/getCustomerGroceryList/${customerId}`;
-        // var url = `http://localhost:5000/api/getCustomerGroceryList/${customerId}`
+        // var url = `./api/getCustomerGroceryList/${customerId}`
+
         fetch(url, {
           method: 'GET',
           credentials: 'same-origin',
@@ -131,8 +133,9 @@ export default class GroceryPage extends React.Component {
     //     this.setState({ lasIdListState: lasIdList + 1 })
     //   })
 
-    var url = `https://chopchowdev.herokuapp.com/api/get-ids-customers`;
-    // var url = `http://localhost:5000/api/get-ids-customers`
+    url = `https://chopchowdev.herokuapp.com/api/get-ids-customers`;
+    // url = `./api/get-ids-customers`
+
     fetch(url, {
       method: 'GET',
       credentials: 'same-origin',
@@ -161,8 +164,9 @@ export default class GroceryPage extends React.Component {
         )
       })
 
-    var url = "https://chopchowdev.herokuapp.com/api/get-all-products";
-    // var url = "http://localhost:5000/api/get-all-products"
+    url = "https://chopchowdev.herokuapp.com/api/get-all-products";
+    // url = "./api/get-all-products"
+
     fetch(url)
       .then(res => res.text())
       .then(body => {
@@ -196,8 +200,9 @@ export default class GroceryPage extends React.Component {
     const { email, password } = this.state;
     if (email && password) {
       var url = `https://chopchowdev.herokuapp.com/api/login`;
-    // var url = `http://localhost:5000/api/login`
-      fetch(url, {
+    // var url = `./api/login`
+
+    fetch(url, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -248,7 +253,8 @@ export default class GroceryPage extends React.Component {
     this.setState({ deletedItemId: productID });
     const { customerId, deletedItemId } = this.state;
     var url = `https://chopchowdev.herokuapp.com/api/remove-item/${productID}/${customerId}`
-    // var url = `http://localhost:5000/api/remove-item/${productID}/${customerId}`
+    // var url = `./api/remove-item/${productID}/${customerId}`
+
     fetch(url, {
       method: 'DELETE',
       headers: {
@@ -330,7 +336,8 @@ export default class GroceryPage extends React.Component {
     //     )
     //   })
     var url = `https://chopchowdev.herokuapp.com/api/remove-list/${customerId}`;
-    // var url = `http://localhost:5000/api/remove-list/${customerId}`
+    // var url = `./api/remove-list/${customerId}`
+
     fetch(url, {
       method: 'DELETE',
       headers: {
@@ -393,7 +400,7 @@ export default class GroceryPage extends React.Component {
     console.log("customer id is: "+ this.state.customerId );
     if (!(isNaN(productID))) {
       var url = `https://chopchowdev.herokuapp.com/api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
-      // var url = `http://localhost:5000/api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
+      // var url = `./api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
       fetch(url, {
         method: 'POST',
         headers: {
@@ -425,7 +432,7 @@ export default class GroceryPage extends React.Component {
         <Typeahead
           // multiple
           options={Array.from(this.productNamesForTypeahead.keys())}
-          placeholder="Find Meals (and Ingredients) here.."
+          placeholder="Add products to your grocery list here.."
           id="typeahead"
           onChange={(selected) => {
             // console.log(selected);
@@ -485,10 +492,11 @@ export default class GroceryPage extends React.Component {
                                 Product Size : {ingredient_item_grocery_search.sizes}
                               </Card.Text>
                             </div>
-                            <div className="dataTypeahead__buttonAdd"><Button onClick={e => {
+
+                            {/* <div className="dataTypeahead__buttonAdd"><Button onClick={e => {
                               e.stopPropagation();
                               this.handleAddItemToCart(ingredient_item_grocery_search.id);
-                            }}> Add To Cart</Button> </div>
+                            }}> Add To Cart</Button> </div> */}
 
                             <div className="dataTypeahead__buttonDelete"><i class="fa fa-remove" onClick={e => {
                               e.stopPropagation();
