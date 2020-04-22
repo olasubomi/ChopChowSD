@@ -83,7 +83,7 @@ class MyModal extends Component {
             <div className="container">
               <div className="row">
                 <div
-                  className="col-md-5 col-xs-12"
+                  className="col-lg-5 col-md-5 col-xs-12"
                   style={{
                     background: "white",
                     paddingLeft: "0px",
@@ -101,7 +101,7 @@ class MyModal extends Component {
                     ))}
                   </Carousel>
                   <br />
-                  <div className="col-md-12 col-xs-12">
+                  <div className="col-lg-12 col-md-12 col-xs-12">
                     <h3> {value.label}</h3>
                     <div>
                       {value.readTime} | {value.cookTime}
@@ -122,7 +122,7 @@ class MyModal extends Component {
                   </div>
                 </div>
                 <div
-                  className=" col-md-7 col-xs-12"
+                  className=" col-lg-7 col-md-7 col-xs-12"
                   style={{ paddingLeft: "25px" }}
                 >
                   <Modal.Header closeButton style={{'borderBottom': '20px', 'padding': '0px'}}/> 
@@ -158,7 +158,7 @@ class MyModal extends Component {
                   </div>
                   <div className="row">
                     {ingredientsList.map(ingredient => (
-                      <div className="col-md-6" key={value.label + ingredient}>
+                      <div className="col-lg-6 col-md-6" key={value.label + ingredient}>
                         <input type="checkbox" value="" />
                         {ingredient}
                         <br />

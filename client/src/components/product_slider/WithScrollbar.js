@@ -8,7 +8,7 @@ export default class WithScrollbar extends Component {
         return (
             <Carousel showThumbs={false} infiniteLoop={true} centerMode={true} centerSlidePercentage={100 / 2}>
               {this.props.products.map(ingredient => (
-                <div key={ingredient}>
+                <div key={ingredient} style={{height: '200px'}}>
                     <p className="">{ingredient.ingredient}</p>
                     <img src={"/images/products/"+ingredient.image} alt={ingredient.ingredient} />
 

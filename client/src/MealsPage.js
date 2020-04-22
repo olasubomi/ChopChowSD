@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import MyModal from "./Mymodal";
 import WithScrollbar from "./components/product_slider/WithScrollbar";
-
+import './meals_page.css'
 class MealsPage extends Component {
 
     // Mongo
@@ -93,13 +93,13 @@ class MealsPage extends Component {
       // console.log(this.meal_popups);
       // console.log(index);
       items.push(
-        <div key={value.label + value.id} className="col-sm-12 col-md-4 col-lg-3 mealContainer">
+        <div key={value.label + value.id} className="col-xs-12 col-sm-12 col-md-4 col-lg-3 mobileCentalized mealContainer">
           <div>
             <div style={containerStyle}>
               <img
                 src={value.imageSrc}
                 className="images"
-                style={{ width: "200px", height: "180px" }}
+                style={{ width: "250px", height: "180px" }}
                 alt={value.id}
                 onClick={() => {
                   this.meal_popups[index] = !this.meal_popups[index];
@@ -144,22 +144,20 @@ class MealsPage extends Component {
                 >
                 </span>
                 <div id={value.id} style={{ display: "none" }}>
-                  {value.intro}
-                  <MyModal
+                  <div  style={{ height: "200px", textAlign: "justify",  overflow: "auto" }}>{value.intro}</div>
+                  <div><MyModal
                     value={value}
                     mealPrep={mealPrep}
                     ingredientsList={value.ingredients}
-                  />
+                  /></div>
+                  
 
                 </div>
                 <br></br>
-                <br></br>
-                <br></br>
               </div>
-              <div id={value.id + "products"} style={{ display: "none" }}>
+              <div id={value.id + "products"} style={{ display: "none"}}>
                 {/* Meal Ingredients */}
-                <br></br>
-                {value.products}
+                {/* {value.products} */}
                 <WithScrollbar
                   products={value.product_slider}
                 // ingredients={[
@@ -599,7 +597,8 @@ const containerStyle = {
   //font: "50px",
   display: "inline-block",
   width: "100%",
-  height: "100%"
+  height: "100%",
+  maxWidth: "250px"
 };
 
 /* <Route

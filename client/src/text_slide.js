@@ -98,26 +98,6 @@ class TextSlider extends Component {
             </Carousel.Item>
           )
         }
-        // else if (mealPrep1[(i * 3) ] != undefined) {
-        //   console.log("Comes in here with 1 instructions for slide #: "+ i);
-
-        //   carouselSlides.push(
-        //     <Carousel.Item>
-        //       <img
-        //         className="img-responsive imageHeighgt"
-        //         src="https://www.beautycolorcode.com/f6f0f0-2880x1800.png"
-        //         alt="First slide"
-        //       />
-        //       <Carousel.Caption>
-        //         <div id="mealPrepChunk">
-
-        //           {(i * 3) + 0}. {mealPrep1[(i * 3) + 0]}
-
-        //         </div>
-        //       </Carousel.Caption>
-        //     </Carousel.Item>
-        //   )
-        // }
       }
     }
 
