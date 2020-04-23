@@ -12,6 +12,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
 import "./App.css";
+import "./mymodal.css"
 const content = [1, 2];
 class MyModal extends Component {
   constructor(props) {
@@ -32,15 +33,12 @@ class MyModal extends Component {
     }
   };
 
-  onClick = (evnet, props) => {
-    this.setState({ checked: !this.state.checked });
-  };
-
   increase = () => {
     this.setState({ increment: this.state.increment + 1 });
   };
 
   openModal() {
+    debugger
     this.setState({ modalIsOpen: true });
   }
 
@@ -48,6 +46,9 @@ class MyModal extends Component {
   //   // references are now sync'd and can be accessed.
   //   this.subtitle.style.color = "#f00";
   // }
+
+  componentDidMount() {
+  }
 
   closeModal() {
     this.setState({ modalIsOpen: false });
@@ -57,7 +58,6 @@ class MyModal extends Component {
     this.setState({ index: selectedIndex });
   }
   render() {
-    // const { checked } = this.state;
     const { value, mealPrep, ingredientsList } = this.props;
     return (
       <>
@@ -73,12 +73,10 @@ class MyModal extends Component {
         </div>
         <Modal
           show={this.state.modalIsOpen}
-          // onAfterOpen={this.afterOpenModal}
           onHide={this.closeModal}
-          // style={{'backgroundColor': '#bfbfbf'}}
+          dialogClassName="modalMobileSetup"
+          backdropClassName="backdropClassName"
         >
-          {/* <Modal.Header closeButton/> */}
-          {/* setting position to fixed solves the browser sizing issue on modal body, but then backkkground breaks on modal */}
           <Modal.Body style={{ padding: "0px" }}> 
             <div className="container">
               <div className="row">
@@ -105,7 +103,6 @@ class MyModal extends Component {
                     <h3> {value.label}</h3>
                     <div>
                       {value.readTime} | {value.cookTime}
-                      {/* <HeartCheckbox checked={checked} onClick={this.onClick} /> */}
                     </div>
                     <div>
                       <button

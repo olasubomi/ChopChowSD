@@ -91,15 +91,7 @@
 .carousel.carousel-slider .control-arrow {
   margin-top: 150px !important;
 }
-.modal-content{
-  background-color: #f6f0f0;
-}
-@media screen and (max-width: 1920px){
-  .modal-content {
-    border-radius: 0px;
-    margin-top: 25%;
-  }
-}
+
 .number-input input[type="number"] {
   -webkit-appearance: textfield;
     -moz-appearance: textfield;
@@ -212,3 +204,6 @@
   background-color: red !important;
   position: relative;
 } */
+.button.minus:focus  {
+  outline: none !important;
+}
