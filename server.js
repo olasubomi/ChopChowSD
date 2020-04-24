@@ -15,8 +15,8 @@ require('./db/dbMongo/config/db_connection');
 // require('./db/dbMongo/config/AllCustomersData')();
 // require('./db/dbMongo/config/OneCustomersGroceryList')();
 
-const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
+const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
 const authenticationVerify = require('./controllers/authentication/2.authunticationVerify')
 
 const { hashPassword } = require('./controllers/hashPassword')
@@ -53,13 +53,13 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(cookie());
 // app.use(sslRedirect());
-// app.use(cors());
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    credentials: true,
-}
+app.use(cors());
+// const corsOptions = {
+//     origin: 'http://localhost:3000',
+//     credentials: true,
+// }
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 // app.use(function(req, res, next) {
 //     res.header("Access-Control-Allow-Origin", 'http://localhost:3000'); // update to match the domain you will make the request from
