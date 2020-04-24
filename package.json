@@ -16,12 +16,19 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "heroku-ssl-redirect": "0.0.4",
+<<<<<<< HEAD
     "http-proxy-middleware": "^0.19.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.7",
     "nodemailer": "^6.4.6",
     "passport": "^0.4.1",
+=======
+    "mongodb": "^3.1.13",
+    "mongoose": "^5.7.5",
+    "nodemon": "^1.19.1",
+    "passport": "^0.4.0",
+>>>>>>> master
     "passport-facebook": "^3.0.0",
     "passport-google-oauth": "^2.0.0",
     "passport-local": "^1.0.0",

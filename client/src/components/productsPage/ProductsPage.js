@@ -4,12 +4,16 @@ import Popup from "reactjs-popup";
 class ProductSection extends Component {
 storeCollection = []
 
+<<<<<<< HEAD:client/src/components/productsPage/ProductsPage.js
 constructor(props) {
     super(props);
     this.state = {
       store_products_fetched : false
     };
   }
+=======
+storeCollection = []
+>>>>>>> master:client/src/components/productSection/ProductsPage.js
 
 componentDidMount(){
     console.log("Comes in product pages component will mount")
@@ -21,8 +25,12 @@ componentDidMount(){
         .then(body => {
             var storeList = JSON.parse(body);
              for(var i = 0 ; i < storeList.length; i++){
+<<<<<<< HEAD:client/src/components/productsPage/ProductsPage.js
                 console.log("Inner fetch loop");
                 console.log(storeList[i]);
+=======
+                 console.log(storeList[i]);
+>>>>>>> master:client/src/components/productSection/ProductsPage.js
                 this.storeCollection.push(storeList[i]);
                 console.log(storeList[i].store_name)
             }
