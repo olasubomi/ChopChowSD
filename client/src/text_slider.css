@@ -2,9 +2,12 @@
     color: black;
 }
 .carousel-control-next-icon {
+    margin-top: 50px;
     background-image: url(https://cdn2.iconfinder.com/data/icons/250-perfect-vector-pictograms/48/9.5-512.png);
 }
 .carousel-control-prev-icon {
+    
+    margin-top: 50px;
     transform: scaleX(-1);
     background-image: url(https://cdn2.iconfinder.com/data/icons/250-perfect-vector-pictograms/48/9.5-512.png);
 }
@@ -12,11 +15,18 @@
     bottom: 10%;
 }
 img.img-responsive.imageHeighgt {
-    height: 150px !important;
+    height: 200px !important;
 }
-@media screen and (max-width: 767px){
+/* @media screen and (max-width: 767px){
     .modal-content {
         width: 100%;
         margin-left: 0px;
     }    
 }
+@media screen and (max-width: 767px){
+    .carousel-control-prev-icon {
+        margin-bottom: -50%;
+        margin-left: -10%;
+        margin-top: 0px;
+    }
+} */
