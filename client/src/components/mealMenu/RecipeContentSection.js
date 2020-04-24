@@ -20,11 +20,11 @@ class RecipeContentSection extends Component {
                     </div>
                     <div>{this.props.selectedMeal.readTime} </div>
                     <div> {this.props.selectedMeal.cookTime}</div>
-                    <Popup trigger={<u>Clickon here to read steps</u>} modal 
+                    <Popup trigger={<u>Click here to read steps</u>} modal 
                         contentStyle={contentStyle}>
                         {close => (
                             <div>
-                                <button href = "#" className="close" onClick={close}>&times;</button>
+                                <a className="close" onClick={close}>&times;</a>
                                 <div className="container" style={containerStyle} id="bigContainer">
                                 <div className="row align-items-center">
                                     <img src={this.props.selectedMeal.imageSrc} alt='info' style={{width:'35%', height:'35%'}}></img>
