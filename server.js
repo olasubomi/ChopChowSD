@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
+const mongoose = require('mongoose');
 const pw = process.env.MongoPassword;
 const uri = "mongodb+srv://Olasubomi:"+pw+"@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 
@@ -28,28 +29,54 @@ app.use('/login', login);
 app.use(express.static(path.join(__dirname,'client/build' )));
 // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
   
-app.get('/get_products', (req, res)=>{
-    console.log("Calling all Mongo products");
-    var collection ;
-    const client = new MongoClient(uri, { useNewUrlParser: true });
-    console.log(uri);
-    //const opts  = {db:{authSource: 'users'}};
-    // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
-    MongoClient.connect(uri,  { useNewUrlParser: true },function(err,db){
-        if(err) throw err;
-        // console.log(JSON.stringify(collection));
-        // store = JSON.stringify(collection);
-        // res.send(store);
-        var dbo = db.db("Product_Supply");
-        dbo.collection("all_products").find({}).toArray(function(err, result){
+app.get('/get_store_products', async (req, res) => {
+    mongoose.connect(process.env.MONGO_URI_DEV, { useNewUrlParser: true, useUnifiedTopology: true })
+    console.log("Calling servers get_store_products to Mongo");
+    //Check if we connected to the database or not
+    let db = mongoose.connection;
+    // let vari =  await db.collection("Store_Products").countDocuments();
+    // console.log(vari);
+    // console.log(vari);
+    db.on('error', console.error.bind(console, 'Connection error:'));
+    await db.once('open', function () {
+        console.log('We are supposedly connected to the Mongo database');
+        // var dbo = db.model("Product_Supply");
+        db.collection("Store_Products").find({}).toArray(function (err, result) {
             if (err) throw err;
-            // console.log(result);
+            console.log("store products results ate in")
+            console.log(result);
             res.send(result);
-            // perform actions on the collection object
-            db.close();
-        });
+            //leaving db open to allow for call at any point (eg when changing the page)
+            // db.close();
+        })
+        // perform actions on the collection object
+    });
+    // const vari = await
+    // console.log(vari);
+
 });
-});
+// app.get('/get_products', (req, res)=>{
+//     console.log("Calling all Mongo products");
+//     var collection ;
+//     const client = new MongoClient(uri, { useNewUrlParser: true });
+//     console.log(uri);
+//     //const opts  = {db:{authSource: 'users'}};
+//     // uri = "mongodb://Olasubomi:"+this.password+"@cluster0-sqg7f.mongodb.net:27017";
+//     MongoClient.connect(uri,  { useNewUrlParser: true },function(err,db){
+//         if(err) throw err;
+//         // console.log(JSON.stringify(collection));
+//         // store = JSON.stringify(collection);
+//         // res.send(store);
+//         var dbo = db.db("Product_Supply");
+//         dbo.collection("all_products").find({}).toArray(function(err, result){
+//             if (err) throw err;
+//             // console.log(result);
+//             res.send(result);
+//             // perform actions on the collection object
+//             db.close();
+//         });
+// });
+// });
 
 app.get('/get_store_products', (req, res)=>{
 
