@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MyModal from "./Mymodal";
-import WithScrollbar from "./components/product_slider/WithScrollbar";
+import WithScrollbar from "./product_slider/WithScrollbar";
 
 class MealsPage extends Component {
 

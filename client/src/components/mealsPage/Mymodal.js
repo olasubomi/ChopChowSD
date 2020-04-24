@@ -7,11 +7,11 @@ import React, { Component } from "react";
 // import ImagePopup from "./ImagePopup";
 import { Modal } from "react-bootstrap";
 // import {Button} from 'react-bootstrap/Button';
-import TextSlider from "./text_slide";
+import TextSlider from "../../text_slide";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
-import "./App.css";
+import "../../App.css";
 const content = [1, 2];
 class MyModal extends Component {
   constructor(props) {

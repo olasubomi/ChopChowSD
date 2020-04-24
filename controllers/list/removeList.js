@@ -12,9 +12,7 @@ module.exports = (req, res) => {
             //         console.log("retrieving customers grocery list from db to update")
             //         const list_ids = data.map((el) => el.list_id)
                     // customer_grocery_list.deleteMany({ $and: [{ list_id: list_ids, customer_id: customerId }] }).then(elem => {
-                    //     res.send({
-                    //         data: 'all items deleted'
-                    //     })
+                    
                     // })
                 // })
                 // .catch(() => next({ code: 500, msg: 'sorry , found Internal server error when deleting customers grocery list' }))
@@ -24,10 +22,14 @@ module.exports = (req, res) => {
     customer_grocery_list.update({list_id: customerId },{$set:{ grocery_list: [] } }, function(err,list){
         if(err){
             console.log(err);
+            
         }
         else{
             console.log("deleted entire list");
             console.log(list);
+            res.send({
+                data: list
+            })
         }
     })
 }

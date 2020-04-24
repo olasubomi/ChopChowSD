@@ -41,6 +41,7 @@ export default class GroceryPage extends React.Component {
     valueProductSize: '',
     valuePricePerOunce: '',
     errormsg: '',
+    typeAheadAdded: false
   }
 
   handleChange = ({ target: { value, name } }) =>
@@ -53,14 +54,15 @@ export default class GroceryPage extends React.Component {
     // if (!auth || auth === undefined){}
 
     // api grocery calls authenticationVerify,isAuthenticated
-    var url = `https://chopchowdev.herokuapp.com/api/grocery`;
-    // var url = `./api/grocery`
-
+    var url = `https://chopchowdev.herokuapp.com/api/authenticate-grocery-page`;
+    // var url = `./api/authenticate-grocery-page`
+    // var url = `http://localhost:5000/api/authenticate-grocery-page`
     fetch(url, {
       method: 'GET',
-      headers: {
-        'Content-type': 'application/json',
-      },
+      // credentials: 'include',
+      // headers: {
+      //   'Content-type': 'application/json',
+      // },
     })
       .then(res => {
         return res.json()
@@ -79,13 +81,14 @@ export default class GroceryPage extends React.Component {
         // get Lists, from customer_lists of customerID.
         var url = `https://chopchowdev.herokuapp.com/api/getCustomerGroceryList/${customerId}`;
         // var url = `./api/getCustomerGroceryList/${customerId}`
+        // var url = `http://localhost:5000/api/getCustomerGroceryList/${customerId}`
 
         fetch(url, {
           method: 'GET',
-          credentials: 'same-origin',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          // credentials: 'include',
+          // headers: {
+          //   'Content-Type': 'application/json',
+          // },
 
         })
           .then(res => {
@@ -98,7 +101,7 @@ export default class GroceryPage extends React.Component {
           })
           .catch(() => {
             this.setState({
-              messageAlert: 'Internal Server Error while getting users grocery list...',
+              messageAlert: 'Authentication Error while fetching your grocery list...',
               showAlert: true,
               variant: 'danger'
             },
@@ -112,13 +115,15 @@ export default class GroceryPage extends React.Component {
 
     url = `https://chopchowdev.herokuapp.com/api/get-ids-customers`;
     // url = `./api/get-ids-customers`
+    // url = `http://localhost:5000/api/get-ids-customers`
+
 
     fetch(url, {
       method: 'GET',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      }
+      // credentials: 'include',
+      // headers: {
+      //   'Content-Type': 'application/json',
+      // }
     })
       .then(res => {
         return res.json()
@@ -142,9 +147,16 @@ export default class GroceryPage extends React.Component {
       })
 
     url = "https://chopchowdev.herokuapp.com/api/get-all-products";
+    // url = `http://localhost:5000/api/get-all-products`
     // url = "./api/get-all-products"
 
-    fetch(url)
+    fetch(url,{
+      method: 'GET',
+      // credentials: 'include',
+      // headers: {
+      //   'Content-Type': 'application/json',
+      // }
+    })
       .then(res => res.text())
       .then(body => {
         // console.log("should print body");
@@ -177,14 +189,16 @@ export default class GroceryPage extends React.Component {
     const { email, password } = this.state;
     if (email && password) {
       var url = `https://chopchowdev.herokuapp.com/api/login`;
-    // var url = `./api/login`
+      // var url = `./api/login`
+      // var url = `http://localhost:5000/api/login`
 
-    fetch(url, {
+
+      fetch(url, {
         method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-type': 'application/json',
-        },
+        // credentials: 'include',
+        // headers: {
+        //   'Content-type': 'application/json',
+        // },
         body: JSON.stringify({
           email,
           password,
@@ -234,10 +248,10 @@ export default class GroceryPage extends React.Component {
 
     fetch(url, {
       method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      // headers: {
+      //   Accept: 'application/json',
+      //   'Content-Type': 'application/json',
+      // },
 
     })
       .then(res => {
@@ -263,6 +277,8 @@ export default class GroceryPage extends React.Component {
           );
           return { customerList: newValueData };
         });
+        console.log("Delets item");
+        this.componentDidMount();
 
       })
       .catch(() => {
@@ -280,21 +296,21 @@ export default class GroceryPage extends React.Component {
   }
 
   handleDeleteList = () => {
+    console.log("Comes in deletes list");
     const { customerId } = this.state;
     var url = `https://chopchowdev.herokuapp.com/api/remove-list/${customerId}`;
     // var url = `./api/remove-list/${customerId}`
 
     fetch(url, {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-
+      // headers: {
+      //   'Content-Type': 'application/json',
+      // }
     })
-      .then(res => {
-        return res.json()
-      })
       .then(response => {
+        console.log("delete response is: ");
+        console.log(response);
+        console.log(response.json);
         this.setState({
           messageAlert: 'deleted successfully',
           showAlert: true,
@@ -307,8 +323,12 @@ export default class GroceryPage extends React.Component {
         )
 
         this.setState({ customerList: [] });
+        this.componentDidMount();
+        console.log("deletes list");
+        return response.json()
       })
       .catch(() => {
+        console.log("caught an error while deleting list");
         this.setState({
           messageAlert: 'Internal Server Error while deleting list',
           showAlert: true,
@@ -343,16 +363,16 @@ export default class GroceryPage extends React.Component {
     // var index = arrayOfProductNames.findIndex((el) => el === selected[0]);
     var productID = this.productNamesForTypeahead.get(selected[0]);
     console.log("productID is: " + productID);
-    console.log("customer id is: "+ this.state.customerId );
+    console.log("customer id is: " + this.state.customerId);
     if (!(isNaN(productID))) {
       var url = `https://chopchowdev.herokuapp.com/api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
       // var url = `./api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
       fetch(url, {
         method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
+        // headers: {
+        //   Accept: 'application/json',
+        // //   'Content-Type': 'application/json',
+        // },
       })
         .then(response => {
           // .then(res => {
@@ -361,7 +381,8 @@ export default class GroceryPage extends React.Component {
           if (response) {
             // const { customerList } = this.state;
             console.log("Comes in handleClickTypeahead's then on client side");
-            // this.setState({ customerList: [...customerList, ...response.data], errormsgImage: '', errormsg: '', valueProductName: '', valueProductImage: '', valueProductSize: '', valueProductPrice: '', valuePricePerOunce: '', lasIdListState: lasIdListState + 1 })
+            this.componentDidMount();
+            // this.setState({ typeAheadAdded : !this.state.typeAheadAdded })
           }
         })
     }
@@ -386,7 +407,8 @@ export default class GroceryPage extends React.Component {
           }}
         // filterBy={['product_name']}
         />
-
+        
+        {/* Display alert if there is any issue loading grocery page */}
         <Alert show={showAlert} key={1} variant={variant}>
           {messageAlert}
         </Alert>
@@ -397,10 +419,6 @@ export default class GroceryPage extends React.Component {
         {this.state.Authentication ? (
           <>
             <PageTitle title=" Your Grocery List" />
-            {/* Display alert if there is any issue loading grocery page */}
-            <Alert show={showAlert} key={1} variant={variant}>
-              {messageAlert}
-            </Alert>
 
 
             {/* display grocery page typeahead functionalities */}
@@ -458,7 +476,7 @@ export default class GroceryPage extends React.Component {
                   {/* display grocery list, for any authenticated customer */}
                   {customerList ? (
                     customerList.map((customer_grocery_product_item) => {
-                      let productID = customer_grocery_product_item.id;
+                      // let productID = customer_grocery_product_item.id;
                       return <>
                         <Col xs={12} md={12} lg={12} key={customer_grocery_product_item.id}>
                           {customer_grocery_product_item.product_image.startsWith('http://') || customer_grocery_product_item.product_image.startsWith('data') ? (
@@ -492,8 +510,8 @@ export default class GroceryPage extends React.Component {
                 </Row>
               ) : (
                   <></>
-                )};
-             </Container>
+                )}
+            </Container>
           </>
         ) : (
             <>
@@ -679,7 +697,8 @@ export default class GroceryPage extends React.Component {
         valueProductImage,
         valueProductPrice,
         valueProductSize,
-        valuePricePerOunce,
+        valuePricePerOunce,fdeleted successfully
+
       }),
       headers: {
         Accept: 'application/json',

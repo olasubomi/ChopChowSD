@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, Route, Switch } from "react-router-dom";
-import MealsPage from "./MealsPage";
-import ProductsSection from "./components/productSection/ProductsPage";
+import MealsPage from "./components/mealsPage/MealsPage";
+import ProductsSection from "./components/productsPage/ProductsPage";
 import Login from "./components/Login";
 import GroceryPage from "./components/GroceryPage";
 import SignUp from "./components/signup";
