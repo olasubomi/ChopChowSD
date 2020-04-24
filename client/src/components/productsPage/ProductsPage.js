@@ -4,11 +4,17 @@ import Popup from "reactjs-popup";
 class ProductSection extends Component {
 
 storeCollection = []
+constructor(props) {
+    super(props);
+    this.state = {
+      store_products_fetched : false
+    };
+  }
 
 componentDidMount(){
     console.log("Comes in product pages component did mount")
-    // var url = "https://chopchowsd.herokuapp.com/get_store_products" // for production
-    var url = "http://localhost:5000/get_store_products"
+    var url = "https://chopchowsd.herokuapp.com/get_store_products" // for production
+    // var url = "http://localhost:5000/get_store_products"
 
      fetch(url)
         .then(res => res.text())
@@ -17,6 +23,8 @@ componentDidMount(){
 
              for(var i = 0 ; i < storeList.length; i++){
                  console.log(storeList[i]);
+                console.log("Inner fetch loop");
+                console.log(storeList[i]);
                 this.storeCollection.push(storeList[i]);
                 console.log(storeList[i].store_name)
             }
@@ -30,13 +38,13 @@ componentDidMount(){
             var store_products = []
             for (const  [index, value] of this.storeCollection.entries()){
                 var productsMenu = []
-                // console.log(index);
+                console.log(index);
                 console.log(value);
 
                 for (const [storeProductsIndex, productValue] of value.products.entries()) {
                     // console.log("Inner for loop");
                     //const element = array[index];
-                    // console.log(storeProductsIndex);
+                    console.log(storeProductsIndex);
                     // console.log(productValue.product_name);
                     //productsMenu.push(productValue.product_name)
                     // check for if product has variations

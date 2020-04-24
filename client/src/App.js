@@ -3,19 +3,20 @@ import {Typeahead} from 'react-bootstrap-typeahead';
 // import ListedMealsSection from './components/mealMenu/ListedMealsSection';
 // import RecipeContentSection from './components/mealMenu/RecipeContentSection';
 // import IngredientSection from './components/mealMenu/IngredientSection';
-import {Nav, Navbar, NavDropdown, Form, FormControl, Button} from 'react-bootstrap'
-import { Popover, PopoverBody } from 'reactstrap';
+// import {Nav, Navbar, NavDropdown, Form, FormControl, Button} from 'react-bootstrap'
+// import { Popover, PopoverBody } from 'reactstrap';
 import Popup from "reactjs-popup";
 import { Link, Route, Switch } from "react-router-dom";
-import InfiniteCarousel from 'react-leaf-carousel';
-import CarouselSlider from './components/product_slider/carousel_slider';
-import WithScrollbar from './components/product_slider/WithScrollbar';
+// import InfiniteCarousel from 'react-leaf-carousel';
+// import CarouselSlider from './components/mealsPage/product_slider/carousel_slider';
+import WithScrollbar from './components/mealsPage/product_slider/WithScrollbar';
 
 
-import RecipeContentSection from './components/mealMenu/RecipeContentSection';
-import ListedMealsSection from './components/mealMenu/ListedMealsSection';
-import IngredientSection from './components/mealMenu/IngredientSection';
-import ProductsSection from './components/productSection/ProductsPage';
+// import RecipeContentSecstion from './components/mealMenu/RecipeContentSection';
+// import ListedMealsSection from './components/mealMenu/ListedMealsSection';
+// import IngredientSection from './components/mealMenu/IngredientSection';
+import ProductSection from './components/productsPage/ProductsPage';
+
 //import Collapse from 'react-bootstrap/Collapse';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -246,21 +247,23 @@ class App extends Component {
 
     meal_popups  = [];
 
+
     componentDidMount(){
-        console.log("Comes in apps component did mount")
-        var url = "http://localhost:5000/get_products"
-         fetch(url)
+        console.log("Comes in component did mount")
+        // var url = "http://localhost:5000/get_products"
+        var url = "https://chopchowsd.herokuapp.com/get_products" // call in production
+
+        fetch(url)
             .then(res => res.text())
             .then(body => {
-                var productsList = JSON.parse(body);
-
-                 for(var i = 0 ; i < productsList.length; i++){
+                var productsList = JSON.parse(body)
+                for(var i = 0 ; i < productsList.length; i++){
                     this.products.push(productsList[i].product_name);
-                    // console.log(productsList[i].product_name)
+                    console.log(productsList[i].product_name)
                 }
             })
-            .catch(err =>{
-                console.log(err);
+            .catch(error =>{
+                console.log(error);
             });
     }
 
@@ -289,25 +292,7 @@ class App extends Component {
 
     meal_popups  = [];
     
-    componentDidMount(){
-        console.log("Comes in component did mount")
-        var url = "http://localhost:5000/get_products"
-        // var url = "https://chopchowsd.herokuapp.com/get_products" // call in production
 
-        fetch(url)
-            .then(res => res.text())
-            .then(body => {
-                console.log()
-                var productsList = JSON.parse(body)
-                for(var i = 0 ; i < productsList.length; i++){
-                    this.products.push(productsList[i].product_name);
-                    console.log(productsList[i].product_name)
-                }
-            })
-            .catch(error =>{
-                console.log(error);
-            });
-    }
       
     showIngredient(index){
         console.log("updating popup boolean");
@@ -317,8 +302,8 @@ class App extends Component {
     updateInstructionsDisplayBaseIndex(event){
         console.log(event.target.innerText);
         var button = event.target.innerText;
-        var regExp = '/^w+[ ]/d  $/';
-        var slide_index = button.match(regExp);
+        // var regExp = '/^w+[ ]/d  $/';
+        // var slide_index = button.match(regExp);
         //console.log(slide_index);
         var last_chars = button.slice(6,7);
 
@@ -342,7 +327,7 @@ class App extends Component {
 
         for (const [index, value] of this.meals.entries()) {
             //console.log();
-            var base_index = 0;
+            // var base_index = 0;
             const mealPrep = value.instructions.map((step)=> <li key={step} > {step} </li>);
             var popUpSlides = [];
 
@@ -557,7 +542,7 @@ filterBy={['product_name']}
     </div>
     )}/>
 
-    <Route path="/v1" render={(props)=>(
+    {/* <Route path="/v1" render={(props)=>(
         <div className="container">
         <br></br>
         <div className="row">
@@ -570,7 +555,7 @@ filterBy={['product_name']}
                 
                 &nbsp;<button>Submit <span id="Popover1" onMouseOver={this.suggestMealToggle} onMouseOut={this.suggestMealToggle} >
                 <img src="/images/info_icon.png" alt="info" style={{width:'13px', height:'13px'}}/> </span></button>
-                {/* onClick={this.suggestMealToggle} */}
+                onClick={this.suggestMealToggle} 
                 </div>                     
             <div className="col-sm">
                 <b>Recipe Contents</b>
@@ -582,7 +567,7 @@ filterBy={['product_name']}
                 <b>Ingredients</b>
                 <IngredientSection selectedMealIngredients= {this.state.selectedMealIngredients}
                 selectedMeal= {this.state.selectedMeal}/>
-                {/* <span>&#43;</span><input placeholder="Suggest Ingredient.."></input> */}
+                 <span>&#43;</span><input placeholder="Suggest Ingredient.."></input>
             </div>
             
             <Popover placement="auto" isOpen={this.state.suggestMealPopOver} target="Popover1" toggle={this.suggestMealToggle}>
@@ -592,7 +577,7 @@ filterBy={['product_name']}
             </Popover>
         </div>
     </div>
-    )}/>
+    )}/> */}
 
     <Route path="/v2" render={(props)=>(
     <div>
@@ -618,7 +603,7 @@ filterBy={['product_name']}
     )}/>
 
     <Route path="/products" render={(props)=>(
-            <ProductsSection /> 
+            <ProductSection /> 
     )}/>
     </Switch>
 

@@ -23,6 +23,7 @@ app.use(cors());
 app.use('/facebook', facebook);
 app.use('/login', login);
 
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname,'client/build' )));
 // app.use('*', express.static(path.join(__dirname,'/client', 'public', 'manifests.json')));
