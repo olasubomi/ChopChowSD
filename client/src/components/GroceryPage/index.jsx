@@ -5,6 +5,7 @@ import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
 import { Container, Alert, Card, Col, Row, Form, Button, Modal } from 'react-bootstrap'
 import { Typeahead } from "react-bootstrap-typeahead";
+import Login from "../Login/index"
 
 import { Link } from 'react-router-dom';
 // import { fileLoader } from 'ejs';
@@ -150,7 +151,7 @@ export default class GroceryPage extends React.Component {
     // url = `http://localhost:5000/api/get-all-products`
     url = "./api/get-all-products"
 
-    fetch(url,{
+    fetch(url, {
       method: 'GET',
       // credentials: 'include',
       // headers: {
@@ -172,8 +173,7 @@ export default class GroceryPage extends React.Component {
             this.productNamesForTypeahead.set(productsList.data[i].product_name, productsList.data[i].id)
           }
           console.log(this.products);
-          // this.entries = Object.entries(this.products);
-          // console.log(entries);
+          console.log(this.productNamesForTypeahead)
         }
         else {
           console.log("get all products function does not return");
@@ -350,7 +350,6 @@ export default class GroceryPage extends React.Component {
     this.setState({ selectedProduct: selected });
     // var arrayOfProductNames = Array.from(this.productNamesForTypeahead.keys());
 
-
     console.log("selected is:");
     console.log(selected[0]);
     console.log(typeof (selected[0]));
@@ -392,7 +391,7 @@ export default class GroceryPage extends React.Component {
   render() {
     const { email, password, showAlert, variant, messageAlert, customerList, messageErr, messageSuccess } = this.state;
     // const { showGroceryList, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, lasIdListState, messageErrCreate } = this.state;
-    const { typeaheadProducts } = this.products;
+    const { typeaheadProducts } = this.productNamesForTypeahead;
 
     return (
       <>
@@ -407,7 +406,7 @@ export default class GroceryPage extends React.Component {
           }}
         // filterBy={['product_name']}
         />
-        
+
         {/* Display alert if there is any issue loading grocery page */}
         <Alert show={showAlert} key={1} variant={variant}>
           {messageAlert}
@@ -421,100 +420,73 @@ export default class GroceryPage extends React.Component {
             <PageTitle title=" Your Grocery List" />
 
 
-            {/* display grocery page typeahead functionalities */}
+            {/* display customers list */}
             <Container className="page__container">
+              <Row>
+              <Col xs={12} md={8} lg={4} key="delete_col">
 
-              {customerList && customerList.length !== 0 ? (
-                <Row>
-                  <Button className='yourlist__buttonDeleteList'
-                    variant="danger"
-                    onClick={e => {
-                      e.stopPropagation();
-                      this.handleDeleteList();
-                    }}
-                  >
-                    Delete List Items
+                <Button className='yourlist__buttonDeleteList'
+                  variant="danger"
+                  onClick={e => {
+                    e.stopPropagation();
+                    this.handleDeleteList();
+                  }}
+                >
+                  Delete List Items
                   </Button>
+                </Col>
+              </Row>
+<br></br>
 
 
-                  {/* display searchbar typeahead items if they exist */}
-                  {typeaheadProducts ? (
-                    <>
-                      {/* create all search bar options from typeahead's display on grocery list ? */}
-                      {typeaheadProducts.map(ingredient_item_grocery_search => {
-                        return <>
-                          <Col xs={12} md={12} lg={12} key={ingredient_item_grocery_search.id}>
-                            <img src={`/images/products/${ingredient_item_grocery_search.product_image}`} className="dataTypeahead__card-img" alt="product_img" />
-                            <div className="dataTypeahead__card-div">
-                              <Card.Header className="dataTypeahead__grocery_item_card-header">
-                                <div className="dataTypeahead__header__name-product">Product Name: {ingredient_item_grocery_search.product_name}</div>
-                              </Card.Header>
-                              <Card.Text className="dataTypeahead__grocery_item_card-text">
-                                Product Price :  {ingredient_item_grocery_search && ingredient_item_grocery_search.product_price}
-                              </Card.Text>
-                              <Card.Text className="dataTypeahead__grocery_item_card-text">
-                                Product Size : {ingredient_item_grocery_search.sizes}
-                              </Card.Text>
-                            </div>
+              {/* display grocery list, for any authenticated customer */}
+              {customerList ? (
+                customerList.map((customer_grocery_product_item) => {
+                  // let productID = customer_grocery_product_item.id;
+                  return (
+                  // <>
+                    <Row>
+                      <Col xs={12} md={8} lg={4} key={customer_grocery_product_item.id}>
 
-                            {/* <div className="dataTypeahead__buttonAdd"><Button onClick={e => {
-                              e.stopPropagation();
-                              this.handleAddItemToCart(ingredient_item_grocery_search.id);
-                            }}> Add To Cart</Button> </div> */}
+                      {/* <Col key={customer_grocery_product_item.id}> */}
+                        {/* check for private or public images (can be used for suggest meal) */}
+                        {customer_grocery_product_item.product_image.startsWith('http://') || customer_grocery_product_item.product_image.startsWith('data') ? (
+                          <img src={`${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
+                        ) : (
+                            <img src={`/images/products/${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
+                          )}
 
-                            <div className="dataTypeahead__buttonDelete"><i class="fa fa-remove" onClick={e => {
-                              e.stopPropagation();
-                              this.handleShowDeleteItem(ingredient_item_grocery_search.id);
-
-                            }} ></i></div>
-                          </Col>
-                        </>
-                      })}
-                    </>
-                  ) : null}
-
-                  {/* display grocery list, for any authenticated customer */}
-                  {customerList ? (
-                    customerList.map((customer_grocery_product_item) => {
-                      // let productID = customer_grocery_product_item.id;
-                      return <>
-                        <Col xs={12} md={12} lg={12} key={customer_grocery_product_item.id}>
-                          {customer_grocery_product_item.product_image.startsWith('http://') || customer_grocery_product_item.product_image.startsWith('data') ? (
-                            <img src={`${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
-                          ) : (
-                              <img src={`/images/products/${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
-                            )}
-                          <div className="grocery_item_card-div">
-                            <Card.Header className="grocery_item_card-header">
-                              <div className="header__name-product"> Product Name : {customer_grocery_product_item.product_name}</div>
-                            </Card.Header>
-                            <Card.Text className="grocery_item_card-text">
-                              Product Price :  {customer_grocery_product_item && customer_grocery_product_item.product_price}
-                            </Card.Text>
-                            <Card.Text className="grocery_item_card-text">
-                              Product Size : {customer_grocery_product_item.sizes}
-                            </Card.Text>
-                          </div>
-                          {/* <div className="yourlist__buttonAdd"><Button onClick={e => {
+                        <div className="grocery_item_card-div">
+                          <Card.Header className="grocery_item_card-header">
+                            <div className="header__name-product"> Product Name : {customer_grocery_product_item.product_name}</div>
+                          </Card.Header>
+                          <Card.Text className="grocery_item_card-text">
+                            Product Price :  {customer_grocery_product_item && customer_grocery_product_item.product_price}
+                          </Card.Text>
+                          <Card.Text className="grocery_item_card-text">
+                            Product Size : {customer_grocery_product_item.sizes}
+                          </Card.Text>
+                        </div>
+                        {/* <div className="yourlist__buttonAdd"><Button onClick={e => {
                             e.stopPropagation();
                             this.handleAddItemToCart(productID);
                           }}> Add To Cart</Button> </div> */}
-                          <div className="yourlist__buttonDelete"><i className="fa fa-remove" onClick={e => {
-                            e.stopPropagation();
-                            this.handleShowDeleteItem(customer_grocery_product_item.id);
-                          }} ></i></div>
-                        </Col>
-                      </>
-                    })
-                  ) : <Spinner animation="border" variant="info" />}
-                </Row>
-              ) : (
-                  <></>
-                )}
+                        <div className="yourlist__buttonDelete"><i className="fa fa-remove" onClick={e => {
+                          e.stopPropagation();
+                          this.handleShowDeleteItem(customer_grocery_product_item.id);
+                        }} ></i></div>
+                      </Col>
+                    </Row>
+                  // </>
+                )
+                })
+              ) : <Spinner animation="border" variant="info" />}
+
             </Container>
           </>
         ) : (
             <>
+            {/* <Login/> */}
               {/* display create list option if customer has no grocery list */}
               <div>Log in as guest or user to load your grocery list</div>
               {/* <Button className="yourlist__button-create" onClick={this.handleShowGroceryList}>create list</Button> */}
@@ -593,6 +565,44 @@ export default class GroceryPage extends React.Component {
           )}
       </>
     )
+
+      /* display searchbar typeahead items if they exist */
+                   /*typeaheadProducts ? (
+                    <>
+                      create all search bar options from typeahead's display on grocery list ? 
+                       display grocery page typeahead functionalities 
+
+                      {typeaheadProducts.map(ingredient_item_grocery_search => {
+                        return <>
+                          <Col xs={12} md={12} lg={12} key={ingredient_item_grocery_search.id}>
+                            <img src={`/images/products/${ingredient_item_grocery_search.product_image}`} className="dataTypeahead__card-img" alt="product_img" />
+                            <div className="dataTypeahead__card-div">
+                              <Card.Header className="dataTypeahead__grocery_item_card-header">
+                                <div className="dataTypeahead__header__name-product">Product Name: {ingredient_item_grocery_search.product_name}</div>
+                              </Card.Header>
+                              <Card.Text className="dataTypeahead__grocery_item_card-text">
+                                Product Pricess :  {ingredient_item_grocery_search && ingredient_item_grocery_search.product_price}
+                              </Card.Text>
+                              <Card.Text className="dataTypeahead__grocery_item_card-text">
+                                Product Sizes : {ingredient_item_grocery_search.sizes}
+                              </Card.Text>
+                            </div>
+
+                            <div className="dataTypeahead__buttonAdd"><Button onClick={e => {
+                              e.stopPropagation();
+                              this.handleAddItemToCart(ingredient_item_grocery_search.id);
+                            }}> Add To Cart</Button> </div> 
+
+                            <div className="dataTypeahead__buttonDelete"><i class="fa fa-remove" onClick={e => {
+                              e.stopPropagation();
+                              this.handleShowDeleteItem(ingredient_item_grocery_search.id);
+
+                            }} ></i></div>
+                          </Col>
+                        </>
+                      })}
+                    </>
+                  ) : null} */
 
     /* Move Create List option to suggest meal */
     /* <Container>
