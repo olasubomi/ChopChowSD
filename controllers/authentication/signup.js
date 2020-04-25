@@ -1,4 +1,4 @@
-const { checkEmailUser, checkValideToken } = require('../../db/dbPostgress/queries/athuntication/checkEmail');
+const { checkEmailUser, checkValideToken } = require('../../db/dbPostgress/queries/authentication/checkEmail');
 const pool = require('../../db/dbPostgress/config/db_connection')
 const {customer_grocery_list} = require('../../db/dbMongo/config/db_buildSchema')
 const { getHashPassword } = require('../hashPassword')

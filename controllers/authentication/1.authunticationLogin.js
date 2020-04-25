@@ -1,4 +1,4 @@
-const { checkEmail } = require('../../db/dbPostgress/queries/athuntication/checkEmail');
+const { checkEmail } = require('../../db/dbPostgress/queries/authentication/checkEmail');
 const { sign } = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 exports.authenticationLogin = (req, res, next) => {
@@ -6,7 +6,6 @@ exports.authenticationLogin = (req, res, next) => {
     if (memberInfo) {
         checkEmail(memberInfo.email)
             .then((result) => {
-                console.log('from db', result.rows)
                 if (result.rows[0]) {
                     bcrypt.compare(memberInfo.password, result.rows[0].password, (err, valid) => {
                         if (valid) {
@@ -25,10 +24,18 @@ exports.authenticationLogin = (req, res, next) => {
                             res.status(400).send(JSON.stringify({ msg: 'check your password' }))
                         }
                     })
-                } else res.status(400).send({ msg: 'email does not exist ' });
+                } else{
+                    res.status(400).send({ msg: 'email does not exist in database' });
+                } 
             })
-            .catch(() => res.status(400).send(JSON.stringify({ msg: 'Ensure you enter validly data in your email ' })))
+            .catch((err) => {
+                console.log("Caught some issue within then statement");
+                console.log(err);
+                res.status(400).send(JSON.stringify({ msg: 'Ensure you enter validly data in your email ' }))
+            })
     } else {
+        console.log("Member info does not exists in db");
+
         res.status(401).send(JSON.stringify({ msg: 'you not authrized in this page' }))
     }
 }

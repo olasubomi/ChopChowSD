@@ -3,7 +3,7 @@
 // var sslRedirect = require('heroku-ssl-redirect');
 const express = require('express');
 const cors = require('cors');
-const cookie = require('cookie-parser');
+const cookie = require('cookie-parser'); // cookies required for login authentication
 const MongoClient = require('mongodb').MongoClient;
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -90,7 +90,7 @@ app.get('/get_store_products', async (req, res) => {
         // var dbo = db.model("Product_Supply");
         db.collection("Store_Products").find({}).toArray(function (err, result) {
             if (err) throw err;
-            console.log("store products results ate in")
+            console.log("store products results are in")
             console.log(result);
             res.send(result);
             //leaving db open to allow for call at any point (eg when changing the page)

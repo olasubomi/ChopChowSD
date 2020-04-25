@@ -17,8 +17,10 @@ const {
   user,
   password,
   database: pathname.split('/')[1],
-  max: process.env.MAX_DB_CONNECTION || 2,
-  ssl: true
+  max: process.env.MAX_DB_CONNECTION || 5,
+  ssl: {
+    rejectUnauthorized: false,
+  }
 };
 
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link, Route, Switch } from "react-router-dom";
+import HomePage from "./components/HomePage";
 import MealsPage from "./components/mealsPage/MealsPage";
 import ProductsSection from "./components/productsPage/ProductsPage";
 import Login from "./components/Login";
@@ -79,6 +80,7 @@ class App extends Component {
             borderBottom: "1px solid #fd7e14"
           }}
         >
+          {/* Desktop Nacbar */}
           <Link to="/" className="navbar-brand">
             CHOP CHOW
           </Link>
@@ -116,7 +118,7 @@ class App extends Component {
             </li>
             <li className="nav-item">
               <Link to="/products" className="nav-link px-2">
-                Shopping Cart
+                Shop
               </Link>
             </li>
             <li className="nav-item">
@@ -195,7 +197,7 @@ class App extends Component {
                   className="nav-link px-2"
                   style={{ color: "#FFFFFF" }}
                 >
-                  Wishlist
+                  Cart Page
                 </button>
               </li>
               <li
@@ -210,7 +212,7 @@ class App extends Component {
                   className="nav-link px-2"
                   style={{ color: "#FFFFFF" }}
                 >
-                  Shopping Cart
+                  Shop
                 </Link>
               </li>
               <li className="nav-item" style={{ padding: "14px 16px" }}>
@@ -220,7 +222,7 @@ class App extends Component {
                   style={{ color: "#FFFFFF" }}
                 >
                   {" "}
-                  Receipes
+                  Featured Receipes
                 </Link>
               </li>
               <li className="nav-item" style={{ padding: "14px 16px" }}>
@@ -276,7 +278,7 @@ class App extends Component {
               </li>
               <li className="nav-item" style={{ marginRight: "50%" }}>
                 <Link to="/v2" className="nav-link px-2">
-                  Receipes
+                   Receipes
                 </Link>
               </li>
             </ul>
@@ -334,6 +336,12 @@ class App extends Component {
             )}
           />
 
+          <Route
+            path="/home"
+            render={() => (
+              <HomePage />
+            )}
+          />
           <Route
             path="/v2"
             render={() => (

@@ -1,5 +1,5 @@
-const { checkEmail } = require('../../db/dbPostgress/queries/athuntication/checkEmail');
-const { addCustomer } = require('../../db/dbPostgress/queries/athuntication/addCustomer')
+const { checkEmail } = require('../../db/dbPostgress/queries/authentication/checkEmail');
+const { addCustomer } = require('../../db/dbPostgress/queries/authentication/addCustomer')
 const { customer } = require('../../db/dbMongo/config/db_buildSchema')
 const { hashPassword } = require('../hashPassword')
 const { sign } = require('jsonwebtoken')

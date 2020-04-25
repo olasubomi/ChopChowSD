@@ -3,14 +3,17 @@ const dbconnection = require('../../config/db_connection');
  const checkEmail = (email) => {
   let conn; 
   try {
+    console.log("Attempts to query database");
     const sql = {
       text: 'SELECT * FROM customer WHERE email = $1',
       values: [email],
     };
     conn = dbconnection.query(sql);
+    console.log(conn);
    } catch(e) {
-     debugger
-     console.log("ok")
+    console.log("fails to find email for customer ")
+    //  debugger
+    //  console.log("fails to find email for customer ")
    }
 
   return conn;
