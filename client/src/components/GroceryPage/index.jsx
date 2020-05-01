@@ -419,74 +419,86 @@ export default class GroceryPage extends React.Component {
           <>
             <PageTitle title=" Your Grocery List" />
 
+            <div>
+              {/* display customers list */}
+              {/* <Row> */}
+              {/* <Col xs={12} md={8} lg={4} key="delete_col"> */}
 
-            {/* display customers list */}
-            <Container className="page__container">
-              <Row>
-              <Col xs={12} md={8} lg={4} key="delete_col">
-
-                <Button className='yourlist__buttonDeleteList'
-                  variant="danger"
-                  onClick={e => {
-                    e.stopPropagation();
-                    this.handleDeleteList();
-                  }}
-                >
-                  Delete List Items
+              <Button className='yourlist__buttonDeleteList'
+                variant="danger"
+                onClick={e => {
+                  e.stopPropagation();
+                  this.handleDeleteList();
+                }}
+              >
+                Delete List Items
                   </Button>
-                </Col>
-              </Row>
-<br></br>
+              {/* </Col> */}
+              {/* </Row> */}
+              <br></br>
+              <Container className="page__container" fluid>
 
 
-              {/* display grocery list, for any authenticated customer */}
-              {customerList ? (
-                customerList.map((customer_grocery_product_item) => {
-                  // let productID = customer_grocery_product_item.id;
-                  return (
-                  // <>
-                    <Row>
-                      <Col xs={12} md={8} lg={4} key={customer_grocery_product_item.id}>
+                {/* display grocery list, for any authenticated customer */}
+                {customerList ? (
+                  customerList.map((customer_grocery_product_item) => {
+                    let productID = customer_grocery_product_item.id;
+                    return (
+                      // <>
+                      <Row  display="inline-flex">
+                        {/* <div className="grocery_item_card-div"> */}
+                        {/* <Col key={customer_grocery_product_item.id} xs={4} md={3} lg={3} > */}
+                        <Col key={customer_grocery_product_item.id} >
 
-                      {/* <Col key={customer_grocery_product_item.id}> */}
-                        {/* check for private or public images (can be used for suggest meal) */}
-                        {customer_grocery_product_item.product_image.startsWith('http://') || customer_grocery_product_item.product_image.startsWith('data') ? (
-                          <img src={`${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
-                        ) : (
-                            <img src={`/images/products/${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
-                          )}
+                          <Card >
+                              <Col key={customer_grocery_product_item.id} xs={4} md={4} lg={4} >
+                              {/* check for private or public images (can be used for suggest meal) */}
+                              {customer_grocery_product_item.product_image.startsWith('http://') || customer_grocery_product_item.product_image.startsWith('data') ? (
+                                <img src={`${customer_grocery_product_item.product_image}`} alt="product_img "/>// className="card-img" />
+                              ) : (
+                                  <img src={`/images/products/${customer_grocery_product_item.product_image}`} alt="product_img "/> //className="card-img" />
+                                )}
+                            
+                            </Col>
+                            
+                            <Col xs={4} md={4} lg={4}>
+                            <Card.Title className="grocery_item_card-header">
+                              <div className="header__name-product"> Product Name : {customer_grocery_product_item.product_name}</div>
+                            </Card.Title>
+                            <Card.Text>
+                              Product Price :  {customer_grocery_product_item && customer_grocery_product_item.product_price}<br></br>
+                              Product Size : {customer_grocery_product_item.sizes}
+                            </Card.Text>
+                            </Col>
 
-                        <div className="grocery_item_card-div">
-                          <Card.Header className="grocery_item_card-header">
-                            <div className="header__name-product"> Product Name : {customer_grocery_product_item.product_name}</div>
-                          </Card.Header>
-                          <Card.Text className="grocery_item_card-text">
-                            Product Price :  {customer_grocery_product_item && customer_grocery_product_item.product_price}
-                          </Card.Text>
-                          <Card.Text className="grocery_item_card-text">
-                            Product Size : {customer_grocery_product_item.sizes}
-                          </Card.Text>
-                        </div>
-                        {/* <div className="yourlist__buttonAdd"><Button onClick={e => {
-                            e.stopPropagation();
-                            this.handleAddItemToCart(productID);
-                          }}> Add To Cart</Button> </div> */}
-                        <div className="yourlist__buttonDelete"><i className="fa fa-remove" onClick={e => {
+                            <Col xs={4} md={4} lg={4}>
+                          <div className="yourlist__buttonAdd">
+                            <Button onClick={e => {
+                              e.stopPropagation();
+                              this.handleAddItemToCart(productID);
+                            }}> Add To Cart</Button>
+                          </div> 
+                           <div className="yourlist__buttonDelete"><i className="fa fa-remove" onClick={e => {
                           e.stopPropagation();
                           this.handleShowDeleteItem(customer_grocery_product_item.id);
                         }} ></i></div>
-                      </Col>
-                    </Row>
-                  // </>
-                )
-                })
-              ) : <Spinner animation="border" variant="info" />}
+                          </Col>
 
-            </Container>
+                          </Card>
+                        </Col>
+                        {/* </div> */}
+                      </Row>
+                      // </>
+                    )
+                  })
+                ) : <Spinner animation="border" variant="info" />}
+
+              </Container>
+            </div>
           </>
         ) : (
             <>
-            {/* <Login/> */}
+              {/* <Login/> */}
               {/* display create list option if customer has no grocery list */}
               <div>Log in as guest or user to load your grocery list</div>
               {/* <Button className="yourlist__button-create" onClick={this.handleShowGroceryList}>create list</Button> */}
