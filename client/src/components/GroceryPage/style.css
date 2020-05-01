@@ -138,10 +138,10 @@
   }
   .col {
     float: left;
-    width: 50%;
     margin: auto;
-    padding: 0 50px;
-    margin-top: 6px;
+    padding-bottom: 10px;
+    /* padding: 0 50px; */
+    /* margin-top: 6px; */
   }
   .vl {
     position: absolute;
@@ -300,8 +300,8 @@
   }
   .card-img {
     box-shadow: 0 0 25px rgba(0, 0, 0, .25);
-    width: 40%;
-    height: 40%;
+    width: 100%;
+    height: 100%;
   }
   .dataTypeahead__buttonAdd{
     margin-left: 10px
@@ -418,13 +418,7 @@
     padding-left: 19px;
     width: 257px;
   }
-  .header__name-product-create{
-    border-bottom: none !important;
-    margin-left: -19px;
-    margin-top: 2px;
-    padding-left: 19px;
-    width: 233px;
-  }
+
   .modal.show .modal-dialog {
     -webkit-transform: none;
     transform: none;
@@ -440,10 +434,9 @@
     margin-left: -25px;
     background-color: #c1c5ca;
     border-color: #525456;
-    border: 51px;
+    /* border: 51px; */
     border-radius: 33px;
     width: 136px;
-    margin-top: -421px;
 }
   .yourlist__buttonDelete {
     margin-top: 10%;
@@ -560,7 +553,7 @@
     content: "\F00D";
     font-size: 255%;
     margin-left: 9px;
-    margin-top: 91px;
+    /* margin-top: 91px; */
     cursor: pointer;
   }
   .yourlist__buttonAdd {
@@ -572,7 +565,7 @@
   }
   .fa-remove {
     margin-left: -36px;
-    margin-top: -11px;
+    /* margin-top: -11px; */
   }
   .loginformmm .modal-body {
     position: relative;
@@ -590,7 +583,7 @@
   }
   .fa-remove {
     margin-left: -22px;
-    margin-top: 3px;
+    /* margin-top: 3px; */
   }
   .card {
     position: relative;
@@ -634,7 +627,7 @@
   }
   .fa-remove {
     margin-left: -21px;
-    margin-top: -7px;
+    /* margin-top: -7px; */
   }
   .yourlist__card-div {
     margin-left: 23rem
@@ -676,8 +669,8 @@
   
   }
   .card-img {
-     width:  40%;
-    height:  40%;
+     width:  100%;
+    height:  100%;
     /* margin-left: 144px; */
   }
   .btn-danger{
@@ -685,7 +678,7 @@
   }
   .fa-remove {
     margin-left: 21px;
-    margin-top: 186px;
+    /* margin-top: 186px; */
   }
   .yourlist__card-div {
     margin-left: 303px;
@@ -739,8 +732,8 @@
     width: 49px;
   }
   .card-img {
-    width:  40%;
-    height:  40%;
+    width:  100%;
+    height:  100%;
     /* margin-left: 71px; */
   }
   .yourlist__card-header {
@@ -805,8 +798,8 @@
     margin-top: 10%;
 }
 .card-img {
-  width:  40%;
-  height: 40%;
+  width:  100%;
+  height: 100%;
   /* margin-left: 104px; */
 }
 .dataTypeahead__buttonDelete {
@@ -891,8 +884,8 @@
     width: 106px;
   }
   .card-img {
-    width:  40%;
-    height:  40%;
+    width:  100%;
+    height:  100%;
     /* margin-left: 123px;
     margin-top: 149px; */
   }

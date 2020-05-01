@@ -445,25 +445,28 @@ export default class GroceryPage extends React.Component {
                     let productID = customer_grocery_product_item.id;
                     return (
                       // <>
-                      <Row  display="inline-flex">
+                      <Row  display="inline-flex" key={customer_grocery_product_item.id}>
                         {/* <div className="grocery_item_card-div"> */}
                         {/* <Col key={customer_grocery_product_item.id} xs={4} md={3} lg={3} > */}
-                        <Col key={customer_grocery_product_item.id} >
 
-                          <Card >
-                              <Col key={customer_grocery_product_item.id} xs={4} md={4} lg={4} >
+                          {/* <Card > */}
+                              {/* <Col key={customer_grocery_product_item.id} xs={4} md={4} lg={4} > */}
+                              <Col key={customer_grocery_product_item.id} >
+
                               {/* check for private or public images (can be used for suggest meal) */}
                               {customer_grocery_product_item.product_image.startsWith('http://') || customer_grocery_product_item.product_image.startsWith('data') ? (
-                                <img src={`${customer_grocery_product_item.product_image}`} alt="product_img "/>// className="card-img" />
+                                <img src={`${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
                               ) : (
-                                  <img src={`/images/products/${customer_grocery_product_item.product_image}`} alt="product_img "/> //className="card-img" />
+                                  <img src={`/images/products/${customer_grocery_product_item.product_image}`} alt="product_img "className="card-img" />
                                 )}
                             
                             </Col>
                             
-                            <Col xs={4} md={4} lg={4}>
+                            {/* <Col xs={4} md={4} lg={4}> */}
+                            <Col  >
+
                             <Card.Title className="grocery_item_card-header">
-                              <div className="header__name-product"> Product Name : {customer_grocery_product_item.product_name}</div>
+                               Product Name : {customer_grocery_product_item.product_name}
                             </Card.Title>
                             <Card.Text>
                               Product Price :  {customer_grocery_product_item && customer_grocery_product_item.product_price}<br></br>
@@ -471,21 +474,27 @@ export default class GroceryPage extends React.Component {
                             </Card.Text>
                             </Col>
 
-                            <Col xs={4} md={4} lg={4}>
-                          <div className="yourlist__buttonAdd">
+                            {/* <Col xs={4} md={4} lg={4}> */}
+                            <Col >
+
+                          {/* <div className="yourlist__buttonAdd"> */}
                             <Button onClick={e => {
                               e.stopPropagation();
                               this.handleAddItemToCart(productID);
                             }}> Add To Cart</Button>
-                          </div> 
-                           <div className="yourlist__buttonDelete"><i className="fa fa-remove" onClick={e => {
+                          {/* </div>  */}
+                          </Col>
+                          <Col >
+                           {/* <div className="yourlist__buttonDelete">*/}
+                           <i className="fa fa-remove" onClick={e => { 
                           e.stopPropagation();
                           this.handleShowDeleteItem(customer_grocery_product_item.id);
-                        }} ></i></div>
+                        }} ></i>
+                        {/* </div> */}
                           </Col>
 
-                          </Card>
-                        </Col>
+                          {/* </Card> */}
+                        {/* </Col> */}
                         {/* </div> */}
                       </Row>
                       // </>
