@@ -21,8 +21,13 @@ class App extends Component {
       suggestMealPopOver: false,
       // valueAllDataLists: [],
       base_index: 0,
-      topNav_className: "w3-bar w3-dark-grey w3-green topnav"
+      topNav_className: "w3-bar w3-dark-grey w3-green topnav",
+      logged_in_status: "Log In / Register"
     };
+  }
+
+  updateLogInStatus(){
+    this.setState({logged_in_status: "Logout"})
   }
 
   componentDidMount(){
@@ -161,7 +166,7 @@ class App extends Component {
             </li>
             <li className="nav-item">
               <Link to="/login" className="nav-link px-2">
-                Login / Register
+                {this.state.logged_in_status}
               </Link>
             </li>
           </ul>
@@ -227,7 +232,8 @@ class App extends Component {
                   className="nav-link px-2"
                   style={{ color: "#FFFFFF" }}
                 >
-                  Login / Register
+                                  {this.state.logged_in_status}
+
                 </Link>
               </li>
               <li className="nav-item" style={{ padding: "14px 16px" }}>

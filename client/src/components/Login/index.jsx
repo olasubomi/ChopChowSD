@@ -90,6 +90,7 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
               this.setState({ messageErr: '' });
               this.setState({ isAuthenticated: true })
               this.setState({ messageSuccess: 'Logged in Sucessfully! ' });
+              // return to page that called log in popup.
               return window.location.href = '/grocery'
             }
           })
