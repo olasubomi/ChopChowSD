@@ -111,42 +111,10 @@ export default class GroceryPage extends React.Component {
           })
       })
 
-    // url = `https://chopchowdev.herokuapp.com/api/get-ids-customers`;
-    url = `./api/get-ids-customers`
-    // url = `http://localhost:5000/api/get-ids-customers`
-
-
-    fetch(url, {
-      method: 'GET',
-      // credentials: 'include',
-      // headers: {
-      //   'Content-Type': 'application/json',
-      // }
-    })
-      .then(res => {
-        return res.json()
-      })
-      .then(response => {
-        let arrResponse = response.data;
-        const lasIdCustomer = arrResponse[arrResponse.length - 1]
-        this.setState({ newcustomerId: lasIdCustomer + 1 })
-      })
-      .catch(() => {
-        this.setState({
-          messageAlert: 'Internal Server Error while getting customer ids',
-          showAlert: true,
-          variant: 'danger'
-        },
-          () =>
-            setTimeout(() => {
-              this.setState({ messageAlert: '', showAlert: false })
-            }, 8000)
-        )
-      })
-
     // url = "https://chopchowdev.herokuapp.com/api/get-all-products";
     // url = `http://localhost:5000/api/get-all-products`
     url = "./api/get-all-products"
+      // or should we call this in App.js and pass it as a prop ??
 
     fetch(url, {
       method: 'GET',

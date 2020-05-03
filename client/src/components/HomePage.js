@@ -9,10 +9,6 @@ class HomePage extends Component {
     };
   }
 
-  componentDidMount() {
-
-  }
-
   render() {
    
     return (

@@ -25,6 +25,44 @@ class App extends Component {
     };
   }
 
+  componentDidMount(){
+        // url = `https://chopchowdev.herokuapp.com/api/get-ids-customers`;
+   // url = `./api/get-ids-customers`
+    // url = `http://localhost:5000/api/get-ids-customers`
+
+
+    // fetch(url, {
+    //   method: 'GET',
+    //   // credentials: 'include',
+    //   // headers: {
+    //   //   'Content-Type': 'application/json',
+    //   // }
+    // })
+    //   .then(res => {
+    //     return res.json()
+    //   })
+    //   .then(response => {
+    //     console.log("get-ids-customer returns");
+    //     let arrResponse = response.data;
+    //     console.log("is this needed ??");
+
+    //     console.log(arrResponse);
+    //     const lasIdCustomer = arrResponse[arrResponse.length - 1]
+    //     this.setState({ newcustomerId: lasIdCustomer + 1 })
+    //   })
+    //   .catch(() => {
+    //     this.setState({
+    //       messageAlert: 'Internal Server Error while getting customer ids',
+    //       showAlert: true,
+    //       variant: 'danger'
+    //     },
+    //       () =>
+    //         setTimeout(() => {
+    //           this.setState({ messageAlert: '', showAlert: false })
+    //         }, 8000)
+    //     )
+    //   })
+  }
 
 
   suggestMealToggle() {
@@ -122,7 +160,7 @@ class App extends Component {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/grocery" className="nav-link px-2">
+              <Link to="/login" className="nav-link px-2">
                 Login / Register
               </Link>
             </li>
@@ -185,7 +223,7 @@ class App extends Component {
               </li>
               <li className="nav-item" style={{ padding: "14px 16px" }}>
                 <Link
-                  to="/grocery"
+                  to="/login"
                   className="nav-link px-2"
                   style={{ color: "#FFFFFF" }}
                 >
