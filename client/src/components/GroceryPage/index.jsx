@@ -3,12 +3,10 @@ import React from 'react';
 import './style.css';
 import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
-import { Container, Alert, Card, Col, Row, Form, Button, Modal } from 'react-bootstrap'
+import { Container, Alert, Card, Col, Row, Button } from 'react-bootstrap'
 import { Typeahead } from "react-bootstrap-typeahead";
 import Login from "../Login/index"
 
-import { Link } from 'react-router-dom';
-// import { fileLoader } from 'ejs';
 export default class GroceryPage extends React.Component {
   // Mongo
   products = [];
@@ -31,7 +29,6 @@ export default class GroceryPage extends React.Component {
     variant: '',
     productID: '',
     deletedItemId: null,
-    showGroceryList: true,
     selectedProduct: null,
     idsItems: null,
     deletedItemsId: null,
@@ -185,60 +182,7 @@ export default class GroceryPage extends React.Component {
 
   }
 
-  handleLoginClick = () => {
-    const { email, password } = this.state;
-    if (email && password) {
-      // var url = `https://chopchowdev.herokuapp.com/api/login`;
-      var url = `./api/login`
-      // var url = `http://localhost:5000/api/login`
 
-
-      fetch(url, {
-        method: 'POST',
-        // credentials: 'include',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      })
-        .then(response => {
-          if (response.status === 400 || response.status === 404) {
-            this.setState({ messageErr: 'Bad Request. Please check email or password.' });
-          } else if (response.status === 401) {
-            this.setState({ messageErr: 'Sorry, you are not authorized' });
-          } else if (response.status >= 500) {
-            this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
-          } else {
-            this.setState({ messageErr: '' });
-            this.setState({ isAuthenticated: true })
-            this.setState({ messageSuccess: 'Logged in Sucessfully! ' });
-            return window.location.href = '/grocery'
-          }
-        })
-        .catch(() => {
-          this.setState({
-            messageAlert: 'Internal Server Error while logging in',
-            showAlert: true,
-            variant: 'danger'
-          },
-            () =>
-              setTimeout(() => {
-                this.setState({ messageAlert: '', showAlert: false })
-              }, 8000)
-          )
-        })
-    } else {
-      this.setState({ messageErr: 'Please enter all fields' });
-    }
-  };
-
-  handleClose = e => {
-    if (e) e.stopPropagation();
-    this.setState({ showGroceryList: false });
-  };
 
   handleShowDeleteItem = (productID) => {
     this.setState({ deletedItemId: productID });
@@ -342,10 +286,6 @@ export default class GroceryPage extends React.Component {
       })
   }
 
-  handleShowGroceryList = () => {
-    this.setState({ showGroceryList: true })
-  }
-
   handleClickTypeahead = (selected) => {
     this.setState({ selectedProduct: selected });
     // var arrayOfProductNames = Array.from(this.productNamesForTypeahead.keys());
@@ -389,9 +329,7 @@ export default class GroceryPage extends React.Component {
   }
 
   render() {
-    const { email, password, showAlert, variant, messageAlert, customerList, messageErr, messageSuccess } = this.state;
-    // const { showGroceryList, valueProductName, valueProductImage, valueProductSize, valueProductPrice, valuePricePerOunce, lasIdListState, messageErrCreate } = this.state;
-    const { typeaheadProducts } = this.productNamesForTypeahead;
+    const { showAlert, variant, messageAlert, customerList } = this.state;
 
     return (
       <>
@@ -445,59 +383,42 @@ export default class GroceryPage extends React.Component {
                     let productID = customer_grocery_product_item.id;
                     return (
                       // <>
-                      <Row  display="inline-flex" key={customer_grocery_product_item.id}>
-                        {/* <div className="grocery_item_card-div"> */}
-                        {/* <Col key={customer_grocery_product_item.id} xs={4} md={3} lg={3} > */}
+                      <Row display="inline-flex" key={customer_grocery_product_item.id}>
 
-                          {/* <Card > */}
-                              {/* <Col key={customer_grocery_product_item.id} xs={4} md={4} lg={4} > */}
-                              <Col key={customer_grocery_product_item.id} >
+                        <Col key={customer_grocery_product_item.id} >
 
-                              {/* check for private or public images (can be used for suggest meal) */}
-                              {customer_grocery_product_item.product_image.startsWith('http://') || customer_grocery_product_item.product_image.startsWith('data') ? (
-                                <img src={`${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
-                              ) : (
-                                  <img src={`/images/products/${customer_grocery_product_item.product_image}`} alt="product_img "className="card-img" />
-                                )}
-                            
-                            </Col>
-                            
-                            {/* <Col xs={4} md={4} lg={4}> */}
-                            <Col  >
+                          {/* check for private or public images (can be used for suggest meal) */}
+                          {customer_grocery_product_item.product_image.startsWith('http://') || customer_grocery_product_item.product_image.startsWith('data') ? (
+                            <img src={`${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
+                          ) : (
+                              <img src={`/images/products/${customer_grocery_product_item.product_image}`} alt="product_img " className="card-img" />
+                            )}
+                        </Col>
 
-                            <Card.Title className="grocery_item_card-header">
-                               Product Name : {customer_grocery_product_item.product_name}
-                            </Card.Title>
-                            <Card.Text>
-                              Product Price :  {customer_grocery_product_item && customer_grocery_product_item.product_price}<br></br>
+                        <Col  >
+                          <Card.Title className="grocery_item_card-header">
+                            Product Name : {customer_grocery_product_item.product_name}
+                          </Card.Title>
+                          <Card.Text>
+                            Product Price :  {customer_grocery_product_item && customer_grocery_product_item.product_price}<br></br>
                               Product Size : {customer_grocery_product_item.sizes}
-                            </Card.Text>
-                            </Col>
+                          </Card.Text>
+                        </Col>
 
-                            {/* <Col xs={4} md={4} lg={4}> */}
-                            <Col >
+                        <Col >
+                          <Button onClick={e => {
+                            e.stopPropagation();
+                            this.handleAddItemToCart(productID);
+                          }}> Add To Cart</Button>
+                        </Col>
+                        <Col >
+                          <i className="fa fa-remove" onClick={e => {
+                            e.stopPropagation();
+                            this.handleShowDeleteItem(customer_grocery_product_item.id);
+                          }} ></i>
+                        </Col>
 
-                          {/* <div className="yourlist__buttonAdd"> */}
-                            <Button onClick={e => {
-                              e.stopPropagation();
-                              this.handleAddItemToCart(productID);
-                            }}> Add To Cart</Button>
-                          {/* </div>  */}
-                          </Col>
-                          <Col >
-                           {/* <div className="yourlist__buttonDelete">*/}
-                           <i className="fa fa-remove" onClick={e => { 
-                          e.stopPropagation();
-                          this.handleShowDeleteItem(customer_grocery_product_item.id);
-                        }} ></i>
-                        {/* </div> */}
-                          </Col>
-
-                          {/* </Card> */}
-                        {/* </Col> */}
-                        {/* </div> */}
                       </Row>
-                      // </>
                     )
                   })
                 ) : <Spinner animation="border" variant="info" />}
@@ -507,125 +428,23 @@ export default class GroceryPage extends React.Component {
           </>
         ) : (
             <>
-              {/* <Login/> */}
-              {/* display create list option if customer has no grocery list */}
-              <div>Log in as guest or user to load your grocery list</div>
-              {/* <Button className="yourlist__button-create" onClick={this.handleShowGroceryList}>create list</Button> */}
-              {/* display log in pop-up on grocery page. (May be best to separate this into its own fileLoader, to be used on any page) */}
-              <Container>
-                <Modal show={true} onHide={this.handleClose} className="modal loginformmm" backdrop="static">
-                  <Modal.Body>
-                    <Form className="login__form">
-                      <div className="login__form-div-title">
-                        <h2 className="login__form-title">Log in to View Grocery</h2>
-                      </div>
-                      <div className="vl">
-                        <span className="vl-innertext">or</span>
-                      </div>
-                      <div className="col">
-                        <button className="fb btn">
-                          <i className="fa fa-facebook fa-fw"></i> Login with Facebook
-                        </button>
-                        <button className="google btn"><i className="fa fa-google fa-fw">
-                        </i> Login with Google+
-                        </button>
-                      </div>
-
-                      <Form.Group>
-                        <Form.Label className="login__form__label">Email</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="email"
-                          value={email}
-                          placeholder="Enter your email"
-                          onChange={this.handleChange}
-                          className='login__form__input'
-                        />
-                      </Form.Group>
-                      <Form.Group>
-                        <Form.Label className="login__form__label">Password</Form.Label>
-                        <Form.Control
-                          type="password"
-                          name="password"
-                          value={password}
-                          placeholder="Enter your password"
-                          onChange={this.handleChange}
-                          className='login__form__input'
-
-                        />
-                      </Form.Group>
-                      <p className="msg-success">{messageSuccess}</p>
-                      <p className="msg-err">{messageErr}</p>
-                      <Link to="/forgotpass">
-                        <span className="link-forgot-password">Forget Password  ?</span>
-                      </Link>
-
-                      <Button
-                        type="button"
-                        className="login__form-btn"
-                        onClick={this.handleLoginClick}
-                      >
-                        Log in
-                          </Button>
-                      <Form.Text className="login__form__text-muted">
-                        Don’t have an account? {''}
-                        <Link className="link-signup-word" to="/signup">
-                          Sign Up
-                        </Link>
-                        <br />
-                        or
-                         <Link className="link-guest-word" to="/v2">
-                          continue as guest
-                        </Link>
-                      </Form.Text>
-                    </Form>
-                  </Modal.Body>
-                </Modal>
-              </Container>
+              <Login handleLoginClick={this.handleLoginClick} />
+              <div>Log into your account or continue as guest to load your grocery list</div>
             </>
           )}
       </>
     )
 
-      /* display searchbar typeahead items if they exist */
-                   /*typeaheadProducts ? (
-                    <>
-                      create all search bar options from typeahead's display on grocery list ? 
-                       display grocery page typeahead functionalities 
-
-                      {typeaheadProducts.map(ingredient_item_grocery_search => {
-                        return <>
-                          <Col xs={12} md={12} lg={12} key={ingredient_item_grocery_search.id}>
-                            <img src={`/images/products/${ingredient_item_grocery_search.product_image}`} className="dataTypeahead__card-img" alt="product_img" />
-                            <div className="dataTypeahead__card-div">
-                              <Card.Header className="dataTypeahead__grocery_item_card-header">
-                                <div className="dataTypeahead__header__name-product">Product Name: {ingredient_item_grocery_search.product_name}</div>
-                              </Card.Header>
-                              <Card.Text className="dataTypeahead__grocery_item_card-text">
-                                Product Pricess :  {ingredient_item_grocery_search && ingredient_item_grocery_search.product_price}
-                              </Card.Text>
-                              <Card.Text className="dataTypeahead__grocery_item_card-text">
-                                Product Sizes : {ingredient_item_grocery_search.sizes}
-                              </Card.Text>
-                            </div>
-
-                            <div className="dataTypeahead__buttonAdd"><Button onClick={e => {
-                              e.stopPropagation();
-                              this.handleAddItemToCart(ingredient_item_grocery_search.id);
-                            }}> Add To Cart</Button> </div> 
-
-                            <div className="dataTypeahead__buttonDelete"><i class="fa fa-remove" onClick={e => {
-                              e.stopPropagation();
-                              this.handleShowDeleteItem(ingredient_item_grocery_search.id);
-
-                            }} ></i></div>
-                          </Col>
-                        </>
-                      })}
-                    </>
-                  ) : null} */
-
     /* Move Create List option to suggest meal */
+    // handleClose = e => {
+    //   if (e) e.stopPropagation();
+    //   this.setState({ showGroceryList: false });
+    // };
+
+    // handleShowGroceryList = () => {
+    //   this.setState({ showGroceryList: true })
+    // }
+
     /* <Container>
               {showGroceryList ? (
                 <Modal show={showGroceryList} onHide={this.handleClose} backdrop="static" className="modal-create">
