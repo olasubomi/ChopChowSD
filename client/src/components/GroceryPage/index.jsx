@@ -47,37 +47,14 @@ export default class GroceryPage extends React.Component {
 
   componentDidMount() {
     // checks if user is already logged in in app.
-    const { auth } = this.props;
+    const { auth, customerId } = this.props;
     this.setState({ Authentication: auth })
-    // if (!auth || auth === undefined){}
+    if (auth === true){
 
-    // api grocery calls authenticationVerify,isAuthenticated
-    // var url = `https://chopchowdev.herokuapp.com/api/authenticate-grocery-page`;
-    var url = `./api/authenticate-grocery-page`
-    // var url = `http://localhost:5000/api/authenticate-grocery-page`
-    fetch(url, {
-      method: 'GET',
-      // credentials: 'include',
-      // headers: {
-      //   'Content-type': 'application/json',
-      // },
-    })
-      .then(res => {
-        return res.json()
-      })
-      .then(response => {
-        console.log("api/grocery response:")
-        console.log(response);
-        if (response.success && response.data) {
-          this.setState({ Authentication: true });
-        } else {
-          this.setState({ Authenticated: false })
-        }
 
-        this.setState({ customerId: response.data })
-        const { customerId } = this.state;
-        // get Lists, from customer_lists of customerID.
-        // var url = `https://chopchowdev.herokuapp.com/api/getCustomerGroceryList/${customerId}`;
+
+
+    console.log("customder id  iss: "+ customerId);
         var url = `./api/getCustomerGroceryList/${customerId}`
         // var url = `http://localhost:5000/api/getCustomerGroceryList/${customerId}`
 
@@ -90,6 +67,8 @@ export default class GroceryPage extends React.Component {
 
         })
           .then(res => {
+            console.log("customer list response is ");
+            console.log(res);
             return res.json()
           })
           .then(response => {
@@ -109,7 +88,7 @@ export default class GroceryPage extends React.Component {
                 }, 8000)
             )
           })
-      })
+
 
     // url = "https://chopchowdev.herokuapp.com/api/get-all-products";
     // url = `http://localhost:5000/api/get-all-products`
@@ -150,7 +129,7 @@ export default class GroceryPage extends React.Component {
 
   }
 
-
+}
 
   handleShowDeleteItem = (productID) => {
     this.setState({ deletedItemId: productID });
@@ -396,7 +375,7 @@ export default class GroceryPage extends React.Component {
           </>
         ) : (
             <>
-              <Login handleLoginClick={this.handleLoginClick} />
+              {/* <Login /> */}
               <div>Log into your account or continue as guest to load your grocery list</div>
             </>
           )}

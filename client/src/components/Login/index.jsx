@@ -16,43 +16,6 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
     };
 }
 
-   handleClick = () => {
-    const { email, password } = this.state;
-    if (email && password) {
-
-       // make a requset to the back with method post and data{email , password}
-      fetch('/api/login', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      })
-        .then(response => {
-          if (response.status === 400 || response.status === 404) {
-            this.setState({ messageErr: 'Bad Request , Check username or password ... !!' });
-          } else if (response.status === 401) {
-            this.setState({ messageErr: 'you are UnAuthorized' });
-          } else if (response.status >= 500) {
-            this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
-          } else {
-            this.setState({messageErr:''});
-            this.setState({isAuthenticated:true})
-            this.setState({ messageSuccess: 'login sucessfully '});
-            return window.location.href = '/grocery'
-          }
-        })
-
-
-     } else {
-      this.setState({ messageErr: 'Please enter all fields' });
-    }
-  };
-
    handleChange = ({ target: { value, name } }) =>
     this.setState({ [name]: value });
 
@@ -90,6 +53,12 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
               this.setState({ messageErr: '' });
               this.setState({ isAuthenticated: true })
               this.setState({ messageSuccess: 'Logged in Sucessfully! ' });
+              console.log("response is:")
+              console.log(response.body);
+              console.log("before prop func call");
+              // this.props.updateLogInStatus();
+              console.log("after prop func call");
+              
               // return to page that called log in popup.
               return window.location.href = '/grocery'
             }
@@ -144,6 +113,7 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
                           placeholder="Enter your email"
                           onChange={this.handleChange}
                           className='login__form__input'
+                          autoComplete = "username"
                         />
                       </Form.Group>
                       <Form.Group>
@@ -155,7 +125,7 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
                           placeholder="Enter your password"
                           onChange={this.handleChange}
                           className='login__form__input'
-
+                          autoComplete = "current-password"
                         />
                       </Form.Group>
                       <p className="msg-success">{messageSuccess}</p>

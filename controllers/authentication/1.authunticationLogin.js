@@ -8,6 +8,8 @@ exports.authenticationLogin = (req, res, next) => {
             .then((result) => {
                 if (result.rows[0]) {
                     bcrypt.compare(memberInfo.password, result.rows[0].password, (err, valid) => {
+                        console.log("response with customer id in authenticate login is in: ");
+                        console.log(result.rows[0]);
                         if (valid) {
                             const { id, email } = { ...result.rows[0] }
                             const userInfoEnc = { id, email };
@@ -17,6 +19,7 @@ exports.authenticationLogin = (req, res, next) => {
                                     maxAge: 60 * 60 * 24 * 30,
                                     httpOnly: true,
                                 });
+
                                 res.send({ error: null, data: result })
                             });
                         }

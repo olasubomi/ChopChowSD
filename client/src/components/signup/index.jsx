@@ -85,6 +85,7 @@ export default class SignUp extends React.Component {
                       value={this.state.email}
                       placeholder="Your email"
                       onChange={this.handleChange}
+                      autoComplete = "username"
                     />
                   <Form.Label>Or</Form.Label>
                 <Form.Control
@@ -111,6 +112,7 @@ export default class SignUp extends React.Component {
                       value={this.state.password}
                       placeholder="Create a Password"
                       onChange={this.handleChange}
+                      autoComplete = "new-password"
                     />
                   </Form.Group>
                   <Form.Group controlId="formHorizontalCheck">
