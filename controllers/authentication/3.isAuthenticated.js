@@ -1,5 +1,7 @@
 exports.isAuthenticated = (req, res, next) => {
-  const { id } = req.userInfoDec;
+  console.log("in isAuthenticated file, decoded is :")
+  console.log(req.decoded)
+  const { id } = req.decoded;
   if (id) {
     res.send({ success: true, data: id });
   } else {

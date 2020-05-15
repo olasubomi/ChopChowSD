@@ -5,7 +5,6 @@ import PageTitle from '../CommonComponents/PageTitle'
 import { Spinner } from 'react-bootstrap'
 import { Container, Alert, Card, Col, Row, Button } from 'react-bootstrap'
 import { Typeahead } from "react-bootstrap-typeahead";
-import Login from "../Login/index"
 
 export default class GroceryPage extends React.Component {
   // Mongo
@@ -13,7 +12,6 @@ export default class GroceryPage extends React.Component {
   productNamesForTypeahead = new Map();
 
   state = {
-    newcustomerId: '',
     customerList: null,
     Authentication: false,
     customerId: null,
@@ -49,87 +47,91 @@ export default class GroceryPage extends React.Component {
     // checks if user is already logged in in app.
     const { auth, customerId } = this.props;
     this.setState({ Authentication: auth })
-    if (auth === true){
+    this.setState({ customerId: customerId })
+
+    if (auth === true) {
 
 
 
+      var localToken = window.localStorage.getItem('userToken');
+      console.log("customder id  iss: " + customerId);
+      var url = `./api/getCustomerGroceryList/${customerId}`
+      // var url = `http://localhost:5000/api/getCustomerGroceryList/${customerId}`
 
-    console.log("customder id  iss: "+ customerId);
-        var url = `./api/getCustomerGroceryList/${customerId}`
-        // var url = `http://localhost:5000/api/getCustomerGroceryList/${customerId}`
+      fetch(url, {
+        method: 'GET',
+        // credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localToken
 
-        fetch(url, {
-          method: 'GET',
-          // credentials: 'include',
-          // headers: {
-          //   'Content-Type': 'application/json',
-          // },
+        }
 
+      })
+        .then(res => {
+          console.log("customer list response is ");
+          console.log(res);
+          return res.json()
         })
-          .then(res => {
-            console.log("customer list response is ");
-            console.log(res);
-            return res.json()
-          })
-          .then(response => {
-            if (response) {
-              this.setState({ customerList: response.data })
-            }
-          })
-          .catch(() => {
-            this.setState({
-              messageAlert: 'Authentication Error while fetching your grocery list...',
-              showAlert: true,
-              variant: 'danger'
-            },
-              () =>
-                setTimeout(() => {
-                  this.setState({ messageAlert: '', showAlert: false })
-                }, 8000)
-            )
-          })
+        .then(response => {
+          if (response) {
+            this.setState({ customerList: response.data })
+          }
+        })
+        .catch(() => {
+          this.setState({
+            messageAlert: 'Authentication Error while fetching your grocery list...',
+            showAlert: true,
+            variant: 'danger'
+          },
+            () =>
+              setTimeout(() => {
+                this.setState({ messageAlert: '', showAlert: false })
+              }, 8000)
+          )
+        })
 
 
-    // url = "https://chopchowdev.herokuapp.com/api/get-all-products";
-    // url = `http://localhost:5000/api/get-all-products`
-    url = "./api/get-all-products"
+      // url = "https://chopchowdev.herokuapp.com/api/get-all-products";
+      // url = `http://localhost:5000/api/get-all-products`
+      url = "./api/get-all-products"
       // or should we call this in App.js and pass it as a prop ??
 
-    fetch(url, {
-      method: 'GET',
-      // credentials: 'include',
-      // headers: {
-      //   'Content-Type': 'application/json',
-      // }
-    })
-      .then(res => res.text())
-      .then(body => {
-        // console.log("should print body");
-        // console.log(body);
-        var productsList = JSON.parse(body);
-        console.log("PRINTING ALL PRODUCTS LIST")
-        // console.log(productsList);
-        if (productsList && productsList.data.length !== 0) {
-          console.log("returns GET ALL PRODUCTS ");
-          console.log(productsList.data.length);
-          for (var i = 0; i < productsList.data.length; i++) {
-            this.products.push(productsList.data[i]);
-            this.productNamesForTypeahead.set(productsList.data[i].product_name, productsList.data[i].id)
-          }
-          console.log(this.products);
-          console.log(this.productNamesForTypeahead)
-        }
-        else {
-          console.log("get all products function does not return");
-        }
+      fetch(url, {
+        method: 'GET',
+        // credentials: 'include',
+        // headers: {
+        //   'Content-Type': 'application/json',
+        // }
       })
-      .catch(err => {
-        console.log(err);
-      });
+        .then(res => res.text())
+        .then(body => {
+          // console.log("should print body");
+          // console.log(body);
+          var productsList = JSON.parse(body);
+          console.log("PRINTING ALL PRODUCTS LIST")
+          // console.log(productsList);
+          if (productsList && productsList.data.length !== 0) {
+            console.log("returns GET ALL PRODUCTS ");
+            console.log(productsList.data.length);
+            for (var i = 0; i < productsList.data.length; i++) {
+              this.products.push(productsList.data[i]);
+              this.productNamesForTypeahead.set(productsList.data[i].product_name, productsList.data[i].id)
+            }
+            console.log(this.products);
+            console.log(this.productNamesForTypeahead)
+          }
+          else {
+            console.log("get all products function does not return");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+    }
 
   }
-
-}
 
   handleShowDeleteItem = (productID) => {
     this.setState({ deletedItemId: productID });
@@ -251,8 +253,8 @@ export default class GroceryPage extends React.Component {
     console.log("productID is: " + productID);
     console.log("customer id is: " + this.state.customerId);
     if (!(isNaN(productID))) {
-      // var url = `https://chopchowdev.herokuapp.com/api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
-      var url = `./api/add-data-typeahead-for-customer/${productID}/${this.state.customerId}`
+      // var url = `https://chopchowdev.herokuapp.com/api/addTypeaheadDataToCustomerGroceryList/${productID}/${this.state.customerId}`
+      var url = `./api/addTypeaheadDataToCustomerGroceryList/${productID}/${this.state.customerId}`
       fetch(url, {
         method: 'POST',
         // headers: {
@@ -265,6 +267,16 @@ export default class GroceryPage extends React.Component {
           // return res.json();
           // })
           if (response) {
+            this.setState({
+              messageAlert: 'product added successfully',
+              showAlert: true,
+              variant: 'success'
+            },
+              () =>
+                setTimeout(() => {
+                  this.setState({ messageAlert: '', showAlert: false })
+                }, 3500)
+            )
             // const { customerList } = this.state;
             console.log("Comes in handleClickTypeahead's then on client side");
             this.componentDidMount();

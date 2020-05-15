@@ -1,4 +1,4 @@
 module.exports=(req,res)=>{
-    res.clearCookie();
-    res.send({data:'success'})
+    res.clearCookie('jwt');
+    res.status(200).send({ error: null, data: 'success' });
 }

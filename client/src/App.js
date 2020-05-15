@@ -13,7 +13,6 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.suggestMealToggle = this.suggestMealToggle.bind(this);
     this.updateLogInStatus = this.updateLogInStatus.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
 
@@ -23,6 +22,7 @@ class App extends Component {
       base_index: 0,
       topNav_className: "w3-bar w3-dark-grey w3-green topnav",
       isAuthenticated: false,
+      customerId: null
 
     };
   }
@@ -30,24 +30,36 @@ class App extends Component {
   updateLogInStatus(customerId){
     console.log("updates log in status before");
     this.setState({isAuthenticated : true})
+    this.setState({customerId : customerId})
+
     console.log("updates log in status after");
-    // return to page that called log in popup.
-    // window.location.href = '/grocery'
     console.log("customerID is:" + customerId);
+
+    // return to page that called log in popup.
+    window.location.href = '/grocery'
   }
 
   componentDidMount(){
-     // api authenticate grocery calls authenticationVerify,isAuthenticated
-    // var url = `https://chopchowdev.herokuapp.com/api/authenticate-grocery-page`;
-    var url = `./api/authenticate-grocery-page`
-    // var url = `http://localhost:5000/api/authenticate-grocery-page`
     console.log("Comes in app.js's component did mount");
+     // api authenticate grocery calls authenticationVerify,isAuthenticated
+      this.authenticateUser();
+      console.log("customerID is:" + this.state.customerId);
+
+  }
+  
+    authenticateUser(){
+      var localToken = window.localStorage.getItem('userToken');
+
+      // var url = `https://chopchowdev.herokuapp.com/api/authenticate-grocery-page`;
+    var url = `./api/authenticate-app-page`
+    // var url = `http://localhost:5000/api/authenticate-grocery-page`
     fetch(url, {
       method: 'GET',
-      // credentials: 'include',
-      // headers: {
-      //   'Content-type': 'application/json',
-      // },
+      credentials: 'same-origin',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer '+localToken
+      },
     })
       .then(res => {
         return res.json()
@@ -55,6 +67,7 @@ class App extends Component {
       .then(response => {
         console.log("api/ authenticate grocery(app page) response:")
         console.log(response);
+
         if (response.success && response.data) {
           this.setState({ isAuthenticated: true });
         } else {
@@ -73,25 +86,31 @@ class App extends Component {
     }
 
 
-  suggestMealToggle() {
-    this.setState({
-      suggestMealPopOver: !this.state.suggestMealPopOver
-    });
-  }
-
   handleLogout(){
     //clear cookie cache
     var url = '/api/logout';
 
-    fetch(url)
-    .then(res => res.text())
-    .then(body => {
-      // console.log("should print body");
-      // console.log(body);
-      var bodyResponse = JSON.parse(body);
-      console.log(body);
-      console.log(bodyResponse);
+    fetch(url, {
+      method: "GET",
+      credentials: 'same-origin',
+      headers: {
+          'Content-type': 'application/json',
+      }
+  })
+    .then(response => {
+      response.json()
+          .then(res => {
+          console.log("logout response is:");
+          console.log(res);
+          console.log("should print body");
+          // var bodyResponse = JSON.parse(res.body);
+          console.log(res.data);
+          if (res.data === "success") {
+            console.log("comes to turn off authentication state")
+            this.setState({ isAuthenticated: false })
+          }
     })
+  })
     .catch(err=>{
       console.log("fails to authenticate app page");
       console.log(err);

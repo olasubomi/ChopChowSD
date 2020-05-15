@@ -12,7 +12,6 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
       password: '',
       messageErr:false,
       messageSuccess:false,
-      isAuthenticated: false,
     };
 }
 
@@ -30,12 +29,12 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
         var url = `./api/login`
         // var url = `http://localhost:5000/api/login`
   
-  
         fetch(url, {
           method: 'POST',
-          // credentials: 'include',
+          credentials: 'include',
           headers: {
             'Content-type': 'application/json',
+
           },
           body: JSON.stringify({
             email,
@@ -50,18 +49,35 @@ import { Form, Button, Container ,Modal} from 'react-bootstrap';
             } else if (response.status >= 500) {
               this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
             } else {
+              console.log("Reponse status is:");
+              console.log(response.status)
+
+
               this.setState({ messageErr: '' });
+              
               this.setState({ isAuthenticated: true })
               this.setState({ messageSuccess: 'Logged in Sucessfully! ' });
-              console.log("response is:")
-              console.log(response.body);
-              console.log("before prop func call");
-              // this.props.updateLogInStatus();
-              console.log("after prop func call");
-              
-              // return to page that called log in popup.
-              return window.location.href = '/grocery'
+              return response.json();
             }
+          })
+          .then(body=>{
+            // .then(firstBody=>{return firstBody.json()})
+
+            console.log(body)
+            console.log(body.message)
+            console.log(body.token)
+            console.log(body.customerID)
+            let customerID = body.customerID;
+            window.localStorage.setItem('userToken', body.token);
+            // console.log("converted body is :")
+            // var jsonBody = body.json();
+            // console.log(jsonBody)
+
+            console.log("before prop func call");
+            this.props.updateLogInStatus(customerID);
+            console.log("after prop func call");
+            // return to page that called log in popup.
+            // return window.location.href = '/grocery'
           })
           .catch(() => {
             this.setState({

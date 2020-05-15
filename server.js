@@ -15,9 +15,9 @@ require('./db/dbMongo/config/db_connection');
 // require('./db/dbMongo/config/AllCustomersData')();
 // require('./db/dbMongo/config/OneCustomersGroceryList')();
 
-const { authenticationLogin } = require('./controllers/authentication/1.authunticationLogin')
+const { authenticateLoginToken } = require('./controllers/authentication/1.authenticateLoginToken')
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
-const authenticationVerify = require('./controllers/authentication/2.authunticationVerify')
+const verifyAuthentication = require('./controllers/authentication/2.verifyTokenAuthenticator.js')
 
 const { hashPassword } = require('./controllers/hashPassword')
 const { authenticationSignup } = require('./controllers/authentication/authenticationSignup')
@@ -30,7 +30,7 @@ const path = require('path');
 const port = process.env.PORT || 5000;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const { getCustomerGroceryList } = require("./controllers/list/getCustomerGroceryList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
 
@@ -47,7 +47,7 @@ const getIdsCustomers = require('./controllers/authentication/getIdsCustomers')
 
 const getItemId = require('./controllers/list/getItemId')
 const getDataItemTypeahead = require('./controllers/list/getDataItemTypeahead')
-const addDataForThisCustomer = require('./controllers/list/addDataForThisCustomer')
+const addGroceryItemToCustomerList = require('./controllers/list/addGroceryItemToCustomerList')
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -72,6 +72,10 @@ app.use(cors());
 app.use('/facebook', facebook);
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
+app.use(bodyParser.urlencoded({ // Middleware
+    extended: true
+  }));
+  app.use(bodyParser.json());
 
 // Serve static files from the React app
 
@@ -105,10 +109,9 @@ app.get('/get_store_products', async (req, res) => {
 app.get('/api/get-meals', getMeals);
 app.get('/api/get-all-products', getAllProducts);
 
-app.post('/api/login', authenticationLogin);
+app.post('/api/login', authenticateLoginToken);
 app.post('/api/forgotpass', forgotPassword)
 app.post('/api/resetpass', resetPassword)
-// app.use(authenticationVerify)
 app.post('/api/signupuser', signupCustomer)
 app.post('/api/signup/:newcustomerId', authenticationSignup)
 
@@ -127,11 +130,11 @@ app.get('/api/get-data-typeahead/:option', getDataItemTypeahead)
 app.get('/hash', hashPassword);
 app.get('/api/logout', authunticationLogout)
 
-app.get('/api/authenticate-grocery-page', authenticationVerify, isAuthenticated);
-app.get('/api/getCustomerGroceryList/:customerId', authenticationVerify, getCustomerGroceryList)
+app.get('/api/authenticate-app-page', verifyAuthentication, isAuthenticated);
+app.get('/api/getCustomerGroceryList/:customerId', verifyAuthentication, getCustomerGroceryList)
 app.get('/api/get-all-data-lists', getAllDataLists)
 
-app.post('/api/add-data-typeahead-for-customer/:idItem/:customerId',addDataForThisCustomer.add)
+app.post('/api/addTypeaheadDataToCustomerGroceryList/:idItem/:customerId',addGroceryItemToCustomerList.add)
 
 app.get('*', (_req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));

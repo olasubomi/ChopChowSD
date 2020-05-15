@@ -10,6 +10,12 @@ exports.add = (req, res) => {
 
     let arr = []
 
+    console.log("list/customerID is: ")
+    console.log(customerId);
+    console.log(typeof(customerId))
+    console.log("item ID is: ")
+    console.log(idItem);
+    console.log(typeof(idItem))
 
     // getDataCustomerId(customerId).then((result) => {
     let data = {};
@@ -19,6 +25,10 @@ exports.add = (req, res) => {
     .then((Response) => {
     console.log(Response)
     console.log("Comes in search for update to grocery list")
+    })
+    .catch((err)=>{
+        console.log(err)
+
     })
 
      // .then(() => {
@@ -49,7 +59,7 @@ exports.add = (req, res) => {
             // })
         // })
             // })
-            res.status(201).send(JSON.stringify({ msg: 'add data for customer supposedly added' }))
+            res.status(201).send(JSON.stringify({ msg: 'add item to customer grocery list supposedly added successfully' }))
     // })
 }
 
