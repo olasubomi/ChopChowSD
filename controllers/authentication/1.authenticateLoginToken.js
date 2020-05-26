@@ -28,7 +28,7 @@ exports.authenticateLoginToken = (req, res, next) => {
                             // console.log('secret',process.env.SECRET);
                             sign(userInfoEnc, process.env.SECRET,
                                 {
-                                    expiresIn: '24h' // expires in 24 hours
+                                    expiresIn: '45' // expires in 45 secs
                                 }, (err, token) => {
                                     console.log("signed json token is")
                                     console.log('token:', token);

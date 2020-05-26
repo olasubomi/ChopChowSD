@@ -88,6 +88,10 @@ class App extends Component {
 
   handleLogout(){
     //clear cookie cache
+    window.localStorage.setItem('userToken', null);
+
+
+
     var url = '/api/logout';
 
     fetch(url, {
