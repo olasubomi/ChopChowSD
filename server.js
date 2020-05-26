@@ -14,6 +14,7 @@ require('./db/dbMongo/config/db_connection');
 // require('./db/dbMongo/config/AllProductsList')();
 // require('./db/dbMongo/config/AllCustomersData')();
 // require('./db/dbMongo/config/OneCustomersGroceryList')();
+// require('./db/dbMongo/config/insertMeals/insertManyMeals')();
 
 const { authenticateLoginToken } = require('./controllers/authentication/1.authenticateLoginToken')
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')

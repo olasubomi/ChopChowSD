@@ -8,6 +8,7 @@ import GroceryPage from "./components/GroceryPage";
 import SignUp from "./components/signup";
 import ForgotPassword from "./components/forgotpassword";
 import ResetPassword from "./components/resetpassword";
+import SuggestMeal from "./components/SuggestMeal";
 
 class App extends Component {
 
@@ -528,6 +529,11 @@ class App extends Component {
           />
 
           <Route path="/products" render={props => <ProductsSection />} />
+          <Route
+            exact
+            path="/SuggestMeal"
+            render={props => <SuggestMeal />}
+          />
         </Switch>
       </div>
     );

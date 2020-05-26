@@ -1,4 +1,4 @@
-const { meals } = require('./db_buildSchema');
+const { meals } = require('../db_buildSchema');
 module.exports = async () => {
     const recreateAllMeals = [
         {

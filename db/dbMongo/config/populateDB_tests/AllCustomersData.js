@@ -1,4 +1,4 @@
-const { customers } = require('./db_buildSchema');
+const { customers } = require('../db_buildSchema');
 module.exports = async () => {
     const allCustomerData = [
         {

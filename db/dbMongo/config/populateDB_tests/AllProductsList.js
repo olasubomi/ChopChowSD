@@ -1,4 +1,4 @@
-const { all_products } = require('./db_buildSchema');
+const { all_products } = require('../db_buildSchema');
 module.exports = async () => {
     const allProductsList = [
         {
