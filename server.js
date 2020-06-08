@@ -15,6 +15,8 @@ require('./db/dbMongo/config/db_connection');
 // require('./db/dbMongo/config/AllCustomersData')();
 // require('./db/dbMongo/config/OneCustomersGroceryList')();
 // require('./db/dbMongo/config/insertMeals/insertManyMeals')();
+// require('./db/dbMongo/config/populateDB_tests/insertCategories')();
+
 
 const { authenticateLoginToken } = require('./controllers/authentication/1.authenticateLoginToken')
 const { isAuthenticated } = require('./controllers/authentication/3.isAuthenticated')
@@ -23,8 +25,10 @@ const verifyAuthentication = require('./controllers/authentication/2.verifyToken
 const { hashPassword } = require('./controllers/hashPassword')
 const { authenticationSignup } = require('./controllers/authentication/authenticationSignup')
 const authunticationLogout = require('./controllers/authentication/authunticationLogout')
-
 const { signupCustomer, forgotPassword, resetPassword } = require('./controllers/authentication/signup');
+const { addMealSuggestion } = require('./db/dbMongo/queries/addMealSuggestion')
+
+
 const app = express();
 
 const path = require('path');
@@ -35,8 +39,8 @@ const bodyParser = require('body-parser');
 const { getCustomerGroceryList } = require("./controllers/list/getCustomerGroceryList");
 const { getAllDataLists } = require("./controllers/list/getAllDataLists");
 
-const { getMeals } = require("./db/dbMongo/config/getMeals");
-const { getAllProducts } = require("./db/dbMongo/config/getAllProducts");
+const { getMeals } = require("./db/dbMongo/queries/getMeals");
+const { getAllProducts } = require("./db/dbMongo/queries/getAllProducts");
 
 // const appendItem = require('./controllers/list/appendItem')
 const removeItem = require('./controllers/list/removeItem');
@@ -115,6 +119,7 @@ app.post('/api/forgotpass', forgotPassword)
 app.post('/api/resetpass', resetPassword)
 app.post('/api/signupuser', signupCustomer)
 app.post('/api/signup/:newcustomerId', authenticationSignup)
+app.post('/api/addMealSuggestion/', addMealSuggestion)
 
 // app.post('/api/appendItem',appendItem)
 app.delete('/api/remove-list/:customerId', removeList)

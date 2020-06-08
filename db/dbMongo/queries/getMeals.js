@@ -1,4 +1,4 @@
-const { meals } = require('./db_buildSchema')
+const { meals } = require('../config/db_buildSchema')
 exports.getMeals = (req, res) => {
     return meals.find()
         .then(resMeals => {

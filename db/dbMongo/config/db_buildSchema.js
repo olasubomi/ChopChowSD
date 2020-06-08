@@ -7,6 +7,7 @@ exports.all_products = mongoose.model('all_products', new Schema({
     product_name: String,
     product_image: String,
     product_price: String,
+    measurement : Array,
     sizes: Array,
     respective_prices: Array
 }))
@@ -46,9 +47,13 @@ exports.suggested_meals = mongoose.model('suggested_meals', new Schema({
     readTime: String,
     cookTime: String,
     intro: String,
-    ingredients: Array,
-    products: Array,
-    product_slider: [{ ingredient: String, image: String }],
+    ingredients: [{
+        product:{
+            servings:
+            { "quantity": Number, "measurement": String },
+            image:String
+        }
+    }],
     categories: Array,
     instructions: Array,
     display: Boolean

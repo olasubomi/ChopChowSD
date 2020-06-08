@@ -1,4 +1,4 @@
-const { all_products } = require('./db_buildSchema')
+const { all_products } = require('../config/db_buildSchema')
 exports.getAllProducts = (req, res) => {
     return all_products.find()
         .then(productsResp => {

@@ -6,7 +6,8 @@ module.exports = async () => {
             product_name: "Ijebu Garri",
             product_image: 'garri.jpg',
             product_price: 8.99,
-            sizes: '50lbs',
+            sizes: '50 lbs',
+            measurements: ['lbs'],
             price_per_ounce:null
         }, {
             id:2,
@@ -14,6 +15,7 @@ module.exports = async () => {
             product_image: 'beans.jpg',
             product_price: 12.00,
             sizes: '2 lbs',
+            measurements: ['lbs'],
             price_per_ounce: 3.2,
         }, {
             id:3,
@@ -21,6 +23,7 @@ module.exports = async () => {
             product_image: 'beans.jpeg',
             product_price: 12.00,
             sizes: '2 lbs',
+            measurements: ['lbs'],
             price_per_ounce: 3.2
         }, {
             id:4,
@@ -28,6 +31,7 @@ module.exports = async () => {
             product_image: 'spinach.jpeg',
             product_price: 2.99,
             sizes:'0.5lbs',
+            measurements: ['lbs'],
             price_per_ounce:null
         },
         {
@@ -36,6 +40,7 @@ module.exports = async () => {
             product_image: 'kale.jpg',
             product_price: 2.99,
             sizes: '0.5lbs',
+            measurements: ['lbs'],
             price_per_ounce:null
         },
         {
@@ -44,6 +49,7 @@ module.exports = async () => {
             product_image: 'oregano.jpg',
             product_price: 1.00,
             sizes: '1lbs',
+            measurements: ['lbs'],
             price_per_ounce:null
         },
         {
@@ -52,6 +58,7 @@ module.exports = async () => {
             product_image: 'squash_poatoes.jpeg',
             product_price: 8.99,
             sizes: '50lbs',
+            measurements: ['lbs'],
             price_per_ounce:null
         },
         {
@@ -60,6 +67,7 @@ module.exports = async () => {
             product_image: 'water.jpeg',
             product_price: 8.99,
             sizes: '50lbs',
+            measurements: ['ml', 'L', 'oz'],
             price_per_ounce:null
         }, {
             id:9,
@@ -67,6 +75,7 @@ module.exports = async () => {
             product_image: 'plantain_chips.jpg',
             product_price: 12.00,
             sizes: '2 lbs',
+            measurements: ['lbs'],
             price_per_ounce: 3.2
         }, {
             id:10,
@@ -74,19 +83,22 @@ module.exports = async () => {
             product_image: 'cashews.jpg',
             product_price: 12.00,
             sizes: '2 lbs',
+            measurements: ['lbs'],
             price_per_ounce: 3.2
         }, {
             id:11,
             product_name: "Palm Oil",
             product_image: 'oil.jpg',
             product_price: 8.99,
-            sizes: '50lbs'
+            sizes: '50lbs',
+            measurements: ['lbs']
         }, {
             id:12,
             product_name: "Onions",
             product_image: 'onion.jpg',
             product_price: 12.00,
             sizes: '2 lbs',
+            measurements: ['lbs'],
             pric3_per_ounce: 3.2
         }, {
             id:13,
@@ -94,6 +106,7 @@ module.exports = async () => {
             product_image: 'pineapple.jpg',
             product_price: 12.00,
             sizes: '2 lbs',
+            measurements: ['lbs'],
             price_per_ounce: 3.2
         }
 
