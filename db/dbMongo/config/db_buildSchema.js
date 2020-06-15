@@ -1,65 +1,77 @@
-
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-exports.all_products = mongoose.model('all_products', new Schema({
+exports.all_products = mongoose.model(
+  "all_products",
+  new Schema({
     id: Number,
     product_name: String,
     product_image: String,
     product_price: String,
-    measurement : Array,
+    measurement: Array,
     sizes: Array,
-    respective_prices: Array
-}))
+    respective_prices: Array,
+  })
+);
 
-
-exports.store_products = mongoose.model('store_products', new Schema({
+exports.store_products = mongoose.model(
+  "store_products",
+  new Schema({
     id: Number,
     store_name: String,
     store_image: String,
-    products: Array
-}))
-
-exports.meals = mongoose.model('meals', new Schema({
-    id: Number,
-    label: String,
-    imageSrc: String,
-    readTime: String,
-    cookTime: String,
-    intro: String,
-    ingredients: Array,
     products: Array,
-    product_slider: [{ ingredient: String, image: String }],
-    categories: Array,
-    instructions: Array,
-    display: Boolean
-}))
+  })
+);
 
-exports.all_meal_categories = mongoose.model('all_meal_categories', new Schema({
-    id: Number,
-    category_name: String
-}))
-
-exports.suggested_meals = mongoose.model('suggested_meals', new Schema({
+exports.meals = mongoose.model(
+  "meals",
+  new Schema({
     id: Number,
     label: String,
-    imageSrc: String,
+    mealImage: String,
     readTime: String,
     cookTime: String,
     intro: String,
-    ingredients: [{
-        product:{
-            servings:
-            { "quantity": Number, "measurement": String },
-            image:String
-        }
-    }],
+    product_slider: [{ ingredient: String, image: String }],
+    newer_ingredient_format: [
+      { product: String, quantity: Number, measurement: String, image: String },
+    ],
+    servings: Number,
     categories: Array,
     instructions: Array,
-    display: Boolean
-}))
+    display: Boolean,
+  })
+);
 
-exports.customers = mongoose.model('customers', new Schema({
+exports.suggested_meals = mongoose.model(
+  "suggested_meals",
+  new Schema({
+    label: String,
+    mealImage: String,
+    readTime: String,
+    cookTime: String,
+    intro: String,
+    newer_ingredient_format: [
+      { product: String, quantity: Number, measurement: String, image: String },
+    ],
+    servings: Number,
+    categories: Array,
+    instructions: Array,
+  })
+);
+
+exports.all_meal_categories = mongoose.model(
+  "all_meal_categories",
+  new Schema({
+    id: Number,
+    category_name: String,
+  })
+);
+
+exports.customers = mongoose.model(
+  "customers",
+  new Schema({
     id: Number,
     firstname: String,
     lastname: String,
@@ -71,26 +83,35 @@ exports.customers = mongoose.model('customers', new Schema({
     zipCode: Number,
     ipsid: Number,
     username: String,
-    emailNotification: Boolean
-}))
+    emailNotification: Boolean,
+  })
+);
 
-exports.customers_lists = mongoose.model('customers_lists', new Schema({
+exports.customers_lists = mongoose.model(
+  "customers_lists",
+  new Schema({
     id: Number,
     customer_id: Number,
     grocery_list_id: Number,
-    cart_list_id: Number
-}))
+    cart_list_id: Number,
+  })
+);
 
-exports.customer_cart_list = mongoose.model('customer_cart_list', new Schema({
+exports.customer_cart_list = mongoose.model(
+  "customer_cart_list",
+  new Schema({
     list_id: Number,
-    cart_list: Array
-}))
+    cart_list: Array,
+  })
+);
 
-exports.customer_grocery_list = mongoose.model('customer_grocery_list', new Schema({
+exports.customer_grocery_list = mongoose.model(
+  "customer_grocery_list",
+  new Schema({
     list_id: Number,
-    grocery_list: Array
-}))
-
+    grocery_list: Array,
+  })
+);
 
 // exports.admin = mongoose.model('admin', new Schema({
 //     id: Schema.Types.ObjectId,
@@ -110,7 +131,3 @@ exports.customer_grocery_list = mongoose.model('customer_grocery_list', new Sche
 //     sizes:String,
 //     price_per_ounce:Number,
 // }))
-
-
-
-

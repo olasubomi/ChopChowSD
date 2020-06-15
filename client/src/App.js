@@ -9,9 +9,8 @@ import SignUp from "./components/signup";
 import ForgotPassword from "./components/forgotpassword";
 import ResetPassword from "./components/resetpassword";
 import SuggestMeal from "./components/SuggestMeal";
-
+import FooterPage from "./components/FooterPage";
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.updateLogInStatus = this.updateLogInStatus.bind(this);
@@ -23,108 +22,99 @@ class App extends Component {
       base_index: 0,
       topNav_className: "w3-bar w3-dark-grey w3-green topnav",
       isAuthenticated: false,
-      customerId: null
-
+      customerId: null,
     };
   }
 
-  updateLogInStatus(customerId){
+  updateLogInStatus(customerId) {
     console.log("updates log in status before");
-    this.setState({isAuthenticated : true})
-    this.setState({customerId : customerId})
+    this.setState({ isAuthenticated: true });
+    this.setState({ customerId: customerId });
 
     console.log("updates log in status after");
     console.log("customerID is:" + customerId);
 
     // return to page that called log in popup.
-    window.location.href = '/grocery'
+    window.location.href = "/grocery";
   }
 
-  componentDidMount(){
+  componentDidMount() {
     console.log("Comes in app.js's component did mount");
-     // api authenticate grocery calls authenticationVerify,isAuthenticated
-      this.authenticateUser();
-      console.log("customerID is:" + this.state.customerId);
-
+    // api authenticate grocery calls authenticationVerify,isAuthenticated
+    this.authenticateUser();
+    console.log("customerID is:" + this.state.customerId);
   }
-  
-    authenticateUser(){
-      var localToken = window.localStorage.getItem('userToken');
 
-      // var url = `https://chopchowdev.herokuapp.com/api/authenticate-grocery-page`;
-    var url = `./api/authenticate-app-page`
+  authenticateUser() {
+    var localToken = window.localStorage.getItem("userToken");
+
+    // var url = `https://chopchowdev.herokuapp.com/api/authenticate-grocery-page`;
+    var url = `./api/authenticate-app-page`;
     // var url = `http://localhost:5000/api/authenticate-grocery-page`
     fetch(url, {
-      method: 'GET',
-      credentials: 'same-origin',
+      method: "GET",
+      credentials: "same-origin",
       headers: {
-        'Content-type': 'application/json',
-        'Authorization': 'Bearer '+localToken
+        "Content-type": "application/json",
+        Authorization: "Bearer " + localToken,
       },
     })
-      .then(res => {
-        return res.json()
+      .then((res) => {
+        return res.json();
       })
-      .then(response => {
-        console.log("api/ authenticate grocery(app page) response:")
+      .then((response) => {
+        console.log("api/ authenticate grocery(app page) response:");
         console.log(response);
 
         if (response.success && response.data) {
           this.setState({ isAuthenticated: true });
         } else {
-          this.setState({ isAuthenticated: false })
+          this.setState({ isAuthenticated: false });
         }
 
-        this.setState({ customerId: response.data })
+        this.setState({ customerId: response.data });
         const { customerId } = this.state;
-        console.log("customer id iis: "+ customerId);
+        console.log("customer id iis: " + customerId);
       })
-      .catch(err=>{
+      .catch((err) => {
         console.log("fails to authenticate app page");
         console.log(err);
-      })
+      });
+  }
 
-    }
-
-
-  handleLogout(){
+  handleLogout() {
     //clear cookie cache
-    window.localStorage.setItem('userToken', null);
+    window.localStorage.setItem("userToken", null);
 
-
-
-    var url = '/api/logout';
+    var url = "/api/logout";
 
     fetch(url, {
       method: "GET",
-      credentials: 'same-origin',
+      credentials: "same-origin",
       headers: {
-          'Content-type': 'application/json',
-      }
-  })
-    .then(response => {
-      response.json()
-          .then(res => {
+        "Content-type": "application/json",
+      },
+    })
+      .then((response) => {
+        response.json().then((res) => {
           console.log("logout response is:");
           console.log(res);
           console.log("should print body");
           // var bodyResponse = JSON.parse(res.body);
           console.log(res.data);
           if (res.data === "success") {
-            console.log("comes to turn off authentication state")
-            this.setState({ isAuthenticated: false })
+            console.log("comes to turn off authentication state");
+            this.setState({ isAuthenticated: false });
           }
-    })
-  })
-    .catch(err=>{
-      console.log("fails to authenticate app page");
-      console.log(err);
-    })
+        });
+      })
+      .catch((err) => {
+        console.log("fails to authenticate app page");
+        console.log(err);
+      });
 
-    this.setState({ isAuthenticated: false })
-
+    this.setState({ isAuthenticated: false });
   }
-
 
   render() {
     // Render your page inside
@@ -161,54 +151,58 @@ class App extends Component {
 
     var login_on_desktop_navbar;
     var login_on_burger_navbar;
-    if(this.state.isAuthenticated){
-        login_on_desktop_navbar =          <li className="nav-item">
-        <button className="nav-link px-2" onClick={this.handleLogout}>
-        Logout
-        </button>
-      </li>;
-      login_on_burger_navbar = <li className="nav-item" style={{ padding: "14px 16px" }} >
-      <button
-        to="/login"
-        className="nav-link px-2"
-        style={{ color: "#FFFFFF" }}
-        onClick={this.handleLogout}
-      >
-          Logout
-      </button>
-    </li>
-    }
-    else{
-      login_on_desktop_navbar = <li className="nav-item">
-      <Link to="/login" className="nav-link px-2" >
-      Log In / Register
-      </Link>
-    </li>;
-    login_on_burger_navbar = <li className="nav-item" style={{ padding: "14px 16px" }}>
-    <Link
-      to="/login"
-      className="nav-link px-2"
-      style={{ color: "#FFFFFF" }}
-    >
-        Log In / Register
-    </Link>
-  </li>
+    if (this.state.isAuthenticated) {
+      login_on_desktop_navbar = (
+        <li className="nav-item">
+          <button className="nav-link px-2" onClick={this.handleLogout}>
+            Logout
+          </button>
+        </li>
+      );
+      login_on_burger_navbar = (
+        <li className="nav-item" style={{ padding: "14px 16px" }}>
+          <button
+            to="/login"
+            className="nav-link px-2"
+            style={{ color: "#FFFFFF" }}
+            onClick={this.handleLogout}
+          >
+            Logout
+          </button>
+        </li>
+      );
+    } else {
+      login_on_desktop_navbar = (
+        <li className="nav-item">
+          <Link to="/login" className="nav-link px-2">
+            Log In / Register
+          </Link>
+        </li>
+      );
+      login_on_burger_navbar = (
+        <li className="nav-item" style={{ padding: "14px 16px" }}>
+          <Link
+            to="/login"
+            className="nav-link px-2"
+            style={{ color: "#FFFFFF" }}
+          >
+            Log In / Register
+          </Link>
+        </li>
+      );
     }
 
     return (
       <div>
         {/* <div> */}
-
         {/* <div className={this.state.topNav_className} id="myTopnav"> */}
-
         <nav
           className="navbar navbar-expand-md fixed-top-sm justify-content-start flex-nowrap  navbar-light "
           style={{
             backgroundColor: "#FFFFFF",
-            borderBottom: "1px solid #fd7e14"
+            borderBottom: "1px solid #fd7e14",
           }}
         >
-          
           {/* Desktop Navbar */}
           <Link to="/" className="navbar-brand">
             CHOP CHOW
@@ -227,7 +221,7 @@ class App extends Component {
                       type="button"
                       style={{
                         backgroundColor: "#fd7e14",
-                        borderColor: "#fd7e14"
+                        borderColor: "#fd7e14",
                       }}
                     >
                       <i
@@ -271,7 +265,6 @@ class App extends Component {
             ></i>
           </Link>
         </nav>
-
         {/* Burger navbar */}
         <div
           className="mobileNavbar"
@@ -283,7 +276,7 @@ class App extends Component {
               <li
                 style={{
                   padding: "14px 16px",
-                  borderBottom: "1px solid #FFFFFF"
+                  borderBottom: "1px solid #FFFFFF",
                 }}
               >
                 <form className="form-inline" style={{ padding: "14px 16px" }}>
@@ -294,7 +287,7 @@ class App extends Component {
                       style={{
                         backgroundColor: "#fd7e14",
                         border: "1px solid #FFFFFF",
-                        width: "80%"
+                        width: "80%",
                       }}
                     />
                     <span className="input-group-append">
@@ -303,7 +296,7 @@ class App extends Component {
                         type="button"
                         style={{
                           backgroundColor: "#FFFFFF",
-                          borderColor: "#fd7e14"
+                          borderColor: "#fd7e14",
                         }}
                       >
                         <i
@@ -328,10 +321,7 @@ class App extends Component {
 
               </li> */}
               <li className="nav-item" style={{ padding: "14px 16px" }}>
-                <button
-                  className="nav-link px-2"
-                  style={{ color: "#FFFFFF" }}
-                >
+                <button className="nav-link px-2" style={{ color: "#FFFFFF" }}>
                   Cart Page
                 </button>
               </li>
@@ -339,7 +329,7 @@ class App extends Component {
                 className="nav-item"
                 style={{
                   padding: "14px 16px",
-                  borderBottom: "1px solid #FFFFFF"
+                  borderBottom: "1px solid #FFFFFF",
                 }}
               >
                 <Link
@@ -382,13 +372,10 @@ class App extends Component {
                 className="nav-item"
                 style={{
                   padding: "14px 16px",
-                  borderBottom: "1px solid #FFFFFF"
+                  borderBottom: "1px solid #FFFFFF",
                 }}
               >
-                <button
-                  className="nav-link px-2"
-                  style={{ color: "#FFFFFF" }}
-                >
+                <button className="nav-link px-2" style={{ color: "#FFFFFF" }}>
                   Stats
                 </button>
               </li>
@@ -413,60 +400,46 @@ class App extends Component {
               </li>
               <li className="nav-item" style={{ marginRight: "50%" }}>
                 <Link to="/v2" className="nav-link px-2">
-                   Receipes
+                  Receipes
                 </Link>
               </li>
             </ul>
           </div>
         </nav>
-
-        {/* <div className="topnav" id="myTopnav2">
-    <Link to="/">CC</Link>
-    <Link to="/">Recipes</Link>
-
-    <div className="dropdown">
-        <button className="dropbtn"> 
-            Shop <i className="fa fa-caret-down"></i>
-        </button>
-        <div className="dropdown-content">
-            <Link to="/products">Food Products</Link>
-            <Link to="/products">Kitchen Products</Link>
-            <Link to="/products">Other Household Items</Link>
-        </div>
-    </div>
-
-    <Link to="/v1">Stats</Link>
-    <Link to="javascript:void(0);" className="icon" onClick={()=>{console.log("Comes thru here"); myFunction()}} >
-    <i className="fa fa-bars" ></i>
-    </Link>
-</div> */}
-
         <Switch>
-          <Route exact path="/login" render={() => (
+          <Route
+            exact
+            path="/login"
+            render={() => (
               <Login
                 // auth={isAuthenticated}
-                updateLogInStatus = {this.updateLogInStatus}
+                updateLogInStatus={this.updateLogInStatus}
               />
-            )} /> 
+            )}
+          />
           {/* render={props => <Login updateLogInStatus = {this.updateLogInStatus} />} */}
-           {/* {...props} */}
+          {/* {...props} */}
 
-          <Route exact path="/signup" render={props => <SignUp {...props} />} />
+          <Route
+            exact
+            path="/signup"
+            render={(props) => <SignUp {...props} />}
+          />
 
           <Route
             exact
             path="/resetpass"
-            render={props => <ResetPassword {...props} />}
+            render={(props) => <ResetPassword {...props} />}
           />
           <Route
             exact
             path="/forgotpass"
-            render={props => <ForgotPassword {...props} />}
+            render={(props) => <ForgotPassword {...props} />}
           />
           <Route
             exact
             path="/"
-            render={props => (
+            render={(props) => (
               <div>
                 <div id="title">
                   <b>Meals</b>
@@ -479,33 +452,23 @@ class App extends Component {
             )}
           />
 
-          <Route
-            path="/home"
-            render={() => (
-              <HomePage />
-            )}
-          />
-          <Route
-            path="/v2"
-            render={() => (
-              <MealsPage />
-            )}
-          />
-          <Route
+          <Route path="/home" render={() => <HomePage />} />
+          <Route path="/v2" render={() => <MealsPage />} />
+          {/* <Route
             exact
             path="/grocery"
             render={() => (
               <GroceryPage
                 auth={isAuthenticated}
                 dataTypeaheadProps={itemTypeahead}
-                customerId = {customerId}
+                customerId={customerId}
               />
             )}
-          />
+          /> */}
 
           <Route
             path="/grocery"
-            render={props => (
+            render={(props) => (
               // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
               <div>
                 <div>
@@ -514,7 +477,7 @@ class App extends Component {
                 <GroceryPage
                   auth={isAuthenticated}
                   dataTypeaheadProps={itemTypeahead}
-                  customerId = {customerId}
+                  customerId={customerId}
                 />
                 <div
                   className="fb-login-button"
@@ -528,19 +491,18 @@ class App extends Component {
             )}
           />
 
-          <Route path="/products" render={props => <ProductsSection />} />
+          <Route path="/products" render={(props) => <ProductsSection />} />
           <Route
             exact
             path="/SuggestMeal"
-            render={props => <SuggestMeal />}
+            render={(props) => <SuggestMeal />}
           />
         </Switch>
+        <FooterPage />
       </div>
     );
   }
 }
-
-
 
 // const contentStyle = {
 //   // borderRadius: "25px",
