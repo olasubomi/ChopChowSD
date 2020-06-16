@@ -347,7 +347,7 @@ class App extends Component {
                   style={{ color: "#FFFFFF" }}
                 >
                   {" "}
-                  Featured Receipes
+                  Meals
                 </Link>
               </li>
               <li className="nav-item" style={{ padding: "14px 16px" }}>
