@@ -35,7 +35,8 @@ class App extends Component {
     console.log("customerID is:" + customerId);
 
     // return to page that called log in popup.
-    window.location.href = "/grocery";
+    // window.location.href = "/grocery";
+    // history.push("/grocery");
   }
 
   componentDidMount() {
@@ -114,6 +115,7 @@ class App extends Component {
       });
 
     this.setState({ isAuthenticated: false });
+    window.location.reload(false);
   }
 
   render() {
@@ -151,7 +153,7 @@ class App extends Component {
 
     var login_on_desktop_navbar;
     var login_on_burger_navbar;
-    if (this.state.isAuthenticated) {
+    if (isAuthenticated) {
       login_on_desktop_navbar = (
         <li className="nav-item">
           <button className="nav-link px-2" onClick={this.handleLogout}>
@@ -236,6 +238,7 @@ class App extends Component {
 
             <li className="nav-item">
               <Link to="/grocery" className="nav-link px-2">
+                {/* state="" */}
                 Grocery List
               </Link>
             </li>
@@ -454,7 +457,7 @@ class App extends Component {
 
           <Route path="/home" render={() => <HomePage />} />
           <Route path="/v2" render={() => <MealsPage />} />
-          {/* <Route
+          <Route
             exact
             path="/grocery"
             render={() => (
@@ -464,9 +467,9 @@ class App extends Component {
                 customerId={customerId}
               />
             )}
-          /> */}
+          />
 
-          <Route
+          {/* <Route
             path="/grocery"
             render={(props) => (
               // <RecipeContentSection selectedMeal= {this.state.selectedMeal}/>
@@ -489,7 +492,7 @@ class App extends Component {
                 ></div>
               </div>
             )}
-          />
+          /> */}
 
           <Route path="/products" render={(props) => <ProductsSection />} />
           <Route

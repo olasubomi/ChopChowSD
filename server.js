@@ -51,25 +51,27 @@ const login = require("./routes/manual_login");
 const bodyParser = require("body-parser");
 const {
   getCustomerGroceryList,
-} = require("./controllers/list/getCustomerGroceryList");
-const { getAllDataLists } = require("./controllers/list/getAllDataLists");
+} = require("./db/dbMongo/queries/list/getCustomerGroceryList");
+const {
+  getAllDataLists,
+} = require("./db/dbMongo/queries/list/getAllDataLists");
 
 const { getMeals } = require("./db/dbMongo/queries/mealsAPI/getMeals");
 const {
   getAllProducts,
 } = require("./db/dbMongo/queries/productsAPI/getAllProducts");
 
-// const appendItem = require('./controllers/list/appendItem')
-const removeItem = require("./controllers/list/removeItem");
-// const createList = require('./controllers/list/createList')
-const removeList = require("./controllers/list/removeList");
-const getIdsItems = require("./controllers/list/getIdsItems");
-// const getCustomersLists = require('./controllers/list/getCustomersLists') // commented out until needed
+// const appendItem = require('./db/dbMongo/queries/list/appendItem')
+const removeItem = require("./db/dbMongo/queries/list/removeItem");
+// const createList = require('./db/dbMongo/queries/list/createList')
+const removeList = require("./db/dbMongo/queries/list/removeList");
+const getIdsItems = require("./db/dbMongo/queries/list/getIdsItems");
+// const getCustomersLists = require('./db/dbMongo/queries/list/getCustomersLists') // commented out until needed
 const getIdsCustomers = require("./controllers/authentication/getIdsCustomers");
 
-const getItemId = require("./controllers/list/getItemId");
-const getDataItemTypeahead = require("./controllers/list/getDataItemTypeahead");
-const addGroceryItemToCustomerList = require("./controllers/list/addGroceryItemToCustomerList");
+const getItemId = require("./db/dbMongo/queries/list/getItemId");
+const getDataItemTypeahead = require("./db/dbMongo/queries/list/getDataItemTypeahead");
+const addGroceryItemToCustomerList = require("./db/dbMongo/queries/list/addGroceryItemToCustomerList");
 
 app.set("view engine", "ejs");
 app.use(express.json());
