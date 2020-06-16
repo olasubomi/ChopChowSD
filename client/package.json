@@ -6,7 +6,7 @@
   "dependencies": {
     "@material-ui/lab": "^4.0.0-alpha.55",
     "bootstrap": "^4.3.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.1",
     "mdbreact": "^4.27.0",
     "passport-facebook": "^3.0.0",
     "pure-react-carousel": "^1.25.1",
