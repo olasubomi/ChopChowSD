@@ -19,7 +19,7 @@ const FooterPagePro = () => {
             </MDBCol>
             <MDBCol md="6" lg="7" className="text-center text-md-right">
               <i className="fa fa-facebook-square m-2" aria-hidden="true"></i>
-              <i className="fa fa-twitter m-2" aria-hidden="true"></i>
+              {/* <i className="fa fa-twitter m-2" aria-hidden="true"></i> */}
               <i className="fa fa-instagram m-2" aria-hidden="true"></i>
             </MDBCol>
           </MDBRow>

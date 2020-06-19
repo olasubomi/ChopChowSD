@@ -57,6 +57,8 @@ const {
 } = require("./db/dbMongo/queries/list/getAllDataLists");
 
 const { getMeals } = require("./db/dbMongo/queries/mealsAPI/getMeals");
+const { getSuggestedMeals } = require("./db/dbMongo/queries/mealsAPI/getSuggestedMeals");
+
 const {
   getAllProducts,
 } = require("./db/dbMongo/queries/productsAPI/getAllProducts");
@@ -137,6 +139,7 @@ app.get("/get_store_products", async (req, res) => {
   // console.log(vari);
 });
 app.get("/api/get-meals", getMeals);
+app.get("/api/get-suggested-meals", getSuggestedMeals);
 app.get("/api/get-all-products", getAllProducts);
 
 app.post("/api/login", authenticateLoginToken);

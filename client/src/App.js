@@ -6,9 +6,11 @@ import ProductsSection from "./components/productsPage/ProductsPage";
 import Login from "./components/Login";
 import GroceryPage from "./components/GroceryPage";
 import SignUp from "./components/signup";
+// import SignIn from "./components/SignIn/SignInSide";
 import ForgotPassword from "./components/forgotpassword";
 import ResetPassword from "./components/resetpassword";
 import SuggestMeal from "./components/SuggestMeal";
+import ViewSuggestedMeals from "./components/ViewSuggestedMeals";
 import FooterPage from "./components/FooterPage";
 class App extends Component {
   constructor(props) {
@@ -428,7 +430,6 @@ class App extends Component {
             path="/signup"
             render={(props) => <SignUp {...props} />}
           />
-
           <Route
             exact
             path="/resetpass"
@@ -500,6 +501,12 @@ class App extends Component {
             path="/SuggestMeal"
             render={(props) => <SuggestMeal />}
           />
+           <Route
+            exact
+            path="/ViewSuggestedMeals"
+            render={(props) => <ViewSuggestedMeals />}
+          />
+          
         </Switch>
         <FooterPage />
       </div>

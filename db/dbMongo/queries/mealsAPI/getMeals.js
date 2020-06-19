@@ -8,5 +8,5 @@ exports.getMeals = (req, res) => {
         data: resMeals,
       });
     })
-    .catch(() => ({ code: 500, msg: "sorry , found Inernal server error" }));
+    .catch(() => ({ code: 500, msg: "sorry , found Internal server error when getting meals" }));
 };
