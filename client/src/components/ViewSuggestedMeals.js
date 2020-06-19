@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import MyModal from "./mealsPage/Mymodal";
-import WithScrollbar from "./mealsPage/product_slider/WithScrollbar";
+// import MyModal from "./mealsPage/Mymodal";
+// import WithScrollbar from "./mealsPage/product_slider/WithScrollbar";
 
 class ViewSuggestedMeals extends Component {
 
@@ -77,9 +77,9 @@ class ViewSuggestedMeals extends Component {
       //console.log();
       // var base_index = 0;
       console.log(value);
-      const mealPrep = value.instructions.map(step => (
-        <text key={value.label + " - " + step}> {step} <br></br></text>
-      ));
+      // const mealPrep = value.instructions.map(step => (
+      //   <text key={value.label + " - " + step}> {step} <br></br></text>
+      // ));
       // console.log(mealPrep);
 
       // const instructionsLength = value.instructions.length;
