@@ -25,8 +25,8 @@ exports.resetPassword = (req, res, next) => {
                             res.status(200).send(JSON.stringify({ msg: 'Your password has reset.', done: true }))
                         }, e => {
                             console.log(e)
-
                         })
+
                     }).catch((e) => {
                         console.log(e)
 
@@ -38,10 +38,7 @@ exports.resetPassword = (req, res, next) => {
         }).catch(e => {
             res.status(500).send(JSON.stringify({ msg: 'Internal server error' }))
         });
-
-
     }
-
 };
 
 exports.forgotPassword = (req, res, next) => {
@@ -49,7 +46,6 @@ exports.forgotPassword = (req, res, next) => {
     checkEmailUser(email).then((result) => {
         if (result.rows[0]) {
             let token = crypto.randomBytes(20).toString('hex');
-
 
             let sql = {
                 text: 'UPDATE customer SET passwordtoken=$1 WHERE id=$2 RETURNING passwordtoken',
@@ -65,10 +61,6 @@ exports.forgotPassword = (req, res, next) => {
                 console.log(e)
 
             })
-
-
-
-
         } else {
             res.status(400).send(JSON.stringify({ msg: 'your email does not exist.' }))
         }
@@ -79,10 +71,13 @@ exports.forgotPassword = (req, res, next) => {
 };
 
 exports.signupCustomer = (req, res, next) => {
+    console.log("req.body," , req);
+    console.log("req.res," , res);
     const { email, password, username, phone, emailNotification } = req.body;
+    
+
     checkEmailUser(email)
         .then((result) => {
-
             if (!result.rows[0]) {
                 getHashPassword(password)
                     .then((hashedPass) => {

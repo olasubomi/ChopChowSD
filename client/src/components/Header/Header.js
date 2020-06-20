@@ -37,6 +37,7 @@ class Header extends Component {
     console.log("customerID is:" + customerId);
   }
 
+
   componentDidMount() {
     console.log("Comes in app.js's component did mount");
     this.authenticateUser();
