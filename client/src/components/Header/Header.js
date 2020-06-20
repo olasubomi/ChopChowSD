@@ -128,6 +128,7 @@ class Header extends Component {
       customerId,
     } = this.state;
     const items = [];
+
     /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
     function myFunction() {
       var x = document.getElementById("mobileNavbar");
@@ -139,14 +140,14 @@ class Header extends Component {
         x.className = "mobileNavbar";
       }
 
-      // var y = document.getElementById("myTopnav2");
-      // if (y.className === "topnav"){
-      //     y.className += " responsive";
-      //   }
-      //   else{
-      //       //sync test nav bar as well
-      //       y.className = "topnav";
-      //   }
+      var y = document.getElementById("myTopnav2");
+      if (y.className === "topnav"){
+          y.className += " responsive";
+        }
+        else{
+            //sync test nav bar as well
+            y.className = "topnav";
+        }
     }
 
     var login_on_desktop_navbar;
@@ -193,6 +194,8 @@ class Header extends Component {
     }
     return (
         <div>
+          <div className={this.state.topNav_className} id="myTopnav">
+
           <nav
             className="navbar navbar-expand-md fixed-top-sm justify-content-start flex-nowrap  navbar-light "
             style={{
@@ -258,6 +261,7 @@ class Header extends Component {
               ></i>
             </Link>
           </nav>
+          </div>
            {/* Burger navbar */}
           <div
             className="mobileNavbar"
