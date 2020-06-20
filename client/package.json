@@ -2,22 +2,23 @@
   "name": "chop_chow_sd",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
+    "@material-ui/lab": "^4.0.0-alpha.55",
     "bootstrap": "^4.3.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.1",
+    "mdbreact": "^4.27.0",
     "passport-facebook": "^3.0.0",
-    "pure-react-carousel": "^1.21.1",
+    "pure-react-carousel": "^1.25.1",
     "react": "^16.8.6",
-    "react-bootstrap": "^0.32.4",
+    "react-bootstrap": "^1.0.0-beta.8",
     "react-bootstrap-typeahead": "^3.4.6",
     "react-dom": "^16.8.6",
-    "react-leaf-carousel": "^1.2.2",
-    "react-multi-carousel": "^2.2.2",
     "react-page-layout": "^0.9.8",
-    "react-responsive-carousel": "^3.1.49",
-    "react-router-dom": "^5.0.1",
-    "react-scripts": "^2.1.8",
-    "reactjs-popup": "^1.4.2",
+    "react-responsive-carousel": "^3.1.50",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^3.4.1",
+    "reactjs-popup": "^1.5.0",
     "reactstrap": "^7.1.0",
     "source-map-explorer": "^1.8.0"
   },
@@ -39,12 +40,16 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "proxy": "http://localhost:5000",
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@storybook/addon-actions": "^5.1.10",
     "@storybook/addon-links": "^5.1.10",
     "@storybook/addons": "^5.1.10",
     "@storybook/react": "^5.1.10"
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
