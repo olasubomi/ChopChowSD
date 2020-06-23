@@ -8,6 +8,7 @@ const MongoClient = require("mongodb").MongoClient;
 const mongoose = require("mongoose");
 require("dotenv").config();
 const pw = process.env.MongoPassword;
+const chalk = require('chalk');
 const uri =
   "mongodb+srv://Olasubomi:" +
   pw +
@@ -113,7 +114,7 @@ app.get("/get_store_products", async (req, res) => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-  console.log("Calling servers get_store_products to Mongo");
+    console.log("Calling servers get_store_products to Mongo");
   //Check if we connected to the database or not
   let db = mongoose.connection;
   // let vari =  await db.collection("Store_Products").countDocuments();
