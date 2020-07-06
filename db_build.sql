@@ -1,9 +1,6 @@
 BEGIN;
-DROP TABLE IF EXISTS customer,
-admin,
-supplier,
-list,
-customer_list;
+DROP TABLE IF EXISTS customer,admin,supplier,list,customer_list;
+
 CREATE TABLE list (
   id SERIAL PRIMARY KEY,
   product_name TEXT NOT NULL,

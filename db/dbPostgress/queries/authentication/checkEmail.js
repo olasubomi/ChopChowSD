@@ -8,6 +8,25 @@ const dbconnection = require('../../config/db_connection');
       text: 'SELECT * FROM customer WHERE email = $1',
       values: [email],
     };
+    conn = dbconnection.query(sql);    
+    console.log(conn);
+   } catch(e) {
+    console.log("fails to find email for customer ")
+    //  debugger
+    //  console.log("fails to find email for customer ")
+   }
+
+  return conn;
+};
+
+const checkEmail_admin = (email) => {
+  let conn; 
+  try {
+    console.log("Attempts to query database");
+    const sql = {
+      text: 'SELECT * FROM admin WHERE email = $1',
+      values: [email],
+    };
     conn = dbconnection.query(sql);
     console.log(conn);
    } catch(e) {
@@ -18,6 +37,47 @@ const dbconnection = require('../../config/db_connection');
 
   return conn;
 };
+
+
+const checkEmail_customer = (email) => {
+  let conn; 
+  try {
+    console.log("Attempts to query database");
+    const sql = {
+      text: 'SELECT * FROM customer WHERE email = $1',
+      values: [email],
+    };
+    conn = dbconnection.query(sql);
+    console.log(conn);
+   } catch(e) {
+    console.log("fails to find email for customer ")
+    //  debugger
+    //  console.log("fails to find email for customer ")
+   }
+
+  return conn;
+};
+
+
+const checkEmail_supplier = (email) => {
+  let conn; 
+  try {
+    console.log("Attempts to query database");
+    const sql = {
+      text: 'SELECT * FROM supplier WHERE email = $1',
+      values: [email],
+    };
+    conn = dbconnection.query(sql);
+    console.log(conn);
+   } catch(e) {
+    console.log("fails to find email for customer ")
+    //  debugger
+    //  console.log("fails to find email for customer ")
+   }
+
+  return conn;
+};
+
 
 const checkEmailUser = (email) => {
   let conn; 
@@ -51,4 +111,4 @@ const checkValideToken = (token) => {
 };
 
 
- module.exports = { checkEmail, checkEmailUser, checkValideToken };
+ module.exports = { checkEmail, checkEmail_admin, checkEmail_customer,checkEmail_supplier, checkEmailUser, checkValideToken };

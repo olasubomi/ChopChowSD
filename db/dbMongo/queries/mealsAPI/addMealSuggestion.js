@@ -1,5 +1,7 @@
 const { suggested_meals } = require("../../config/db_buildSchema");
-exports.addMealSuggestion = (req, res) => {
+
+exports.addMealSuggestion = (req, res) =>{
+  console.log('****creat meal data****', req.body);
   console.log("Comes in meal suggestion handler");
   console.log(req.body);
   const mealIngredients = req.body.ingredientStrings;
@@ -8,20 +10,20 @@ exports.addMealSuggestion = (req, res) => {
   console.log(mealIngredients);
 
   //check if mealIngredients all exist
-
-  console.log(req.body.mealIngredients);
+  // console.log(" req.body : ", JSON.parse(req.body.instructionsChip));
+  console.log("imgSrc:",req.file);
 
   const mealObject = {
     label: req.body.mealLabel,
-    imageSrc: "/images/meal_pics/" + req.body.imgSrc,
-    readTime: req.body.cookTime,
+    imageSrc: "uploads/" + req.file.filename,
+    readTime: req.body.readTime,
     cookTime: req.body.cookTime,
     intro: req.body.intro,
-    newer_ingredient_format: req.body.formatted_ingredient,
+    newer_ingredient_format: JSON.parse(req.body.formatted_ingredient),
     ingredients: req.body.ingredientStrings,
-    instructions: req.body.instructions,
+    instructions: JSON.parse(req.body.instructionsChip),
     servings: req.body.servings,
-    categories: req.body.categoryChips,
+    categories: JSON.parse(req.body.categoryChips),
     display: false,
   };
 
