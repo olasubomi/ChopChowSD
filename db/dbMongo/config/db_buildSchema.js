@@ -48,19 +48,18 @@ exports.suggested_meals = mongoose.model(
   "suggested_meals",
   new Schema({
     label: String,
-    imageSrc: {
-      required: true,
-      type:String
-    },
+    mealImage: String,
     readTime: String,
     cookTime: String,
     intro: String,
+    product_slider: [{ ingredient: String, image: String }],
     newer_ingredient_format: [
       { product: String, quantity: Number, measurement: String, image: String },
     ],
     servings: Number,
     categories: Array,
     instructions: Array,
+    display: Boolean
   })
 );
 
