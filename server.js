@@ -28,7 +28,8 @@ var storage = multer.diskStorage(
   {
       destination: 'client/build/uploads/',
       filename: function ( req, file, cb ) {
-          cb( null, randomString()+"_"+file.originalname);
+          const str1=randomString().replace("+","").replace("-","").replace("/","").replace("*","").replace("/","").replace("?","")
+          cb( null, str1+"_"+file.originalname);
       }
   }
 );
@@ -42,7 +43,9 @@ const {  authenticationSignup,} = require("./controllers/authentication/authenti
 const authunticationLogout = require("./controllers/authentication/authunticationLogout");
 const {  signupCustomer,  forgotPassword,  resetPassword,} = require("./controllers/authentication/signup");
 const {  addMealSuggestion,} = require("./db/dbMongo/queries/mealsAPI/addMealSuggestion");
+const { sendMealtable, } = require("./db/dbMongo/queries/mealsAPI/sendMealtable");
 const { updateSuggestedMealItem, } = require("./db/dbMongo/queries/list/updateSuggestedMealItem");
+
 
 const app = express();
 const path = require("path");
@@ -147,8 +150,10 @@ app.post("/api/forgotpass", forgotPassword);
 app.post("/api/resetpass", resetPassword);
 app.post("/api/signupuser", signupCustomer);
 app.post("/api/signup/:newcustomerId", authenticationSignup);
-app.post("/api/addMealSuggestion/", upload.single('imgSrc'), addMealSuggestion);
-app.post("/api/updateSuggestItem/", upload.single('imgSrc'), updateSuggestedMealItem);
+
+app.post("/api/send-mealData", sendMealtable);
+app.post("/api/addMealSuggestion/", upload.array('imgSrc'), addMealSuggestion);
+app.post("/api/updateSuggestItem/", upload.array('imgSrc'), updateSuggestedMealItem);
 
 // app.post('/api/appendItem',appendItem)
 app.delete("/api/remove-list/:customerId", removeList);
