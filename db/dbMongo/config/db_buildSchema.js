@@ -8,7 +8,6 @@ exports.all_products = mongoose.model(
     product_name: String,
     product_image: String,
     product_price: String,
-    measurement: Array,
     sizes: Array,
     respective_prices: Array,
   })

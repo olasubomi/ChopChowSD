@@ -1,4 +1,4 @@
-const { suggested_meals } = require("../../config/db_buildSchema");
+const { suggested_meals , all_products} = require("../../config/db_buildSchema");
 
 exports.addMealSuggestion = (req, res) =>{
   const url = req.protocol + '://' + req.get('host')
@@ -21,6 +21,17 @@ exports.addMealSuggestion = (req, res) =>{
     if(ingredient_list[i].path_flag){
       n += 1;
       product_slider.push({ingredient: newer_ingredient_format[i].product, image: url+"/uploads/" + req.files[n].filename, flag:ingredient_list[i].path_flag});
+
+      const row_product = {
+        sizes:JSON.parse('["50lbs"]'),
+        respective_prices: JSON.parse('[]'),
+        id:11,
+        product_name: newer_ingredient_format[i].product,
+        product_image: url+"/uploads/" + req.files[n].filename,
+        product_price: "12",
+      };
+      all_products.create(row_product);
+
     }else{
       product_slider.push({ingredient: newer_ingredient_format[i].product, image:ingredient_list[i].path, flag:ingredient_list[i].path_flag});
     }
