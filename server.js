@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const Crypto = require('crypto');
-function randomString(size = 21) {  
+function randomString(size = 15) {  
   return Crypto
     .randomBytes(size)
     .toString('base64')
@@ -18,23 +18,17 @@ function randomString(size = 21) {
 
 const pw = process.env.MongoPassword;
 const chalk = require('chalk');
-const uri =
-  "mongodb+srv://Olasubomi:" +
-  pw +
-  "@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
+const uri = "mongodb+srv://Olasubomi:" +pw +"@cluster0-sqg7f.mongodb.net/Product_Supply?retryWrites=true&w=majority";
 require("./db/dbMongo/config/db_connection");
-var multer  = require('multer');
-var storage = multer.diskStorage(
-  {
-      destination: 'client/build/uploads/',
-      filename: function ( req, file, cb ) {
-          const str1=randomString().replace("+","").replace("-","").replace("/","").replace("*","").replace("/","").replace("?","")
-          cb( null, str1+"_"+file.originalname);
-      }
-  }
-);
-var upload = multer( { storage: storage } )
 
+const app = express();
+const path = require("path");
+const port = process.env.PORT || 5000;
+const facebook = require("./routes/facebook");
+const login = require("./routes/manual_login");
+const bodyParser = require("body-parser");
+
+//----------------------------------------------------------------------------------
 const { authenticateLoginToken,} = require("./controllers/authentication/1.authenticateLoginToken");
 const {  isAuthenticated,} = require("./controllers/authentication/3.isAuthenticated");
 const verifyAuthentication = require("./controllers/authentication/2.verifyTokenAuthenticator.js");
@@ -45,44 +39,96 @@ const {  signupCustomer,  forgotPassword,  resetPassword,} = require("./controll
 const {  addMealSuggestion,} = require("./db/dbMongo/queries/mealsAPI/addMealSuggestion");
 const { sendMealtable, } = require("./db/dbMongo/queries/mealsAPI/sendMealtable");
 const { updateSuggestedMealItem, } = require("./db/dbMongo/queries/list/updateSuggestedMealItem");
-
-
-const app = express();
-const path = require("path");
-
-
-const port = process.env.PORT || 5000;
-const facebook = require("./routes/facebook");
-const login = require("./routes/manual_login");
-const bodyParser = require("body-parser");
 const {  getCustomerGroceryList,} = require("./db/dbMongo/queries/list/getCustomerGroceryList");
 const {  getAllDataLists,} = require("./db/dbMongo/queries/list/getAllDataLists");
-
 const { getMeals } = require("./db/dbMongo/queries/mealsAPI/getMeals");
 const { getSuggestedMeals } = require("./db/dbMongo/queries/mealsAPI/getSuggestedMeals");
-
 const {  getAllProducts,} = require("./db/dbMongo/queries/productsAPI/getAllProducts");
-
 // const appendItem = require('./db/dbMongo/queries/list/appendItem')
 const removeItem = require("./db/dbMongo/queries/list/removeItem");
 const removeSuggestedMealItem = require("./db/dbMongo/queries/list/removeSuggestedMealItem");
-
 
 // const createList = require('./db/dbMongo/queries/list/createList')
 const removeList = require("./db/dbMongo/queries/list/removeList");
 const getIdsItems = require("./db/dbMongo/queries/list/getIdsItems");
 // const getCustomersLists = require('./db/dbMongo/queries/list/getCustomersLists') // commented out until needed
 const getIdsCustomers = require("./controllers/authentication/getIdsCustomers");
-
 const getItemId = require("./db/dbMongo/queries/list/getItemId");
 const getDataItemTypeahead = require("./db/dbMongo/queries/list/getDataItemTypeahead");
 const addGroceryItemToCustomerList = require("./db/dbMongo/queries/list/addGroceryItemToCustomerList");
+const {  getAllCategories,} = require("./db/dbMongo/queries/mealsAPI/getAllCategories");
 
+//----------------------------------------------------------------------------------
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(cookie());
 // app.use(sslRedirect());
 app.use(cors());
+
+app.use("/facebook", facebook);
+app.use(express.static(path.join(__dirname, "client", "build")));
+
+app.use(
+  bodyParser.urlencoded({
+    // Middleware
+    extended: true,
+  })
+);
+app.use(bodyParser.json());
+
+//***********************************************************************************
+var multer  = require('multer');
+var storage = multer.diskStorage(
+  {
+      destination: 'client/build/uploads/',
+      filename: function ( req, file, cb ) {
+          const str1=randomString().replace("+","").replace("-","").replace("/","").replace("*","").replace("/","").replace("?","")
+          cb( null, str1+"_"+file.originalname);
+      }
+  }
+);
+var upload = multer( { storage: storage } );
+
+app.post("/api/addMealSuggestion/", upload.array('imgSrc'), addMealSuggestion);
+app.post("/api/updateSuggestItem/", upload.array('imgSrc'), updateSuggestedMealItem);
+
+
+//***********************************************************************************
+var insrtucionImg_multer  = require('multer');
+var insrtucionImg_storage = insrtucionImg_multer.diskStorage(
+  {
+      destination: 'client/build/instruction/',
+      filename: function ( req, file, cb ) {
+          const str1=randomString().replace("+","").replace("-","").replace("/","").replace("*","").replace("/","").replace("?","")
+          cb( null, str1+"_"+file.originalname);
+      }
+  }
+);
+var insrtucionImg_upload = insrtucionImg_multer( { storage: insrtucionImg_storage } );
+
+const {  getInstructionImgPath,} = require("./db/dbMongo/queries/mealsAPI/getInstructionImgPath");
+
+app.post("/api/getInstructionImgURL/", insrtucionImg_upload.array('instructionImgs'), getInstructionImgPath);
+
+//***********************************************************************************
+var productImg_multer  = require('multer');
+var productImg_storage = productImg_multer.diskStorage(
+  {
+      destination: 'client/build/uploads/products/',
+      filename: function ( req, file, cb ) {
+          const str1=randomString().replace("+","").replace("-","").replace("/","").replace("*","").replace("/","").replace("?","")
+          cb( null, str1+"_"+file.originalname);
+      }
+  }
+);
+var productImg_upload = productImg_multer( { storage: productImg_storage } );
+
+const {  getProductImgPath,} = require("./db/dbMongo/queries/mealsAPI/getProductImgPath");
+
+app.post("/api/getProductImgURL/", productImg_upload.array('productImgs'), getProductImgPath);
+
+
+
 // const corsOptions = {
 //     origin: 'http://localhost:3000',
 //     credentials: true,
@@ -98,16 +144,7 @@ app.use(cors());
 //     next();
 //   });
 
-app.use("/facebook", facebook);
-app.use(express.static(path.join(__dirname, "client", "build")));
 
-app.use(
-  bodyParser.urlencoded({
-    // Middleware
-    extended: true,
-  })
-);
-app.use(bodyParser.json());
 
 // Serve static files from the React app
 
@@ -141,19 +178,19 @@ app.get("/get_store_products", async (req, res) => {
   // const vari = await
   // console.log(vari);
 });
+
 app.get("/api/get-meals", getMeals);
 app.get("/api/get-suggested-meals", getSuggestedMeals);
 app.get("/api/get-all-products", getAllProducts);
+app.get("/api/get-all-categories", getAllCategories);
 
 app.post("/api/login", authenticateLoginToken);
 app.post("/api/forgotpass", forgotPassword);
 app.post("/api/resetpass", resetPassword);
 app.post("/api/signupuser", signupCustomer);
 app.post("/api/signup/:newcustomerId", authenticationSignup);
-
 app.post("/api/send-mealData", sendMealtable);
-app.post("/api/addMealSuggestion/", upload.array('imgSrc'), addMealSuggestion);
-app.post("/api/updateSuggestItem/", upload.array('imgSrc'), updateSuggestedMealItem);
+
 
 // app.post('/api/appendItem',appendItem)
 app.delete("/api/remove-list/:customerId", removeList);
@@ -165,7 +202,6 @@ app.get("/api/removeSeggestItem/:suggestedMealID", removeSuggestedMealItem);
 app.get("/api/get-ids-items/:customerId", getIdsItems);
 // app.get('/api/get-customers-lists', getCustomersLists)
 app.get("/api/get-ids-customers", getIdsCustomers);
-
 app.get("/api/get-data-item/:idItem", getItemId);
 
 app.get("/api/get-data-typeahead/:option", getDataItemTypeahead);
@@ -173,25 +209,17 @@ app.get("/hash", hashPassword);
 app.get("/api/logout", authunticationLogout);
 
 app.get("/api/authenticate-app-page", verifyAuthentication, isAuthenticated);
-app.get(
-  "/api/getCustomerGroceryList/:customerId",
-  verifyAuthentication,
-  getCustomerGroceryList
-);
+app.get( "/api/getCustomerGroceryList/:customerId", verifyAuthentication, getCustomerGroceryList);
 app.get("/api/get-all-data-lists", getAllDataLists);
+app.post(  "/api/addTypeaheadDataToCustomerGroceryList/:idItem/:customerId",  addGroceryItemToCustomerList.add);
 
-app.post(
-  "/api/addTypeaheadDataToCustomerGroceryList/:idItem/:customerId",
-  addGroceryItemToCustomerList.add
-);
-
-app.get("*", (_req, res) => {
+app.get("*", (_req, res) => {  
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
-app.get("/test", (req, res) => {
-  console.log("To test page");
-  res.send(JSON.stringify(req.session));
+app.get("/test", (req, res) => { 
+   console.log("To test page");  
+   res.send(JSON.stringify(req.session));
 });
 
 app.get("/redirect", (req, res) => {

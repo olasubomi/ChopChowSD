@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { array } = require("yup");
 const Schema = mongoose.Schema;
 
 exports.all_products = mongoose.model(
@@ -37,7 +38,7 @@ exports.meals = mongoose.model(
     ],
     servings: Number,
     categories: Array,
-    instructions: Array,
+    instructions: [ { step: Object, image: String }],
     display: Boolean,
   })
 );
@@ -56,7 +57,7 @@ exports.suggested_meals = mongoose.model(
     ],
     servings: Number,
     categories: Array,
-    instructions: Array,
+    instructions: [ { step: Object, image: String }],
     display: Boolean
   })
 );
