@@ -83,6 +83,23 @@ app.use(express.json());
 app.use(cookie());
 // app.use(sslRedirect());
 app.use(cors());
+// const corsOptions = {
+//     origin: 'http://localhost:3000',
+//     credentials: true,
+// }
+
+// app.use(cors(corsOptions));
+
+app.use(function(req, res, next) {
+  // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Origin",
+    'https://chopchow.herokuapp.com/login',
+    'https://chopchow-client.herokuapp.com/login',
+    'https://chopchow-devclient.herokuapp.com/login'); 
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 app.use("/facebook", facebook);
 app.use(express.static(path.join(__dirname, "client", "build")));
@@ -145,25 +162,6 @@ var productImg_upload = productImg_multer( { storage: productImg_storage } );
 const {  getProductImgPath,} = require("./db/dbMongo/queries/mealsAPI/getProductImgPath");
 
 app.post("/api/getProductImgURL/", productImg_upload.array('productImgs'), getProductImgPath);
-
-
-
-// const corsOptions = {
-//     origin: 'http://localhost:3000',
-//     credentials: true,
-// }
-
-// app.use(cors(corsOptions));
-
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", 'http://localhost:3000'); // update to match the domain you will make the request from
-//     // res.header("Access-Control-Allow-Origin", );
-//     // res.header('Access-Control-Allow-Credentials', true);
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-//   });
-
-
 
 // Serve static files from the React app
 
