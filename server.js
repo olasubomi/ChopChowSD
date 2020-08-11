@@ -22,8 +22,26 @@ const uri = "mongodb+srv://Olasubomi:" +pw +"@cluster0-sqg7f.mongodb.net/Product
 require("./db/dbMongo/config/db_connection");
 
 const app = express();
+
+var whitelist = ['http://localhost:3000','http://localhost:5000',
+'https://chopchow.herokuapp.com', 'https://chopchow-client.herokuapp.com/',
+'https://chopchow-devclient.herokuapp.com/']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  methods: 'GET,PUT,POST,DELETE,OPTIONS',
+  allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json',
+  credentials: true
+}
 const path = require("path");
 const port = process.env.PORT || 5000;
+
+
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 const bodyParser = require("body-parser");
