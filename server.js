@@ -83,15 +83,15 @@ var corsOptions = {
 }
 app.use(cors(corsOptions));
 
-app.use(function(req, res, next) {
-  // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Origin",
-    'https://chopchow.herokuapp.com/',
-    'https://chopchow.herokuapp.com/login'); 
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+// app.use(function(req, res, next) {
+//   // update to match the domain you will make the request from
+//     res.header("Access-Control-Allow-Origin",
+//     'https://chopchow.herokuapp.com/',
+//     'https://chopchow.herokuapp.com/login'); 
+//     res.header('Access-Control-Allow-Credentials', true);
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+//   });
 
 app.use("/facebook", facebook);
 app.use(express.static(path.join(__dirname, "client", "build")));
