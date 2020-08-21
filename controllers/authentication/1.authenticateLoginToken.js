@@ -17,7 +17,6 @@ exports.authenticateLoginToken = (req, res, next) => {
   const memberInfo = { ...req.body };
   if (memberInfo) {
     checkEmail_admin(memberInfo.email).then((result) => {
-        console.log(chalk.red("____ sssss___"), result);
         if (result.rows[0]) {
           bcrypt.compare( memberInfo.password, result.rows[0].password, (err, valid) => {
               console.log(  "response with customer id in create login token is: ");
