@@ -66,10 +66,10 @@ app.use(express.json());
 app.use(cookie());
 // app.use(sslRedirect());
 var whitelist = ['http://localhost:3000','http://localhost:5000',
-'https://chopchow.herokuapp.com',
+'https://chopchow.herokuapp.com','http://chopchow.herokuapp.com',
 'https://chopchowsd.herokuapp.com','https://chopchowsd.herokuapp.com/login',
-'https://chopchow-client.herokuapp.com',
-'https://chopchow-devclient.herokuapp.com','https://chopchow-devclient.herokuapp.com/login']
+'https://chopchow-client.herokuapp.com','http://chopchow-client.herokuapp.com',
+'https://chopchow-devclient.herokuapp.com','http://chopchow-devclient.herokuapp.com/']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
