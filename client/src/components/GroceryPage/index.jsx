@@ -44,107 +44,94 @@ export default class GroceryPage extends React.Component {
     this.setState({ [name]: value });
 
   componentDidMount() {
-    this._isMounted = true;
-    if (this._isMounted) {
-      const { auth, customerId } = this.props;
-      this.setState({ Authentication: auth });
-      this.setState({ customerId: customerId });
-      this.getCustomerList(customerId);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
     // checks if user is already logged in in app.
-    const { auth, customerId } = nextProps;
+    const { auth, customerId } = this.props;
+
     console.log("comes in grocery page cdm");
     this.setState({ Authentication: auth });
     this.setState({ customerId: customerId });
 
-    console.log("this.props, ", nextProps);
-
     if (auth === true) {
       // or if (customerId !== null) , grocery page not displaying after login click
-      this.getCustomerList(customerId);
+
+      var localToken = window.localStorage.getItem("userToken");
+      console.log("customder id  iss: " + customerId);
+      var url = `./api/getCustomerGroceryList/${customerId}`;
+      // var url = `http://localhost:5000/api/getCustomerGroceryList/${customerId}`
+
+      fetch(url, {
+        method: "GET",
+        // credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localToken,
+        },
+      })
+        .then((res) => {
+          console.log("customer list response is ");
+          console.log(res);
+          return res.json();
+        })
+        .then((response) => {
+          if (response) {
+            this.setState({ customerList: response.data });
+          }
+        })
+        .catch(() => {
+          this.setState(
+            {
+              messageAlert:
+                "Authentication Error while fetching your grocery list...",
+              showAlert: true,
+              variant: "danger",
+            },
+            () =>
+              setTimeout(() => {
+                this.setState({ messageAlert: "", showAlert: false });
+              }, 8000)
+          );
+        });
+
+      // url = "https://chopchowdev.herokuapp.com/api/get-all-products";
+      // url = `http://localhost:5000/api/get-all-products`
+      url = "./api/get-all-products";
+      // or should we call this in App.js and pass it as a prop ??
+
+      fetch(url, {
+        method: "GET",
+        // credentials: 'include',
+        // headers: {
+        //   'Content-Type': 'application/json',
+        // }
+      })
+        .then((res) => res.text())
+        .then((body) => {
+          // console.log("should print body");
+          // console.log(body);
+          var productsList = JSON.parse(body);
+          console.log("PRINTING ALL PRODUCTS LIST");
+          // console.log(productsList);
+          if (productsList && productsList.data.length !== 0) {
+            console.log("returns GET ALL PRODUCTS ");
+            console.log(productsList.data.length);
+            for (var i = 0; i < productsList.data.length; i++) {
+              this.products.push(productsList.data[i]);
+              this.productNamesForTypeahead.set(
+                productsList.data[i].product_name,
+                productsList.data[i].id
+              );
+            }
+            console.log(this.products);
+            console.log(this.productNamesForTypeahead);
+          } else {
+            console.log("get all products function does not return");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
-  getCustomerList = (customerId) => {
-    var localToken = window.localStorage.getItem("userToken");
-    console.log("customder id  iss: " + customerId);
-    var url = `./api/getCustomerGroceryList/${customerId}`;
-    // var url = `http://localhost:5000/api/getCustomerGroceryList/${customerId}`
-
-    fetch(url, {
-      method: "GET",
-      // credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localToken,
-      },
-    })
-      .then((res) => {
-        console.log("customer list response is ");
-        console.log(res);
-        return res.json();
-      })
-      .then((response) => {
-        if (response) {
-          this.setState({ customerList: response.data });
-        }
-      })
-      .catch(() => {
-        this.setState(
-          {
-            messageAlert:
-              "Authentication Error while fetching your grocery list...",
-            showAlert: true,
-            variant: "danger",
-          },
-          () =>
-            setTimeout(() => {
-              this.setState({ messageAlert: "", showAlert: false });
-            }, 8000)
-        );
-      });
-
-    // url = "https://chopchowdev.herokuapp.com/api/get-all-products";
-    // url = `http://localhost:5000/api/get-all-products`
-    url = "./api/get-all-products";
-    // or should we call this in App.js and pass it as a prop ??
-
-    fetch(url, {
-      method: "GET",
-      // credentials: 'include',
-      // headers: {
-      //   'Content-Type': 'application/json',
-      // }
-    })
-      .then((res) => res.text())
-      .then((body) => {
-        // console.log("should print body");
-        // console.log(body);
-        var productsList = JSON.parse(body);
-        console.log("PRINTING ALL PRODUCTS LIST");
-        // console.log(productsList);
-        if (productsList && productsList.data.length !== 0) {
-          console.log("returns GET ALL PRODUCTS ");
-          console.log(productsList.data.length);
-          for (var i = 0; i < productsList.data.length; i++) {
-            this.products.push(productsList.data[i]);
-            this.productNamesForTypeahead.set(
-              productsList.data[i].product_name,
-              productsList.data[i].id
-            );
-          }
-          console.log(this.products);
-          console.log(this.productNamesForTypeahead);
-        } else {
-          console.log("get all products function does not return");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   handleShowDeleteItem = (productID) => {
     this.setState({ deletedItemId: productID });
     const { customerId, deletedItemId } = this.state;
@@ -300,9 +287,8 @@ export default class GroceryPage extends React.Component {
 
   render() {
     const { showAlert, variant, messageAlert, customerList } = this.state;
-    console.log("Authentication, ", this.state.Authentication);
-    console.log("customerId, ", this.state.customerId);
-    console.log("customerList, ", this.state.customerList);
+    console.log(this.state.Authentication);
+    console.log(this.state.customerId);
 
     return (
       <>
@@ -315,7 +301,7 @@ export default class GroceryPage extends React.Component {
             // console.log(selected);
             this.handleClickTypeahead(selected);
           }}
-        // filterBy={['product_name']}
+          // filterBy={['product_name']}
         />
 
         {/* Display alert if there is any issue loading grocery page */}
@@ -367,21 +353,21 @@ export default class GroceryPage extends React.Component {
                           {customer_grocery_product_item.product_image.startsWith(
                             "http://"
                           ) ||
-                            customer_grocery_product_item.product_image.startsWith(
-                              "data"
-                            ) ? (
-                              <img
-                                src={`${customer_grocery_product_item.product_image}`}
-                                alt="product_img "
-                                className="card-img"
-                              />
-                            ) : (
-                              <img
-                                src={`/images/products/${customer_grocery_product_item.product_image}`}
-                                alt="product_img "
-                                className="card-img"
-                              />
-                            )}
+                          customer_grocery_product_item.product_image.startsWith(
+                            "data"
+                          ) ? (
+                            <img
+                              src={`${customer_grocery_product_item.product_image}`}
+                              alt="product_img "
+                              className="card-img"
+                            />
+                          ) : (
+                            <img
+                              src={`/images/products/${customer_grocery_product_item.product_image}`}
+                              alt="product_img "
+                              className="card-img"
+                            />
+                          )}
                         </Col>
 
                         <Col>
@@ -424,20 +410,20 @@ export default class GroceryPage extends React.Component {
                     );
                   })
                 ) : (
-                    <Spinner animation="border" variant="info" />
-                  )}
+                  <Spinner animation="border" variant="info" />
+                )}
               </Container>
             </div>
           </>
         ) : (
-            <>
-              {/* <Login /> */}
-              <div>
-                Log into your account or continue as guest to load your grocery
-                list
+          <>
+            {/* <Login /> */}
+            <div>
+              Log into your account or continue as guest to load your grocery
+              list
             </div>
-            </>
-          )}
+          </>
+        )}
       </>
     );
 
