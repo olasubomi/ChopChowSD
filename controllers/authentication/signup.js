@@ -71,6 +71,8 @@ exports.forgotPassword = (req, res, next) => {
 };
 
 exports.signupCustomer = (req, res, next) => {
+    console.log("req.body," , req);
+    console.log("req.res," , res);
     const { email, password, username, phone, emailNotification } = req.body;
     
 

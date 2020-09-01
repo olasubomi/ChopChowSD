@@ -29,7 +29,6 @@ const port = process.env.PORT || 5000;
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 const bodyParser = require("body-parser");
-
 //----------------------------------------------------------------------------------
 const { authenticateLoginToken,} = require("./controllers/authentication/1.authenticateLoginToken");
 const {  isAuthenticated,} = require("./controllers/authentication/3.isAuthenticated");
@@ -104,7 +103,6 @@ app.use(
   })
 );
 app.use(bodyParser.json());
-
 //***********************************************************************************
 var multer  = require('multer');
 var storage = multer.diskStorage(
@@ -155,7 +153,6 @@ var productImg_upload = productImg_multer( { storage: productImg_storage } );
 const {  getProductImgPath,} = require("./db/dbMongo/queries/mealsAPI/getProductImgPath");
 
 app.post("/api/getProductImgURL/", productImg_upload.array('productImgs'), getProductImgPath);
-
 // Serve static files from the React app
 
 app.get("/get_store_products", async (req, res) => {
@@ -188,7 +185,6 @@ app.get("/get_store_products", async (req, res) => {
   // const vari = await
   // console.log(vari);
 });
-
 app.get("/api/get-meals", getMeals);
 app.get("/api/get-suggested-meals", getSuggestedMeals);
 app.get("/api/get-all-products", getAllProducts);
@@ -395,7 +391,6 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 //             res.redirect('/');
 //         }
 //     });
-
 // const { parse } = require('url');
 // require('dotenv').config();
 
@@ -445,7 +440,3 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 
 
 // // 
-
-
-
-

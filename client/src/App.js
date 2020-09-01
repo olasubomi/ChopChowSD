@@ -12,6 +12,7 @@ import ResetPassword from "./components/resetpassword";
 import SuggestMeal from "./components/SuggestMeal";
 import ViewSuggestedMeals from "./components/ViewSuggestedMeals";
 import FooterPage from "./components/FooterPage";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +33,6 @@ class App extends Component {
     console.log("updates log in status before");
     this.setState({ isAuthenticated: true });
     this.setState({ customerId: customerId });
-
     console.log("updates log in status after");
     console.log("customerID is:" + customerId);
 
@@ -115,7 +115,6 @@ class App extends Component {
         console.log("fails to authenticate app page");
         console.log(err);
       });
-
     this.setState({ isAuthenticated: false });
     window.location.reload(false);
   }
@@ -513,24 +512,4 @@ class App extends Component {
     );
   }
 }
-
-// const contentStyle = {
-//   // borderRadius: "25px",
-//   maxWidth: "100vw",
-//   maxHeight: "100vh",
-//   overflow: "scroll",
-//   width: "80%"
-// };
-
-/* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
-// function myFunction() {
-//     var x = document.getElementById("myTopnav");
-//     console.log("Hello World 2");
-//     // if (x.className === "topnav") {
-//     //   x.className += " responsive";
-//     // } else {
-//     //   x.className = "topnav";
-//     // }
-//   }
-
 export default App;

@@ -175,9 +175,11 @@
     text-align: center;
   }
 }
-@media only screen and (max-width: 992px) {
-  .login__form {
-    width: 95%;
+
+@media(max-width: 767px) {
+  .custom-card1 {
+    width: 98% !important;
+    margin-left: 1% !important;
   }
 
   /* .loginformmm .modal-body {

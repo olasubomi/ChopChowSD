@@ -1,6 +1,4 @@
 const { checkEmail, checkEmail_admin, checkEmail_customer, checkEmail_supplier} = require("../../db/dbPostgress/queries/authentication/checkEmail");
-
-
 const { jwt, sign } = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const chalk = require('chalk');
