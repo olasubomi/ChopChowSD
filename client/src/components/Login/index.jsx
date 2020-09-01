@@ -1,8 +1,6 @@
 import React from "react";
 import "./style.css";
 import { Form, Button, Container, Modal } from "react-bootstrap";
-
-
 import { Link } from "react-router-dom";
 
 export default class Login extends React.Component {
@@ -101,90 +99,66 @@ export default class Login extends React.Component {
 
   render() {
     const { email, password, messageErr, messageSuccess } = this.state;
-    return (
-      <>
-        <Container>
-          <Modal
+    return (      
+      <Container>
+            <Modal 
             show={true}
             onHide={this.handleClose}
-            className="modal loginform"
+            className="text-center custom-card1"
             backdrop="static"
-          >
-            <Modal.Body>
-              <Form className="login__form">
-                <div className="login__form-div-title">
-                  <h2 className="login__form-title">Log in to View Grocery</h2>
-                </div>
-                <div className="vl">
-                  <span className="vl-innertext">or</span>
-                </div>
-                <div className="col">
-                  <button className="fb btn">
-                    <i className="fa fa-facebook fa-fw"></i> Login with Facebook
-                  </button>
-                  <button className="google btn">
-                    <i className="fa fa-google fa-fw"></i> Login with Google+
-                  </button>
-                </div>
+            size="lg"
+            >
+            <Modal.Header closeButton>
+              <Modal.Title className="text-center" >Log In to View your Grocery List</Modal.Title>
+            </Modal.Header>
+              <Modal.Body>
+                <Row>
+                  <Col md={5}>
+                    <Button className="fb-btn mb-3 px-3 py-2">Login In with Facebook</Button>
+                    <Button className="google-btn px-3 py-2">Login In with Google</Button>
+                  </Col>
+                  <Col md={1} className="or">
+                    or
+                  </Col>
+                  <Col md={6} className="d-block right-panel">
+                    <Form>
+                      <Form.Control 
+                        type="text" 
+                        name="email"
+                        value={email}
+                        placeholder="Your Email or Username" 
+                        onChange={this.handleChange}
+                        className="login__form__input1"
+                        autoComplete="username"
+                      />
+                      <Form.Control 
+                        type="password"
+                        name="password"
+                        value={password}
+                        placeholder="Your password"
+                        onChange={this.handleChange}
+                        className="login__form__input"
+                        autoComplete="current-password"
+                        />
 
-                <Form.Group>
-                  <Form.Label className="login__form__label">Email</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="email"
-                    value={email}
-                    placeholder="Enter your email"
-                    onChange={this.handleChange}
-                    className="login__form__input"
-                    autoComplete="username"
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label className="login__form__label">
-                    Password
-                  </Form.Label>
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    value={password}
-                    placeholder="Enter your password"
-                    onChange={this.handleChange}
-                    className="login__form__input"
-                    autoComplete="current-password"
-                  />
-                </Form.Group>
-                <p className="msg-success">{messageSuccess}</p>
-                <p className="msg-err">{messageErr}</p>
-                <Link to="/forgotpass">
-                  <span className="link-forgot-password">
-                    Forget Password ?
-                  </span>
-                </Link>
+                      <Form.Label className="lbl_text text-left" column md={12}><a className="forget" href="/forgotpass">Forget Password?</a></Form.Label>
+                      <p className="msg-success">{messageSuccess}</p>
+                      <p className="msg-err">{messageErr}</p>
+                      <Button 
+                        variant="primary"
+                        className="mb-1 float-left login-button"
+                        onClick={this.handleLoginClick}
+                      >Login</Button>
 
-                <Button
-                  type="button"
-                  className="login__form-btn"
-                  // onClick={this.props.handleLoginClick(this.state.email, this.state.password)}
-                  onClick={this.handleLoginClick}
-                >
-                  Log in
-                </Button>
-                <Form.Text className="login__form__text-muted">
-                  Don’t have an account? {""}
-                  <Link className="link-signup-word" to="/signup">
-                    Sign Up
-                  </Link>
-                  <br />
-                  or
-                  <Link className="link-guest-word" to="/v2">
-                    continue as guest
-                  </Link>
-                </Form.Text>
-              </Form>
-            </Modal.Body>
-          </Modal>
-        </Container>
-      </>
+                      <Form.Label className="lbl_text mt-4 text-right pb-0" column md={12}>Don't have an account? <a className="signup" href="/signup">Sign Up</a></Form.Label>
+                      <Form.Label className="lbl_text text-right pt-0" column md={12}>or <a className="continue" href="/v2">continue as guest</a></Form.Label>
+
+                    </Form>
+                  </Col>
+                </Row>
+              </Modal.Body>
+            </Modal>        
+      </Container>
     );
   }
 }
