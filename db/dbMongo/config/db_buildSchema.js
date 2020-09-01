@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { array } = require("yup");
 const Schema = mongoose.Schema;
 
 exports.all_products = mongoose.model(
@@ -27,19 +28,19 @@ exports.store_products = mongoose.model(
 exports.meals = mongoose.model(
   "meals",
   new Schema({
-    id: Number,
     label: String,
     mealImage: String,
     readTime: String,
     cookTime: String,
     intro: String,
-    product_slider: [{ ingredient: String, image: String }],
+    product_slider: [{ ingredient: String, image: String, flag:Boolean }],
+
     newer_ingredient_format: [
       { product: String, quantity: Number, measurement: String, image: String },
     ],
     servings: Number,
     categories: Array,
-    instructions: Array,
+    instructions: [ { step: Object, image: String }],
     display: Boolean,
   })
 );
@@ -52,14 +53,53 @@ exports.suggested_meals = mongoose.model(
     readTime: String,
     cookTime: String,
     intro: String,
+    product_slider: [{ ingredient: String, image: String, flag:Boolean }],
     newer_ingredient_format: [
       { product: String, quantity: Number, measurement: String, image: String },
     ],
     servings: Number,
     categories: Array,
-    instructions: Array,
+    instructions: [ { step: Object, image: String }],
+    display: Boolean
   })
 );
+
+// exports.meals = mongoose.model(
+//   "meals",
+//   new Schema({
+//     id: Number,
+//     label: String,
+//     mealImage: String,
+//     readTime: String,
+//     cookTime: String,
+//     intro: String,
+//     product_slider: [{ ingredient: String, image: String }],
+//     newer_ingredient_format: [
+//       { product: String, quantity: Number, measurement: String, image: String },
+//     ],
+//     servings: Number,
+//     categories: Array,
+//     instructions: Array,
+//     display: Boolean,
+//   })
+// );
+
+// exports.suggested_meals = mongoose.model(
+//   "suggested_meals",
+//   new Schema({
+//     label: String,
+//     imageSrc: String,
+//     readTime: String,
+//     cookTime: String,
+//     intro: String,
+//     newer_ingredient_format: [
+//       { product: String, quantity: Number, measurement: String, image: String },
+//     ],
+//     servings: Number,
+//     categories: Array,
+//     instructions: Array,
+//   })
+// );
 
 exports.all_meal_categories = mongoose.model(
   "all_meal_categories",

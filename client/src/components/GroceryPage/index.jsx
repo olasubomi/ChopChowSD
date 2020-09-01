@@ -7,6 +7,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 
 export default class GroceryPage extends React.Component {
   // Mongo
+  _isMounted = false;
   products = [];
   productNamesForTypeahead = new Map();
 
@@ -45,6 +46,7 @@ export default class GroceryPage extends React.Component {
   componentDidMount() {
     // checks if user is already logged in in app.
     const { auth, customerId } = this.props;
+
     console.log("comes in grocery page cdm");
     this.setState({ Authentication: auth });
     this.setState({ customerId: customerId });
@@ -130,7 +132,6 @@ export default class GroceryPage extends React.Component {
         });
     }
   }
-
   handleShowDeleteItem = (productID) => {
     this.setState({ deletedItemId: productID });
     const { customerId, deletedItemId } = this.state;

@@ -12,6 +12,7 @@ CREATE TABLE list (
   sizes TEXT NOT NULL,
   price_per_ounce NUMERIC
 );
+
 CREATE TABLE customer(
   id SERIAL PRIMARY KEY,
   firstname TEXT,
@@ -26,7 +27,7 @@ CREATE TABLE customer(
   username TEXT,
   emailnotifcation BOOLEAN,
   passwordtoken TEXT,
-  list_id SERIAL
+  list_id NUMERIC
 );
 
 CREATE  TABLE customer_list (
@@ -34,9 +35,47 @@ CREATE  TABLE customer_list (
   customer_id INTEGER REFERENCES customer(id), 
   list_id INTEGER REFERENCES list(id)
 );
-CREATE TABLE admin(id INTEGER, name TEXT PRIMARY KEY) WITH (OIDS = FALSE);
-CREATE TABLE supplier (
+
+-- CREATE TABLE admin(id INTEGER, name TEXT PRIMARY KEY) WITH (OIDS = FALSE);
+
+CREATE TABLE admin(
   id SERIAL PRIMARY KEY,
-  storename TEXT NOT NULL
+  firstname TEXT,
+  lastname TEXT,
+  email TEXT,
+  password TEXT,
+  phoneNumber NUMERIC,
+  street TEXT,
+  city TEXT,
+  zipCode INTEGER,
+  ipsid INTEGER,
+  username TEXT,
+  emailnotifcation BOOLEAN,
+  passwordtoken TEXT,
+  list_id NUMERIC
 );
+
+-- CREATE TABLE supplier (
+--   id SERIAL PRIMARY KEY,
+--   storename TEXT NOT NULL
+-- );
+
+
+CREATE TABLE supplier(
+  id SERIAL PRIMARY KEY,
+  firstname TEXT,
+  lastname TEXT,
+  email TEXT,
+  password TEXT,
+  phoneNumber NUMERIC,
+  street TEXT,
+  city TEXT,
+  zipCode INTEGER,
+  ipsid INTEGER,
+  username TEXT,
+  emailnotifcation BOOLEAN,
+  passwordtoken TEXT,
+  list_id NUMERIC
+);
+
 COMMIT;

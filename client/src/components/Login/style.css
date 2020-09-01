@@ -76,9 +76,12 @@
     width: 98% !important;
     margin-left: 1% !important;
   }
+}
 
-  .modal-content{
-    margin-left: 0px !important;
+@media(max-width: 767px) {
+  .custom-card1 {
+    width: 98% !important;
+    margin-left: 1% !important;
   }
 
   .fb-btn,
