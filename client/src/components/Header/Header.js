@@ -128,6 +128,7 @@ class Header extends Component {
       customerId,
     } = this.state;
     const items = [];
+
     /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
     function myFunction() {
       var x = document.getElementById("mobileNavbar");
@@ -154,21 +155,21 @@ class Header extends Component {
     if (isAuthenticated) {
       login_on_desktop_navbar = (
         <li className="nav-item">
-          <button className="nav-link px-2" onClick={this.handleLogout}>
-            Logout
-          </button>
+          <Link to="#" className="nav-link px-2" style={{ padding: "14px 16px" }} onClick={this.handleLogout}>
+            Log Out
+          </Link>
         </li>
       );
       login_on_burger_navbar = (
         <li className="nav-item" style={{ padding: "14px 16px" }}>
-          <button
+          <Link
             to="/login"
             className="nav-link px-2"
             style={{ color: "#FFFFFF" }}
             onClick={this.handleLogout}
           >
             Logout
-          </button>
+          </Link>
         </li>
       );
     } else {
@@ -193,6 +194,8 @@ class Header extends Component {
     }
     return (
         <div>
+          {/* <div className={this.state.topNav_className} id="myTopnav"> */}
+
           <nav
             className="navbar navbar-expand-md fixed-top-sm justify-content-start flex-nowrap  navbar-light "
             style={{
@@ -298,15 +301,19 @@ class Header extends Component {
                           ></i>
                         </button>
                       </span>
+                      <i
+                className="fa fa-bars"
+                style={{ color: "#FFFFFF", right: "1%" }}
+              ></i>
                     </div>
                   </form>
                 </li>
                 {login_on_burger_navbar}
     
                 <li className="nav-item" style={{ padding: "14px 16px" }}>
-                  <button className="nav-link px-2" style={{ color: "#FFFFFF" }}>
+                  <text className="nav-link px-2" style={{ color: "#FFFFFF" }}>
                     Cart Page
-                  </button>
+                  </text>
                 </li>
                 <li
                   className="nav-item"
@@ -358,9 +365,9 @@ class Header extends Component {
                     borderBottom: "1px solid #FFFFFF",
                   }}
                 >
-                  <button className="nav-link px-2" style={{ color: "#FFFFFF" }}>
+                  <text className="nav-link px-2" style={{ color: "#FFFFFF" }}>
                     Stats
-                  </button>
+                  </text>
                 </li>
               </ul>
             </div>
