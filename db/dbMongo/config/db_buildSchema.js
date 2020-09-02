@@ -9,7 +9,6 @@ exports.all_products = mongoose.model(
     product_name: String,
     product_image: String,
     product_price: String,
-    measurement: Array,
     sizes: Array,
     respective_prices: Array,
   })
@@ -34,7 +33,6 @@ exports.meals = mongoose.model(
     cookTime: String,
     intro: String,
     product_slider: [{ ingredient: String, image: String, flag:Boolean }],
-
     newer_ingredient_format: [
       { product: String, quantity: Number, measurement: String, image: String },
     ],

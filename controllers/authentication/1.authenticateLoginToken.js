@@ -1,4 +1,6 @@
 const { checkEmail, checkEmail_admin, checkEmail_customer, checkEmail_supplier} = require("../../db/dbPostgress/queries/authentication/checkEmail");
+
+
 const { jwt, sign } = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const chalk = require('chalk');
@@ -15,6 +17,7 @@ exports.authenticateLoginToken = (req, res, next) => {
   const memberInfo = { ...req.body };
   if (memberInfo) {
     checkEmail_admin(memberInfo.email).then((result) => {
+        console.log(chalk.red("____ sssss____________________"), result);
         if (result.rows[0]) {
           bcrypt.compare( memberInfo.password, result.rows[0].password, (err, valid) => {
               console.log(  "response with customer id in create login token is: ");
@@ -48,7 +51,6 @@ exports.authenticateLoginToken = (req, res, next) => {
             }
           );
         } else {
-          console.log("Email is : "+ memberInfo.email + " "+ memberInfo.password)
           // res.status(400).send({success: false,message:"email/username non-existent in db records. Please check the request", });
           checkEmail_customer(memberInfo.email).then((result) => {
             if (result.rows[0]) {

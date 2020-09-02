@@ -24,11 +24,10 @@ require("./db/dbMongo/config/db_connection");
 const app = express();
 const path = require("path");
 const port = process.env.PORT || 5000;
-
-
 const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 const bodyParser = require("body-parser");
+
 //----------------------------------------------------------------------------------
 const { authenticateLoginToken,} = require("./controllers/authentication/1.authenticateLoginToken");
 const {  isAuthenticated,} = require("./controllers/authentication/3.isAuthenticated");
@@ -64,34 +63,7 @@ app.set("view engine", "ejs");
 app.use(express.json());
 app.use(cookie());
 // app.use(sslRedirect());
-var whitelist = ['http://localhost:3000','http://localhost:5000',
-'https://chopchow.herokuapp.com','http://chopchow.herokuapp.com',
-'https://chopchowsd.herokuapp.com','https://chopchowsd.herokuapp.com/login',
-'https://chopchow-client.herokuapp.com','http://chopchow-client.herokuapp.com',
-'https://chopchow-devclient.herokuapp.com','http://chopchow-devclient.herokuapp.com/']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
-  methods: 'GET,PUT,POST,DELETE,OPTIONS',
-  // allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json',
-  credentials: true
-}
-app.use(cors(corsOptions));
-
-// app.use(function(req, res, next) {
-//   // update to match the domain you will make the request from
-//     res.header("Access-Control-Allow-Origin",
-//     'https://chopchow.herokuapp.com/',
-//     'https://chopchow.herokuapp.com/login'); 
-//     res.header('Access-Control-Allow-Credentials', true);
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-//   });
+app.use(cors());
 
 app.use("/facebook", facebook);
 app.use(express.static(path.join(__dirname, "client", "build")));
@@ -103,6 +75,7 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
 //***********************************************************************************
 var multer  = require('multer');
 var storage = multer.diskStorage(
@@ -153,6 +126,26 @@ var productImg_upload = productImg_multer( { storage: productImg_storage } );
 const {  getProductImgPath,} = require("./db/dbMongo/queries/mealsAPI/getProductImgPath");
 
 app.post("/api/getProductImgURL/", productImg_upload.array('productImgs'), getProductImgPath);
+
+
+
+// const corsOptions = {
+//     origin: 'http://localhost:3000',
+//     credentials: true,
+// }
+
+// app.use(cors(corsOptions));
+
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", 'http://localhost:3000'); // update to match the domain you will make the request from
+//     // res.header("Access-Control-Allow-Origin", );
+//     // res.header('Access-Control-Allow-Credentials', true);
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+//   });
+
+
+
 // Serve static files from the React app
 
 app.get("/get_store_products", async (req, res) => {
@@ -185,6 +178,7 @@ app.get("/get_store_products", async (req, res) => {
   // const vari = await
   // console.log(vari);
 });
+
 app.get("/api/get-meals", getMeals);
 app.get("/api/get-suggested-meals", getSuggestedMeals);
 app.get("/api/get-all-products", getAllProducts);
@@ -391,6 +385,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 //             res.redirect('/');
 //         }
 //     });
+
 // const { parse } = require('url');
 // require('dotenv').config();
 
@@ -440,3 +435,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 
 
 // // 
+
+
+
+

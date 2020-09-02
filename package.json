@@ -36,8 +36,7 @@
     "path": "^0.12.7",
     "pg": "^7.18.2",
     "react-bootstrap": "^1.0.1",
-    "url": "^0.11.0",
-    "yup": "^0.27.0"
+    "url": "^0.11.0"
   },
   "scripts": {
     "heroku-postbuild": "cd client && npm install && npm run build",
@@ -52,7 +51,8 @@
     "lib": "lib"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "yup": "^0.27.0"
   },
   "repository": {
     "type": "git",

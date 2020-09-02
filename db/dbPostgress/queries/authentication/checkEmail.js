@@ -58,6 +58,7 @@ const checkEmail_customer = (email) => {
   return conn;
 };
 
+
 const checkEmail_supplier = (email) => {
   let conn; 
   try {
@@ -76,6 +77,7 @@ const checkEmail_supplier = (email) => {
 
   return conn;
 };
+
 
 const checkEmailUser = (email) => {
   let conn; 
@@ -107,5 +109,6 @@ const checkValideToken = (token) => {
 
   return conn;
 };
+
 
  module.exports = { checkEmail, checkEmail_admin, checkEmail_customer,checkEmail_supplier, checkEmailUser, checkValideToken };
