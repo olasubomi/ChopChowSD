@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { array } = require("yup");
 const Schema = mongoose.Schema;
 
 exports.all_products = mongoose.model(
