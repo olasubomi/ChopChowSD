@@ -110,4 +110,4 @@ const checkValideToken = (token) => {
 //   return conn;
 // };
 
- module.exports = { checkEmail, checkEmail_admin, checkEmail_customer,checkEmail_supplier, checkEmailUser, checkValideToken };
+ module.exports = { checkEmail_admin, checkEmail_customer,checkEmail_supplier, checkEmailUser, checkValideToken };
