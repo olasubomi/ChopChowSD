@@ -27,7 +27,7 @@ exports.authenticateLoginToken = (req, res, next) => {
           bcrypt.compare( memberInfo.password, result.rows[0].password, (err, valid) => {
               console.log(  "response with admin id in create login token is: ");
               console.log(result.rows[0]);
-
+              console.log("valid is: "+ valid);
               if (valid) {
                 const { id, username, email } = { ...result.rows[0] };
                 const userInfoEnc = { id, username, email };
