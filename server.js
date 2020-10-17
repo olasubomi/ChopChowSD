@@ -28,6 +28,9 @@ const facebook = require("./routes/facebook");
 const login = require("./routes/manual_login");
 const bodyParser = require("body-parser");
 
+
+// require('./db/dbPostgress/config/db_addAdmin.sql')();
+
 //----------------------------------------------------------------------------------
 const { authenticateLoginToken,} = require("./controllers/authentication/1.authenticateLoginToken");
 const {  isAuthenticated,} = require("./controllers/authentication/3.isAuthenticated");

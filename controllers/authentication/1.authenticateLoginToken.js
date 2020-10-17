@@ -1,4 +1,4 @@
-const { checkEmail, checkEmail_admin, checkEmail_customer, checkEmail_supplier} = require("../../db/dbPostgress/queries/authentication/checkEmail");
+const { checkEmail_admin, checkEmail_customer, checkEmail_supplier} = require("../../db/dbPostgress/queries/authentication/checkEmail");
 
 
 const { jwt, sign } = require("jsonwebtoken");
@@ -6,6 +6,8 @@ const bcrypt = require("bcryptjs");
 const chalk = require('chalk');
 
 exports.authenticateLoginToken = (req, res, next) => {
+
+  // We want to refactor this s there is much less redundancy, that is, combine admin, customer and supplier login to ease debugging
   // let token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
   // console.log("Authenticate login token looks like")
   // console.log(token)
@@ -17,10 +19,13 @@ exports.authenticateLoginToken = (req, res, next) => {
   const memberInfo = { ...req.body };
   if (memberInfo) {
     checkEmail_admin(memberInfo.email).then((result) => {
-        console.log(chalk.red("____ sssss____________________"), result);
+        console.log(chalk.red("___found admin email______"), result);
         if (result.rows[0]) {
+          console.log("Expected password is: "+ result.rows[0].password);
+          console.log("Given password is: "+ memberInfo.password);
+
           bcrypt.compare( memberInfo.password, result.rows[0].password, (err, valid) => {
-              console.log(  "response with customer id in create login token is: ");
+              console.log(  "response with admin id in create login token is: ");
               console.log(result.rows[0]);
 
               if (valid) {
@@ -89,7 +94,7 @@ exports.authenticateLoginToken = (req, res, next) => {
               checkEmail_supplier(memberInfo.email).then((result) => {
                 if (result.rows[0]) {
                     bcrypt.compare( memberInfo.password, result.rows[0].password, (err, valid) => {
-                      console.log(  "response with customer id in create login token is: ");
+                      console.log(  "response with supplier id in create login token is: ");
                       console.log(result.rows[0]);
         
                       if (valid) {
