@@ -19,7 +19,7 @@ exports.authenticateLoginToken = (req, res, next) => {
   const memberInfo = { ...req.body };
   if (memberInfo) {
     checkEmail_admin(memberInfo.email).then((result) => {
-        console.log(chalk.red("___found admin email______"), result);
+        // console.log(chalk.red("___found admin email______"), result);
         if (result.rows[0]) {
           console.log("Expected password is: "+ result.rows[0].password);
           console.log("Given password is: "+ memberInfo.password);

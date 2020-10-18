@@ -77,6 +77,8 @@ exports.signupCustomer = (req, res, next) => {
     checkEmailUser(email)
         .then((result) => {
             if (!result.rows[0]) {
+                console.log('Result is: ');
+                console.log(result.rows[0]);
                 getHashPassword(password)
                     .then((hashedPass) => {
                         let sql = {
