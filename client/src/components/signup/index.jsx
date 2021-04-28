@@ -34,17 +34,38 @@ export default class SignUp extends React.Component {
 
   formSubmit = (e) => {
     e.preventDefault();
-    if((this.state.email || this.state.phone) && this.state.username && this.state.password) {
-      this.submitForm();
-    } else {
-      this.setState({ messageErr: 'Please enter correct data.' });
-    }
-  };
+    //validate email
+    let email = this.state.email;
+    if (email !== "" && /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/.test(email) ){
+      var [account, address] = email.split('@'); 
+      var domainParts = address.split('.');
 
+      if(  email.length < 256 && account.length < 64 && domainParts.some(function (part) {
+        return part.length < 63;
+      })){
+        this.setState({ messageErr: '' });
+
+          this.submitForm();
+      }else{
+        this.setState({ messageErr: 'Please enter a valid email.' });
+      }
+    }
+    else{
+      if((this.state.phone.length >= 10 && this.state.phone.length <=30) && this.state.username && this.state.password) {
+        this.setState({ messageErr: '' });
+
+        this.submitForm();
+      }
+      else{
+        this.setState({ messageErr: 'Please enter a valid phone number or email.' });
+      }
+    }
+  }
+  
   submitForm = () => {
     console.log("state,", this.state);
 
-    fetch('/api/signupuser', {
+    fetch('https://chopchowdev.herokuappp.com/api/signupuser', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -53,13 +74,13 @@ export default class SignUp extends React.Component {
       body: JSON.stringify(this.state),
     }).then(response => {
         if (response.status === 400 || response.status === 404) {
-          this.setState({ messageErr: 'Bad Request , Check username or password ... !!' });
+          this.setState({ messageErr: 'Bad Request , Check username or password ...' });
         } else if (response.status === 401) {
           this.setState({ messageErr: 'you are UnAuthorized' });
         } else if (response.status >= 500) {
           this.setState({ messageErr: 'Sorry , Internal Server ERROR' })
         } else {
-          this.setState({ messageErr: '', isAuthenticated: true, messageSuccess: 'You are sign up!!! ' });
+          this.setState({ messageErr: '', isAuthenticated: true, messageSuccess: 'You are signed up! ' });
           this.handleClose(5000);
         }
       })
@@ -82,7 +103,7 @@ export default class SignUp extends React.Component {
           <Form className="" onSubmit={this.formSubmit}>
             <Form.Group>
                 <Form.Control
-                      type="text"
+                      type="email"
                       name="email"
                       value={this.state.email}
                       placeholder="Your email"
@@ -91,7 +112,7 @@ export default class SignUp extends React.Component {
                     />
                   <Form.Label>Or</Form.Label>
                 <Form.Control
-                      type="text"
+                      type="tel"
                       name="phone"
                       value={this.state.phone}
                       placeholder="Your Phone Number"
@@ -106,6 +127,7 @@ export default class SignUp extends React.Component {
                       value={this.state.username}
                       placeholder="Username"
                       onChange={this.handleChange}
+                      required
                     />
                     <Form.Label></Form.Label>
                     <Form.Control
@@ -115,6 +137,7 @@ export default class SignUp extends React.Component {
                       placeholder="Create a Password"
                       onChange={this.handleChange}
                       autoComplete = "new-password"
+                      required
                     />
                   </Form.Group>
                   <Form.Group controlId="formHorizontalCheck">

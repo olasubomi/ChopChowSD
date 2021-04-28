@@ -51,76 +51,51 @@ componentDidMount(){
                     //const element = array[index];
                     console.log(storeProductsIndex);
                     console.log(productValue.product_name);
-                    //productsMenu.push(productValue.product_name)
-                    // check for if product has variations
 
                     //productsMenu.push(productValue.product_name)
                     var key = value.store_name+productValue.product_name
                     productsMenu.push(
                         <div className="col-sm-12 col-md-6 col-lg-4 mealContainer"  key = {key} >
                             <div>
-                                <div style={containerStyle}>
-                                    
-                                       
-                                        <Popup 
-                    trigger={
-                        <div id = {productValue.id} style={containerStyle}>
-                        <img src={productValue.product_image} className="images" style={{width:"100%"}} alt={productValue.id}></img>
-                                    <div id="textbox">
-                                        <p className="alignleft">{productValue.product_name}</p>
-                                        <p className="alignright"  style={{color: "green"}}>${productValue.product_price}</p>
-                                    </div>
-                        {/* <button style={{backgroundColor: "orange" }}>View Steps</button>   */}
- 
-                        </div> 
-                    } modal closeOnDocumentClick contentStyle={contentStyle}>
-                    {/* Inside Pop - up */}
-                    <div>
-                    {productValue.product_name}
-                    <br></br>
-                    Availability
-                    </div>
+                                <div style={containerStyle}> 
+                                    <Popup trigger={
+                                        <div id = {productValue.id} style={containerStyle}>
+                                            <img src={productValue.product_image} className="images" style={{width:"100%"}} alt={productValue.id}></img>
+                                            <div id="textbox">
+                                                <p className="alignleft">{productValue.product_name}</p>
+                                                <p className="alignright"  style={{color: "green"}}>${productValue.product_price}</p>
+                                            </div> 
+                                        </div> 
+                                    } modal closeOnDocumentClick contentStyle={contentStyle}>
+                                        {/* Inside Pop - up */}
+                                        <div>
+                                            {productValue.product_name}
+                                            <br></br>
+                                            Availability
+                                        </div>
 
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-sm-6"><b>
-                            <img src={productValue.product_image} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img>
-                                {/* <div className="col"></div> */}
-                                </b>
-                            </div> 
-                            <div className="col-sm-6"><b>
-                                {/* <div className="col">{productValue.product_price}</div> */}
-                                {/* <div className="col">{productValue.sizes}</div> */}
-                                Availabile<br></br>
-                                Variations:<br></br>
-                                Price:
-                                </b>
-                            </div> 
-                        </div>
-                    </div>
+                                        <div className="container">
+                                            <div className="row">
+                                                <div className="col-sm-6"><b>
+                                                <img src={productValue.product_image} alt='info' style={{ width:"100%", height:"100%", align:"center"}}></img>
 
-                    <span>View Product</span>&nbsp;|&nbsp;<span>Update Product</span>&nbsp;|&nbsp;<span>Add To Cart..</span>
-                    <hr></hr>
-                    {/* <div className="col">
-                        <div className="col align-items-center"><ol>{mealPrep}</ol></div>
-                    </div> */}
-                            
-                    {/* </div> */}
-                        
-                    {/* </div> */}
-                    {/* <div>
-                    <div className="col align-items-left">
-                        <img src={value.imageSrc} alt='info'  style={{width:'35%', height:'35%', align:"center"}}></img>
-                    </div>
-                    <div>                            
-                        <div className="col align-items-center"><ol>{mealPrep}</ol></div>
-                    </div>
-                    </div>
-                    */}
-                 </Popup>
-                                    </div>
+                                                    </b>
+                                                </div> 
+                                                <div className="col-sm-6"><b>
+                                                    Availabile<br></br>
+                                                    Variations:<br></br>
+                                                    Price:
+                                                    </b>
+                                                </div> 
+                                            </div>
+                                        </div>
+
+                                        <span>View Product</span>&nbsp;|&nbsp;<span>Update Product</span>&nbsp;|&nbsp;<span>Add To Cart..</span>
+                                        <hr></hr>
+                                    </Popup>
                                 </div>
                             </div>
+                        </div>
                     )
 
                 }

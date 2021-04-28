@@ -25,7 +25,7 @@ code {
 
 /* Navbar container */
 .navbar {
-  overflow: hidden;
+  /* overflow: hidden; */
   background-color: #333;
   font-family: Arial;
 }
@@ -43,7 +43,7 @@ code {
 /* The dropdown container */
 .dropdown {
   float: left;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 /* Dropdown button */
@@ -296,7 +296,7 @@ Show the link that contains should open and close the topnav (.icon) */
     left: 50%;
     height: 100%;
     z-index: 1010;
-    width: 100%;
+    width:100%;
   }
   .mobileNavbar ::placeholder {
     color:white !important;
@@ -331,7 +331,7 @@ Show the link that contains should open and close the topnav (.icon) */
   bottom: 0;
   z-index: 2;
   width: 80%;
-  width: calc(100% - 60px );
+  width: calc(50%);
   overflow: hidden;
   background-color: #fd7e14;
   -webkit-font-smoothing: subpixel-antialiased;

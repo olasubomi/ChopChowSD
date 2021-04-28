@@ -36,7 +36,7 @@ export default class ResetPassword extends React.Component {
   };
 
   submitForm = () => {
-    fetch('/api/forgotpass', {
+    fetch('https://chopchowdev.herokuapp.com/api/forgotpass', {
       method: 'POST',
       credentials: 'include',
       headers: {

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Carousel } from "react-bootstrap";
-
+import { Carousel,  } from "react-bootstrap";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./text_slider.css";
+import Paper from '@material-ui/core/Paper';
+import List from '@material-ui/core/List';
+import no_mealImg from '../src/assets/images/no_meal_step_image.png';
 
 class TextSlider extends Component {
   constructor(props) {
@@ -31,105 +33,67 @@ class TextSlider extends Component {
     // var slide_index = button.match(regExp);
     //console.log(slide_index);
     var last_chars = button.slice(6, 7);
-
     var slide_num = Number(last_chars);
-
     this.setState({ base_index: slide_num * 3 });
     //var base_index = slide_num*3;
     //console.log("Updating base index on click to: " +this.state.base_index);
   }
 
   render() {
-    const { mealPrep1, value } = this.props;
-    console.log({ mealPrep1 }, "pppppppppp");
-    var popUpSlides = [];
+    const { instructionData } = this.props;
+ 
+    // const mealPrep1 = instructionData[0].step;
+    // const meal_background = instructionData[0].image;
     var carouselSlides = [];
     var i;
-    const instructionsLength = value.instructions.length;
 
-    for (i = 0; i < instructionsLength / 3; i++) {
-      popUpSlides.push(
-        <button key={i} onClick={this.updateInstructionsDisplayBaseIndex}>
-          Slide {i}{" "}
-        </button>
-      );
-    }
+    var count_index = 1;
+    for (i = 0; i < instructionData.length ; i++) {
+      const mealPrep1 = instructionData[i].step;
 
-    console.log("instructions length: " + instructionsLength);
-    for (i = 0; i <= instructionsLength / 2; i++) {
-      console.log("i is :" + i);
-      if (mealPrep1[((i * 2) + 1)] !== undefined) {
-        console.log("Comes in here with 3 instructions for slide #: " + i);
-        carouselSlides.push(
-          <Carousel.Item>
-            <img
-              className="img-responsive imageHeighgt"
-              src="https://www.beautycolorcode.com/f6f0f0-2880x1800.png"
-              alt="First slide"
-            />
-            <Carousel.Caption>
-              <div id="mealPrepChunk">
-                {/* manually add intstruction numbering for display as list */}
-                {(i * 2) + 1}. {mealPrep1[(i * 2) + 0]}
-                {(i * 2) + 2}. {mealPrep1[(i * 2) + 1]}
-                {/* {(i * 3) + 3}. {mealPrep1[(i * 3) + 2]} */}
-              </div>
-            </Carousel.Caption>
-          </Carousel.Item>
-        )
+      if(i!==0){
+        count_index += instructionData[i-1].step.length;
       }
-      else {
-        if (mealPrep1[(i * 2)] !== undefined) {
-          console.log("Comes in here with 2 instructions for slide #: " + i);
 
-          carouselSlides.push(
-            <Carousel.Item>
-              <img
-                className="img-responsive imageHeighgt"
-                src="https://www.beautycolorcode.com/f6f0f0-2880x1800.png"
-                alt="First slide"
-              />
-              <Carousel.Caption>
-                <div id="mealPrepChunk">
-                  {(i * 2) + 0}. {mealPrep1[(i * 2) + 0]}
-                  {/* {(i * 3) + 1}. {mealPrep1[(i * 3) + 1]} */}
+      carouselSlides.push(
+        <Carousel.Item key={i} style={{'height':"300px"}} className="instruction_slider_page">
+          <Paper style={{maxHeight: 200, overflow: 'auto'}} className = "mealPrepChunk">
+              <List>
+                <div className="ml-2">
+                {
+                  mealPrep1.map((mealItem, index)=>(
+                    <div key={index}>
+                      {index+count_index}. {mealItem} 
+                      <p></p> 
+                    </div>   
+                  ))
+                }
                 </div>
-              </Carousel.Caption>
-            </Carousel.Item>
-          )
-        }
-        // else if (mealPrep1[(i * 3) ] != undefined) {
-        //   console.log("Comes in here with 1 instructions for slide #: "+ i);
-
-        //   carouselSlides.push(
-        //     <Carousel.Item>
-        //       <img
-        //         className="img-responsive imageHeighgt"
-        //         src="https://www.beautycolorcode.com/f6f0f0-2880x1800.png"
-        //         alt="First slide"
-        //       />
-        //       <Carousel.Caption>
-        //         <div id="mealPrepChunk">
-
-        //           {(i * 3) + 0}. {mealPrep1[(i * 3) + 0]}
-
-        //         </div>
-        //       </Carousel.Caption>
-        //     </Carousel.Item>
-        //   )
-        // }
-      }
+                <p/>
+                 <img
+                  className="img-responsive imageHeighgt"
+                  src={instructionData[i].image !==null? instructionData[i].image: no_mealImg}
+                  alt="First slide"
+                  style ={{height:"auto", width:"80%", marginLeft:"10%"}}
+                />
+              </List>
+            </Paper>
+         
+          {/* <Carousel.Caption>
+            
+          </Carousel.Caption> */}
+        </Carousel.Item>
+      )
     }
 
     return (
 
       <div>
         <b>Instructions</b>< br></br>
-        <Carousel onSelect={this.handleSelect}>
-          {carouselSlides}
-        </Carousel>
+          <Carousel className="instruction-slider" onSelect={this.handleSelect} interval={null}>          
+            {carouselSlides}
+          </Carousel>
       </div>
-
 
     );
   }
