@@ -61,43 +61,6 @@ exports.suggested_meals = mongoose.model(
   })
 );
 
-// exports.meals = mongoose.model(
-//   "meals",
-//   new Schema({
-//     id: Number,
-//     label: String,
-//     mealImage: String,
-//     readTime: String,
-//     cookTime: String,
-//     intro: String,
-//     product_slider: [{ ingredient: String, image: String }],
-//     newer_ingredient_format: [
-//       { product: String, quantity: Number, measurement: String, image: String },
-//     ],
-//     servings: Number,
-//     categories: Array,
-//     instructions: Array,
-//     display: Boolean,
-//   })
-// );
-
-// exports.suggested_meals = mongoose.model(
-//   "suggested_meals",
-//   new Schema({
-//     label: String,
-//     imageSrc: String,
-//     readTime: String,
-//     cookTime: String,
-//     intro: String,
-//     newer_ingredient_format: [
-//       { product: String, quantity: Number, measurement: String, image: String },
-//     ],
-//     servings: Number,
-//     categories: Array,
-//     instructions: Array,
-//   })
-// );
-
 exports.all_meal_categories = mongoose.model(
   "all_meal_categories",
   new Schema({
@@ -168,3 +131,40 @@ exports.customer_grocery_list = mongoose.model(
 //     sizes:String,
 //     price_per_ounce:Number,
 // }))
+
+// exports.meals = mongoose.model(
+//   "meals",
+//   new Schema({
+//     id: Number,
+//     label: String,
+//     mealImage: String,
+//     readTime: String,
+//     cookTime: String,
+//     intro: String,
+//     product_slider: [{ ingredient: String, image: String }],
+//     newer_ingredient_format: [
+//       { product: String, quantity: Number, measurement: String, image: String },
+//     ],
+//     servings: Number,
+//     categories: Array,
+//     instructions: Array,
+//     display: Boolean,
+//   })
+// );
+
+// exports.suggested_meals = mongoose.model(
+//   "suggested_meals",
+//   new Schema({
+//     label: String,
+//     imageSrc: String,
+//     readTime: String,
+//     cookTime: String,
+//     intro: String,
+//     newer_ingredient_format: [
+//       { product: String, quantity: Number, measurement: String, image: String },
+//     ],
+//     servings: Number,
+//     categories: Array,
+//     instructions: Array,
+//   })
+// );

@@ -17,6 +17,23 @@ INSERT INTO admin (
   )
 VALUES
 (
+    4,
+    'Shubz',
+    'Shubziano',
+    'Awo',
+    'chopchowsd@gmail.com',
+    '$2a$05$781WhkOHmg8aChp1Hnw/NeWTtnTUckGUFcl9fnakAzqXCQTKifNPa',
+    8587546183,
+    'La Jolla',
+    'San Diego',
+    92122,
+    4566,
+    'Shubziano',
+    true,
+    null,
+    1
+),
+(
     2,
     'Subomi',
     'Olasubomi',
