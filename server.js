@@ -212,7 +212,7 @@ app.get("/api/get-data-typeahead/:option", getDataItemTypeahead);
 app.get("/hash", hashPassword);
 app.get("/api/logout", authunticationLogout);
 
-app.get("/api/authenticate-app-page", verifyAuthentication, isAuthenticated);
+// app.get("/api/authenticate-app-page", verifyAuthentication, isAuthenticated);
 app.get( "/api/getCustomerGroceryList/:customerId", verifyAuthentication, getCustomerGroceryList);
 app.get("/api/get-all-data-lists", getAllDataLists);
 app.post(  "/api/addTypeaheadDataToCustomerGroceryList/:idItem/:customerId",  addGroceryItemToCustomerList.add);
