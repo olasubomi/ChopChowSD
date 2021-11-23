@@ -39,6 +39,7 @@ const { hashPassword } = require("./controllers/hashPassword");
 const {  authenticationSignup,} = require("./controllers/authentication/authenticationSignup");
 const authunticationLogout = require("./controllers/authentication/authunticationLogout");
 const {  signupCustomer,  forgotPassword,  resetPassword,} = require("./controllers/authentication/signup");
+const {  addMealInstructionContent,} = require("./db/aws3/addMealInstructionContent");
 const {  addMealSuggestion,} = require("./db/dbMongo/queries/mealsAPI/addMealSuggestion");
 const { sendMealtable, } = require("./db/dbMongo/queries/mealsAPI/sendMealtable");
 const { updateSuggestedMealItem, } = require("./db/dbMongo/queries/list/updateSuggestedMealItem");
@@ -91,7 +92,7 @@ var storage = multer.diskStorage(
   }
 );
 var upload = multer( { storage: storage } );
-
+app.post("/api/addMealInstructionContent/", addMealInstructionContent);
 app.post("/api/addMealSuggestion/", upload.array('imgSrc'), addMealSuggestion);
 app.post("/api/updateSuggestItem/", upload.array('imgSrc'), updateSuggestedMealItem);
 

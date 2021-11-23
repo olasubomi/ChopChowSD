@@ -23,6 +23,38 @@ exports.store_products = mongoose.model(
   })
 );
 
+// new meal
+exports.meals = mongoose.model(
+  "meal",
+  new Schema({
+    mealName: String,
+    intro: String,
+    mealImages: Array,
+    ingredientMeasurements: Array,
+    prepTime: Object,
+    cookTime: Object,
+    stepSlides: Object,
+    productImages: Array,
+    productNames: Array,
+    productPageUrl: Array,
+    url: String,
+    chef: String,
+    servings: Number,
+    instructions: [ { step: Object, image: String }],
+    utensilsRequired: Array,
+    categories: Array,
+    tips: Array,
+    calories: Object,
+    servings: Object,
+    total_carbs: Object,
+    net_carbs: Object,
+    fiber: Object,
+    fat: Object,
+    protein: Object,
+  })
+);
+
+//old meals
 exports.meals = mongoose.model(
   "meals",
   new Schema({
@@ -41,6 +73,7 @@ exports.meals = mongoose.model(
     display: Boolean,
   })
 );
+
 
 exports.suggested_meals = mongoose.model(
   "suggested_meals",
