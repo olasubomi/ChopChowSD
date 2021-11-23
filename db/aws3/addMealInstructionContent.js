@@ -1,5 +1,5 @@
 // Import required AWS SDK clients and commands for Node.js.
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+// import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 const S3Client = require ('@aws-sdk/client-s3');
 const PutObjectCommand = require ('@aws-sdk/client-s3');
 
