@@ -1,0 +1,6 @@
+This project was to make backend and the admin page to management the suggested meal data.
+Thus, we made new viewSuggestedMeal page for admin page and admin user can update and delete the meal data in there.
+And this page can be opened by admin user.
+And also, we added router processing to access link by only users and admin.
+Also, we made new admin, supplier, customer tables newly to manage the user role easily and we added several backend code to edit and delete in admin page by only admin user.
+
