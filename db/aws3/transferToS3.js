@@ -184,95 +184,95 @@ exports.transferToS3 = (req, res, next) => {
   next();
 };
 
-exports.getFromS3 = (req, res, next) => {
-  console.log("gets in get from s3 function");
+// exports.getFromS3 = (req, res, next) => {
+//   console.log("gets in get from s3 function");
 
 
-  const client = new S3Client({
-    credientials: {
-      const_id,
-      const_secret,
-      const_region
-    }
-  })
+//   const client = new S3Client({
+//     credientials: {
+//       const_id,
+//       const_secret,
+//       const_region
+//     }
+//   })
 
-  // Create an object and upload it to the Amazon S3 bucket.
-  const input = {
-    Bucket: process.env.S3_BUCKET, // The name of the bucket. For example, 'sample_bucket_101'.
-    Key: req.params.filename // The name of the object.
-  };
-
-
-  const run = async (input) => {
-
-    console.log("input: ");
-    console.log(input);
-    try {
-      // Create a helper function to convert a ReadableStream to a string.
-      const streamToString = (stream) =>
-        new Promise((resolve, reject) => {
-          const chunks = [];
-          stream.on("data", (chunk) => chunks.push(chunk));
-          stream.on("error", reject);
-          stream.on("end", () =>{
-            resolve(Buffer.concat(chunks).toString("utf8"))
-          });
-          // console.log(chunks);
-        });
-
-      // const client = new S3Client(config);
-      const command = new GetObjectCommand(input);
-      const data = await client.send(command);
-
-      // const fileStream = fs.createReadStream(data.Body);
-      // console.log(fileStream);
-
-      // fs.createReadStream('./myFile').pipe(bucket.openUploadStream('myFile', {
-      //   chunkSizeBytes: 1048576,
-      //   metadata: { field: 'myField', value: 'myValue' }
-      // }));
+//   // Create an object and upload it to the Amazon S3 bucket.
+//   const input = {
+//     Bucket: process.env.S3_BUCKET, // The name of the bucket. For example, 'sample_bucket_101'.
+//     Key: req.params.filename // The name of the object.
+//   };
 
 
-      // console.log(data);
-      // Convert the ReadableStream to a string.
-      const bodyContents = await streamToString(data.Body);
-      // console.log("bodyContents returning..");
-      // console.log(bodyContents);
-      return bodyContents;
-      // return data;
+//   const run = async (input) => {
 
-      // data.Body.pipe(res);
-      // res.send({bodyContents});
-      // res.send({data: bodyContents});
-      // next();
+//     console.log("input: ");
+//     console.log(input);
+//     try {
+//       // Create a helper function to convert a ReadableStream to a string.
+//       const streamToString = (stream) =>
+//         new Promise((resolve, reject) => {
+//           const chunks = [];
+//           stream.on("data", (chunk) => chunks.push(chunk));
+//           stream.on("error", reject);
+//           stream.on("end", () =>{
+//             resolve(Buffer.concat(chunks).toString("utf8"))
+//           });
+//           // console.log(chunks);
+//         });
 
-      // // Store all of data chunks returned from the response data stream 
-      //   // into an array then use Array#join() to use the returned contents as a String
-      //   let responseDataChunks = []
+//       // const client = new S3Client(config);
+//       const command = new GetObjectCommand(input);
+//       const data = await client.send(command);
 
-      //   // Handle an error while streaming the response body
-      //   response.Body.once('error', err => reject(err))
+//       // const fileStream = fs.createReadStream(data.Body);
+//       // console.log(fileStream);
 
-      //   // Attach a 'data' listener to add the chunks of data to our array
-      //   // Each chunk is a Buffer instance
-      //   response.Body.on('data', chunk => responseDataChunks.push(chunk))
+//       // fs.createReadStream('./myFile').pipe(bucket.openUploadStream('myFile', {
+//       //   chunkSizeBytes: 1048576,
+//       //   metadata: { field: 'myField', value: 'myValue' }
+//       // }));
 
-      //   // Once the stream has no more data, join the chunks into a string and return the string
-      //   response.Body.once('end', () => responseDataChunks.join(''))
-      // console.log(responseDataChunks);
-      // // return res.json(response);
-      // res.status(200).send(responseDataChunks);
-      // res.status(200).send(bodyContents);
 
-    } catch (err) {
-      console.log("Error", err);
-      res.status(400).send(JSON.stringify({ msg: err }))
-    };
-  };
+//       // console.log(data);
+//       // Convert the ReadableStream to a string.
+//       const bodyContents = await streamToString(data.Body);
+//       // console.log("bodyContents returning..");
+//       // console.log(bodyContents);
+//       return bodyContents;
+//       // return data;
 
-  run(input);
+//       // data.Body.pipe(res);
+//       // res.send({bodyContents});
+//       // res.send({data: bodyContents});
+//       // next();
 
-}
+//       // // Store all of data chunks returned from the response data stream 
+//       //   // into an array then use Array#join() to use the returned contents as a String
+//       //   let responseDataChunks = []
+
+//       //   // Handle an error while streaming the response body
+//       //   response.Body.once('error', err => reject(err))
+
+//       //   // Attach a 'data' listener to add the chunks of data to our array
+//       //   // Each chunk is a Buffer instance
+//       //   response.Body.on('data', chunk => responseDataChunks.push(chunk))
+
+//       //   // Once the stream has no more data, join the chunks into a string and return the string
+//       //   response.Body.once('end', () => responseDataChunks.join(''))
+//       // console.log(responseDataChunks);
+//       // // return res.json(response);
+//       // res.status(200).send(responseDataChunks);
+//       // res.status(200).send(bodyContents);
+
+//     } catch (err) {
+//       console.log("Error", err);
+//       res.status(400).send(JSON.stringify({ msg: err }))
+//     };
+//   };
+
+//   run(input);
+
+// }
 
 
   // const file_path = req.files.instructionChunkContent1[0].path; // Path to and name of object. For example '../myFiles/index.js'.

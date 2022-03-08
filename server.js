@@ -36,7 +36,7 @@ const { hashPassword } = require("./controllers/hashPassword");
 const { authenticationSignup, } = require("./controllers/authentication/authenticationSignup");
 const authunticationLogout = require("./controllers/authentication/authunticationLogout");
 const { signupCustomer, forgotPassword, resetPassword, } = require("./controllers/authentication/signup");
-const { transferToS3, getFromS3 } = require("./db/aws3/transferToS3");
+const { transferToS3 } = require("./db/aws3/transferToS3");
 const { addMealSuggestion, } = require("./db/dbMongo/queries/mealsAPI/addMealSuggestion");
 const { writeFile } = require("./db/dbMongo/config/writeFile");
 const fs = require('fs');
@@ -171,14 +171,6 @@ app.get("/getAllMongoFilesData", readFiles);
 
 app.get("/getOneMongoFileData/:filename", readFile);
 app.get("/getOneMongoFileImage/:filename", readImage);
-
-app.get("/api/getFromS3/:filename",
-  function (req, res, next) {
-    console.log("Comes in s3 handler function ");
-    // console.log(req.files);
-    // console.log(req.params.fileName);
-    next();
-  }, getFromS3);
 
 app.get("/api/get-all-products", getAllProducts);
 app.get("/api/get-all-categories", getAllCategories);
