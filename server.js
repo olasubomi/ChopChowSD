@@ -82,7 +82,7 @@ app.use(cookie());
 app.use(cors());
 
 app.use("/facebook", facebook);
-app.use(express.static(path.join(__dirname, "client", "build")));
+// app.use(express.static(path.join(__dirname, "client", "build")));
 // app.use(bodyParser.urlencoded({ extended: true }));
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -200,10 +200,10 @@ app.get("/test", (req, res) => {
   res.send(JSON.stringify(req.session));
 });
 
-app.get("/redirect", (req, res) => {
-  console.log("To redirect page");
-  res.sendFile(path.join(__dirname + "/client", "public", "index.html"));
-});
+// app.get("/redirect", (req, res) => {
+//   console.log("To redirect page");
+//   res.sendFile(path.join(__dirname + "/client", "public", "index.html"));
+// });
 
 app.get("/renderEJS", (req, res) => {
   console.log("To render ");
