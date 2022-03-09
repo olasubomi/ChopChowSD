@@ -1,6 +1,6 @@
-const { all_meals } = require("../../config/db_buildSchema");
+const { meals } = require("../../config/db_buildSchema");
 exports.getMeals = (req, res) => {
-  return all_meals
+  return meals
     .find()
     .then((resMeals) => {
       // console.log(resMeals);

@@ -27,7 +27,7 @@ exports.suggested_products = mongoose.model(
 
 // new meal
 exports.all_meals = mongoose.model(
-  "all_meals",
+  "meals",
   new Schema({
     mealName: String,
     intro: String,
