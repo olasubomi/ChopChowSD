@@ -15,12 +15,17 @@ exports.writeFile = (req, res, next) => {
 
     console.log("confirming meal images name in server, to write to gridfs");
 
-    // console.log(req.files['mealImage']);
-    console.log(req.files['mealImage'][0]);
+    console.log(req.files['mealImage']);
+    console.log(typeof(req.files['mealImage']));
 
     if(req.files['mealImage'] === undefined){
+        console.log("Confirms that meal image is undefined so skipping");
         next();
     }
+    else{
+
+        // console.log(req.files['mealImage'][0]);
+
     const mealImageNameInServer =  req.files['mealImage'][0].filename;
     console.log(mealImageNameInServer);
     const imageType =  req.files['mealImage'][0].mimetype;
@@ -78,9 +83,11 @@ if (connection !== "undefined") {
 } else {
     console.log('Sorry not connected');
 }
+
 console.log("done");
 // };
 next();
+}
 }
 
 // run().catch(console.dir);

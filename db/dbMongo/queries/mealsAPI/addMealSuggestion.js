@@ -21,8 +21,15 @@ exports.addMealSuggestion = (req, res) => {
   // console.log(files);
   console.log("Printing files in request")
   console.log(req.files);
-  const serverMealImageName = req.files['mealImage'][0].filename;
-  console.log(serverMealImageName);
+  var serverMealImageName
+  if(req.files['mealImage'] === undefined){
+     serverMealImageName = "";
+  }
+  else{
+     serverMealImageName = req.files['mealImage'][0].filename;
+    console.log(serverMealImageName);
+  }
+
   // console.log(req.file);
 
 
