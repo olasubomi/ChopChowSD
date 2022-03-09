@@ -18,6 +18,9 @@ exports.writeFile = (req, res, next) => {
     // console.log(req.files['mealImage']);
     console.log(req.files['mealImage'][0]);
 
+    if(req.files['mealImage' === undefined){
+        next();
+    }
     const mealImageNameInServer =  req.files['mealImage'][0].filename;
     console.log(mealImageNameInServer);
     const imageType =  req.files['mealImage'][0].mimetype;
