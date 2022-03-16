@@ -26,7 +26,7 @@ exports.suggested_products = mongoose.model(
 );
 
 // new meal
-exports.all_meals = mongoose.model(
+exports.meals = mongoose.model(
   "meals",
   new Schema({
     mealName: String,
