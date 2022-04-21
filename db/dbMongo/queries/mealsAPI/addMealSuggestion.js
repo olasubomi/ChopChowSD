@@ -1,4 +1,4 @@
-const { meal_images, suggested_meals, all_products, suggested_products, all_meal_categories, suggested_meal_categories, all_utensils, suggested_utensils, all_measurements, suggested_measurements } = require("../../config/db_buildSchema");
+const {suggested_meals, all_products, all_meal_categories, all_utensils, all_measurements } = require("../../config/db_buildSchema");
 // const formidable = require('formidable');
 const fs = require('fs');
 const path = require('path');

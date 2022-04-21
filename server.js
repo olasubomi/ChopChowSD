@@ -48,7 +48,7 @@ const { readImages } = require("./db/dbMongo/config/readImages");
 
 
 const { sendMealtable, } = require("./db/dbMongo/queries/mealsAPI/sendMealtable");
-const { updateSuggestedMealItem, } = require("./db/dbMongo/queries/list/updateSuggestedMealItem");
+const { updateSuggestedMealItem, } = require("./db/dbMongo/queries/mealsAPI/updateSuggestedMealItem");
 const { getCustomerGroceryList, } = require("./db/dbMongo/queries/list/getCustomerGroceryList");
 const { getAllDataLists, } = require("./db/dbMongo/queries/list/getAllDataLists");
 const { getMeals } = require("./db/dbMongo/queries/mealsAPI/getMeals");
@@ -58,7 +58,7 @@ const { getSuggestedMealImages } = require("./db/dbMongo/queries/mealsAPI/getSug
 const { getAllProducts, } = require("./db/dbMongo/queries/productsAPI/getAllProducts");
 // const appendItem = require('./db/dbMongo/queries/list/appendItem')
 const removeItem = require("./db/dbMongo/queries/list/removeItem");
-const removeSuggestedMealItem = require("./db/dbMongo/queries/list/removeSuggestedMealItem");
+const removeSuggestedMealItem = require("./db/dbMongo/queries/mealsAPI/removeSuggestedMealItem");
 
 // const createList = require('./db/dbMongo/queries/list/createList')
 const removeList = require("./db/dbMongo/queries/list/removeList");
@@ -96,24 +96,9 @@ const corsOptions = {
 //     next();
 //   });
 
-// Multer for Meal Image, written after app.use
-var multer = require('multer');
 
 // Multer for Instruction Chunk Content Images and Videos, written after app.use
 var multer2 = require('multer');
-
-
-var storage = multer.diskStorage({
-  destination: './multerFilesToDBs',
-  filename: function (req, file, cb) {
-    console.log("In filename instantiator where simple file details are:");
-    console.log(file);
-    // console.log("req is");
-    // console.log(req);
-    const str1 = randomString().replace("+", "").replace("-", "").replace("/", "").replace("*", "").replace("/", "").replace("?", "")
-    cb(null, str1 + file.originalname)
-  }
-});
 
 var storage2 = multer2.diskStorage({
   destination: './multerFilesToDBs',
@@ -127,7 +112,6 @@ var storage2 = multer2.diskStorage({
   }
 });
 
-var upload = multer({ storage: storage });
 var upload2 = multer2({ storage: storage2 });
 
 app.get("/get_store_products", async (req, res) => {
@@ -233,17 +217,8 @@ app.post("/api/signupuser", signupCustomer);
 app.post("/api/signup/:newcustomerId", authenticationSignup);
 app.post("/api/send-mealData", sendMealtable);
 
-// app.post("/api/addMealSuggestion/", addMealSuggestion );
-
-// app.post("/api/addMealSuggestion/", upload.single('mealImage'));
-// app.post("/api/addMealSuggestion/", upload.single('mealImage'), addMealSuggestion);
-
-
 // handle Instruction content upload
 //***********************************************************************************
-
-// console.log(instructionContentStorageConfigs);
-// var multerInstanciatedWithStorageConfigs = instructionContentMulter({ storage: instructionContentStorageConfigs });
 var multerOptionsToAcceptIntstructionContent = [
   { name: 'mealImage' },
   { name: 'instructionChunkContent1' },
@@ -253,30 +228,11 @@ var multerOptionsToAcceptIntstructionContent = [
   { name: 'instructionChunkContent5' },
   { name: 'instructionChunkContent6' },
 ]
-// const imageAndVideoContentFromForm = upload.fields([{ name: 'mealImage' },
-// { name: 'instructionChunkContent1' },
-// { name: 'instructionChunkContent2' },
-// { name: 'instructionChunkContent3' },
-// { name: 'instructionChunkContent4' },
-// { name: 'instructionChunkContent5' },
-// { name: 'instructionChunkContent6' },
-// ]);
-
-// app.post("/api/addMealSuggestion/", upload.single('mealImage'), writeFile, addMealSuggestion);
 
 app.post("/api/addMealSuggestion/", upload2.fields(multerOptionsToAcceptIntstructionContent), writeFile, transferToS3, addMealSuggestion);
 
-// app.post("/api/addMealSuggestion/", upload2.fields(multerOptionsToAcceptIntstructionContent), writeFile,
-//   function (req, res, next) {
-//     console.log("Comes in multer handler function ");
-//     console.log("req body");
-//     console.log(req.body);
-//     console.log("req file name");
-//     console.log(req.files.instructionChunkContent1[0].originalname);
-//     console.log(req.files.instructionChunkContent1[0].filename);
-//     console.log(req.files);
-//     next();
-//   }, transferToS3, addMealSuggestion);
+// call handler to delete prev meal image and Delete Updated instruction contents
+app.post("/api/updateSuggestedMealItem/", upload2.fields(multerOptionsToAcceptIntstructionContent), writeFile, transferToS3, updateSuggestedMealItem);
 
 
 // test multer logging
@@ -295,7 +251,48 @@ app.use((error, req, res, next) => {
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
+// app.post("/api/addMealSuggestion/", upload2.fields(multerOptionsToAcceptIntstructionContent), writeFile,
+//   function (req, res, next) {
+//     console.log("Comes in multer handler function ");
+//     console.log("req body");
+//     console.log(req.body);
+//     console.log("req file name");
+//     console.log(req.files.instructionChunkContent1[0].originalname);
+//     console.log(req.files.instructionChunkContent1[0].filename);
+//     console.log(req.files);
+//     next();
+//   }, transferToS3, addMealSuggestion);
+//***********************************************************************************
+// var productImg_multer  = require('multer');
+// var productImg_storage = productImg_multer.diskStorage(
+//   {
+//       destination: 'client/build/uploads/products/',
+//       filename: function ( req, file, cb ) {
+//           const str1=randomString().replace("+","").replace("-","").replace("/","").replace("*","").replace("/","").replace("?","")
+//           cb( null, str1+"_"+file.originalname);
+//       }
+//   }
+// );
+// var productImg_upload = productImg_multer( { storage: productImg_storage } );
+// const {  getProductImgPath,} = require("./db/dbMongo/queries/mealsAPI/getProductImgPath");
+// app.post("/api/getProductImgURL/", function (req, res) {
+//   productImg_upload.array('productImgs')
+//   }, getProductImgPath);
 
+
+// //***********************************************************************************
+// var multer  = require('multer');
+// var storage = multer.diskStorage(
+//   {
+//       destination: 'client/build/uploads/',
+//       filename: function ( req, file, cb ) {
+//           const str1=randomString().replace("+","").replace("-","").replace("/","").replace("*","").replace("/","").replace("?","")
+//           cb( null, str1+"_"+file.originalname);
+//       }
+//   }
+// );
+// var upload = multer( { storage: storage } );
+// app.post("/api/addMealInstructionContent/", addMealInstructionContent);
 
 // const { S3Client } = require("@aws-sdk/client-s3");
 // const client = new S3Client({
@@ -330,40 +327,6 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 
 
 // // var productImg_upload = productImg_multer( { storage: productImg_storage } );
-
-//***********************************************************************************
-// var productImg_multer  = require('multer');
-// var productImg_storage = productImg_multer.diskStorage(
-//   {
-//       destination: 'client/build/uploads/products/',
-//       filename: function ( req, file, cb ) {
-//           const str1=randomString().replace("+","").replace("-","").replace("/","").replace("*","").replace("/","").replace("?","")
-//           cb( null, str1+"_"+file.originalname);
-//       }
-//   }
-// );
-// var productImg_upload = productImg_multer( { storage: productImg_storage } );
-// const {  getProductImgPath,} = require("./db/dbMongo/queries/mealsAPI/getProductImgPath");
-// app.post("/api/getProductImgURL/", function (req, res) {
-//   productImg_upload.array('productImgs')
-//   }, getProductImgPath);
-
-
-//***********************************************************************************
-// var multer  = require('multer');
-// var storage = multer.diskStorage(
-//   {
-//       destination: 'client/build/uploads/',
-//       filename: function ( req, file, cb ) {
-//           const str1=randomString().replace("+","").replace("-","").replace("/","").replace("*","").replace("/","").replace("?","")
-//           cb( null, str1+"_"+file.originalname);
-//       }
-//   }
-// );
-// var upload = multer( { storage: storage } );
-// app.post("/api/addMealInstructionContent/", addMealInstructionContent);
-
-// app.post("/api/updateSuggestItem/", upload.array('imgSrc'), updateSuggestedMealItem);
 
 
 // The "catchall" handler: for any request that doesn't

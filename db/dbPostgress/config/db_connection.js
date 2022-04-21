@@ -5,6 +5,7 @@ require('dotenv').config();
  let { DATABASE_URL: dbUrl } = process.env;
 
  const params = parse(dbUrl);
+ 
 const {
   hostname: host, port, pathname, auth,
 } = params;

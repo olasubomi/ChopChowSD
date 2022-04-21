@@ -50,10 +50,10 @@ if (connection !== "undefined") {
 //7.Read the video/image file from the videoread folder
     // we will need to get image locally, before streaming it to store actual image in mongo
     var fileToReadsPathOnLocal =  "/Users/olasubomiawokoya/Documents/projects/ChopChowSD/multerFilesToDBs/"+ mealImageNameInServer;
+    // var fileToReadsPathOnLocal =  "./multerFilesToDBs/"+ mealImageNameInServer;
 
 //8. Establish connection between Mongo and GridFS
     grid.mongo = mongooseDrv.mongo;
-
     console.log("Tries to open gridfs connection");
 
 //9.Open the connection and write file
