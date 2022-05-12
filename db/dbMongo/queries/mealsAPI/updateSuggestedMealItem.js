@@ -16,7 +16,7 @@ exports.updateSuggestedMealItem = async (req, res) => {
   console.log('formatted ingredients:');
   console.log('Printing expected step slides object');
   console.log(req.body.stepSlides);
-  console.log(JSON.parse(req.body.stepSlides));
+  // console.log(JSON.parse(req.body.stepSlides));
 
   console.log(req.body.formatted_ingredient);
   const newer_ingredient_format = req.body.formatted_ingredient;
@@ -35,14 +35,14 @@ exports.updateSuggestedMealItem = async (req, res) => {
   }
 
     //------------------- Declare new items to add to db ---------------------------
-    const new_product_ingredients = JSON.parse(req.body.new_product_ingredients);
-    const new_measurements = req.body.new_measurements;
-    const newKitchenUtensils = req.body.newKitchenUtensils;
-    const newCategories = req.body.newCategories;
+    // const new_product_ingredients = JSON.parse(req.body.new_product_ingredients);
+    // const new_measurements = req.body.new_measurements;
+    // const newKitchenUtensils = req.body.newKitchenUtensils;
+    // const newCategories = req.body.newCategories;
   
-    const parsed_categories = JSON.parse(newCategories);
-    const parsed_utensils = JSON.parse(newKitchenUtensils);
-    const parsed_measurements = JSON.parse(new_measurements);
+    // const parsed_categories = JSON.parse(newCategories);
+    // const parsed_utensils = JSON.parse(newKitchenUtensils);
+    // const parsed_measurements = JSON.parse(new_measurements);
 
   // var mealObject ;
 
@@ -60,10 +60,10 @@ exports.updateSuggestedMealItem = async (req, res) => {
       intro: req.body.intro,
       chef: req.body.chef,
       formatted_ingredient: req.body.formatted_ingredient,
-      stepSlides: req.body.instructionsGroupList, // update stepSlides
-      categories: req.body.categoryChips,
-      utensilsrequired: req.body.kitchenUtensils,
-      tips: req.body.mealTip,
+      stepSlides: req.body.stepSlides, // update stepSlides
+      categories: req.body.categories,
+      kitchenUtensils: req.body.kitchenUtensils,
+      tips: req.body.tips,
       servings: Number(req.body.servings),
 
       // mealName: req.body.mealName,

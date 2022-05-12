@@ -77,7 +77,7 @@ exports.suggested_meals = mongoose.model(
     stepSlides : Array,
     chef : String,
     categories: Array,
-    utensilsRequired: Array,
+    kitchenUtensils: Array,
     tips: Array,
     servings: Number,
     ImageOrVideoContent1: Object,

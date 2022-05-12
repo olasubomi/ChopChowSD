@@ -76,18 +76,26 @@ exports.transferToS3 = (req, res, next) => {
   }
 
   console.log("Req body is :");
-  console.log(req.body.instructionsGroupList);
+  console.log(req.body.stepSlides);
   // console.log(req.body);
-  var parsedstepSlides = JSON.parse(req.body.instructionsGroupList);
+  var parsedstepSlides = JSON.parse(req.body.stepSlides);
   console.log("parsedstepSlides is :");
   console.log(parsedstepSlides);
   console.log(parsedstepSlides[0]);
   console.log(parsedstepSlides[1]);
-  req.body.instructionsGroupList = parsedstepSlides
+  req.body.stepSlides = parsedstepSlides
 
   const checkExtension = ()=>{
 
   }
+
+console.log("Checking file types of all instruction contents");
+console.log(req.files['instructionChunkContent1']);
+console.log(req.files['instructionChunkContent2']);
+console.log(req.files['instructionChunkContent3']);
+console.log(req.files['instructionChunkContent4']);
+console.log(req.files['instructionChunkContent5']);
+console.log(req.files['instructionChunkContent6']);
 
 
   // 6 check for instruction content to add each data to s3
@@ -97,7 +105,7 @@ exports.transferToS3 = (req, res, next) => {
     const fileStream = fs.createReadStream(file_path);
     instructionMediaName = req.files['instructionChunkContent1'][0].filename;
     contentType = req.files['instructionChunkContent1'][0].mimetype;
-    req.body.instructionsGroupList[0].instructionChunk.dataName = instructionMediaName;
+    req.body.stepSlides[0].dataName = instructionMediaName;
     const params = {
       Bucket: process.env.S3_BUCKET, // The name of the bucket. For example, 'sample_bucket_101'.
       Body: fileStream, // The content of the object. For example, 'Hello world!".
@@ -111,7 +119,7 @@ exports.transferToS3 = (req, res, next) => {
     const fileStream = fs.createReadStream(file_path);
     instructionMediaName = req.files.instructionChunkContent2[0].filename;
     contentType = req.files['instructionChunkContent2'][0].mimetype;
-    req.body.instructionsGroupList[1].instructionChunk.dataName = instructionMediaName;
+    req.body.stepSlides[1].dataName = instructionMediaName;
     const params = {
       Bucket: process.env.S3_BUCKET, // The name of the bucket. For example, 'sample_bucket_101'.
       Body: fileStream, // The content of the object. For example, 'Hello world!".
@@ -120,12 +128,13 @@ exports.transferToS3 = (req, res, next) => {
     };
     run(params);
   }
-  if (req.files['instructionChunkConten3'] != undefined) {
+  if (req.files['instructionChunkContent3'] != undefined) {
+    console.log("Gets in content3 if statement");
     const file_path = req.files.instructionChunkContent3[0].path;
     const fileStream = fs.createReadStream(file_path);
     instructionMediaName = req.files.instructionChunkContent3[0].filename;
     contentType = req.files['instructionChunkContent3'][0].mimetype;
-    req.body.instructionsGroupList[2].instructionChunk.dataName = instructionMediaName;
+    req.body.stepSlides[2].dataName = instructionMediaName;
     const params = {
       Bucket: process.env.S3_BUCKET, // The name of the bucket. For example, 'sample_bucket_101'.
       Body: fileStream, // The content of the object. For example, 'Hello world!".
@@ -140,7 +149,7 @@ exports.transferToS3 = (req, res, next) => {
     instructionMediaName = req.files.instructionChunkContent4[0].filename;
     contentType = req.files['instructionChunkContent4'][0].mimetype;
 
-    req.body.instructionsGroupList[3].instructionChunk.dataName = instructionMediaName;
+    req.body.stepSlides[3].dataName = instructionMediaName;
     const params = {
       Bucket: process.env.S3_BUCKET, // The name of the bucket. For example, 'sample_bucket_101'.
       Body: fileStream, // The content of the object. For example, 'Hello world!".
@@ -155,7 +164,7 @@ exports.transferToS3 = (req, res, next) => {
     instructionMediaName = req.files.instructionChunkContent5[0].filename;
     contentType = req.files['instructionChunkContent5'][0].mimetype;
 
-    req.body.instructionsGroupList[4].instructionChunk.dataName = instructionMediaName;
+    req.body.stepSlides[4].dataName = instructionMediaName;
     const params = {
       Bucket: process.env.S3_BUCKET, // The name of the bucket. For example, 'sample_bucket_101'.
       Body: fileStream, // The content of the object. For example, 'Hello world!".
@@ -170,7 +179,7 @@ exports.transferToS3 = (req, res, next) => {
     instructionMediaName = req.files.instructionChunkContent6[0].filename;
     contentType = req.files['instructionChunkContent6'][0].mimetype;
 
-    req.body.instructionsGroupList[5].instructionChunk.dataName = instructionMediaName;
+    req.body.stepSlides[5].dataName = instructionMediaName;
     const params = {
       Bucket: process.env.S3_BUCKET, // The name of the bucket. For example, 'sample_bucket_101'.
       Body: fileStream, // The content of the object. For example, 'Hello world!".
