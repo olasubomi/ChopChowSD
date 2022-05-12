@@ -189,7 +189,6 @@ console.log(req.files['instructionChunkContent6']);
     run(params);
   }
 
-  // res.send(results);
   next();
 };
 
