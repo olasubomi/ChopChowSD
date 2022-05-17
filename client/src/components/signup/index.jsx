@@ -44,7 +44,7 @@ export default class SignUp extends React.Component {
   submitForm = () => {
     console.log("state,", this.state);
 
-    fetch('/api/signupuser', {
+    fetch('/api/customer/signup', {
       method: 'POST',
       credentials: 'include',
       headers: {
