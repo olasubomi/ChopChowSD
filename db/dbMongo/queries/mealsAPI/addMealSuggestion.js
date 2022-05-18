@@ -9,7 +9,7 @@ exports.addMealSuggestion = (req, res) => {
   const url = req.protocol + '://' + req.get('host')
   console.log("Expected updated req body is : ");
   console.log(req.body);
-  console.log(req.body.instructionsGroupList);
+  console.log(req.body.stepSlides);
   // form.parse(req, function(err, fields, files) {
   // console.log("Parsing form");
   // if (err) {
@@ -104,18 +104,18 @@ exports.addMealSuggestion = (req, res) => {
   console.log("meal servings is " + Number(req.body.servings) + " of type " + typeof (Number(req.body.servings)));
 
   // let tmp_newer_ingredient_measurements= JSON.parse(req.body.new_product_ingredients);
-  // let tmp_stepSlides= JSON.parse(req.body.instructionsGroupList); // update stepSlides
+  // let tmp_stepSlides= JSON.parse(req.body.stepSlides); // update stepSlides
 
   console.log(req.body.formatted_ingredient);
-  console.log(req.body.instructionsGroupList);
+  console.log(req.body.stepSlides);
 
   // let tmp_categories= JSON.parse(req.body.categoryChips);
   // let tmp_utensilsreq.bodyuired= JSON.parse(req.body.kitchenUtensils);
-  // let tmp_tips= JSON.parse(req.body.mealTip);
+  // let tmp_tips= JSON.parse(req.body.tips);
 
   console.log(req.body.categoryChips);
   console.log(req.body.kitchenUtensils);
-  console.log(req.body.mealTip);
+  console.log(req.body.tips);
 
   // console.log(tmp_newer_ingredient_measurements);
   // console.log(tmp_stepSlides);
@@ -136,10 +136,10 @@ exports.addMealSuggestion = (req, res) => {
     intro: req.body.intro,
     chef: req.body.chef,
     formatted_ingredient: req.body.formatted_ingredient,
-    stepSlides: req.body.instructionsGroupList, // update stepSlides
-    categories: req.body.categoryChips,
-    utensilsrequired: req.body.kitchenUtensils,
-    tips: req.body.mealTip,
+    stepSlides: req.body.stepSlides, // update stepSlides
+    categories: req.body.categories,
+    kitchenUtensils: req.body.kitchenUtensils,
+    tips: req.body.tips,
     servings: Number(req.body.servings),
     // ImageOrVideoContent1: req.files.instructionChunkContent1,
     // ImageOrVideoContent2: req.files.instructionChunkContent2,
@@ -150,7 +150,7 @@ exports.addMealSuggestion = (req, res) => {
 
     // mealImage: url+"/uploads/" + req.body.files[0].filename,
     // ingredients: req.body.ingredientStrings,
-    // instructions: JSON.parse(req.body.instructionsGroupList),
+    // instructions: JSON.parse(req.body.stepSlides),
     // product_slider:product_slider,
   };
 
