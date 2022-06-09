@@ -10,6 +10,12 @@ exports.all_products = mongoose.model(
     // product_price: String,
     size: Object,
     // respective_prices: Array,
+    calories: Object,
+    total_carbs: Object,
+    net_carbs: Object,
+    fiber: Object,
+    fat: Object,
+    protein: Object,
   })
 );
 
@@ -30,38 +36,33 @@ exports.meals = mongoose.model(
   "meals",
   new Schema({
     mealName: String,
-    intro: String,
-    mealImages: Array,
-    ingredientMeasurements: Array,
+    mealImage: Object, // new
+  //   mealImages: Array,
+    mealImageName: String, // new
     prepTime: Object,
     cookTime: Object,
-    stepSlides: Object,
-    productImages: Array,
-    productNames: Array,
-    productPageUrl: Array,
-    url: String,
+    intro: String,
+    formatted_ingredient: Array,// new
+  //   ingredientMeasurements: Array,
+   //   productImages: Array,
+  //   productNames: Array,
+  //   productPageUrl: Array,
+    stepSlides: Object, // rehandle as an array
+    stepSlides: Array, // new
+  //   instructions: [ { step: Object, image: String }], 
     chef: String,
-    servings: Number,
-    instructions: [ { step: Object, image: String }],
-    utensilsRequired: Array,
     categories: Array,
-    tips: Array,
-    calories: Object,
-    total_carbs: Object,
-    net_carbs: Object,
-    fiber: Object,
-    fat: Object,
-    protein: Object,
+    kitchenUtensils: Array, // new
+  //   utensilsRequired: Array,
+  tips: Array,
+    servings: Number,
+    ImageOrVideoContent1: Object,
+    ImageOrVideoContent2: Object,
+    ImageOrVideoContent3: Object,
+    ImageOrVideoContent4: Object,
+    ImageOrVideoContent5: Object,
+    ImageOrVideoContent6: Object,
   })
-);
-
-exports.meal_images = mongoose.model(
-  "meal_images",
-  new Schema({
-  name: String,
-  data: Object,
-  contentType: String
-})
 );
 
 exports.suggested_meals = mongoose.model(
@@ -87,6 +88,15 @@ exports.suggested_meals = mongoose.model(
     ImageOrVideoContent5: Object,
     ImageOrVideoContent6: Object
   })
+);
+
+exports.meal_images = mongoose.model(
+  "meal_images",
+  new Schema({
+  name: String,
+  data: Object,
+  contentType: String
+})
 );
 
 exports.all_meal_categories = mongoose.model(

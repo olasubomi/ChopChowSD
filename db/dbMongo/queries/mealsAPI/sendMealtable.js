@@ -2,6 +2,7 @@ const { suggested_meals, meals } = require("../../config/db_buildSchema");
 const mongoose = require('mongoose');
 
 exports.sendMealtable = (req, res) => {
+    console.log("Comes in send meal data handler");
     const data_ids = req.body;
     id_data = [];
     for (var i = 0; i < data_ids.length; i++) {
@@ -12,18 +13,31 @@ exports.sendMealtable = (req, res) => {
     suggested_meals.find({ '_id': { $in: id_data } }).then((docs) => {
         let mealData = []; 
         docs.forEach((doc) => {
+            console.log(doc);
             mealData.push({
-                categories: doc.categories,
-                instructions: doc.instructions,
-                label: doc.label,
+                mealName: doc.mealName,
                 mealImage: doc.mealImage,
-                readTime: doc.readTime,
+                mealImageName: doc.mealImageName,
+                prepTime: doc.prepTime,
                 cookTime: doc.cookTime,
                 intro: doc.intro,
-                newer_ingredient_format: doc.newer_ingredient_format,
+                formatted_ingredient: doc.formatted_ingredient,
+                stepSlides : doc.stepSlides,
+                chef: doc.chef,
+                categories: doc.categories,
+                kitchenUtensils: doc.kitchenUtensils,
+                tips:doc.tips,
                 servings: doc.servings,
-                product_slider: doc.product_slider,
-                display: doc.display
+                ImageOrVideoContent1: doc.ImageOrVideoContent1,
+                ImageOrVideoContent2: doc.ImageOrVideoContent2,
+                ImageOrVideoContent3: doc.ImageOrVideoContent3,
+                ImageOrVideoContent4: doc.ImageOrVideoContent4,
+                ImageOrVideoContent5: doc.ImageOrVideoContent5,
+                ImageOrVideoContent6: doc.ImageOrVideoContent6,
+                // instructions: doc.instructions,
+                // label: doc.label,
+                // product_slider: doc.product_slider,
+                // display: doc.display
             });
         });
 
