@@ -13,6 +13,7 @@ function randomString(size = 15) {
 
 const pw = process.env.MongoPassword;
 require("./db/dbMongo/config/db_connection");
+// require('./db/dbMongo/queries/usersAPI/addAdminToDB')();
 
 const app = express();
 const path = require("path");

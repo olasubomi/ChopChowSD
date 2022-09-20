@@ -1,5 +1,5 @@
 const { Response } = require('http-status-codez');
-const CustomerService = require('../../services/CustomerService');
+const UserService = require('../../services/UserService');
 
 
 const {
@@ -10,14 +10,14 @@ const {
 module.exports = {
   signUp: async (req, res) => {
     try {
-      const customer = await new CustomerService().customerSignup(req.body);
-      console.log(customer)
-      if (customer) {
+      const User = await new UserService().userSignup(req.body);
+      console.log(user)
+      if (user) {
         res
           .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(customer));
+          .json(new SuccessResponse(user));
       } else {
-        throw customer;
+        throw user;
       }
     } catch (error) {
       return res
@@ -28,13 +28,13 @@ module.exports = {
 
   signIn: async (req, res) => {
     try {
-      const customer = await new CustomerService().login(req.body);
-      if (customer) {
+      const user = await new UserService().login(req.body);
+      if (user) {
         res
           .status(error.code || Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(customer));
+          .json(new SuccessResponse(user));
       } else {
-        throw customer;
+        throw user;
       }
     } catch (error) {
       return res
@@ -45,7 +45,7 @@ module.exports = {
 
   forgotPassword: async (req, res) => {
     try {
-      const response = await new CustomerService().forgotPassword(req.body);
+      const response = await new UserService().forgotPassword(req.body);
       if (response) {
         res
           .status(Response.HTTP_ACCEPTED)
@@ -62,7 +62,7 @@ module.exports = {
 
   resetPassword: async (req, res) => {
     try {
-      const response = await new CustomerService().resetPassword(req.body);
+      const response = await new UserService().resetPassword(req.body);
       if (response) {
         res
           .status(Response.HTTP_ACCEPTED)
@@ -78,10 +78,10 @@ module.exports = {
   },
 
   getGroceryList: async (req,res)=>{
-    const { customerId } = req.params;
+    const { userId } = req.params;
     let groceryListArray = [];
     try {
-      const groceryList = await new CustomerService.getGroceryList(customerId)
+      const groceryList = await new UserService.getGroceryList(userId)
       if (groceryList) {
         res
           .status(error.code || Response.HTTP_ACCEPTED)

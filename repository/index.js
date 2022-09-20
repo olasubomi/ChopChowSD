@@ -1,4 +1,4 @@
-const { createCustomer , updateCustomerPasswordToken,resetCustomerPassword, deleteCustomerUsingEmail,getCustomerGroceryList} = require('./customer.js');
+const { createCustomer , updateCustomerPasswordToken,resetCustomerPassword, deleteCustomerUsingEmail,getCustomerGroceryList} = require('./user.js');
 const {getMeals,getSuggestedMeals,getMealImages,removeSuggestedMeal,createMealFromSuggestion,addMealSuggestion,updateSuggestedMealItem,getAllCategories} = require('./meal');
 
 const {getAllProducts,readImages,readImage,getStoreProducts} = require('./product');
