@@ -72,6 +72,7 @@ exports.suppliers = mongoose.model(
     inventory_notification_settings: Array,
     store_account_users: Array,
     orders_list: Array,
+    drivers: Array
   })
 );
 
@@ -133,7 +134,7 @@ exports.meals = mongoose.model(
     net_carbs: Array,
     fiber: Array,
     fat: Array,
-    protein: Array,
+    protein: Array
   })
 );
 
@@ -151,8 +152,8 @@ exports.order_groups= mongoose.model(
 exports.orders= mongoose.model(
   "orders",
   new Schema({
-    price: ObjectId,
-    order_items:  Map,
+    total_order_price: ObjectId,
+    order_items:  ObjectId,
     customer_id: Number,
     pickup_details: String,
     intermediaries_details: ObjectId,
@@ -165,10 +166,21 @@ exports.orders= mongoose.model(
   })
 );
 
+exports.order_items= mongoose.model(
+  "order_items",
+  new Schema({
+    item_id: Number,
+    item_price: ObjectId,
+    store_of_item: Number,
+    quantity_of_item: Number,
+    estimated_time_of_arrival: Date
+  })
+);
+
 exports.regions= mongoose.model(
   "regions",
   new Schema({
-    region_name: String,
+    region_name: String
   })
 );
 
@@ -185,7 +197,7 @@ exports.categories = mongoose.model(
   "categories",
   new Schema({
     category_name: String,
-    publicly_available: String,
+    publicly_available: String
   })
 );
 
@@ -193,7 +205,7 @@ exports.measurements= mongoose.model(
   "measurements",
   new Schema({
     measurement_name: String,
-    publicly_available: String,
+    publicly_available: String
   })
 );
 
@@ -256,6 +268,6 @@ exports.notifications= mongoose.model(
 exports.currencies= mongoose.model(
   "currencies",
   new Schema({
-    currency: String,
+    currency: String
   })
 );
