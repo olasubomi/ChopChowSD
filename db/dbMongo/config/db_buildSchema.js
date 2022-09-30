@@ -3,57 +3,9 @@ const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 const { mixed } = require("yup");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcryptjs");
+const { sign } = require("jsonwebtoken");
 
-exports.users = mongoose.model(
-  "users",
-  new Schema({
-    first_name: String,
-    last_name: String,
-    user_type: String,
-    date_joined: Date,
-    profile_picture: String,
-    super_app_admin: Boolean,
-    sub_app_admin: Boolean,
-    super_store_admin: Boolean,
-    optional_store_ids: Array,
-    sub_store_admin: Boolean,
-    username: String,
-    email: String,
-    password: String,
-    date_of_birth: Date,
-    phone_number: Number,
-    food_preferences: Array,
-    payment_details: ObjectId,
-    delivery_addresses: Array,
-    grocery_list: Array,
-    cart_list: Array,
-    suggested_meals_from_groceries_list: Array,
-    suggested_products_for_balanced_diet: Array,
-    ordered_list: Array,
-    suggested_meals_by_user: Array,
-    email_notifications: String,
-    database_searches_allowed: Schema.Types.Mixed,
-    subscription_member: Boolean,
-    subscription_orders: Array,
-    notifications: Array,
-    ip_ids: Array,
-    driver_mode_on: Boolean,
-    driver_hours: Array,
-    driver_reviews: ObjectId,
-    driver_store_affiliations: Schema.Types.Mixed,
-    location_compatible_device: Schema.Types.Mixed,
-    driver_address: ObjectId,
-    driver_orders_picked_up: Array, 
-    driver_order_regions: Array, 
-    driver_car_type: String,
-    driver_car_color: String,
-    driver_car_plate_number: String,
-    driver_car_picture: String,
-    driver_car_make: String,
-    driver_car_model: String,
-    driver_car_year: Number
-  })
-);
 
 exports.suppliers = mongoose.model(
   "suppliers",
@@ -270,4 +222,118 @@ exports.currencies= mongoose.model(
   new Schema({
     currency: String
   })
+);
+
+
+const userSchema = new Schema({
+  first_name: String,
+  last_name: String,
+  user_type: String,
+  date_joined: Date,
+  profile_picture: String,
+  super_app_admin: Boolean,
+  sub_app_admin: Boolean,
+  super_store_admin: Boolean,
+  optional_store_ids: Array,
+  sub_store_admin: Boolean,
+  username: String,
+  email: String,
+  password: String,
+  date_of_birth: Date,
+  phone_number: Number,
+  food_preferences: Array,
+  payment_details: ObjectId,
+  delivery_addresses: Array,
+  grocery_list: Array,
+  cart_list: Array,
+  suggested_meals_from_groceries_list: Array,
+  suggested_products_for_balanced_diet: Array,
+  ordered_list: Array,
+  suggested_meals_by_user: Array,
+  email_notifications: String,
+  database_searches_allowed: Schema.Types.Mixed,
+  subscription_member: Boolean,
+  subscription_orders: Array,
+  notifications: Array,
+  ip_ids: Array,
+  driver_mode_on: Boolean,
+  driver_hours: Array,
+  driver_reviews: ObjectId,
+  driver_store_affiliations: Schema.Types.Mixed,
+  location_compatible_device: Schema.Types.Mixed,
+  driver_address: ObjectId,
+  driver_orders_picked_up: Array,
+  driver_order_regions: Array,
+  driver_car_type: String,
+  driver_car_color: String,
+  driver_car_plate_number: String,
+  driver_car_picture: String,
+  driver_car_make: String,
+  driver_car_model: String,
+  driver_car_year: Number,
+  tokens: {
+    passwordResetToken: {type: String}
+  },
+})
+
+
+userSchema.pre("save", async function (next) {
+  let user = this;
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified("password")) return next();
+  if (!user.password) return;
+    // hash and update the password using our new salt
+  const hash =  await  bcrypt.hash(user.password, 10);
+  user.password= hash
+  next()
+});
+
+userSchema.pre("findOneAndUpdate",{ document: true, query: false }, async function(next) {
+  let update = {...this.getUpdate()}
+  if(update.$set.password){
+    const hash =  await  bcrypt.hash(update.$set.password, 10);
+    update.$set.password = hash
+    next()
+  }
+  next()
+});
+
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password)
+};
+
+userSchema.methods.generateAccessTokens = async function (payload) {
+
+  const accessToken  = await sign(payload, process.env.SECRET, {
+    expiresIn: "1h",
+  });
+
+  return accessToken;
+};
+
+userSchema.methods.generatePasswordResetToken = async function (payload) {
+  let user = this
+
+  const passwordResetToken  = await sign(payload, process.env.SECRET, {
+    expiresIn: "8h",
+  });
+
+  user.tokens.passwordResetToken = passwordResetToken;
+
+  await user.save();
+
+  return passwordResetToken;
+};
+
+userSchema.set('toJSON', {
+  transform: function(doc, ret, opt) {
+      delete ret["token"]
+      delete ret['password']
+      return ret
+  }
+})
+
+
+exports.users = mongoose.model(
+  "users",userSchema
 );

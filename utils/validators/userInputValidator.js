@@ -3,11 +3,11 @@ const Joi = require('joi');
 
 const signUpSchema = Joi.object({
     email: Joi.string().email().required(),
-    firstname:Joi.string().required(),
-    lastname:Joi.string().required(),
+    first_name:Joi.string().required(),
+    last_name:Joi.string().required(),
     password:Joi.string().required(),
     username:Joi.string().required(),
-    phonenumber:Joi.string(),
+    phone_number:Joi.string(),
     emailnotification: Joi.boolean()
 })      
 

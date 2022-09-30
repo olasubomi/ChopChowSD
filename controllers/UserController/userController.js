@@ -1,44 +1,37 @@
-const { Response } = require('http-status-codez');
-const UserService = require('../../services/UserService');
+const { Response } = require("http-status-codez");
+const UserService = require("../../services/UserService");
 
-
-const {
-  ErrorResponse,
-  SuccessResponse,
-} = require('../../lib/appResponse');
+const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 
 module.exports = {
   signUp: async (req, res) => {
     try {
-      const User = await new UserService().userSignup(req.body);
-      console.log(user)
+      const user = await new UserService().userSignup(req.body);
       if (user) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(user));
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(user));
       } else {
         throw user;
       }
     } catch (error) {
       return res
-        .status(500 ||  Response.HTTP_INTERNAL_SERVER_ERROR)
+        .status(500 || Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },
 
   signIn: async (req, res) => {
     try {
-      const user = await new UserService().login(req.body);
-      if (user) {
+      const authenticateUser = await new UserService().login(req.body);
+      if (authenticateUser) {
         res
-          .status(error.code || Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(user));
+          .status(authenticateUser.code || Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(authenticateUser));
       } else {
-        throw user;
+        throw authenticateUser;
       }
     } catch (error) {
       return res
-        .status( Response.HTTP_INTERNAL_SERVER_ERROR)
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },
@@ -47,9 +40,7 @@ module.exports = {
     try {
       const response = await new UserService().forgotPassword(req.body);
       if (response) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(response));
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(response));
       } else {
         throw response;
       }
@@ -64,24 +55,56 @@ module.exports = {
     try {
       const response = await new UserService().resetPassword(req.body);
       if (response) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(response));
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(response));
       } else {
         throw response;
       }
     } catch (error) {
       return res
         .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
-          .json(new ErrorResponse(error));
+        .json(new ErrorResponse(error));
     }
   },
 
-  getGroceryList: async (req,res)=>{
-    const { userId } = req.params;
+  findUser: async (req, res) => {
+    try {
+      const user = await new UserService().findSingleUser(req.params.id);
+      if (user) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(user));
+      } else {
+        throw user;
+      }
+    } catch (error) {
+      return res
+        .status(error?.code || Response?.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  findUsers: async (req, res) => {
+    try {
+      const user = await new UserService().findMultipleUser(
+        req.query || {},
+        req.params.page
+      );
+      if (user) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(user));
+      } else {
+        throw user;
+      }
+    } catch (error) {
+      return res
+        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+
+  getGroceryList: async (req, res) => {
+    const { customerId } = req.params;
     let groceryListArray = [];
     try {
-      const groceryList = await new UserService.getGroceryList(userId)
+      const groceryList = await new UserService.getGroceryList(customerId);
       if (groceryList) {
         res
           .status(error.code || Response.HTTP_ACCEPTED)
@@ -92,8 +115,7 @@ module.exports = {
     } catch (error) {
       return res
         .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
-          .json(new ErrorResponse(error));
+        .json(new ErrorResponse(error));
     }
-  }
-
+  },
 };

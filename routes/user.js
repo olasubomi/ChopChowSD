@@ -22,6 +22,8 @@ router.post("/signup", UserController.signUp);
 router.post("/signin", UserController.signIn);
 router.post("/forgotpassword", UserController.forgotPassword);
 router.post("/resetpassword",UserController.resetPassword);
+router.get("/findUser/:id",UserController.findUser);
+router.get("/findUsers/:page",UserController.findUsers);
 router.get("/hash", hashPassword);
 router.get("/logout", authunticationLogout);
 
