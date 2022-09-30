@@ -2,7 +2,15 @@ const db_connection = require('../db/dbPostgress/config/db_connection')
 const { grocery_list, products,users } = require('../db/dbMongo/config/db_buildSchema')
 
 const createUser = async (payload) => {
-  return await users.create(payload);
+  
+  const newUser = await users.create(payload);
+  if(newUser){
+    await grocery_list.create({
+      user:newUser._id,
+      products:[]
+    })
+  }
+  return newUser;
 };
 
 const updateUser = async (filter, data) => {

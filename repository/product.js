@@ -2,7 +2,7 @@ const {
   meals,
   suggested_meals,
   meal_images,
-  all_products,
+  products,
   store_products,
   all_meal_categories,
   all_utensils,
@@ -15,7 +15,7 @@ var grid = require("gridfs-stream");
 
 const getAllProducts = async () => {
   try {
-    const allProducts = await all_products.find({});
+    const allProducts = await products.find({});
     return {
       data: allProducts,
     };

@@ -11,8 +11,21 @@ const mongoose = require("mongoose");
 
 const getMeals = async (payload) => {
   try {
-    const mealsResponse = await meals.find();
+    const mealsResponse = await meals.find(payload|| {});
     return { meals: mealsResponse };
+  } catch (error) {
+    throw {
+      error: error,
+      messsage: error.message || "Get meals operation failed",
+      code: 500,
+    };
+  }
+};
+
+const getMeal = async (id) => {
+  try {
+    const mealResponse = await meals.findOne({_id:id});
+    return { meal: mealResponse };
   } catch (error) {
     throw {
       error: error,
@@ -25,7 +38,6 @@ const getMeals = async (payload) => {
 const getSuggestedMeals = async () => {
   try {
     const suggestedMeals = await suggested_meals.find();
-
     return { suggestedMeals: suggestedMeals };
   } catch (error) {
     throw {
@@ -241,6 +253,7 @@ const getAllCategories = async() => {
 
 module.exports = {
   getMeals,
+  getMeal,
   getSuggestedMeals,
   getMealImages,
   removeSuggestedMeal,

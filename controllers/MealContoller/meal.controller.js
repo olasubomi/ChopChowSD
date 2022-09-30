@@ -18,6 +18,22 @@ module.exports = {
         .json(new ErrorResponse(error));
     }
   },
+
+  getSingleMeal: async (req, res) => {
+    try {
+      const meal = await new MealService().getMeal(req?.params?.id);
+      if (meal) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(meal));
+      } else {
+        throw meal;
+      }
+    } catch (error) {
+      return res
+        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getSuggestedMeals: async (req, res) => {
     try {
       const suggestedMweals = await new MealService().getSuggestedMeals();

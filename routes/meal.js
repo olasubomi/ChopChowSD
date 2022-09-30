@@ -38,6 +38,7 @@ var upload = multer({ storage: storage });
 //customer routes
 
 router.get("/get-meals", MealsController.getMeals);
+router.get("/get-meal/:id", MealsController.getSingleMeal);
 router.get("/get-suggested-meals", MealsController.getSuggestedMeals);
 router.get(
   "/get-suggested-meals-images",

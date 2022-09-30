@@ -225,6 +225,18 @@ exports.currencies= mongoose.model(
 );
 
 
+const groceryListSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
+  products: [{ type: mongoose.Types.ObjectId, ref: "product" }],
+});
+
+exports.grocery_list = mongoose.model("grocery_list", groceryListSchema);
+
+
 const userSchema = new Schema({
   first_name: String,
   last_name: String,
