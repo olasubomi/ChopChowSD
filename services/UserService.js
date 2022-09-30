@@ -15,7 +15,7 @@ const {
 const { forgotPasswordEmail } = require("../mailer/nodemailer");
 
 class CustomerService {
-  async userSignup(payload) {
+  static async userSignup(payload) {
     try {
       // validate input data with joi
       const validate = signUpSchema.validate(payload);
@@ -53,7 +53,7 @@ class CustomerService {
     }
   }
 
-  async login(payload) {
+  static async login(payload) {
     try {
       const userExist = await findUser({ email: payload.email });
 
@@ -85,7 +85,7 @@ class CustomerService {
     }
   }
 
-  async forgotPassword(payload) {
+  static async forgotPassword(payload) {
     try {
       const { email } = payload;
       // Check username as well when testing forgot password
@@ -108,7 +108,7 @@ class CustomerService {
     }
   }
 
-  async resetPassword(payload) {
+ static async resetPassword(payload) {
     try {
       const validatepayload = resetPasswordSchema.validate(payload);
       if (!validatepayload) {
@@ -150,7 +150,7 @@ class CustomerService {
     }
   }
 
-  async findSingleUser(id) {
+  static async findSingleUser(id) {
     try {
       return await findUser({ _id: id });
     } catch (error) {
@@ -169,7 +169,7 @@ class CustomerService {
       throw error;
     }
   }
-  async getGroceryList(customerId){
+  static async getGroceryList(customerId){
     try{
       const getGroceryList = await getCustomerGroceryList(customerId)
       return getGroceryList

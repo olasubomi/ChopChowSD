@@ -7,7 +7,7 @@ const cookie = require("cookie-parser"); // cookies required for login authentic
 require("dotenv").config();
 
 const Crypto = require("crypto");
-function randomString(size = 15) {
+exports.randomString = function(size = 15) {
   return Crypto.randomBytes(size).toString("base64").slice(0, size);
 }
 

@@ -6,7 +6,7 @@ const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 module.exports = {
   getMeals: async (req, res) => {
     try {
-      const meals = await new MealService().getMeals();
+      const meals = await  MealService.getMeals();
       if (meals) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(meals));
       } else {
@@ -21,7 +21,7 @@ module.exports = {
 
   getSingleMeal: async (req, res) => {
     try {
-      const meal = await new MealService().getMeal(req?.params?.id);
+      const meal = await  MealService.getMeal(req?.params?.id);
       if (meal) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(meal));
       } else {
@@ -36,7 +36,7 @@ module.exports = {
 
   getSuggestedMeals: async (req, res) => {
     try {
-      const suggestedMweals = await new MealService().getSuggestedMeals();
+      const suggestedMweals = await  MealService.getSuggestedMeals();
       if (suggestedMweals) {
         res
           .status(Response.HTTP_ACCEPTED)
@@ -54,7 +54,7 @@ module.exports = {
   getSuggestedMealImages: async (req, res) => {
     try {
       const suggestedMealImages =
-        await new MealService().getSuggestedMealImages();
+        await  MealService.getSuggestedMealImages();
       if (suggestedMealImages) {
         res
           .status(Response.HTTP_ACCEPTED)
@@ -72,7 +72,7 @@ module.exports = {
   removeSuggestedMealItem: async (req, res) => {
     try {
       const { suggestedMealID } = req.params;
-      const deleteSuggestedMeal = await new MealService().deleteSuggestedMeal(
+      const deleteSuggestedMeal = await MealService.deleteSuggestedMeal(
         suggestedMealID
       );
       if (deleteSuggestedMeal) {
@@ -91,7 +91,9 @@ module.exports = {
   createMealFromSuggestedMeals: async (req, res) => {
     try {
       const { data_ids } = req.body;
-      const createMeals = await new MealService().createMealFromSuggestedMeals(
+      console.log('from create suggestion')
+      console.log({body:req.body})
+      const createMeals = await MealService.createMealFromSuggestedMeals(
         data_ids
       );
       if (createMeals) {
@@ -110,7 +112,7 @@ module.exports = {
 
   addMealSuggestion: async (req, res) => {
     try {
-      const suggestions = await new MealService().addMealSuggestion(
+      const suggestions = await MealService.addSuggestion(
         req.files["mealImage"],
         req.body
       );
@@ -122,6 +124,7 @@ module.exports = {
         throw suggestions;
       }
     } catch (error) {
+      console.log(error)
       return res
         .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
@@ -130,9 +133,9 @@ module.exports = {
 
   updateSuggestedMealItem: async (req, res) => {
     try {
-      const updateSuggestions = await new MealService().updateMealSuggestion(
+      const updateSuggestions = await MealService.updateMealSuggestion(
         req.body
-      );
+      );  
       if (updateSuggestions) {
         res
           .status(Response.HTTP_ACCEPTED)
@@ -149,7 +152,7 @@ module.exports = {
 
   getMealCategories: async (req, res) => {
     try {
-      const mealCategories = await new MealService().getAllMealCactegories();
+      const mealCategories = await MealService.getAllMealCactegories();
       if (mealCategories) {
         res
           .status(Response.HTTP_ACCEPTED)

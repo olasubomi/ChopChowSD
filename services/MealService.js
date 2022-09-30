@@ -11,7 +11,7 @@ const {
 } = require("../repository/index");
 
 class MealService {
-  async getMeals() {
+  static async getMeals() {
     try {
       const meals = await getMeals();
       return meals;
@@ -20,7 +20,7 @@ class MealService {
     }
   }
 
-  async getMeal(id) {
+  static async getMeal(id) {
     try {
       const meal = await getMeal(id);
       return meal;
@@ -29,7 +29,7 @@ class MealService {
     }
   }
 
-  async getSuggestedMeals() {
+  static async getSuggestedMeals() {
     try {
       const suggestedMeals = await getSuggestedMeals();
       return suggestedMeals;
@@ -38,7 +38,7 @@ class MealService {
     }
   }
 
-  async getSuggestedMealImages() {
+  static async getSuggestedMealImages() {
     try {
       const mealImages = await getMealImages();
       return mealImages;
@@ -47,7 +47,7 @@ class MealService {
     }
   }
 
-  async deleteSuggestedMeal(suggestedMealID) {
+  static async deleteSuggestedMeal(suggestedMealID) {
     try {
       const deleteMeal = await removeSuggestedMeal(suggestedMealID);
       return deleteMeal;
@@ -56,7 +56,7 @@ class MealService {
     }
   }
 
-  async createMealFromSuggestedMeals(suggestedMealID) {
+  static async createMealFromSuggestedMeals(suggestedMealID) {
     try {
       const createMeals = await createMealFromSuggestion(suggestedMealID);
       return createMeals;
@@ -65,28 +65,25 @@ class MealService {
     }
   }
 
-  async addMealSuggestion(file, payload) {
+  static async addSuggestion(file, payload) {
     try {
-      const mealSuggestions = await addMealSuggestion(file, payload);
-      return mealSuggestions;
+      return await addMealSuggestion(file, payload);
     } catch (error) {
       throw error;
     }
   }
 
-  async updateMealSuggestion(payload) {
+  static async updateMealSuggestion(payload) {
     try {
-      const updateSuggestions = await updateSuggestedMealItem(payload);
-      return updateSuggestions;
+      return await updateSuggestedMealItem(payload);
     } catch (error) {
       throw error;
     }
   }
 
-  async getAllMealCactegories() {
+  static async getAllMealCactegories() {
     try {
-      const allMealCategories = await getAllCategories();
-      return allMealCategories;
+      return await getAllCategories();
     } catch (error) {
       throw error;
     }

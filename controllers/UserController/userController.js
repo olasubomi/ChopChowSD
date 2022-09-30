@@ -6,7 +6,7 @@ const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 module.exports = {
   signUp: async (req, res) => {
     try {
-      const user = await new UserService().userSignup(req.body);
+      const user = await UserService().userSignup(req.body);
       if (user) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(user));
       } else {
@@ -21,7 +21,7 @@ module.exports = {
 
   signIn: async (req, res) => {
     try {
-      const authenticateUser = await new UserService().login(req.body);
+      const authenticateUser = await UserService().login(req.body);
       if (authenticateUser) {
         res
           .status(authenticateUser.code || Response.HTTP_ACCEPTED)
@@ -38,7 +38,7 @@ module.exports = {
 
   forgotPassword: async (req, res) => {
     try {
-      const response = await new UserService().forgotPassword(req.body);
+      const response = await UserService().forgotPassword(req.body);
       if (response) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(response));
       } else {
@@ -53,7 +53,7 @@ module.exports = {
 
   resetPassword: async (req, res) => {
     try {
-      const response = await new UserService().resetPassword(req.body);
+      const response = await UserService().resetPassword(req.body);
       if (response) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(response));
       } else {
@@ -68,7 +68,7 @@ module.exports = {
 
   findUser: async (req, res) => {
     try {
-      const user = await new UserService().findSingleUser(req.params.id);
+      const user = await UserService().findSingleUser(req.params.id);
       if (user) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(user));
       } else {
@@ -83,7 +83,7 @@ module.exports = {
 
   findUsers: async (req, res) => {
     try {
-      const user = await new UserService().findMultipleUser(
+      const user = await UserService().findMultipleUser(
         req.query || {},
         req.params.page
       );
@@ -104,7 +104,7 @@ module.exports = {
     const { customerId } = req.params;
     let groceryListArray = [];
     try {
-      const groceryList = await new UserService.getGroceryList(customerId);
+      const groceryList = await UserService.getGroceryList(customerId);
       if (groceryList) {
         res
           .status(error.code || Response.HTTP_ACCEPTED)

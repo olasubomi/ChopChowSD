@@ -153,6 +153,15 @@ exports.categories = mongoose.model(
   })
 );
 
+exports.utensils = mongoose.model(
+  "utensils",
+  new Schema({
+    name: String,
+    type:"",
+    publicly_available: String
+  })
+);
+
 exports.measurements= mongoose.model(
   "measurements",
   new Schema({
@@ -348,4 +357,24 @@ userSchema.set('toJSON', {
 
 exports.users = mongoose.model(
   "users",userSchema
+);
+
+
+exports.suggested_meals = mongoose.model(
+  "suggested_meals",
+  new Schema({
+    label: String,
+    mealImage: String,
+    readTime: String,
+    cookTime: String,
+    intro: String,
+    product_slider: [{ ingredient: String, image: String, flag:Boolean }],
+    newer_ingredient_format: [
+      { product: String, quantity: Number, measurement: String, image: String },
+    ],
+    servings: Number,
+    categories: Array,
+    instructions: [ { step: Object, image: String }],
+    display: Boolean
+  })
 );
