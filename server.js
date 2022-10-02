@@ -7,7 +7,7 @@ const cookie = require("cookie-parser"); // cookies required for login authentic
 require("dotenv").config();
 
 const Crypto = require("crypto");
-function randomString(size = 15) {
+exports.randomString = function(size = 15) {
   return Crypto.randomBytes(size).toString("base64").slice(0, size);
 }
 
@@ -46,7 +46,7 @@ const {
 } = require("./db/dbMongo/queries/list/getAllDataLists");
 const getItemId = require("./db/dbMongo/queries/list/getItemId");
 const getDataItemTypeahead = require("./db/dbMongo/queries/list/getDataItemTypeahead");
-const customerRoutes = require("./routes/customer");
+const userRoutes = require("./routes/user");
 const mealRoutes = require("./routes/meal");
 const productRoutes = require("./routes/product");
 
@@ -97,7 +97,7 @@ app.use(bodyParser.json());
 //***********************************************************************************
 
 app.use("/facebook", facebook);
-app.use("/api/customer", customerRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/meals", mealRoutes);
 app.use("/api/products", productRoutes);
 

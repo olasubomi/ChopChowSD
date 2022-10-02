@@ -4,6 +4,7 @@ var multer = require("multer");
 const { writeFile } = require("../db/dbMongo/config/writeFile");
 const { transferToS3 } = require("../db/aws3/transferToS3");
 const {multerOptionsToAcceptIntstructionContent } = require('../utils/multer/optionsAccept')
+const {randomString} = require('../server');
 
 let storage2 = multer.diskStorage({
   destination: "./multerFilesToDBs",
@@ -44,7 +45,7 @@ router.get(
   MealsController.getSuggestedMealImages
 );
 router.get(
-  "/api/removeSeggestItem/:suggestedMealID",
+  "/removeSeggestItem/:suggestedMealID",
   MealsController.removeSuggestedMealItem
 );
 router.post("/send-mealData", MealsController.createMealFromSuggestedMeals);
