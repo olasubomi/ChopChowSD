@@ -2,7 +2,7 @@ exports.getInstructionImgPath = (req, res) =>{
 
   const url = req.protocol + '://' + req.get('host')
   console.log('****creat meal data****', req.body);
-  console.log("Comes in meal suggestion handler");
+  console.log("Comes in Instructions image handler");
 
   console.log("imgSrc:", req.files);
   const img_path = [];

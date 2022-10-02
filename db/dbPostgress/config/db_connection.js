@@ -2,9 +2,10 @@ const { Pool } = require('pg');
 const { parse } = require('url');
 require('dotenv').config();
 
- let { DATABASE_URL: dbUrl } = process.env;
+ let { PG_DATABASE_URL: dbUrl } = process.env;
 
  const params = parse(dbUrl);
+ 
 const {
   hostname: host, port, pathname, auth,
 } = params;

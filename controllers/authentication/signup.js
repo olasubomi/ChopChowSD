@@ -42,7 +42,9 @@ exports.resetPassword = (req, res, next) => {
 };
 
 exports.forgotPassword = (req, res, next) => {
+    console.log("Comes in forgot password");
     const { email, username } = req.body;
+    // Check username as well when testing forgot password
     checkEmailUser(email).then((result) => {
         if (result.rows[0]) {
             let token = crypto.randomBytes(20).toString('hex');
@@ -59,10 +61,9 @@ exports.forgotPassword = (req, res, next) => {
                 res.status(200).send(JSON.stringify({ msg: 'Email with reset link has been sent to you.', done: true }))
             }, e => {
                 console.log(e)
-
             })
         } else {
-            res.status(400).send(JSON.stringify({ msg: 'your email does not exist.' }))
+            res.status(400).send(JSON.stringify({ msg: 'Your email does not exist bro.' }))
         }
     }).catch((e) => {
         console.log(e)
@@ -71,21 +72,32 @@ exports.forgotPassword = (req, res, next) => {
 };
 
 exports.signupCustomer = (req, res, next) => {
-    console.log("req.body," , req);
-    console.log("req.res," , res);
     const { email, password, username, phone, emailNotification } = req.body;
-    
 
-    checkEmailUser(email)
+    console.log("Email is: "+email);
+    
+    var [account, address] = email.split('@');
+    var domainParts = address.split('.');
+   
+     //   Email verification
+     if (
+         (/^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/.test(email) ||
+        email === "" ) && email.length < 256 && account.length < 64 && 
+        domainParts.some(function (part) {
+            return part.length < 63;
+        })
+        ){
+        checkEmailUser(email)
         .then((result) => {
             if (!result.rows[0]) {
+                console.log('Result is: ');
+                console.log(result.rows[0]);
                 getHashPassword(password)
                     .then((hashedPass) => {
                         let sql = {
                             text: 'insert into customer (email, phonenumber, username, password, emailnotification) values($1, $2, $3, $4, $5) RETURNING id',
                             values: [email, phone, username, hashedPass, emailNotification]
                         };
-
                         pool.query(sql).then(data => {
                             let id = data.rows[0].id;
                             console.log("Created users id is : "+ id);
@@ -99,35 +111,32 @@ exports.signupCustomer = (req, res, next) => {
                                     console.log("Succesfully creates new grocery list for signed up user!")
                                     console.log(list)
                                 }})
-
                             console.log("Added grocery list to mongo db!")
                             signUpEmail(email);
-                            res.status(200).send(JSON.stringify({ msg: 'User Sign up successfully', done: true }))
+                            res.status(200).send(JSON.stringify({ msg: 'User signed up successfully', done: true }))
                         }, e => {
                             console.log(e)
-
                         })
-
-
                     }).catch((e) => {
                         console.log(e)
-
                         res.status(500).send(JSON.stringify({ msg: 'Internal server error' }))
                     })
-
             }
-
             else {
-                res.status(400).send(JSON.stringify({ msg: 'your email is exist , so you must make login just ' }))
-
-
+                res.status(400).send(JSON.stringify({ msg: 'Your email already exist in our files, so simply login with your password.' }))
             }
         })
         .catch((e) => {
             console.log(e)
-
             res.status(500).send(JSON.stringify({ msg: 'Internal server error' }))
         }
         )
+     }
+     else{
+        res.status(400).send(JSON.stringify({ msg: 'Invalid email.' }))
+
+     }
+
+    
 
 }

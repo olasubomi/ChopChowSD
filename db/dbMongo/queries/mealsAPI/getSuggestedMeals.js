@@ -3,7 +3,7 @@ exports.getSuggestedMeals = (req, res) => {
   return suggested_meals
     .find()
     .then((resMeals) => {
-      // console.log(resMeals);
+      console.log("Successfully gets all suggested meals");
       res.send({
         data: resMeals,
       });

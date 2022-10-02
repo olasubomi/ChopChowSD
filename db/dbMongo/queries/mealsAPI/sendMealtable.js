@@ -10,7 +10,7 @@ exports.sendMealtable = (req, res) => {
 
     const flag = 0;
     suggested_meals.find({ '_id': { $in: id_data } }).then((docs) => {
-        let mealData = []; 
+        let mealData = [];
         docs.forEach((doc) => {
             mealData.push({
                 categories: doc.categories,

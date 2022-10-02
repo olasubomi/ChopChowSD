@@ -29,6 +29,7 @@ module.exports = (req, res, next) => {
       }
     });
   } else {
+    console.log("auth token is not supplied");
     return res.json({
       success: false,
       message: "Auth token is not supplied",
