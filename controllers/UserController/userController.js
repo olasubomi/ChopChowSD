@@ -66,6 +66,14 @@ module.exports = {
     }
   },
 
+  inviteUser: async (req, res) => {
+    return res.status(200);
+  },
+
+  addNotification: async (req, res) => {
+    return res.status(200);
+  },
+
   findUser: async (req, res) => {
     try {
       const user = await UserService().findSingleUser(req.params.id);
@@ -80,6 +88,7 @@ module.exports = {
         .json(new ErrorResponse(error));
     }
   },
+
 
   findUsers: async (req, res) => {
     try {
@@ -118,4 +127,40 @@ module.exports = {
         .json(new ErrorResponse(error));
     }
   },
+
+  getCartList: async (req, res) => {
+    return res.status(200);
+  },
+
+  findStoreAdmins: async (req, res) => {
+    return res.status(200);
+  },
+
+  getAppAdmins: async (req, res) => {
+    return res.status(200);
+  },
+
+  updateNotificiations: async (req, res) => {
+    return res.status(200);
+  },
+
+  updateUserProfile: async (req, res) => {
+    return res.status(200);
+  },
+
+  updateCartList: async (req, res) => {
+    return res.status(200);
+  },
+
+  updateGrocerySuggestionsList: async (req, res) => {
+    return res.status(200);
+  },
+
+  closeAccount: async (req, res) => {
+    return res.status(200);
+  },
+
+
+
+
 };
