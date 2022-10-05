@@ -1,4 +1,4 @@
-const {suggested_meals, all_products, all_meal_categories, all_utensils, all_measurements } = require("../../config/db_buildSchema");
+const { suggested_meals, all_products, all_meal_categories, all_utensils, all_measurements } = require("../../config/db_buildSchema");
 // const formidable = require('formidable');
 const fs = require('fs');
 const path = require('path');
@@ -22,11 +22,11 @@ exports.addMealSuggestion = (req, res) => {
   console.log("Printing files in request")
   console.log(req.files);
   var serverMealImageName
-  if(req.files['mealImage'] === undefined){
-     serverMealImageName = "";
+  if (req.files['mealImage'] === undefined) {
+    serverMealImageName = "";
   }
-  else{
-     serverMealImageName = req.files['mealImage'][0].filename;
+  else {
+    serverMealImageName = req.files['mealImage'][0].filename;
     console.log(serverMealImageName);
   }
 
@@ -68,7 +68,7 @@ exports.addMealSuggestion = (req, res) => {
     };
     all_measurements.create(measurement);
   }
-  console.log("Gets passed measure,emts message");
+  console.log("Gets passed measurements message");
 
   // ------------------- adding new kitchen utensils  ---------------------------  
   for (var i = 0; i < parsed_utensils.length; i++) {

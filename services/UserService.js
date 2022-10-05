@@ -108,7 +108,7 @@ class CustomerService {
     }
   }
 
- static async resetPassword(payload) {
+  static async resetPassword(payload) {
     try {
       const validatepayload = resetPasswordSchema.validate(payload);
       if (!validatepayload) {
@@ -169,12 +169,12 @@ class CustomerService {
       throw error;
     }
   }
-  static async getGroceryList(customerId){
-    try{
+  static async getGroceryList(customerId) {
+    try {
       const getGroceryList = await getCustomerGroceryList(customerId)
       return getGroceryList
-    }catch(error){
-    throw error
+    } catch (error) {
+      throw error
     }
   }
 }
