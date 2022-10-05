@@ -3,7 +3,7 @@ const {
   suggested_meals,
   meal_images,
   products,
-  store_products,
+  suppliers,
   all_meal_categories,
   all_utensils,
   all_measurements,
@@ -13,17 +13,22 @@ var mongooseDrv = require("mongoose");
 //2. The grid-stream
 var grid = require("gridfs-stream");
 
-const getAllProducts = async () => {
+const getAllProducts = async (page, filter) => {
   try {
-    const allProducts = await products.find({});
+    let getPaginate = await paginate(page, filter);
+    const allProducts = await products
+      .find(filter || {})
+      .limit(getPaginate.limit)
+      .skip(getPaginate.skip);
     return {
       data: allProducts,
     };
   } catch (error) {
+    console.log({ error });
     throw {
       error: error,
       messsage: error.message || "Get all products operation failed",
-      code: 500,
+      code: error.code || 500,
     };
   }
 };
@@ -46,7 +51,7 @@ const readImages = async (req, res) => {
           gridfs.files.find().toArray((err, files) => {
             // Check if files
             if (!files || files.length === 0) {
-              return { fils:[]};
+              return { fils: [] };
             } else {
               mongooseDrv.disconnect();
               return { files: files };
@@ -78,14 +83,15 @@ const readImage = async (filename) => {
           if (!file || file.length === 0) {
             return {
               file: {},
-            }
+            };
           }
           return { file: file };
         });
       } else {
         throw {
           error: error,
-          messsage: error.message || "read image operation failed, database error",
+          messsage:
+            error.message || "read image operation failed, database error",
           code: 500,
         };
       }
@@ -93,15 +99,22 @@ const readImage = async (filename) => {
   } else {
     throw {
       error: error,
-      messsage: error.message || "Get all products operation failed database connection error",
+      messsage:
+        error.message ||
+        "Get all products operation failed database connection error",
       code: 500,
     };
   }
 };
 
-const getStoreProducts = async () => {
+const getStoreProducts = async (page,storeId) => {
   try {
-    const storeProducts = await store_products.find({});
+    let getPaginate = await paginate(page, filter);
+    const storeProducts = await products.find({
+      _id: { $in: storeId },
+    } || {})
+    .limit(getPaginate.limit)
+    .skip(getPaginate.skip);;
     return {
       data: storeProducts,
     };
@@ -112,6 +125,17 @@ const getStoreProducts = async () => {
       code: 500,
     };
   }
+};
+
+const paginate = async (page, filter) => {
+  const limit = parseInt(filter.limit) || 10;
+  let skip = parseInt(page) === 1 ? 0 : limit * page;
+  delete filter.limit;
+  const docCount = await products.countDocuments(filter);
+  if (docCount < skip) {
+    skip = (page - 1) * limit;
+  }
+  return { skip, limit };
 };
 
 module.exports = {

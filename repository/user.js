@@ -31,7 +31,6 @@ const findUsers = async (filter, page) => {
   const limit = 10;
   const skip = parseInt(page) === 1 ? 0 : limit * page;
   const docCount = await users.countDocuments(filter);
-
   if (docCount < skip) {
     skip = (page - 1) * limit;
   }

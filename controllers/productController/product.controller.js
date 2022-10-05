@@ -6,7 +6,7 @@ const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 module.exports = {
   getAllProducts: async (req, res) => {
     try {
-      const products = await new ProductService().getAllProducts();
+      const products = await ProductService.getAllProducts(req.params.page,req.query);
       if (products) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(products));
       } else {
@@ -21,7 +21,7 @@ module.exports = {
 
   readProductImages: async (req, res) => {
     try {
-      const productImages = await new ProductService().readProductImages();
+      const productImages = await ProductService.readProductImages();
       if (productImages) {
         res
           .status(Response.HTTP_ACCEPTED)
@@ -38,7 +38,7 @@ module.exports = {
 
   readProductImage: async (req, res) => {
     try {
-      const productImages = await new ProductService().readSingleProductImage(
+      const productImages = await ProductService.readSingleProductImage(
         req.params.filename
       );
       if (productImages) {
@@ -57,7 +57,7 @@ module.exports = {
 
   getStoreProducts: async (req, res) => {
     try {
-      const storeProducts = await new ProductService().storeProducts();
+      const storeProducts = await ProductService.storeProducts(req.params.page,req.query.storeId);
       if (storeProducts) {
         res
           .status(Response.HTTP_ACCEPTED)
