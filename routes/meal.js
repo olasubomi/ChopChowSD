@@ -49,8 +49,8 @@ router.post(
 router.post("/updateSuggestedMealItem/", upload.array('imgSrc'), MealsController.updateSuggestedMealItem);
 
 router.get("/get-meals", MealsController.getMeals);
-router.get("/getmealsbydate", MealsController.getMealsByDate); // with count limit
-router.get("/getmealsbystatus", MealsController.getMealsByStatus); // with count limit
+// router.get("/getmealsbydate", MealsController.getMealsByDate); // with count limit
+// router.get("/getmealsbystatus", MealsController.getMealsByStatus); // with count limit
 
 
 router.get("/get-suggested-meals", MealsController.getSuggestedMeals);
@@ -65,9 +65,9 @@ router.get(
 
 router.get("/get-all-categories", MealsController.getMealCategories);
 
-router.put("/updatemeal/:mealId", MealsController.updateMeal);
-router.put("/updatesimilarmeal/:mealId", MealsController.updateSimilarMeal);
+// router.put("/updatemeal/:mealId", MealsController.updateMeal);
+// router.put("/updatesimilarmeal/:mealId", MealsController.updateSimilarMeal);
 
-router.delete("/deletemeal/:mealId", MealsController.deleteMeal);
+// router.delete("/deletemeal/:mealId", MealsController.deleteMeal);
 
 module.exports = router;

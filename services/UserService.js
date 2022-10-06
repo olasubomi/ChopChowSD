@@ -14,7 +14,7 @@ const {
 } = require("../db/dbMongo/config/db_buildSchema");
 const { forgotPasswordEmail } = require("../mailer/nodemailer");
 
-class CustomerService {
+class UserService {
   static async userSignup(payload) {
     try {
       // validate input data with joi
@@ -55,6 +55,7 @@ class CustomerService {
 
   static async login(payload) {
     try {
+    console.log("userservice")
       const userExist = await findUser({ email: payload.email });
 
       if (!userExist) {
@@ -158,7 +159,7 @@ class CustomerService {
     }
   }
 
-  async findMultipleUser(filter, page) {
+  static async findMultipleUser(filter, page) {
     try {
       const users = await findUsers(filter, page);
       return {
@@ -179,4 +180,4 @@ class CustomerService {
   }
 }
 
-module.exports = CustomerService;
+module.exports = UserService;

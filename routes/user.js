@@ -22,7 +22,7 @@ router.get("/findUsers/:page", UserController.findUsers);
 router.get("/hash", hashPassword);
 router.get("/logout", authunticationLogout);
 
-router.get("/getsuggestedmeals", UserController.getSuggestedMeals);
+// router.get("/getsuggestedmeals", UserController.getSuggestedMeals);
 router.get("/getUserGroceryList/:userId", verifyAuthentication, UserController.getGroceryList);
 router.get("/getUserCartList/:userId", verifyAuthentication, UserController.getCartList);
 router.get("/findStoreadmins/:storeId", UserController.findStoreAdmins);
@@ -34,8 +34,8 @@ router.get("/get-ids-users", getIdsUsers);
 router.put("/updatenotifications/:userId", UserController.updateNotificiations);
 router.put("/updateuserprofile", UserController.updateUserProfile);
 // router.put("/updategrocerylist/:listId", UserController.updateGroceryList);
-router.put("/addexistingitemtogrocerylist/:idItem/:userId", verifyAuthentication, addGroceryItemToUserList.add);
-router.put("/addnewitemtogrocerylist/:newItem/:userId", verifyAuthentication, addGroceryItemToUserList.add);
+// router.put("/addexistingitemtogrocerylist/:idItem/:userId", verifyAuthentication, addGroceryItemToUserList.add);
+// router.put("/addnewitemtogrocerylist/:newItem/:userId", verifyAuthentication, addGroceryItemToUserList.add);
 router.put("/updatecartlist/:listId", UserController.updateCartList);
 router.put("/updategrocerysuggestionslist/:listId", UserController.updateGrocerySuggestionsList);
 
