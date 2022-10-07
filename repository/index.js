@@ -27,7 +27,10 @@ const {
   readImages,
   readImage,
   getStoreProducts,
-  createProduct
+  createProduct,
+  updateProduct,
+  getProduct,
+  deleteProduct
 } = require("./product");
 
 module.exports = {
@@ -55,4 +58,7 @@ module.exports = {
   readImage,
   getStoreProducts,
   createProduct,
+  updateProduct,
+  getProduct,
+  deleteProduct
 };

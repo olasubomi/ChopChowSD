@@ -4,10 +4,29 @@ const ProductService = require("../../services/productService");
 const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 
 module.exports = {
-
   createProduct: async (req, res) => {
     try {
-      const product = await ProductService.createProduct(req.body,req.files);
+      const product = await ProductService.createProduct(req.body, req.files);
+      if (product) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(product));
+      } else {
+        throw product;
+      }
+    } catch (error) {
+      return res
+        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  updateProduct: async (req, res) => {
+    try {
+      console.log({paramsId:req.params.productId})
+      const product = await ProductService.updateProduct(
+        { _id: req.params.productId, ...req.query },
+        req.body,
+        req.files
+      );
       if (product) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(product));
       } else {
@@ -22,7 +41,10 @@ module.exports = {
 
   getAllProducts: async (req, res) => {
     try {
-      const products = await ProductService.getAllProducts(req.params.page,req.query);
+      const products = await ProductService.getAllProducts(
+        req.params.page,
+        req.query
+      );
       if (products) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(products));
       } else {
@@ -35,15 +57,15 @@ module.exports = {
     }
   },
 
-  readProductImages: async (req, res) => {
+  getProduct: async (req, res) => {
     try {
-      const productImages = await ProductService.readProductImages();
-      if (productImages) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(productImages));
+      const product = await ProductService.getProduct(
+        {_id:req.params.productId}
+      );
+      if (product) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(product));
       } else {
-        throw productImages;
+        throw product;
       }
     } catch (error) {
       return res
@@ -52,17 +74,15 @@ module.exports = {
     }
   },
 
-  readProductImage: async (req, res) => {
+  deleteProduct: async (req, res) => {
     try {
-      const productImages = await ProductService.readSingleProductImage(
-        req.params.filename
+      const product = await ProductService.deleteProduct(
+      req.params.productId
       );
-      if (productImages) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(productImages));
+      if (product) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(product));
       } else {
-        throw productImages;
+        throw product;
       }
     } catch (error) {
       return res
@@ -73,7 +93,10 @@ module.exports = {
 
   getStoreProducts: async (req, res) => {
     try {
-      const storeProducts = await ProductService.storeProducts(req.params.page,req.query.storeId);
+      const storeProducts = await ProductService.storeProducts(
+        req.params.page,
+        req.query.storeId
+      );
       if (storeProducts) {
         res
           .status(Response.HTTP_ACCEPTED)

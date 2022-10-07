@@ -1,9 +1,10 @@
 const {
   createProduct,
+  updateProduct,
   getAllProducts,
-  readImages,
-  readImage,
   getStoreProducts,
+  getProduct,
+  deleteProduct,
 } = require("../repository/index");
 
 class ProductService {
@@ -18,7 +19,25 @@ class ProductService {
 
       return await createProduct(payload);
     } catch (error) {
-      console.log({error})
+      console.log({ error });
+      throw error;
+    }
+  }
+
+  static async updateProduct(filter, payload, files) {
+    try {
+      let productImages = [];
+
+      if (files) {
+        files.map((file) => {
+          productImages.push(file.location);
+        });
+        payload.product_images = productImages;
+      }
+
+      return await updateProduct(filter,payload);
+    } catch (error) {
+      console.log({ error });
       throw error;
     }
   }
@@ -31,23 +50,22 @@ class ProductService {
     }
   }
 
-  static async readProductImages() {
+  static async getProduct(filter) {
     try {
-      const productImages = await readImages();
-      return productImages;
+      return await getProduct(filter);
     } catch (error) {
       throw error;
     }
   }
 
-  static async readSingleProductImage(filename) {
+  static async deleteProduct(id) {
     try {
-      const productImage = await readImage(filename);
-      return productImage;
+      return await deleteProduct(id);
     } catch (error) {
       throw error;
     }
   }
+
   static async storeProducts(page, storeId) {
     try {
       const storeProducts = await getStoreProducts(page, storeId);
