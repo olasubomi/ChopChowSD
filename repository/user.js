@@ -1,14 +1,23 @@
-const db_connection = require('../db/dbPostgress/config/db_connection')
-const { grocery_list, products,users } = require('../db/dbMongo/config/db_buildSchema')
+const db_connection = require("../db/dbPostgress/config/db_connection");
+const {
+  grocery_list,
+  products,
+  users,
+  cart,
+} = require("../db/dbMongo/config/db_buildSchema");
 
 const createUser = async (payload) => {
-  
   const newUser = await users.create(payload);
-  if(newUser){
+  if (newUser) {
     await grocery_list.create({
-      user:newUser._id,
-      products:[]
-    })
+      user: newUser._id,
+      products: [],
+    });
+
+    await cart.create({
+      user: newUser._id,
+      total: "0",
+    });
   }
   return newUser;
 };
@@ -58,21 +67,23 @@ const validateToken = async (token) => {
   return await jwt.verify(token, process?.env?.SECRET);
 };
 
-const getUserGroceryList =  async(userId)=>{
-  try{
-    const grocery =  await  grocery_list
-    .find({ list_id: userId });
-     const  groceryLists  =  await products.find({ id: { $in: grocery[0].grocery_list } });
-     return groceryLists
-  }catch(error){
-    console.log(error)
-    throw {message:error.message || 'get user grocerylist operation failed', code:error.code || 500}
+const getUserGroceryList = async (userId) => {
+  try {
+    const grocery = await grocery_list.find({ list_id: userId });
+    const groceryLists = await products.find({
+      id: { $in: grocery[0].grocery_list },
+    });
+    return groceryLists;
+  } catch (error) {
+    console.log(error);
+    throw {
+      message: error.message || "get user grocerylist operation failed",
+      code: error.code || 500,
+    };
   }
-}
+};
 
-
-
-module.exports={
+module.exports = {
   createUser,
   updateUser,
   deleteUser,
@@ -82,5 +93,5 @@ module.exports={
   generateAccessTokens,
   generatePasswordResetToken,
   validateToken,
-  getUserGroceryList
-}
+  getUserGroceryList,
+};
