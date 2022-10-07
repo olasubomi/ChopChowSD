@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const removeList = require("../db/dbMongo/queries/list/removeList");
-const removeItem = require("../db/dbMongo/queries/list/removeItem");
-const getIdsItems = require('../db/dbMongo/queries/list/getIdsItems');
-const getIdsUsers = require("../controllers/authentication/getIdsUsers");
+// const removeList = require("../db/dbMongo/queries/list/removeList");
+// const removeItem = require("../db/dbMongo/queries/list/removeItem");
+// const getIdsItems = require('../db/dbMongo/queries/list/getIdsItems');
+// const getIdsUsers = require("../controllers/authentication/getIdsUsers");
 // const  addGroceryItemToUserList = require("../db/dbMongo/queries/list/addGroceryItemToUserList");
 const { hashPassword } = require("../lib/hashPassword");
 const authunticationLogout = require("../controllers/authentication/authunticationLogout");
@@ -28,8 +28,8 @@ router.get("/getUserCartList/:userId", verifyAuthentication, UserController.getC
 router.get("/findStoreadmins/:storeId", UserController.findStoreAdmins);
 router.get("/showappadmins/", UserController.getAppAdmins);
 
-router.get("/get-ids-items/:userId", getIdsItems);
-router.get("/get-ids-users", getIdsUsers);
+// router.get("/get-ids-items/:userId", getIdsItems);
+// router.get("/get-ids-users", getIdsUsers);
 
 router.put("/updatenotifications/:userId", UserController.updateNotificiations);
 router.put("/updateuserprofile", UserController.updateUserProfile);
@@ -39,8 +39,8 @@ router.put("/updateuserprofile", UserController.updateUserProfile);
 router.put("/updatecartlist/:listId", UserController.updateCartList);
 router.put("/updategrocerysuggestionslist/:listId", UserController.updateGrocerySuggestionsList);
 
-router.delete("/removeallgrocerylistitems/:userId", removeList);
-router.delete("/removegrocerylistitem/:idItem/:userId", removeItem);
+// router.delete("/removeallgrocerylistitems/:userId", removeList);
+// router.delete("/removegrocerylistitem/:idItem/:userId", removeItem);
 router.delete("/closeaccount", UserController.closeAccount);
 
 module.exports = router;

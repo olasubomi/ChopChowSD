@@ -1,17 +1,18 @@
 const {
-  meals,
-  suggested_meals,
-  meal_images,
   products,
-  suppliers,
-  all_meal_categories,
-  all_utensils,
-  all_measurements,
 } = require("../db/dbMongo/config/db_buildSchema");
 //1. Load the mongoose driver
 var mongooseDrv = require("mongoose");
 //2. The grid-stream
 var grid = require("gridfs-stream");
+
+const createProduct = async (payload) => {
+  try {
+    return await products.create(payload);
+  } catch (error) {
+    console.log({ error });
+  }
+};
 
 const getAllProducts = async (page, filter) => {
   try {
@@ -107,14 +108,17 @@ const readImage = async (filename) => {
   }
 };
 
-const getStoreProducts = async (page,storeId) => {
+const getStoreProducts = async (page, storeId) => {
   try {
     let getPaginate = await paginate(page, filter);
-    const storeProducts = await products.find({
-      _id: { $in: storeId },
-    } || {})
-    .limit(getPaginate.limit)
-    .skip(getPaginate.skip);;
+    const storeProducts = await products
+      .find(
+        {
+          _id: { $in: storeId },
+        } || {}
+      )
+      .limit(getPaginate.limit)
+      .skip(getPaginate.skip);
     return {
       data: storeProducts,
     };
@@ -143,4 +147,5 @@ module.exports = {
   readImages,
   readImage,
   getStoreProducts,
+  createProduct,
 };

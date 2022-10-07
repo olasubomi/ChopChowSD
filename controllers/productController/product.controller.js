@@ -4,6 +4,22 @@ const ProductService = require("../../services/productService");
 const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 
 module.exports = {
+
+  createProduct: async (req, res) => {
+    try {
+      const product = await ProductService.createProduct(req.body,req.files);
+      if (product) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(product));
+      } else {
+        throw product;
+      }
+    } catch (error) {
+      return res
+        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getAllProducts: async (req, res) => {
     try {
       const products = await ProductService.getAllProducts(req.params.page,req.query);

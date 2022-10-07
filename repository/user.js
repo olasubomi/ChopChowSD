@@ -1,4 +1,3 @@
-const db_connection = require("../db/dbPostgress/config/db_connection");
 const {
   grocery_list,
   products,

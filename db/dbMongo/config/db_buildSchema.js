@@ -61,9 +61,9 @@ exports.products = mongoose.model(
   "Product",
   new Schema(
     {
-      product_name: { type: String },
+      product_name: { type: String, required: true },
 
-      product_image: { type: String },
+      product_images: { type: [{ type: String }], required: true },
 
       product_size: { type: String },
 
@@ -74,13 +74,18 @@ exports.products = mongoose.model(
         },
       ],
 
-      product_categories: [{ type: String }],
+      product_categories: [{ type: String, required: true }],
 
       product_alternatives: [{ type: String }],
 
       product_type: { type: String },
 
-      meals_including_product: [{ type: String }],
+      meals_including_product: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Meal",
+        },
+      ],
 
       comments: [
         {
@@ -95,7 +100,7 @@ exports.products = mongoose.model(
 
       product_details: { type: String },
 
-      publicly_available: { type: String },
+      publicly_available: { type: Boolean, default: true },
 
       calories: { type: String },
 

@@ -1,8 +1,11 @@
 const router = require("express").Router();
 const ProductController = require("../controllers/productController/product.controller");
+const { upload } = require("../utils/middleware")
 
 //product routes
 // router.post("/suggestproduct", ProductController.suggestProduct);
+
+router.post("/create",upload.array("productImage"), ProductController.createProduct);
 
 // router.get("/getproduct", ProductController.getProduct);
 router.get("/getallproducts", ProductController.getAllProducts);
