@@ -30,7 +30,7 @@ const getAllProducts = async (page, filter) => {
       .limit(getPaginate.limit)
       .skip(getPaginate.skip);
     return {
-      data: allProducts,
+      products: allProducts,
     };
   } catch (error) {
     console.log({ error });

@@ -3,18 +3,39 @@ const {
   getMeal,
   getAllCategories,
   getSuggestedMeals,
-  getMealImages,
   removeSuggestedMeal,
   createMealFromSuggestion,
+  createMeal,
   addMealSuggestion,
   updateSuggestedMealItem,
+  deleteMeal,
+  updateMeal,
 } = require("../repository/index");
 
 class MealService {
-  static async getMeals() {
+
+  static async createMeal(payload) {
     try {
-      const meals = await getMeals();
-      return meals;
+      return await createMeal(payload);
+    } catch (error) {
+      console.log(error)
+      throw error;
+    }
+  }
+
+  static async deleteMeal(id) {
+    try {
+      return await createMeal(id);
+    } catch (error) {
+      console.log(error)
+      throw error;
+    }
+  }
+
+
+  static async getMeals(page,filter) {
+    try {
+      return await getMeals(page,filter);
     } catch (error) {
       throw error;
     }
@@ -22,26 +43,42 @@ class MealService {
 
   static async getMeal(id) {
     try {
-      const meal = await getMeal(id);
-      return meal;
+      return await getMeal(id);
     } catch (error) {
       throw error;
     }
   }
 
-  static async getSuggestedMeals() {
+  static async deleteMeal(id) {
     try {
-      const suggestedMeals = await getSuggestedMeals();
-      return suggestedMeals;
+      return await deleteMeal(id);
     } catch (error) {
+      console.log(error)
       throw error;
     }
   }
 
-  static async getSuggestedMealImages() {
+  static async updateMeal(filter, payload) {
     try {
-      const mealImages = await getMealImages();
-      return mealImages;
+      return await updateMeal(filter,payload);
+    } catch (error) {
+      console.log(error)
+      throw error;
+    }
+  }
+
+  static async updateNested(filter, payload) {
+    try {
+      return await updateMeal(filter,payload);
+    } catch (error) {
+      console.log(error)
+      throw error;
+    }
+  }
+
+  static async getSuggestedMeals(page,filter) {
+    try {
+      return await getSuggestedMeals(page,filter);
     } catch (error) {
       throw error;
     }
@@ -65,7 +102,7 @@ class MealService {
     }
   }
 
-  static async addSuggestion(file, payload) {
+  static async addSuggestion(payload) {
     try {
       return await addMealSuggestion(file, payload);
     } catch (error) {
@@ -81,9 +118,9 @@ class MealService {
     }
   }
 
-  static async getAllMealCactegories() {
+  static async getAllMealCactegories(filter) {
     try {
-      return await getAllCategories();
+      return await getAllCategories(filter);
     } catch (error) {
       throw error;
     }

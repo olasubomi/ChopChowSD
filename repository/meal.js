@@ -1,17 +1,30 @@
 const {
   meals,
   suggested_meals,
-  meal_images,
   products,
   categories,
-  utensils,
-  measurements,
 } = require("../db/dbMongo/config/db_buildSchema");
 const mongoose = require("mongoose");
 
-const getMeals = async (payload) => {
+exports.createMeal = async (payload) => {
   try {
-    const mealsResponse = await meals.find(payload || {});
+    return await meals.create(payload);
+  } catch (error) {
+    throw {
+      error: error,
+      messsage: error.message || "create meals operation failed",
+      code: 500,
+    };
+  }
+};
+
+exports.getMeals = async (page, filter) => {
+  try {
+    let getPaginate = await paginate(page, filter);
+    const mealsResponse = await meals
+      .find(filter)
+      .limit(getPaginate.limit)
+      .skip(getPaginate.skip);
     return { meals: mealsResponse };
   } catch (error) {
     throw {
@@ -22,7 +35,20 @@ const getMeals = async (payload) => {
   }
 };
 
-const getMeal = async (id) => {
+exports.deleteMeal = async (id) => {
+  try {
+    const mealResponse = await meals.deleteOne({ _id: id });
+    return { message: "deleted sucessfully" };
+  } catch (error) {
+    throw {
+      error: error,
+      messsage: error.message || "delete meals operation failed",
+      code: 500,
+    };
+  }
+};
+
+exports.getMeal = async (id) => {
   try {
     const mealResponse = await meals.findOne({ _id: id });
     return { meal: mealResponse };
@@ -35,9 +61,13 @@ const getMeal = async (id) => {
   }
 };
 
-const getSuggestedMeals = async () => {
+exports.getSuggestedMeals = async (page,filter) => {
   try {
-    const suggestedMeals = await suggested_meals.find();
+    let getPaginate = await paginate(page, filter);
+    const suggestedMeals = await suggested_meals.find(filter || {})
+    .find(filter)
+    .limit(getPaginate.limit)
+    .skip(getPaginate.skip);
     return { suggestedMeals: suggestedMeals };
   } catch (error) {
     throw {
@@ -48,20 +78,35 @@ const getSuggestedMeals = async () => {
   }
 };
 
-const getMealImages = async () => {
+exports.updateMeal = async (filter, payload) => {
   try {
-    const mealImages = await meal_images.find();
-    return mealImages;
+    return await meals.findOneAndUpdate(
+      filter,
+      {
+        $set: payload,
+      },
+      { new: true }
+    );
   } catch (error) {
-    throw {
-      error: error,
-      message: error.message || "Get meal images operation failed",
-      code: 500,
-    };
+    console.log({ error });
   }
 };
 
-const removeSuggestedMeal = async (suggestedMealID) => {
+exports.updateNestedMealValue = async (filter, payload) => {
+  try {
+    return await meals.findOneAndUpdate(
+      filter,
+      {
+        $set: payload,
+      },
+      { new: true }
+    );
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+exports.removeSuggestedMeal = async (suggestedMealID) => {
   try {
     const removeSuggestesdMeal = await suggested_meals.findByIdAndRemove({
       _id: suggestedMealID,
@@ -80,7 +125,7 @@ const removeSuggestedMeal = async (suggestedMealID) => {
   }
 };
 
-const createMealFromSuggestion = async (data_ids) => {
+exports.createMealFromSuggestion = async (data_ids) => {
   try {
     id_data = [];
     for (var i = 0; i < data_ids.length; i++) {
@@ -95,33 +140,20 @@ const createMealFromSuggestion = async (data_ids) => {
       throw { message: "sugested meals do not exist", code: 400 };
     }
 
-    let mealData = [];
-    suggestedMealsArray.forEach((doc) => {
-      mealData.push({
-        categories: doc.categories,
-        instructions: doc.instructions,
-        label: doc.label,
-        mealImage: doc.mealImage,
-        readTime: doc.readTime,
-        cookTime: doc.cookTime,
-        intro: doc.intro,
-        newer_ingredient_format: doc.newer_ingredient_format,
-        servings: doc.servings,
-        product_slider: doc.product_slider,
-        display: doc.display,
-      });
+    let createdMeals = [];
+    suggestedMealsArray.forEach(async(doc) => {
+      let create = await meals.create(doc);
+      createdMeals.push(create)
     });
 
     await suggested_meals.remove({
       _id: { $in: id_data },
     });
 
-    const createMeal = await meals.create(mealData);
-
     return {
       msg: "Succesfully created meals from suggested meals",
       done: true,
-      meal: createMeal,
+      meal: createdMeals,
     };
   } catch (error) {
     throw {
@@ -131,19 +163,8 @@ const createMealFromSuggestion = async (data_ids) => {
   }
 };
 
-const addMealSuggestion = async (file, payload) => {
+exports.addMealSuggestion = async (payload) => {
   try {
-    var serverMealImageName;
-    if (file === undefined) {
-      serverMealImageName = "";
-    } else {
-      serverMealImageName = file.filename;
-    }
-    const parsed_utensils = payload?.newKitchenUtensils;
-
-    const parsed_measurements = payload.new_measurements;
-    const parsed_categories = payload?.newCategories;
-
     const new_product_ingredients = payload.new_product_ingredients;
     for (i = 0; i < new_product_ingredients.length; i++) {
       const product = {
@@ -151,42 +172,7 @@ const addMealSuggestion = async (file, payload) => {
       };
       await products.create(product);
     }
-
-    for (var i = 0; i < parsed_measurements.length; i++) {
-
-      const measurement = JSON.parse(parsed_measurements[i])
-      const createMe = await measurements.create(measurement);
-      console.log({createMe})
-    }
-
-    for (var i = 0; i < parsed_utensils.length; i++) {
-      const utensil = JSON.parse(parsed_utensils[i])
-      await utensils.create(utensil);
-    }
-
-    for (var i = 0; i < parsed_categories.length; i++) {
-      const category = {
-        category_name: JSON.parse(parsed_categories[i]).name,
-      };
-      await categories.create(category);
-    }
-    const mealObject = {
-      mealName: payload.mealName,
-      // mealImage:  Buffer.from(JSON.stringify(r.mealImage)),
-      mealImage: payload.mealImage,
-      mealImageName: serverMealImageName,
-      prepTime: payload?.prepTime,
-      cookTime: payload?.cookTime,
-      intro: payload?.intro,
-      chef: payload.chef,
-      formatted_ingredient: payload.formatted_ingredient,
-      stepSlides: payload.instructionsGroupList, // update stepSlides
-      categories: payload.categoryChips,
-      utensilsrequired: payload.kitchenUtensils,
-      tips: payload.mealTip,
-      servings: Number(payload.servings),
-    };
-    const suggestedMeals = await suggested_meals.create(mealObject);
+    const suggestedMeals = await suggested_meals.create(payload);
     return {
       suggestedMeals: suggestedMeals,
       message: "Succesfully added",
@@ -202,7 +188,7 @@ const addMealSuggestion = async (file, payload) => {
   }
 };
 
-const updateSuggestedMealItem = async (payload) => {
+exports.updateSuggestedMealItem = async (payload) => {
   try {
     const udpateMeal = await suggested_meals.findOneAndUpdate(
       { _id: payload.id },
@@ -223,10 +209,10 @@ const updateSuggestedMealItem = async (payload) => {
   }
 };
 
-const getAllCategories = async () => {
+exports.getAllCategories = async (filter) => {
   try {
-    const allMealCategories = await categories.find();
-    return { data: allMealCategories };
+    const categories = await categories.find(filter);
+    return { categories };
   } catch (error) {
     throw {
       error: error,
@@ -236,14 +222,13 @@ const getAllCategories = async () => {
   }
 };
 
-module.exports = {
-  getMeals,
-  getMeal,
-  getSuggestedMeals,
-  getMealImages,
-  removeSuggestedMeal,
-  createMealFromSuggestion,
-  addMealSuggestion,
-  updateSuggestedMealItem,
-  getAllCategories,
+const paginate = async (page, filter) => {
+  const limit = parseInt(filter.limit) || 10;
+  let skip = parseInt(page) === 1 ? 0 : limit * page;
+  delete filter.limit;
+  const docCount = await meals.countDocuments(filter);
+  if (docCount < skip) {
+    skip = (page - 1) * limit;
+  }
+  return { skip, limit };
 };

@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 require('dotenv').config()
-const Schema = mongoose.Schema;
 mongoose.set('debug', true);
 mongoose.Promise = require('bluebird');
 
-mongoose.connect(process.env.MONGO_URI_DEV, { useNewUrlParser: true, useUnifiedTopology:true }, () => {
+mongoose.connect(process.env.MONGO_URI_DEV, { useNewUrlParser: true, useUnifiedTopology:true,useFindAndModify: false }, () => {
     console.log('We are connected to Mongo from db_connection in server.js');
 });
 

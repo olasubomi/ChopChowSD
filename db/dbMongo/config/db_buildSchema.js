@@ -127,35 +127,35 @@ exports.meals = mongoose.model(
 
       meal_images: [{ type: String }],
 
-      meal_image_names: [{ type: String }],
-
       prep_time: { type: String, required: true },
 
       cook_time: { type: String, required: true },
 
-      intro: { type: String },
+      intro: { type: String ,required: true},
 
-      chef: { type: String },
+      chef: { type: String,required: true },
 
       servings: { type: String },
 
-      meal_categories: {
+      meal_categories: [{
         type: mongoose.Types.ObjectId,
         ref: "Category",
-      },
+      }],
 
       kitchen_utensils: [{ type: String }],
 
-      tips: { type: [String] },
+      tips: [{ type: String }],
 
-      image_or_video_content: { type: [String] },
+      image_or_video_content: [{ type: String }],
 
-      publicly_available: String,
+      publicly_available: { type: Boolean, default: true },
 
-      stores_available: {
-        type: mongoose.Types.ObjectId,
-        ref: "Supplier",
-      },
+      stores_available: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Supplier",
+        },
+      ],
 
       similar_meals: [
         {
@@ -163,15 +163,9 @@ exports.meals = mongoose.model(
           ref: "Meal",
         },
       ],
-      comments: [
-        {
-          type: mongoose.Types.ObjectId,
-          ref: "Comment",
-        },
-      ],
-      formatted_ingredients: { type: String },
+      formatted_ingredients: [{ type: String , required: true}],
 
-      formatted_instructions: { type: String },
+      formatted_instructions: [{ type: String, required: true }],
 
       calories: { type: String },
 
@@ -291,26 +285,14 @@ exports.regions = mongoose.model(
   })
 );
 
-exports.meal_images = mongoose.model(
-  "meal_images",
-  new Schema(
-    {
-      name: { type: String },
-
-      data: { type: {} },
-
-      content_type: { type: String },
-    },
-
-    { timestamps: true }
-  )
-);
 
 exports.categories = mongoose.model(
   "Category",
   new Schema(
     {
       category_name: { type: String },
+
+      category_type: { type: String },
 
       publicly_available: { type: Boolean },
     },
@@ -725,21 +707,21 @@ exports.suggested_meals = mongoose.model(
 
     intro: { type: String },
 
-    product_slider: [{ ingredient: String, image: String, flag: Boolean }],
-
-    newer_ingredient_format: [
-      { product: String, quantity: Number, Measurement: String, image: String },
-    ],
+    formated_ingredient: [{ type: String}],
 
     servings: Number,
+
     categories: [
       {
         type: mongoose.Types.ObjectId,
         ref: "Category",
       },
     ],
+
     instructions: [{ step: Object, image: String }],
+
     display: Boolean,
+
   })
 );
 
