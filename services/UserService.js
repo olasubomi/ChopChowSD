@@ -178,6 +178,14 @@ class UserService {
       throw error
     }
   }
+
+  static async updateUserProfile(userId, payload) {
+    try {
+      return await updateUser(customerId,payload)
+    } catch (error) {
+      throw error
+    }
+  }
 }
 
 module.exports = UserService;

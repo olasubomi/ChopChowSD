@@ -76,48 +76,6 @@ class MealService {
     }
   }
 
-  static async getSuggestedMeals(page,filter) {
-    try {
-      return await getSuggestedMeals(page,filter);
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async deleteSuggestedMeal(suggestedMealID) {
-    try {
-      const deleteMeal = await removeSuggestedMeal(suggestedMealID);
-      return deleteMeal;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async createMealFromSuggestedMeals(suggestedMealID) {
-    try {
-      const createMeals = await createMealFromSuggestion(suggestedMealID);
-      return createMeals;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async addSuggestion(payload) {
-    try {
-      return await addMealSuggestion(file, payload);
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async updateMealSuggestion(payload) {
-    try {
-      return await updateSuggestedMealItem(payload);
-    } catch (error) {
-      throw error;
-    }
-  }
-
   static async getAllMealCactegories(filter) {
     try {
       return await getAllCategories(filter);

@@ -13,6 +13,8 @@ exports.validatePayload = function (validator) {
 
             }
             if (req.files) {
+                console.log("files")
+                console.log({files:req.files})
                 req.files.map((file) => filesArray.push(file.location));
 
                 req.body[req.files[0].fieldname] = filesArray;

@@ -22,9 +22,7 @@ const createUser = async (payload) => {
 };
 
 const updateUser = async (filter, data) => {
-  return await users.findOneAndUpdate(filter, {
-    $set: data,
-  });
+  return await users.findOneAndUpdate(filter, payload);
 };
 
 const deleteUser = async (id) => {
