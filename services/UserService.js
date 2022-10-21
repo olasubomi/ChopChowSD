@@ -7,7 +7,8 @@ const {
   generateAccessTokens,
   validatePassWord,
   generatePasswordResetToken,
-  updateUser
+  updateUser,
+  validateToken
 } = require("../repository");
 const {
   customer_grocery_list,
@@ -29,11 +30,15 @@ class UserService {
       }
       const userExist = await findUser({ email: payload.email });
 
+      console.log({userExist})
+
       if (userExist) {
         throw {
           message: "User already exist",
         };
       }
+
+      console.log('after throwing')
 
       const newUser = await createUser(payload);
 
@@ -49,13 +54,13 @@ class UserService {
         message: "User sucessfully registered",
       };
     } catch (error) {
+      console.log('caught')
       throw error;
     }
   }
 
   static async login(payload) {
     try {
-    console.log("userservice")
       const userExist = await findUser({ email: payload.email });
 
       if (!userExist) {
@@ -110,6 +115,7 @@ class UserService {
   }
 
   static async resetPassword(payload) {
+
     try {
       const validatepayload = resetPasswordSchema.validate(payload);
       if (!validatepayload) {
@@ -135,8 +141,9 @@ class UserService {
           code: 400,
         };
       }
-      const resetPassword = await updateUser(validateToken.id, {
-        password: payload.password1,
+      const newPassword = await tokenExist.hashPassword(payload.password1)
+      const resetPassword = await updateUser({_id:decodeToken.id}, {
+        password: newPassword,
       });
       if (!resetPassword) {
         throw {

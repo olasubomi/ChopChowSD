@@ -2,25 +2,27 @@ const { Response } = require("http-status-codez");
 const UserService = require("../../services/UserService");
 
 const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
+const {
+  ReplicationRuleAndOperatorFilterSensitiveLog,
+} = require("@aws-sdk/client-s3");
 
 module.exports = {
   signUp: async (req, res) => {
     try {
       const user = await UserService.userSignup(req.body);
       if (user) {
-        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(user));
-      } else {
-        throw user;
+        return res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(user).recordCreated());
       }
     } catch (error) {
-      return res
-        .status(500 || Response.HTTP_INTERNAL_SERVER_ERROR)
-        .json(new ErrorResponse(error));
+      console.log(error)
     }
   },
 
   signIn: async (req, res) => {
     try {
+      console.log(req.body)
       const authenticateUser = await UserService.login(req.body);
       if (authenticateUser) {
         res
@@ -148,11 +150,9 @@ module.exports = {
 
   verifyToken: async (req, res) => {
     try {
-     const user = req.decoded
+      const user = req.decoded;
       if (user) {
-        res
-          .status( Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(user));
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(user));
       } else {
         throw user;
       }

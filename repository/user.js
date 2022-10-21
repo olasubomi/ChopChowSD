@@ -4,25 +4,31 @@ const {
   users,
   cart,
 } = require("../db/dbMongo/config/db_buildSchema");
+const jwt = require("jsonwebtoken");
 
 const createUser = async (payload) => {
   const newUser = await users.create(payload);
-  if (newUser) {
-    await grocery_list.create({
-      user: newUser._id,
-      products: [],
-    });
 
-    await cart.create({
-      user: newUser._id,
-      total: "0",
-    });
+  try {
+    if (newUser) {
+      await grocery_list.create({
+        user: newUser._id,
+        products: [],
+      });
+
+      await cart.create({
+        user: newUser._id,
+        total: "0",
+      });
+    }
+    return newUser;
+  } catch (error) {
+    throw error;
   }
-  return newUser;
 };
 
 const updateUser = async (filter, data) => {
-  return await users.findOneAndUpdate(filter, payload);
+  return await users.findOneAndUpdate(filter, data);
 };
 
 const deleteUser = async (id) => {
@@ -30,6 +36,7 @@ const deleteUser = async (id) => {
 };
 
 const findUser = async (filter) => {
+  console.log({ filter });
   return await users.findOne(filter);
 };
 

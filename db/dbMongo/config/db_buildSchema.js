@@ -524,7 +524,7 @@ const userSchema = new Schema(
 
     date_of_birth: { type: String },
 
-    phone_number: { type: String, required: true },
+    phone_number: { type: String, required: false },
 
     food_preferences: [
       {
@@ -652,6 +652,8 @@ const userSchema = new Schema(
 
 userSchema.pre("save", async function (next) {
   let user = this;
+  console.log('save hook')
+  console.log({user:this})
   // only hash the password if it has been modified (or is new)
   if (!user.isModified("password")) return next();
   if (!user.password) return;
@@ -669,6 +671,8 @@ userSchema.pre(
   async function (next) {
     let update = { ...this.getUpdate() };
 
+    console.log('from find update')
+
     if (update.$set.password) {
       const hash = await bcrypt.hash(update.$set.password, 10);
 
@@ -679,6 +683,10 @@ userSchema.pre(
     next();
   }
 );
+
+userSchema.methods.hashPassword = async function (password) {
+  return await bcrypt.hash(password, 10);
+};
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
