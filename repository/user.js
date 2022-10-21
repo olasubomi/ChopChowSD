@@ -36,30 +36,40 @@ const deleteUser = async (id) => {
 };
 
 const findUser = async (filter) => {
-  console.log({ filter });
   return await users.findOne(filter);
 };
 
 const findUsers = async (filter, page) => {
   const limit = 10;
-  const skip = parseInt(page) === 1 ? 0 : limit * page;
-  const docCount = await users.countDocuments(filter);
-  if (docCount < skip) {
-    skip = (page - 1) * limit;
-  }
+  let skip = parseInt(page) === 1 ? 0 : limit * page;
+  try {
+    const docCount = await users.countDocuments(filter);
 
-  return await users.find(filter).limit(limit).skip(skip);
+    if (docCount < skip) {
+      skip = (page - 1) * limit;
+    }
+    return await users.find(filter).limit(limit).skip(skip);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const validatePassWord = async (email, password) => {
-  const user = await findUser({ email: email });
-
-  return await user.comparePassword(password);
+  try {
+    const user = await findUser({ email: email });
+    return await user.comparePassword(password);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const generateAccessTokens = async (payload) => {
-  const user = await findUser({ email: payload.email });
-  return await user.generateAccessTokens(payload);
+  try {
+    const user = await findUser({ email: payload.email });
+    return await user.generateAccessTokens(payload);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const generatePasswordResetToken = async (payload) => {

@@ -14,9 +14,14 @@ module.exports = {
         return res
           .status(Response.HTTP_ACCEPTED)
           .json(new SuccessResponse(user).recordCreated());
+      }else{
+        throw user
       }
     } catch (error) {
       console.log(error)
+      return res
+      .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+      .json(new ErrorResponse(error));
     }
   },
 

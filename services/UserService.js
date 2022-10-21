@@ -32,25 +32,25 @@ class UserService {
 
       console.log({userExist})
 
-      if (userExist) {
-        throw {
-          message: "User already exist",
-        };
-      }
+      // if (userExist) {
+      //   throw {
+      //     message: "User already exist",
+      //   };
+      // }
 
       console.log('after throwing')
 
-      const newUser = await createUser(payload);
+      // const newUser = await createUser(payload);
 
-      const generatedToken = await generateAccessTokens({
-        id: newUser._id,
-        username: newUser.username,
-        email: newUser.email,
-      });
+      // const generatedToken = await generateAccessTokens({
+      //   id: newUser._id,
+      //   username: newUser.username,
+      //   email: newUser.email,
+      // });
 
       return {
-        user: newUser,
-        token: generatedToken,
+        user: userExist,
+        // token: generatedToken,
         message: "User sucessfully registered",
       };
     } catch (error) {
