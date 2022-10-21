@@ -21,11 +21,10 @@ module.exports = {
 
   updateProduct: async (req, res) => {
     try {
-      console.log({paramsId:req.params.productId})
       const product = await ProductService.updateProduct(
         { _id: req.params.productId, ...req.query },
         req.body,
-        req.files
+        req.files || req.file || null
       );
       if (product) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(product));
@@ -62,14 +61,15 @@ module.exports = {
       const product = await ProductService.getProduct(
         {_id:req.params.productId}
       );
+      console.log({product})
       if (product) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(product));
       } else {
         throw product;
       }
     } catch (error) {
-      return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },

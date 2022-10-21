@@ -1,4 +1,4 @@
-const { signUpSchema, resetPasswordSchema, } = require("../utils/validators");
+const { signUpSchema, resetPasswordSchema } = require("../utils/validators");
 const {
   getCustomerGroceryList,
   findUser,
@@ -8,7 +8,7 @@ const {
   validatePassWord,
   generatePasswordResetToken,
   updateUser,
-  validateToken
+  validateToken,
 } = require("../repository");
 const {
   customer_grocery_list,
@@ -30,31 +30,27 @@ class UserService {
       }
       const userExist = await findUser({ email: payload.email });
 
-      console.log({userExist})
+      if (userExist) {
+        throw {
+          message: "User already exist",
+        };
+      }
 
-      // if (userExist) {
-      //   throw {
-      //     message: "User already exist",
-      //   };
-      // }
+      const newUser = await createUser(payload);
 
-      console.log('after throwing')
-
-      // const newUser = await createUser(payload);
-
-      // const generatedToken = await generateAccessTokens({
-      //   id: newUser._id,
-      //   username: newUser.username,
-      //   email: newUser.email,
-      // });
+      const generatedToken = await generateAccessTokens({
+        id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+      });
 
       return {
-        user: userExist,
-        // token: generatedToken,
+        user: newUser,
+        token: generatedToken,
         message: "User sucessfully registered",
       };
     } catch (error) {
-      console.log('caught')
+      console.log("caught");
       throw error;
     }
   }
@@ -115,7 +111,6 @@ class UserService {
   }
 
   static async resetPassword(payload) {
-
     try {
       const validatepayload = resetPasswordSchema.validate(payload);
       if (!validatepayload) {
@@ -141,10 +136,13 @@ class UserService {
           code: 400,
         };
       }
-      const newPassword = await tokenExist.hashPassword(payload.password1)
-      const resetPassword = await updateUser({_id:decodeToken.id}, {
-        password: newPassword,
-      });
+      const newPassword = await tokenExist.hashPassword(payload.password1);
+      const resetPassword = await updateUser(
+        { _id: decodeToken.id },
+        {
+          password: newPassword,
+        }
+      );
       if (!resetPassword) {
         throw {
           message: "password reset failed",
@@ -179,18 +177,18 @@ class UserService {
   }
   static async getGroceryList(customerId) {
     try {
-      const getGroceryList = await getCustomerGroceryList(customerId)
-      return getGroceryList
+      const getGroceryList = await getCustomerGroceryList(customerId);
+      return getGroceryList;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   static async updateUserProfile(userId, payload) {
     try {
-      return await updateUser(customerId,payload)
+      return await updateUser(customerId, payload);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }
