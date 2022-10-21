@@ -48,9 +48,9 @@ exports.deleteMeal = async (id) => {
   }
 };
 
-exports.getMeal = async (id) => {
+exports.getMeal = async (filter) => {
   try {
-    const mealResponse = await meals.findOne({ _id: id });
+    const mealResponse = await meals.findOne(filter);
     return { meal: mealResponse };
   } catch (error) {
     throw {
