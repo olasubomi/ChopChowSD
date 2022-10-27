@@ -1,173 +1,716 @@
+const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
-const { array } = require("yup");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcryptjs");
+const { sign } = require("jsonwebtoken");
 
-exports.all_products = mongoose.model(
-  "all_products",
-  new Schema({
-    id: Number,
-    product_name: String,
-    product_image: String,
-    product_price: String,
-    measurement: Array,
-    sizes: Array,
-    respective_prices: Array,
-  })
+
+
+const userSchema = new Schema(
+  {
+    first_name: { type: String, required: true },
+
+    last_name: { type: String, required: true },
+
+    user_type: { type: String, default: "customer" },
+
+    profile_picture: { type: String },
+
+    super_app_admin: { type: Boolean, default: false },
+
+    sub_app_admin: { type: Boolean, default: false },
+
+    super_store_admin: { type: Boolean, default: false },
+
+    sub_store_admin: { type: Boolean, default: false },
+
+    username: { type: String, required: true },
+
+    email: { type: String, required: true },
+
+    password: { type: String, required: true },
+
+    date_of_birth: { type: String },
+
+    phone_number: {
+      // country_code: { type: String, required: true },
+      type: String, required: true
+    },
+
+    food_preferences: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "meal",
+      },
+    ],
+
+    payment_details: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Payment_details",
+      },
+    ],
+
+    delivery_addresses: [
+      {
+        phone_number: { type: String },
+        username: { type: String },
+        street: { type: String },
+        city: { type: String },
+        zip_code: { type: String },
+        country: { type: String },
+      },
+    ],
+
+    grocery_list: {
+      type: mongoose.Types.ObjectId,
+      ref: "Grocery_list",
+    },
+    cart: {
+      type: mongoose.Types.ObjectId,
+      ref: "Cart",
+    },
+
+    orders: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
+
+    suggested_meals: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Suggested_meals",
+      },
+    ],
+
+    email_notifications: { type: Boolean, default: true },
+
+    database_searches_allowed: { type: Boolean, default: true },
+
+    subscription_member: { type: Boolean },
+
+    subscription_orders: [{}],
+
+    notifications: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Notification",
+      },
+    ],
+
+    ip_ids: [
+      {
+        type: String,
+      },
+    ],
+
+    driver_mode_on: Boolean,
+
+    driver_hours: Array,
+
+    driver_reviews: ObjectId,
+
+    driver_store_affiliations: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Supplier",
+      },
+    ],
+
+    location_compatible_device: { type: Boolean },
+
+    driver_address: {
+      street: { type: String },
+
+      city: { type: String },
+
+      zip_code: { type: String },
+
+      country: { type: String },
+    },
+
+    driver_orders_picked_up: Array,
+
+    driver_order_regions: [{ type: String }],
+
+    driver_car_type: { type: String },
+
+    driver_car_color: { type: String },
+
+    driver_car_plate_number: { type: String },
+
+    driver_car_picture: { type: String },
+
+    driver_car_make: { type: String },
+
+    driver_car_model: { type: String },
+
+    driver_car_year: { type: String },
+
+    tokens: {
+      passwordResetToken: { type: String },
+    },
+  },
+
+  { timestamps: true }
 );
 
-exports.store_products = mongoose.model(
-  "store_products",
-  new Schema({
-    id: Number,
-    store_name: String,
-    store_image: String,
-    products: Array,
-  })
+userSchema.pre("save", async function (next) {
+  let user = this;
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified("password")) return next();
+  if (!user.password) return;
+  // hash and update the password using our new salt
+  const hash = await bcrypt.hash(user.password, 10);
+  user.password = hash;
+  next();
+});
+
+userSchema.pre(
+  "findOneAndUpdate",
+
+  { document: true, query: false },
+
+  async function (next) {
+    let update = { ...this.getUpdate() };
+
+    if (update.$set.password) {
+      const hash = await bcrypt.hash(update.$set.password, 10);
+
+      update.$set.password = hash;
+
+      next();
+    }
+    next();
+  }
 );
 
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+userSchema.methods.generateAccessTokens = async function (payload) {
+  const accessToken = await sign(payload, process.env.SECRET, {
+    expiresIn: "1h",
+  });
+
+  return accessToken;
+};
+
+userSchema.methods.generatePasswordResetToken = async function (payload) {
+  let user = this;
+
+  const passwordResetToken = await sign(payload, process.env.SECRET, {
+    expiresIn: "8h",
+  });
+
+  user.tokens.passwordResetToken = passwordResetToken;
+
+  await user.save();
+
+  return passwordResetToken;
+};
+
+userSchema.methods.hashPassword = async function (password) {
+  return await bcrypt.hash(password, 10);
+};
+
+userSchema.set("toJSON", {
+  transform: function (doc, ret, opt) {
+    delete ret["token"];
+    delete ret["password"];
+    return ret;
+  },
+});
+
+exports.users = mongoose.model("User", userSchema);
+
+const groceryListSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    products: [{ type: mongoose.Types.ObjectId, ref: "Product" }],
+  },
+
+  { timestamps: true }
+);
+
+exports.grocery_list = mongoose.model("Grocery_list", groceryListSchema);
+
+exports.cart = mongoose.model(
+  "Cart",
+  new Schema(
+    {
+      total: { type: String },
+
+      user: {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+      },
+      cart_items: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Order_items",
+        },
+      ],
+    },
+    { timestamps: true }
+  )
+);
+
+exports.products = mongoose.model(
+  "Product",
+  new Schema(
+    {
+      product_name: { type: String, required: true },
+
+      product_images: { type: [{ type: String }], required: true },
+
+      product_size: { type: String },
+
+      stores_available: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Supplier",
+        },
+      ],
+
+      product_categories: [{ type: String, required: true }],
+
+      product_alternatives: [{ type: String }],
+
+      product_type: { type: String },
+
+      meals_including_product: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Meal",
+        },
+      ],
+
+      comments: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Comment",
+        },
+      ],
+
+      ingredients_in_product: [{ type: String }],
+
+      hidden_ingredients_in_product: [{ type: String }],
+
+      product_details: { type: String },
+
+      publicly_available: { type: Boolean, default: true },
+
+      calories: { type: String },
+
+      total_carbs: { type: String },
+
+      net_carbs: { type: String },
+
+      fiber: { type: String },
+
+      fat: { type: String },
+
+      protein: { type: String },
+    },
+    { timestamps: true }
+  )
+);
+
+// new meal
 exports.meals = mongoose.model(
-  "meals",
-  new Schema({
-    label: String,
-    mealImage: String,
-    readTime: String,
-    cookTime: String,
-    intro: String,
-    product_slider: [{ ingredient: String, image: String, flag:Boolean }],
+  "Meal",
+  new Schema(
+    {
+      meal_name: { type: String, required: true },
 
-    newer_ingredient_format: [
-      { product: String, quantity: Number, measurement: String, image: String },
-    ],
-    servings: Number,
-    categories: Array,
-    instructions: [ { step: Object, image: String }],
-    display: Boolean,
+      meal_images: [{ type: String }],
+
+      prep_time: { type: String, required: true },
+
+      cook_time: { type: String, required: true },
+
+      intro: { type: String, required: true },
+
+      chef: { type: String, required: true },
+
+      servings: { type: String },
+
+      meal_categories: [{
+        type: mongoose.Types.ObjectId,
+        ref: "Category",
+      }],
+
+      kitchen_utensils: [{ type: String }],
+
+      tips: [{ type: String }],
+
+      image_or_video_content: [{ type: String }],
+
+      publicly_available: { type: Boolean, default: true },
+
+      stores_available: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Supplier",
+        },
+      ],
+
+      similar_meals: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Meal",
+        },
+      ],
+      formatted_ingredients: [{ type: String, required: true }],
+
+      formatted_instructions: [{ type: String, required: true }],
+
+      calories: { type: String },
+
+      total_carbs: { type: String },
+
+      net_carbs: { type: String },
+
+      fiber: { type: String },
+
+      fat: { type: String },
+
+      protein: { type: String },
+    },
+
+    { timestamps: true }
+  )
+);
+
+exports.suppliers = mongoose.model(
+  "Supplier",
+  new Schema(
+    {
+      store_name: { type: String },
+      phone_number: { type: String, required: false },
+
+      profile_picture: { type: String },
+
+      background_picture: { type: String },
+
+      supplier_address: {
+        phone_number: { type: String },
+        username: { type: String },
+        street: { type: String },
+        city: { type: String },
+        zip_code: { type: String },
+        country: { type: String },
+      },
+
+      phone_number: { type: String },
+
+      email: { type: String },
+
+      hours: [{ type: String }],
+
+      sugggested_meals_and_products: Array, //more clarification on these
+
+      inventory: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Product",
+        },
+      ],
+      comments: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Comment",
+        },
+      ],
+      inventory_notification_settings: Array,
+      store_account_users: Array,
+      orders_list: Array,
+      drivers: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+    },
+    { timestamps: true }
+  )
+);
+
+
+exports.order_groups = mongoose.model(
+  "order_groups",
+  new Schema(
+    {
+      pickup_region: { type: String },
+
+      dropoff_regions: { type: String },
+
+      orders: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Order",
+        },
+      ],
+
+      number_of_drivers_currently_visibly_available: { type: String },
+
+      sub_order_groups: ObjectId, //need more explanation on this
+    },
+
+    { timestamps: true }
+  )
+);
+
+exports.orders = mongoose.model(
+  "Order",
+  new Schema(
+    {
+      total_order_price: { type: String },
+
+      order_items: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Order_items",
+        },
+      ],
+
+      user: {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+      },
+      pickup_details: { type: {} },
+
+      intermediaries_details: ObjectId, //need more clarifiaction on these
+
+      delivery_details: { type: {} },
+
+      payment_details: { type: {} },
+
+      drivers_id: {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+      },
+
+      order_group: Array,
+
+      status: {
+        type: String,
+        required: true,
+        default: "PENDING",
+        enum: ["DELIVERED", "PENDING", "PROCESSED", "PICKEDUP"],
+      },
+    },
+
+    { timestamps: true }
+  )
+);
+
+exports.order_items = mongoose.model(
+  "Order_items",
+  new Schema({
+    item: {
+      type: mongoose.Types.ObjectId,
+      refPath: "item_type",
+      required: true,
+    },
+
+    item_type: {
+      type: String,
+      required: true,
+      enum: ["Meal", "Product"],
+    },
+
+    store: {
+      type: [mongoose.Types.ObjectId],
+      ref: "Supplier",
+    },
+
+    quantity_of_item: { type: String },
+
+    estimated_time_of_arrival: Date,
   })
 );
 
-exports.suggested_meals = mongoose.model(
-  "suggested_meals",
+exports.regions = mongoose.model(
+  "regions",
   new Schema({
-    label: String,
-    mealImage: String,
-    readTime: String,
-    cookTime: String,
-    intro: String,
-    product_slider: [{ ingredient: String, image: String, flag:Boolean }],
-    newer_ingredient_format: [
-      { product: String, quantity: Number, measurement: String, image: String },
-    ],
-    servings: Number,
-    categories: Array,
-    instructions: [ { step: Object, image: String }],
-    display: Boolean
+    region_name: String,
   })
 );
 
-// exports.meals = mongoose.model(
-//   "meals",
-//   new Schema({
-//     id: Number,
-//     label: String,
-//     mealImage: String,
-//     readTime: String,
-//     cookTime: String,
-//     intro: String,
-//     product_slider: [{ ingredient: String, image: String }],
-//     newer_ingredient_format: [
-//       { product: String, quantity: Number, measurement: String, image: String },
-//     ],
-//     servings: Number,
-//     categories: Array,
-//     instructions: Array,
-//     display: Boolean,
-//   })
-// );
 
-// exports.suggested_meals = mongoose.model(
-//   "suggested_meals",
-//   new Schema({
-//     label: String,
-//     imageSrc: String,
-//     readTime: String,
-//     cookTime: String,
-//     intro: String,
-//     newer_ingredient_format: [
-//       { product: String, quantity: Number, measurement: String, image: String },
-//     ],
-//     servings: Number,
-//     categories: Array,
-//     instructions: Array,
-//   })
-// );
+exports.categories = mongoose.model(
+  "Category",
+  new Schema(
+    {
+      category_name: { type: String },
 
-exports.all_meal_categories = mongoose.model(
-  "all_meal_categories",
+      category_type: { type: String },
+
+      publicly_available: { type: Boolean },
+
+      affiliated_objects: {
+        type: String,
+        required: true,
+        enum: ["MEAL", "INGREDIENT", "UTENSIL", "PRODUCT"],
+      },
+    },
+
+    { timestamps: true }
+  )
+);
+
+exports.measurements = mongoose.model(
+  "Measurement",
   new Schema({
-    id: Number,
-    category_name: String,
+    measurement_name: { type: String },
+
+    publicly_available: { type: Boolean, default: true },
   })
 );
 
-exports.customers = mongoose.model(
-  "customers",
+exports.addresses = mongoose.model(
+  "addresses",
   new Schema({
-    id: Number,
-    firstname: String,
-    lastname: String,
-    email: String,
-    password: String,
-    phoneNumber: Number,
-    street: String,
-    city: String,
-    zipCode: Number,
-    ipsid: Number,
-    username: String,
-    emailNotification: Boolean,
+    phone_number: { type: String },
+
+
+    username: { type: String },
+
+    street: { type: String },
+
+    city: { type: String },
+
+    zip_code: { type: String },
+
+    country: { type: String },
   })
 );
 
-exports.customers_lists = mongoose.model(
-  "customers_lists",
-  new Schema({
-    id: Number,
-    customer_id: Number,
-    grocery_list_id: Number,
-    cart_list_id: Number,
-  })
+exports.payment_details = mongoose.model(
+  "Payment_details",
+  new Schema(
+    {
+      card_number: { type: String },
+
+      account_number: { type: String },
+
+      routing_number: { type: String },
+
+      cvv: { type: String },
+
+      zip_code: { type: String },
+
+      user: {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+    },
+
+    { timestamps: true }
+  )
 );
 
-exports.customer_cart_list = mongoose.model(
-  "customer_cart_list",
-  new Schema({
-    list_id: Number,
-    cart_list: Array,
-  })
+exports.comments = mongoose.model(
+  "Comment",
+  new Schema(
+    {
+      title: { type: String },
+
+      message: { type: String },
+      formated_ingredient: [{ type: String }],
+
+      rating: { type: String },
+
+      owner: {
+        type: mongoose.Types.ObjectId,
+        refPath: "ownerType",
+        required: true,
+      },
+
+      ownerType: {
+        type: String,
+        required: true,
+        enum: ["User", "Meal", "Product"],
+      },
+
+      up_votes: { type: String },
+
+      down_voted: { type: String },
+    },
+    { timestamps: true }
+  )
+)
+
+exports.replies = mongoose.model(
+  "Reply",
+  new Schema(
+    {
+      message: { type: String },
+
+      up_votes: { type: String },
+
+      down_votes: { type: String },
+
+      owner: {
+        type: mongoose.Types.ObjectId,
+        ref: "Comment",
+        required: true,
+      },
+
+      replies: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Reply",
+          required: true,
+        },
+      ],
+    },
+    { timestamps: true }
+  )
 );
 
-exports.customer_grocery_list = mongoose.model(
-  "customer_grocery_list",
-  new Schema({
-    list_id: Number,
-    grocery_list: Array,
-  })
+exports.notifications = mongoose.model(
+  "Notification",
+  new Schema(
+    {
+      message: { type: String },
+
+      read: Boolean,
+
+      notifiable: {
+        type: mongoose.Types.ObjectId,
+        refPath: "notifiableType",
+        required: true,
+      },
+
+      notifiableType: {
+        type: String,
+        required: true,
+        enum: ["User", "Driver", "Product"],
+      },
+    },
+
+    { timestamps: true }
+  )
 );
 
-// exports.admin = mongoose.model('admin', new Schema({
-//     id: Schema.Types.ObjectId,
-//     name: String,
-// }))
+exports.currencies = mongoose.model(
+  "currencies",
+  new Schema(
+    {
+      currency: { type: String },
+    },
 
-// exports.supplier = mongoose.model('supplier', new Schema({
-//     id: Schema.Types.ObjectId,
-//     storeName: String,
-// }))
-
-// exports.lists = mongoose.model('lists', new Schema({
-//     id: Number,
-//     product_name: String,
-//     product_image:String,
-//     product_price:Number,
-//     sizes:String,
-//     price_per_ounce:Number,
-// }))
+    { timestamps: true }
+  )
+);

@@ -1,0 +1,57 @@
+/* MOBILE FIRST DESIGN SMALLER SCREEN IS DEFAULT, */
+/* MEDIA QUERIES FOR LARGER SCREENS BELOW */
+/* USE MEDIA QUERIES TEMPLATE TO DETERMINE WHAT STYLING YOU WANT TO UPDATE */
+/* ONLY ADD STYLING IF CONFIRMED THAT IT WILL NOT AFFECT ANOUTHER STYLING */
+/* LANDSCAPE VIEW SHOULD MATCH DEKTOP VIEW PROPORTIONALLY */
+
+/* @media screen and (max-width: 429px) { */
+/* Potrait Mobile View */
+.banner2_text {
+    z-index: 80;
+    padding: 10px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: fit-content;
+    height:30%;
+    display: block;
+    font-size: 30px;
+    background: transparent;
+    font-family: Arial, sans-serif;
+    color: white;
+    text-shadow: 2px 2px black;
+  }
+  
+  .banner2_spacing{
+      height: 23%; overflow: hidden;
+  }
+  
+  .banner2_button{
+    width: 100%;
+  }
+  /* MOBILE, TABLET AND ALL LANDSCAPE VIEW */
+  @media screen and (orientation: landscape) {
+  
+    .banner2_spacing{
+      height: 6%; overflow: hidden;
+  }
+  .banner2container { 
+    height: 200px;
+    position: relative;
+    /* border: 3px solid green;  */
+  }
+  
+}
+  
+  /* TABLET  VIEW */
+  @media screen and (min-width: 567px) {
+  
+  }
+  
+  /* DESKTOP VIEW */
+  @media screen and (min-width: 768px) {
+  
+      .banner2_spacing{
+          height: 23%; overflow: hidden;
+      }
+  }

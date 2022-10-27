@@ -6,14 +6,14 @@ let { EMAIL_USER: user, EMAIL_PASSWORD: pass } = process.env;
 let transporter = nodemailer.createTransport({
   service: "Gmail",
   host: "smtp.gmail.com",
-  port: 25,
+  port: 465,
   secure: false,
   tls: {
     rejectUnauthorized: false,
   },
   auth: {
-    user,
-    pass,
+    user: process.env.NODE_MAILER_EMAIL,
+    pass: process.env.NODE_MAILER_PASSWORD,
   },
 });
 
@@ -29,9 +29,9 @@ function signUpEmail(to) {
     from: user, // sender address
     to: to, // list of receivers
     subject: "Sign Up successful!, ChopChow", // Subject line
-    text: "Thanks for singing up. You can login now.", // plain text body
+    text: "Thanks for signing up. You can login now.", // plain text body
     html:
-      "<b>Thanks for singing up. You can login now!</b>" +
+      "<b>Thanks for signing up. You can login now.</b>" +
       "<p>Subomi A.<br></br>" +
       "Customer Satisfaction Specialist,<br></br>" +
       "ChopChow", // html body
@@ -46,22 +46,24 @@ function signUpEmail(to) {
 }
 
 function forgotPasswordEmail(toEmail, resetLink) {
+  console.log("Comes in forgot password func");
   let info = transporter.sendMail({
     from: user, // sender address
     to: toEmail, // list of receivers
     subject: "Please reset your password.", // Subject line
-    text: "Use below link to reset your password. " + resetLink, // plain text body
-    html: "<b>Use below link to reset your password. </b>" + resetLink, // html body
-  });
+    text: "Use link below to reset your password. " + resetLink, // plain text body
+    html: "<b>Use link below to reset your password. </b>" + resetLink, // html body
+
+  }).then((data) => { }).catch(error => { console.log({ error }) })
 }
 
 function passwordResetEmail(toEmail) {
   let info = transporter.sendMail({
     from: user, // sender address
     to: toEmail, // list of receivers
-    subject: "Password reset successfully.", // Subject line
-    text: "Your password has reset.", // plain text body
-    html: "<b>Your password has reset. </b>", // html body
+    subject: "ChopChow password reset successfully.", // Subject line
+    text: "Your password is reset.", // plain text body
+    html: "<b>Your password is reset. </b>", // html body
   });
 }
 
