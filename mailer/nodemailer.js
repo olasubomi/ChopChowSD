@@ -12,8 +12,8 @@ let transporter = nodemailer.createTransport({
     rejectUnauthorized: false,
   },
   auth: {
-    user:process.env.NODE_MAILER_EMAIL,
-    pass:process.env.NODE_MAILER_PASSWORD,
+    user: process.env.NODE_MAILER_EMAIL,
+    pass: process.env.NODE_MAILER_PASSWORD,
   },
 });
 
@@ -53,7 +53,8 @@ function forgotPasswordEmail(toEmail, resetLink) {
     subject: "Please reset your password.", // Subject line
     text: "Use link below to reset your password. " + resetLink, // plain text body
     html: "<b>Use link below to reset your password. </b>" + resetLink, // html body
-  });
+
+  }).then((data) => { }).catch(error => { console.log({ error }) })
 }
 
 function passwordResetEmail(toEmail) {

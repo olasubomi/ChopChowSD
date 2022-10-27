@@ -1,41 +1,79 @@
-const {getAllProducts,readImages,readImage ,getStoreProducts} = require("../repository/index");
+const {
+  createProduct,
+  updateProduct,
+  getAllProducts,
+  getStoreProducts,
+  getProduct,
+  deleteProduct,
+} = require("../repository/index");
 
-class Productervice {
-  async getAllProducts (){
+class ProductService {
+  static async createProduct(payload, files) {
     try {
-        const allProducts = await getAllProducts(suggestedMealID);
-        return allProducts;
-      } catch (error) {
-        throw error;
-      }
+      let productImages = [];
+      files.map((file) => {
+        productImages.push(file.location);
+      });
+
+      payload.product_images = productImages;
+
+      return await createProduct(payload);
+    } catch (error) {
+      console.log({ error });
+      throw error;
+    }
   }
 
-  async readProductImages (){
+  static async updateProduct(filter, payload, files) {
     try {
-        const productImages = await readImages();
-        return productImages;
-      } catch (error) {
-        throw error;
+      let productImages = [];
+      const product = await getProduct(filter);
+      if (files) {
+        files.map((file) => {
+          productImages.push(file.location);
+        });
+        payload.product_images = product?.product_images?.concat(productImages);
       }
+
+      return await updateProduct(filter, payload);
+    } catch (error) {
+      console.log({ error });
+      throw error;
+    }
   }
 
-  async readSingleProductImage (filename){
+  static async getAllProducts(page, filter) {
     try {
-        const productImage = await readImage(filename);
-        return productImage;
-      } catch (error) {
-        throw error;
-      }
-  }
-  async storeProducts (){
-    try {
-        const storeProducts = await getStoreProducts();
-        return storeProducts;
-      } catch (error) {
-        throw error;
-      }
+      return await getAllProducts(page, filter);
+    } catch (error) {
+      throw error;
+    }
   }
 
+  static async getProduct(filter) {
+    try {
+      return await getProduct(filter);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async deleteProduct(id) {
+    try {
+      return await deleteProduct(id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async storeProducts(page, storeId) {
+    try {
+      const storeProducts = await getStoreProducts(page, storeId);
+      return storeProducts;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
-module.exports = Productervice;
+module.exports = ProductService;

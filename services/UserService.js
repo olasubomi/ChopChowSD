@@ -1,4 +1,4 @@
-const { signUpSchema, resetPasswordSchema, } = require("../utils/validators");
+const { signUpSchema, resetPasswordSchema } = require("../utils/validators");
 const {
   getCustomerGroceryList,
   findUser,
@@ -7,14 +7,15 @@ const {
   generateAccessTokens,
   validatePassWord,
   generatePasswordResetToken,
-  updateUser
+  updateUser,
+  validateToken,
 } = require("../repository");
 const {
   customer_grocery_list,
 } = require("../db/dbMongo/config/db_buildSchema");
 const { forgotPasswordEmail } = require("../mailer/nodemailer");
 
-class CustomerService {
+class UserService {
   static async userSignup(payload) {
     try {
       // validate input data with joi
@@ -49,12 +50,14 @@ class CustomerService {
         message: "User sucessfully registered",
       };
     } catch (error) {
+      console.log("caught");
       throw error;
     }
   }
 
   static async login(payload) {
     try {
+
       const userExist = await findUser({ email: payload.email });
 
       if (!userExist) {
@@ -121,6 +124,8 @@ class CustomerService {
       const tokenExist = await findUser({
         "tokens.passwordResetToken": payload.token,
       });
+      console.log(tokenExist);
+
       if (!tokenExist) {
         throw {
           message: "Token does not exist",
@@ -134,9 +139,13 @@ class CustomerService {
           code: 400,
         };
       }
-      const resetPassword = await updateUser(validateToken.id, {
-        password: payload.password1,
-      });
+      const newPassword = await tokenExist.hashPassword(payload.password1);
+      const resetPassword = await updateUser(
+        { _id: decodeToken.id },
+        {
+          password: newPassword,
+        }
+      );
       if (!resetPassword) {
         throw {
           message: "password reset failed",
@@ -158,7 +167,7 @@ class CustomerService {
     }
   }
 
-  async findMultipleUser(filter, page) {
+  static async findMultipleUser(filter, page) {
     try {
       const users = await findUsers(filter, page);
       return {
@@ -171,12 +180,20 @@ class CustomerService {
   }
   static async getGroceryList(customerId) {
     try {
-      const getGroceryList = await getCustomerGroceryList(customerId)
-      return getGroceryList
+      const getGroceryList = await getCustomerGroceryList(customerId);
+      return getGroceryList;
     } catch (error) {
-      throw error
+      throw error;
+    }
+  }
+
+  static async updateUserProfile(userId, payload) {
+    try {
+      return await updateUser(customerId, payload);
+    } catch (error) {
+      throw error;
     }
   }
 }
 
-module.exports = CustomerService;
+module.exports = UserService;

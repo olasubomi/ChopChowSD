@@ -13,20 +13,24 @@ const {
 const {
   getMeals,
   getMeal,
+  createMeal,
   getSuggestedMeals,
-  getMealImages,
   removeSuggestedMeal,
   createMealFromSuggestion,
   addMealSuggestion,
   updateSuggestedMealItem,
   getAllCategories,
+  deleteMeal,
+  updateMeal,
 } = require("./meal");
 
 const {
   getAllProducts,
-  readImages,
-  readImage,
   getStoreProducts,
+  createProduct,
+  updateProduct,
+  getProduct,
+  deleteProduct
 } = require("./product");
 
 module.exports = {
@@ -43,14 +47,18 @@ module.exports = {
   getMeals,
   getMeal,
   getSuggestedMeals,
-  getMealImages,
   removeSuggestedMeal,
   createMealFromSuggestion,
   addMealSuggestion,
   updateSuggestedMealItem,
   getAllCategories,
   getAllProducts,
-  readImages,
-  readImage,
   getStoreProducts,
+  createProduct,
+  updateProduct,
+  getProduct,
+  deleteProduct,
+  createMeal,
+  deleteMeal,
+  updateMeal
 };

@@ -6,7 +6,10 @@ const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 module.exports = {
   getMeals: async (req, res) => {
     try {
-      const meals = await  MealService.getMeals();
+      const meals = await MealService.getMeals(
+        req.params.page,
+        req.query || {}
+      );
       if (meals) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(meals));
       } else {
@@ -14,14 +17,14 @@ module.exports = {
       }
     } catch (error) {
       return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+
         .json(new ErrorResponse(error));
     }
   },
 
   getSingleMeal: async (req, res) => {
     try {
-      const meal = await  MealService.getMeal(req?.params?.id);
+      const meal = await MealService.getMeal(req?.params?.mealId);
       if (meal) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(meal));
       } else {
@@ -34,15 +37,15 @@ module.exports = {
     }
   },
 
-  getSuggestedMeals: async (req, res) => {
+  createMeal: async (req, res) => {
     try {
-      const suggestedMweals = await  MealService.getSuggestedMeals();
-      if (suggestedMweals) {
+      const createMeal = await MealService.createMeal(req.body);
+      if (createMeal) {
         res
           .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(suggestedMweals));
+          .json(new SuccessResponse(createMeal));
       } else {
-        throw suggestedMweals;
+        throw createMeal;
       }
     } catch (error) {
       return res
@@ -51,16 +54,15 @@ module.exports = {
     }
   },
 
-  getSuggestedMealImages: async (req, res) => {
+  deleteMeal: async (req, res) => {
     try {
-      const suggestedMealImages =
-        await  MealService.getSuggestedMealImages();
-      if (suggestedMealImages) {
+      const removeMeal = await MealService.deleteMeal(req.params.mealId);
+      if (removeMeal) {
         res
           .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(suggestedMealImages));
+          .json(new SuccessResponse(removeMeal));
       } else {
-        throw suggestedMealImages;
+        throw removeMeal;
       }
     } catch (error) {
       return res
@@ -69,90 +71,49 @@ module.exports = {
     }
   },
 
-  removeSuggestedMealItem: async (req, res) => {
+  updateMeal: async (req, res) => {
     try {
-      const { suggestedMealID } = req.params;
-      const deleteSuggestedMeal = await MealService.deleteSuggestedMeal(
-        suggestedMealID
-      );
-      if (deleteSuggestedMeal) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(deleteSuggestedMeal));
-      } else {
-        throw deleteSuggestedMeal;
-      }
-    } catch (error) {
-      return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
-        .json(new ErrorResponse(error));
-    }
-  },
-  createMealFromSuggestedMeals: async (req, res) => {
-    try {
-      const { data_ids } = req.body;
-      console.log('from create suggestion')
-      console.log({body:req.body})
-      const createMeals = await MealService.createMealFromSuggestedMeals(
-        data_ids
-      );
-      if (createMeals) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(createMeals));
-      } else {
-        throw createMeals;
-      }
-    } catch (error) {
-      return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
-        .json(new ErrorResponse(error));
-    }
-  },
-
-  addMealSuggestion: async (req, res) => {
-    try {
-      const suggestions = await MealService.addSuggestion(
-        req.files["mealImage"],
+      const updateMeal = await MealService.updateMeal(
+        { _id: req.params.mealId } || req.query,
         req.body
       );
-      if (suggestions) {
+      if (updateMeal) {
         res
           .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(suggestions));
+          .json(new SuccessResponse(updateMeal));
       } else {
-        throw suggestions;
+        throw updateMeal;
       }
     } catch (error) {
-      console.log(error)
       return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .status(error?.code || Response?.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },
 
-  updateSuggestedMealItem: async (req, res) => {
+  updateNestedMealValue: async (req, res) => {
     try {
-      const updateSuggestions = await MealService.updateMealSuggestion(
+      const nestedUpdate = await MealService.updateNested(
+        { _id: req.params.mealId } || req.query,
         req.body
-      );  
-      if (updateSuggestions) {
+      );
+      if (updateMeal) {
         res
           .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(updateSuggestions));
+          .json(new SuccessResponse(updateMeal));
       } else {
-        throw updateSuggestions;
+        throw updateMeal;
       }
     } catch (error) {
       return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .status(error?.code || Response?.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },
 
   getMealCategories: async (req, res) => {
     try {
-      const mealCategories = await MealService.getAllMealCactegories();
+      const mealCategories = await MealService.getAllMealCactegories(req.query);
       if (mealCategories) {
         res
           .status(Response.HTTP_ACCEPTED)
