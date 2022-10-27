@@ -5,7 +5,6 @@ const {
   users,
   cart,
 } = require("../db/dbMongo/config/db_buildSchema");
-const jwt = require("jsonwebtoken");
 
 const createUser = async (payload) => {
   const newUser = await users.create(payload);
