@@ -124,6 +124,8 @@ class UserService {
       const tokenExist = await findUser({
         "tokens.passwordResetToken": payload.token,
       });
+      console.log(tokenExist);
+
       if (!tokenExist) {
         throw {
           message: "Token does not exist",

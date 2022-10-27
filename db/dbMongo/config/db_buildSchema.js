@@ -12,7 +12,7 @@ const userSchema = new Schema(
 
     last_name: { type: String, required: true },
 
-    user_type: { type: String },
+    user_type: { type: String, default: "customer" },
 
     profile_picture: { type: String },
 
@@ -32,7 +32,10 @@ const userSchema = new Schema(
 
     date_of_birth: { type: String },
 
-    phone_number: { type: String, required: true },
+    phone_number: {
+      // country_code: { type: String, required: true },
+      type: String, required: true
+    },
 
     food_preferences: [
       {
@@ -119,20 +122,7 @@ const userSchema = new Schema(
     location_compatible_device: { type: Boolean },
 
     driver_address: {
-      phone_number: { type: String },
-      intro: { type: String, required: true },
-
-      chef: { type: String, required: true },
-
-      username: { type: String },
-
       street: { type: String },
-      meal_categories: [
-        {
-          type: mongoose.Types.ObjectId,
-          ref: "Category",
-        },
-      ],
 
       city: { type: String },
 
@@ -142,12 +132,6 @@ const userSchema = new Schema(
     },
 
     driver_orders_picked_up: Array,
-    publicly_available: {
-      type: String,
-      required: true,
-      default: "PENDING",
-      enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
-    },
 
     driver_order_regions: [{ type: String }],
 
@@ -227,6 +211,10 @@ userSchema.methods.generatePasswordResetToken = async function (payload) {
   await user.save();
 
   return passwordResetToken;
+};
+
+userSchema.methods.hashPassword = async function (password) {
+  return await bcrypt.hash(password, 10);
 };
 
 userSchema.set("toJSON", {
