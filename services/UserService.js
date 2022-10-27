@@ -6,6 +6,7 @@ const {
   createUser,
   generateAccessTokens,
   validatePassWord,
+  validateToken,
   generatePasswordResetToken,
   updateUser
 } = require("../repository");
@@ -55,7 +56,7 @@ class UserService {
 
   static async login(payload) {
     try {
-    console.log("userservice")
+      console.log("userservice")
       const userExist = await findUser({ email: payload.email });
 
       if (!userExist) {
