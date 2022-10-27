@@ -611,10 +611,6 @@ const userSchema = new Schema(
     location_compatible_device: { type: Boolean },
 
     driver_address: {
-      phone_number: { type: String },
-
-      username: { type: String },
-
       street: { type: String },
 
       city: { type: String },
