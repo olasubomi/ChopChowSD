@@ -5,27 +5,31 @@ const {
   users,
   cart,
 } = require("../db/dbMongo/config/db_buildSchema");
+const jwt = require("jsonwebtoken");
 
 const createUser = async (payload) => {
   const newUser = await users.create(payload);
-  if (newUser) {
-    await grocery_list.create({
-      user: newUser._id,
-      products: [],
-    });
 
-    await cart.create({
-      user: newUser._id,
-      total: "0",
-    });
+  try {
+    if (newUser) {
+      await grocery_list.create({
+        user: newUser._id,
+        products: [],
+      });
+
+      await cart.create({
+        user: newUser._id,
+        total: "0",
+      });
+    }
+    return newUser;
+  } catch (error) {
+    throw error;
   }
-  return newUser;
 };
 
 const updateUser = async (filter, data) => {
-  return await users.findOneAndUpdate(filter, {
-    $set: data,
-  });
+  return await users.findOneAndUpdate(filter, data);
 };
 
 const deleteUser = async (id) => {
@@ -38,24 +42,35 @@ const findUser = async (filter) => {
 
 const findUsers = async (filter, page) => {
   const limit = 10;
-  const skip = parseInt(page) === 1 ? 0 : limit * page;
-  const docCount = await users.countDocuments(filter);
-  if (docCount < skip) {
-    skip = (page - 1) * limit;
-  }
+  let skip = parseInt(page) === 1 ? 0 : limit * page;
+  try {
+    const docCount = await users.countDocuments(filter);
 
-  return await users.find(filter).limit(limit).skip(skip);
+    if (docCount < skip) {
+      skip = (page - 1) * limit;
+    }
+    return await users.find(filter).limit(limit).skip(skip);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const validatePassWord = async (email, password) => {
-  const user = await findUser({ email: email });
-
-  return await user.comparePassword(password);
+  try {
+    const user = await findUser({ email: email });
+    return await user.comparePassword(password);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const generateAccessTokens = async (payload) => {
-  const user = await findUser({ email: payload.email });
-  return await user.generateAccessTokens(payload);
+  try {
+    const user = await findUser({ email: payload.email });
+    return await user.generateAccessTokens(payload);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const generatePasswordResetToken = async (payload) => {

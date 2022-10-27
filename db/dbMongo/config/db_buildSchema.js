@@ -120,10 +120,19 @@ const userSchema = new Schema(
 
     driver_address: {
       phone_number: { type: String },
+      intro: { type: String, required: true },
+
+      chef: { type: String, required: true },
 
       username: { type: String },
 
       street: { type: String },
+      meal_categories: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Category",
+        },
+      ],
 
       city: { type: String },
 
@@ -133,6 +142,12 @@ const userSchema = new Schema(
     },
 
     driver_orders_picked_up: Array,
+    publicly_available: {
+      type: String,
+      required: true,
+      default: "PENDING",
+      enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
+    },
 
     driver_order_regions: [{ type: String }],
 
@@ -224,37 +239,6 @@ userSchema.set("toJSON", {
 
 exports.users = mongoose.model("User", userSchema);
 
-exports.suggested_meals = mongoose.model(
-  "Suggested_meals",
-  new Schema({
-    label: { type: String },
-
-    mealImage: { type: String },
-
-    readTime: { type: String },
-
-    cookTime: { type: String },
-
-    intro: { type: String },
-
-    formated_ingredient: [{ type: String }],
-
-    servings: Number,
-
-    categories: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: "Category",
-      },
-    ],
-
-    instructions: [{ step: Object, image: String }],
-
-    display: Boolean,
-
-  })
-);
-
 const groceryListSchema = new mongoose.Schema(
   {
     user: {
@@ -269,7 +253,6 @@ const groceryListSchema = new mongoose.Schema(
 );
 
 exports.grocery_list = mongoose.model("Grocery_list", groceryListSchema);
-
 
 exports.cart = mongoose.model(
   "Cart",
@@ -424,6 +407,7 @@ exports.suppliers = mongoose.model(
   new Schema(
     {
       store_name: { type: String },
+      phone_number: { type: String, required: false },
 
       profile_picture: { type: String },
 
@@ -584,21 +568,12 @@ exports.categories = mongoose.model(
       category_type: { type: String },
 
       publicly_available: { type: Boolean },
-    },
 
-    { timestamps: true }
-  )
-);
-
-exports.utensils = mongoose.model(
-  "utensils",
-  new Schema(
-    {
-      name: { type: String },
-
-      type: { type: String },
-
-      publicly_available: Boolean,
+      affiliated_objects: {
+        type: String,
+        required: true,
+        enum: ["MEAL", "INGREDIENT", "UTENSIL", "PRODUCT"],
+      },
     },
 
     { timestamps: true }
@@ -618,6 +593,7 @@ exports.addresses = mongoose.model(
   "addresses",
   new Schema({
     phone_number: { type: String },
+
 
     username: { type: String },
 
@@ -663,6 +639,7 @@ exports.comments = mongoose.model(
       title: { type: String },
 
       message: { type: String },
+      formated_ingredient: [{ type: String }],
 
       rating: { type: String },
 
@@ -684,7 +661,7 @@ exports.comments = mongoose.model(
     },
     { timestamps: true }
   )
-);
+)
 
 exports.replies = mongoose.model(
   "Reply",

@@ -37,45 +37,6 @@ module.exports = {
     }
   },
 
-  getSuggestedMeals: async (req, res) => {
-    try {
-      const suggestedMweals = await MealService.getSuggestedMeals(
-        req.params.page,
-        req.query
-      );
-      if (suggestedMweals) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(suggestedMweals));
-      } else {
-        throw suggestedMweals;
-      }
-    } catch (error) {
-      return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
-        .json(new ErrorResponse(error));
-    }
-  },
-
-  removeSuggestedMealItem: async (req, res) => {
-    try {
-      const deleteSuggestedMeal = await MealService.deleteSuggestedMeal(
-        req.params.suggestedMealID
-      );
-      if (deleteSuggestedMeal) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(deleteSuggestedMeal));
-      } else {
-        throw deleteSuggestedMeal;
-      }
-    } catch (error) {
-      return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
-        .json(new ErrorResponse(error));
-    }
-  },
-
   createMeal: async (req, res) => {
     try {
       const createMeal = await MealService.createMeal(req.body);
@@ -146,64 +107,6 @@ module.exports = {
     } catch (error) {
       return res
         .status(error?.code || Response?.HTTP_INTERNAL_SERVER_ERROR)
-        .json(new ErrorResponse(error));
-    }
-  },
-
-  createMealFromSuggestedMeals: async (req, res) => {
-    try {
-      const { data_ids } = req.body;
-
-      const createMeals = await MealService.createMealFromSuggestedMeals(
-        data_ids
-      );
-      if (createMeals) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(createMeals));
-      } else {
-        throw createMeals;
-      }
-    } catch (error) {
-      return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
-        .json(new ErrorResponse(error));
-    }
-  },
-
-  addMealSuggestion: async (req, res) => {
-    try {
-      const suggestions = await MealService.addSuggestion(req.body);
-      if (suggestions) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(suggestions));
-      } else {
-        throw suggestions;
-      }
-    } catch (error) {
-      console.log(error);
-      return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
-        .json(new ErrorResponse(error));
-    }
-  },
-
-  updateSuggestedMealItem: async (req, res) => {
-    try {
-      const updateSuggestions = await MealService.updateMealSuggestion(
-        req.body
-      );
-      if (updateSuggestions) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(updateSuggestions));
-      } else {
-        throw updateSuggestions;
-      }
-    } catch (error) {
-      return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },

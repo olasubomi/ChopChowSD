@@ -12,15 +12,13 @@ const updateProduct = async (filter, payload) => {
   try {
     return await products.findOneAndUpdate(
       filter,
-      {
-        $set: payload,
-      },
+      payload,
       { new: true }
     );
   } catch (error) {
     console.log({ error });
   }
-};
+};  
 
 const getAllProducts = async (page, filter) => {
   try {
@@ -42,7 +40,7 @@ const getAllProducts = async (page, filter) => {
   }
 };
 
-const getProduct = async (page, filter) => {
+const getProduct = async (filter) => {
   try {
     return await products.findOne(filter);
   } catch (error) {

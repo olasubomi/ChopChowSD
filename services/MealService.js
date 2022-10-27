@@ -13,37 +13,26 @@ const {
 } = require("../repository/index");
 
 class MealService {
-
   static async createMeal(payload) {
     try {
       return await createMeal(payload);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw error;
     }
   }
 
-  static async deleteMeal(id) {
+  static async getMeals(page, filter) {
     try {
-      return await createMeal(id);
-    } catch (error) {
-      console.log(error)
-      throw error;
-    }
-  }
-
-
-  static async getMeals(page,filter) {
-    try {
-      return await getMeals(page,filter);
+      return await getMeals(page, filter);
     } catch (error) {
       throw error;
     }
   }
 
-  static async getMeal(id) {
+  static async getMeal(filter) {
     try {
-      return await getMeal(id);
+      return await getMeal(filter);
     } catch (error) {
       throw error;
     }
@@ -53,67 +42,39 @@ class MealService {
     try {
       return await deleteMeal(id);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw error;
     }
   }
 
   static async updateMeal(filter, payload) {
     try {
-      return await updateMeal(filter,payload);
+      const meal = await getMeal(filter);
+
+      if (payload.formatted_ingredients) {
+        payload.formatted_ingredients = meal.formatted_ingredients.concat(
+          payload.formatted_ingredients
+        );
+      }
+
+      if (payload.formatted_instructions) {
+        payload.formatted_instructions = meal.formatted_instructions.concat(
+          payload.formatted_instructions
+        );
+      }
+
+      return await updateMeal(filter, payload);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw error;
     }
   }
 
   static async updateNested(filter, payload) {
     try {
-      return await updateMeal(filter,payload);
+      return await updateMeal(filter, payload);
     } catch (error) {
-      console.log(error)
-      throw error;
-    }
-  }
-
-  static async getSuggestedMeals(page,filter) {
-    try {
-      return await getSuggestedMeals(page,filter);
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async deleteSuggestedMeal(suggestedMealID) {
-    try {
-      const deleteMeal = await removeSuggestedMeal(suggestedMealID);
-      return deleteMeal;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async createMealFromSuggestedMeals(suggestedMealID) {
-    try {
-      const createMeals = await createMealFromSuggestion(suggestedMealID);
-      return createMeals;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async addSuggestion(payload) {
-    try {
-      return await addMealSuggestion(file, payload);
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async updateMealSuggestion(payload) {
-    try {
-      return await updateSuggestedMealItem(payload);
-    } catch (error) {
+      console.log(error);
       throw error;
     }
   }

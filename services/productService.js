@@ -27,15 +27,15 @@ class ProductService {
   static async updateProduct(filter, payload, files) {
     try {
       let productImages = [];
-
+      const product = await getProduct(filter);
       if (files) {
         files.map((file) => {
           productImages.push(file.location);
         });
-        payload.product_images = productImages;
+        payload.product_images = product?.product_images?.concat(productImages);
       }
 
-      return await updateProduct(filter,payload);
+      return await updateProduct(filter, payload);
     } catch (error) {
       console.log({ error });
       throw error;
