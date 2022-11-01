@@ -1,5 +1,5 @@
 {
-  "name": "chop_chow_sd_express_server_running_static_react_and_serving_api_requests",
+  "name": "chop_chow_sd_express_server_serving_api_requests",
   "version": "1.0.0",
   "main": "server.js",
   "license": "MIT",
@@ -47,9 +47,7 @@
     "require": "./es5entry.cjs"
   },
   "scripts": {
-    "heroku-postbuild": "cd client && npm install && npm run build",
-    "build": "npm run build --prefix client",
-    "client": "npm start --prefix client",
+    "build": "npm run build ",
     "server": "NODE_ENV=production node server.js",
     "start": "node server.js",
     "dev": "nodemon server.js"
