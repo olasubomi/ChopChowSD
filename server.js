@@ -41,8 +41,6 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use(express.static(path.join(__dirname, "client", "build")));
-
 app.use(
   bodyParser.urlencoded({
     // Middleware
@@ -57,15 +55,6 @@ app.use("/api/user", userRoutes);
 app.use("/api/meals", mealRoutes);
 app.use("/api/products", productRoutes);
 
-app.get("*", (_req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
-
-
-app.get("/redirect", (req, res) => {
-  console.log("To redirect page");
-  res.sendFile(path.join(__dirname + "/client", "public", "index.html"));
-});
 
 app.get("/privacy-policy", (req, res) => {
   console.log("To render ");
