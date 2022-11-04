@@ -10,9 +10,8 @@ exports.validatePayload = function (validator) {
             if (req.file) {
                 req.body[req.file.fieldname] = req.file.location;
             }
-            if (req.files) {
+            if (req.files.length > 0) {
                 req.files.map((file) => filesArray.push(file.location));
-
                 req.body[req.files[0].fieldname] = filesArray;
             }
 
@@ -23,9 +22,9 @@ exports.validatePayload = function (validator) {
             next();
         } catch (err) {
             if (err.isJoi) {
-                res.status(400).json({ message: err.message });
+                return res.status(400).json({ message: err.message });
             } else {
-                res.status(500).json({
+                return res.status(500).json({
                     message: err?.message || "internal server error",
                 });
             }
