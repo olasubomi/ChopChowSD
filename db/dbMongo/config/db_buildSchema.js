@@ -343,10 +343,11 @@ exports.meals = mongoose.model(
 
       servings: { type: String },
 
-      meal_categories: [{
-        type: mongoose.Types.ObjectId,
-        ref: "Category",
-      }],
+      meal_categories: [
+        {
+          type: String,
+        },
+      ],
 
       kitchen_utensils: [{ type: String }],
 
