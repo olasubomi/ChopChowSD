@@ -57,6 +57,7 @@ class UserService {
 
   static async login(payload) {
     try {
+
       const userExist = await findUser({ email: payload.email });
 
       if (!userExist) {
@@ -123,6 +124,8 @@ class UserService {
       const tokenExist = await findUser({
         "tokens.passwordResetToken": payload.token,
       });
+      console.log(tokenExist);
+
       if (!tokenExist) {
         throw {
           message: "Token does not exist",

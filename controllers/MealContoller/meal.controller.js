@@ -17,7 +17,7 @@ module.exports = {
       }
     } catch (error) {
       return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+
         .json(new ErrorResponse(error));
     }
   },
