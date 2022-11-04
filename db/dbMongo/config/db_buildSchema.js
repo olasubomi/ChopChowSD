@@ -139,8 +139,7 @@ exports.meals = mongoose.model(
 
       meal_categories: [
         {
-          type: mongoose.Types.ObjectId,
-          ref: "Category",
+          type: String,
         },
       ],
 
