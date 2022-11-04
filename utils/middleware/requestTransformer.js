@@ -1,5 +1,5 @@
 exports.transformArray = (req, res, next) => {
-    if (req.files) {
+    if (req.files.length > 0) {
         req.files.map((file) => {
             if (Array.isArray(req.body[file.fieldname])) {
                 req.body[file.fieldname].push(file.location);
@@ -8,7 +8,6 @@ exports.transformArray = (req, res, next) => {
                 req.body[file.fieldname].push(file.location);
             }
         });
-        next();
     }
 
     next();

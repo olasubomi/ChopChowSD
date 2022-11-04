@@ -4,7 +4,7 @@ const cors = require("cors");
 const cookie = require("cookie-parser"); // cookies required for login authentication
 require("dotenv").config();
 const Crypto = require("crypto");
-exports.randomString = function(size = 15) {
+exports.randomString = function (size = 15) {
   return Crypto.randomBytes(size).toString("base64").slice(0, size);
 }
 const pw = process.env.MongoPassword;
@@ -25,14 +25,7 @@ app.use(cookie());
 var whitelist = [
   "http://localhost:3000",
   "http://localhost:5000",
-  "https://chopchow.herokuapp.com",
-  "http://chopchow.herokuapp.com",
-  "https://chopchowsd.herokuapp.com",
-  "https://chopchowsd.herokuapp.com/login",
-  "https://chopchow-client.herokuapp.com",
-  "http://chopchow-client.herokuapp.com",
-  "https://chopchow-devclient.herokuapp.com",
-  "http://chopchow-devclient.herokuapp.com/",
+  "https://chopchow.app"
 ];
 var corsOptions = {
   origin: function (origin, callback) {

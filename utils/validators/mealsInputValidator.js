@@ -6,7 +6,7 @@ exports.createMealSchema = Joi.object({
         "string.empty": `meal name cannot be an empty field`,
         "any.required": `meal name is a required.`,
     }),
-    meal_images: Joi.array().required().messages({
+    meal_images: Joi.array().messages({
         "string.base": ` meal image should be of type array of string`,
         "string.empty": `meal image cannot be an empty field`,
         "any.required": `meal image is a required.`,
