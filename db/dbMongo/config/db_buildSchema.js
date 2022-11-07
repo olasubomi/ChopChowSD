@@ -306,7 +306,7 @@ exports.products = mongoose.model(
 
       product_details: { type: String },
 
-      publicly_available: { type: Boolean, default: true },
+      publicly_available: { type: String, default: "Draft" },
 
       calories: { type: String },
 
