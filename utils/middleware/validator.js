@@ -5,6 +5,7 @@ exports.validatePayload = function (validator) {
         throw new Error(`'${validator}' validator is not exist`);
 
     return async function (req, res, next) {
+
         try {
             let filesArray = [];
             if (req.file) {

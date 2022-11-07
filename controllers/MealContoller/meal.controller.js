@@ -38,6 +38,10 @@ module.exports = {
   },
 
   createMeal: async (req, res) => {
+    console.log(req.body);
+    console.log(req.file);
+    console.log(req.files);
+
     try {
       const createMeal = await MealService.createMeal(req.body);
       if (createMeal) {

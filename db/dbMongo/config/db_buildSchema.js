@@ -355,7 +355,7 @@ exports.meals = mongoose.model(
 
       image_or_video_content: [{ type: String }],
 
-      publicly_available: { type: Boolean, default: true },
+      publicly_available: { type: String, default: "Draft" },
 
       stores_available: [
         {
