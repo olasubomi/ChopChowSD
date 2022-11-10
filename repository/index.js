@@ -33,6 +33,15 @@ const {
   deleteProduct
 } = require("./product");
 
+const {
+  getAllCategories,
+  getStoreCategories,
+  createCategory,
+  updateCategory,
+  getCategory,
+  deleteCategory
+} = require("./category");
+
 module.exports = {
   getCustomerGroceryList,
   findUser,

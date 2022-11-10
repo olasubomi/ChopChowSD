@@ -17,6 +17,9 @@ const bodyParser = require("body-parser");
 const userRoutes = require("./routes/user");
 const mealRoutes = require("./routes/meal");
 const productRoutes = require("./routes/product");
+const categoryRoutes = require("./routes/category");
+const storeRoutes = require("./routes/store");
+
 //----------------------------------------------------------------------------------
 app.set("view engine", "ejs");
 app.use(express.json({ limit: '50mb' }));
@@ -54,17 +57,10 @@ app.use("/facebook", facebook);
 app.use("/api/user", userRoutes);
 app.use("/api/meals", mealRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/stores", storeRoutes);
 
 
-app.get("/privacy-policy", (req, res) => {
-  console.log("To render ");
-  res.render("pages/privacy-policy");
-});
-
-app.get("/terms-of-service", (req, res) => {
-  console.log("To render ");
-  res.render("pages/terms-of-service");
-});
 
 // test multer logging
 app.use((error, req, res, next) => {
