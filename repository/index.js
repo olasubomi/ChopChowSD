@@ -19,7 +19,6 @@ const {
   createMealFromSuggestion,
   addMealSuggestion,
   updateSuggestedMealItem,
-  getAllCategories,
   deleteMeal,
   updateMeal,
 } = require("./meal");

@@ -40,14 +40,14 @@ module.exports = {
 
   getAllCategories: async (req, res) => {
     try {
-      const categorys = await CategoryService.getAllCategories(
+      const categories = await CategoryService.getAllCategories(
         req.params.page,
         req.query
       );
-      if (categorys) {
+      if (categories) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(categorys));
       } else {
-        throw categorys;
+        throw categories;
       }
     } catch (error) {
       return res
