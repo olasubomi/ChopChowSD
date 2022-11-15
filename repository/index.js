@@ -40,6 +40,13 @@ const {
   getCategory,
   deleteCategory
 } = require("./category");
+const {
+  getAllStores,
+  createStore,
+  updateStore,
+  getStore,
+  deleteStore,
+}= require('./store');
 
 module.exports = {
   getCustomerGroceryList,
@@ -68,5 +75,10 @@ module.exports = {
   deleteProduct,
   createMeal,
   deleteMeal,
-  updateMeal
+  updateMeal,
+  getAllStores,
+  createStore,
+  updateStore,
+  getStore,
+  deleteStore,
 };

@@ -1,18 +1,30 @@
 const router = require("express").Router();
 const StoreController = require("../controllers/StoreController/store.controller");
+const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const { upload } = require("../utils/middleware");
 
 //store routes
-// router.post("/createstore", StoreController.suggestStore);
+router.post(
+  "/createstore",
+  upload.any(),
+  verifyAuthentication,
+  StoreController.createStore
+);
 
-// router.get("/getstore", StoreController.getStore);
-// router.get("/getallstores", StoreController.getAllStores); // sort by location/rating
-// router.get("/get_store_stores", StoreController.getStoreStores);
+router.get("/getstore/:storeId", StoreController.getStore);
+router.get("/getallstores/:page", StoreController.getStores); // sort by location/rating
 
-// router.put("/updatestore", StoreController.editStore)
-// router.put("/updatestoreinventory", StoreController.editStoreInventory)
-// router.put("/editstorecomment", StoreController.editComment)
-// router.put("/updatestoreadmins", StoreController.updateStoreAdmins);
+router.put(
+  "/updatestore/:storeId",
+  upload.any(),
+  verifyAuthentication,
+  StoreController.updateStore
+);
 
-// router.delete("/deletestore", StoreController.deleteStore)
+router.delete(
+  "/deletestore/:storeId",
+  verifyAuthentication,
+  StoreController.deleteStore
+);
 
 module.exports = router;

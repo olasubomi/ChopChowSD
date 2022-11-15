@@ -4,8 +4,6 @@ const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
 
-
-
 const userSchema = new Schema(
   {
     first_name: { type: String, required: true },
@@ -34,7 +32,8 @@ const userSchema = new Schema(
 
     phone_number: {
       // country_code: { type: String, required: true },
-      type: String, required: true
+      type: String,
+      required: true,
     },
 
     food_preferences: [
@@ -292,6 +291,12 @@ exports.products = mongoose.model(
           ref: "Meal",
         },
       ],
+      user: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "User",
+        },
+      ],
 
       comments: [
         {
@@ -357,6 +362,11 @@ exports.meals = mongoose.model(
 
       publicly_available: { type: String, default: "Draft" },
 
+      user: {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+      },
+
       stores_available: [
         {
           type: mongoose.Types.ObjectId,
@@ -411,14 +421,20 @@ exports.suppliers = mongoose.model(
         country: { type: String },
       },
 
-      phone_number: { type: String },
-
       email: { type: String },
 
       hours: [{ type: String }],
 
-      sugggested_meals_and_products: Array, //more clarification on these
-
+      sugggested_meals_and_products: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Meal",
+        },
+      ], //more clarification on these
+      store_owner: {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+      },
       inventory: [
         {
           type: mongoose.Types.ObjectId,
@@ -432,8 +448,18 @@ exports.suppliers = mongoose.model(
         },
       ],
       inventory_notification_settings: Array,
-      store_account_users: Array,
-      orders_list: Array,
+      store_account_users: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      orders_list: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Order_items",
+        },
+      ],
       drivers: [
         {
           type: mongoose.Types.ObjectId,
@@ -444,7 +470,6 @@ exports.suppliers = mongoose.model(
     { timestamps: true }
   )
 );
-
 
 exports.order_groups = mongoose.model(
   "order_groups",
@@ -547,7 +572,6 @@ exports.regions = mongoose.model(
   })
 );
 
-
 exports.categories = mongoose.model(
   "Category",
   new Schema(
@@ -582,7 +606,6 @@ exports.addresses = mongoose.model(
   "addresses",
   new Schema({
     phone_number: { type: String },
-
 
     username: { type: String },
 
@@ -650,7 +673,7 @@ exports.comments = mongoose.model(
     },
     { timestamps: true }
   )
-)
+);
 
 exports.replies = mongoose.model(
   "Reply",
