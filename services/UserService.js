@@ -178,7 +178,7 @@ class UserService {
       throw error;
     }
   }
-  static async getGroceryList(userId)) {
+  static async getGroceryList(userId) {
     try {
       const getGroceryList = await getCustomerGroceryList(userId);
       return getGroceryList;
