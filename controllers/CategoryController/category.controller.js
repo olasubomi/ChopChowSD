@@ -13,8 +13,9 @@ module.exports = {
         throw category;
       }
     } catch (error) {
+      console.log(error);
       return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },

@@ -554,14 +554,12 @@ exports.categories = mongoose.model(
     {
       category_name: { type: String },
 
-      category_type: { type: String },
-
       publicly_available: { type: Boolean },
 
       affiliated_objects: {
         type: String,
         required: true,
-        enum: ["MEAL", "INGREDIENT", "UTENSIL", "PRODUCT"],
+        enum: ["MEAL", "INGREDIENT", "UTENSIL", "PRODUCT", "ANY"],
       },
     },
 
