@@ -116,9 +116,9 @@ module.exports = {
   },
 
   getGroceryList: async (req, res) => {
-    const { customerId } = req.params;
+    const { userId } = req.params;
     try {
-      const groceryList = await UserService.getGroceryList(customerId);
+      const groceryList = await UserService.getGroceryList(userId);
       if (groceryList) {
         res
           .status(error.code || Response.HTTP_ACCEPTED)

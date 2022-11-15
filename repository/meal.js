@@ -24,7 +24,8 @@ exports.getMeals = async (page, filter) => {
     const mealsResponse = await meals
       .find(filter)
       .limit(getPaginate.limit)
-      .skip(getPaginate.skip);
+      .skip(getPaginate.skip)
+      .populate("user similar_meals stores_available");
     return { meals: mealsResponse };
   } catch (error) {
     throw {
@@ -50,7 +51,9 @@ exports.deleteMeal = async (id) => {
 
 exports.getMeal = async (filter) => {
   try {
-    const mealResponse = await meals.findOne(filter);
+    const mealResponse = await meals
+      .findOne(filter)
+      .populate("user similar_meals stores_available");
     return { meal: mealResponse };
   } catch (error) {
     throw {
@@ -74,7 +77,6 @@ exports.updateMeal = async (filter, payload) => {
     console.log({ error });
   }
 };
-
 
 exports.getAllCategories = async (filter) => {
   try {

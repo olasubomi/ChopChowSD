@@ -16,9 +16,7 @@ module.exports = {
         throw meals;
       }
     } catch (error) {
-      return res
-
-        .json(new ErrorResponse(error));
+      return res.json(new ErrorResponse(error));
     }
   },
 
@@ -38,10 +36,7 @@ module.exports = {
   },
 
   createMeal: async (req, res) => {
-    console.log(req.body);
-    console.log(req.file);
-    console.log(req.files);
-
+    req.body.user = req.decoded.id;
     try {
       const createMeal = await MealService.createMeal(req.body);
       if (createMeal) {

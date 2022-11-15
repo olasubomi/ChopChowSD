@@ -1,22 +1,22 @@
-const aws = require('aws-sdk');
-const multer = require('multer');
-const multerS3 = require('multer-s3');
+const aws = require("aws-sdk");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
 
 var s3 = new aws.S3({
-  accessKeyId: process.env.CHOPCHOWAPP_USER_AWS_KEY,
-  secretAccessKey: process.env.CHOPCHOWAPP_USER_AWS_SECRET
-})
+    accessKeyId: process.env.AWS_KEY,
+    secretAccessKey: process.env.AWS_SECRET,
+});
 
 exports.upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: process.env.S3_BUCKET,
-    acl: 'public-read',
-    metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key: function (req, file, cb) {
-      cb(null, Date.now().toString())
-    },
-  })
-})
+    storage: multerS3({
+        s3: s3,
+        bucket: process.env.CHOP_CHOW_AWS_BUCKET,
+        acl: "public-read",
+        metadata: function (req, file, cb) {
+            cb(null, { fieldName: file.fieldname });
+        },
+        key: function (req, file, cb) {
+            cb(null, Date.now().toString());
+        },
+    }),
+});

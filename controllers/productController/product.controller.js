@@ -6,6 +6,7 @@ const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 module.exports = {
   createProduct: async (req, res) => {
     try {
+      req.body.user = req.decoded.id;
       const product = await ProductService.createProduct(req.body, req.files);
       if (product) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(product));
