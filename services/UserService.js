@@ -178,9 +178,9 @@ class UserService {
       throw error;
     }
   }
-  static async getGroceryList(customerId) {
+  static async getGroceryList(userId)) {
     try {
-      const getGroceryList = await getCustomerGroceryList(customerId);
+      const getGroceryList = await getCustomerGroceryList(userId);
       return getGroceryList;
     } catch (error) {
       throw error;
@@ -189,7 +189,7 @@ class UserService {
 
   static async updateUserProfile(userId, payload) {
     try {
-      return await updateUser(customerId, payload);
+      return await updateUser(userId, payload);
     } catch (error) {
       throw error;
     }
