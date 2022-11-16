@@ -26,6 +26,7 @@ const getAllStores = async (page, filter) => {
       .populate("sugggested_meals_and_products store_account_users");
     return {
       products: allProducts,
+      count: getpaginate.docCount
     };
   } catch (error) {
     console.log({ error });
@@ -76,7 +77,7 @@ const paginate = async (page, filter) => {
   if (docCount < skip) {
     skip = (page - 1) * limit;
   }
-  return { skip, limit };
+  return { skip, limit, docCount };
 };
 
 module.exports = {

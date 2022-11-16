@@ -29,6 +29,7 @@ const getAllCategories = async (page, filter) => {
             .skip(getPaginate.skip);
         return {
             categories: allCategories,
+            count: getpaginate.docCount
         };
     } catch (error) {
         console.log({ error });
@@ -78,7 +79,7 @@ const paginate = async (page, filter) => {
     if (docCount < skip) {
         skip = (page - 1) * limit;
     }
-    return { skip, limit };
+    return { skip, limit, docCount };
 };
 
 module.exports = {
