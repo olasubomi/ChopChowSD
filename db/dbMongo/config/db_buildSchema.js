@@ -576,11 +576,11 @@ exports.categories = mongoose.model(
   "Category",
   new Schema(
     {
-      category_name: { type: String },
+      category_name: { type: String, unique: true },
 
       category_type: { type: String },
 
-      publicly_available: { type: Boolean },
+      publicly_available: { type: Boolean, default: false },
 
       affiliated_objects: {
         type: String,
@@ -619,7 +619,7 @@ exports.addresses = mongoose.model(
   })
 );
 
-exports.payment_details = mongoose.model(
+exports.Payment_details = mongoose.model(
   "Payment_details",
   new Schema(
     {
@@ -644,7 +644,7 @@ exports.payment_details = mongoose.model(
   )
 );
 
-exports.comments = mongoose.model(
+exports.Comment = mongoose.model(
   "Comment",
   new Schema(
     {
@@ -675,7 +675,7 @@ exports.comments = mongoose.model(
   )
 );
 
-exports.replies = mongoose.model(
+exports.Reply = mongoose.model(
   "Reply",
   new Schema(
     {

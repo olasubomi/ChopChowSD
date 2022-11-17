@@ -1,10 +1,6 @@
 const {
   meals,
-  suggested_meals,
-  products,
-  categories,
 } = require("../db/dbMongo/config/db_buildSchema");
-const mongoose = require("mongoose");
 
 exports.createMeal = async (payload) => {
   try {

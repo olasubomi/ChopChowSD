@@ -39,6 +39,7 @@ const {
   updateCategory,
   getCategory,
   deleteCategory,
+  createCategoriesFromCreateMeal
 } = require("./category");
 const {
   getAllStores,
@@ -92,6 +93,7 @@ module.exports = {
   updateStore,
   getStore,
   deleteStore,
+  createCategoriesFromCreateMeal,
   getMealsCount,
   getProductsCount,
   getUsersCount,
