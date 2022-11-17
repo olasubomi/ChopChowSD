@@ -3,9 +3,6 @@ const ProductController = require("../controllers/productController/product.cont
 const { upload, transformObject } = require("../utils/middleware");
 const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
 
-//product routes
-// router.post("/suggestproduct", ProductController.suggestProduct);
-
 router.post(
   "/create",
   verifyAuthentication,
