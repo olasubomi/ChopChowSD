@@ -2,8 +2,9 @@ const { categories } = require("../db/dbMongo/config/db_buildSchema");
 
 const createCategory = async (payload) => {
     try {
-        return await categories.create(payload);
+        return await categories.insertMany(payload);
     } catch (error) {
+        console.log(payload);
         console.log({ error });
     }
 };
