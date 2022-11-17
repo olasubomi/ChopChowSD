@@ -29,7 +29,7 @@ const {
   createProduct,
   updateProduct,
   getProduct,
-  deleteProduct
+  deleteProduct,
 } = require("./product");
 
 const {
@@ -38,7 +38,7 @@ const {
   createCategory,
   updateCategory,
   getCategory,
-  deleteCategory
+  deleteCategory,
 } = require("./category");
 const {
   getAllStores,
@@ -46,7 +46,18 @@ const {
   updateStore,
   getStore,
   deleteStore,
-}= require('./store');
+} = require("./store");
+
+const {
+  getMealsCount,
+  getProductsCount,
+  getUsersCount,
+  getCategoriesCount,
+  getSuppliersCount,
+  getOrdersCount,
+  getMeasurementsCount,
+  getGroceryListsCount,
+} = require("./analytics");
 
 module.exports = {
   getCustomerGroceryList,
@@ -81,4 +92,12 @@ module.exports = {
   updateStore,
   getStore,
   deleteStore,
+  getMealsCount,
+  getProductsCount,
+  getUsersCount,
+  getCategoriesCount,
+  getSuppliersCount,
+  getOrdersCount,
+  getMeasurementsCount,
+  getGroceryListsCount,
 };

@@ -6,7 +6,7 @@ require("dotenv").config();
 const Crypto = require("crypto");
 exports.randomString = function (size = 15) {
   return Crypto.randomBytes(size).toString("base64").slice(0, size);
-}
+};
 const pw = process.env.MongoPassword;
 require("./db/dbMongo/config/db_connection");
 const app = express();
@@ -19,16 +19,17 @@ const mealRoutes = require("./routes/meal");
 const productRoutes = require("./routes/product");
 const categoryRoutes = require("./routes/category");
 const storeRoutes = require("./routes/store");
+const analyticsRoutes = require("./routes/analytics");
 
 //----------------------------------------------------------------------------------
 app.set("view engine", "ejs");
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: "50mb" }));
 app.use(cookie());
 // app.use(sslRedirect());
 var whitelist = [
   "http://localhost:3000",
   "http://localhost:5000",
-  "https://chopchow.app"
+  "https://chopchow.app",
 ];
 var corsOptions = {
   origin: function (origin, callback) {
@@ -59,14 +60,12 @@ app.use("/api/meals", mealRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/stores", storeRoutes);
-
-
+app.use("/api/analytics", analyticsRoutes);
 
 // test multer logging
 app.use((error, req, res, next) => {
-  console.log('This is the rejected field ->', error.field);
-  console.log(error)
+  console.log("This is the rejected field ->", error.field);
+  console.log(error);
 });
-
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

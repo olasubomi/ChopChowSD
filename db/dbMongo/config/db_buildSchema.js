@@ -224,7 +224,7 @@ userSchema.set("toJSON", {
   },
 });
 
-exports.users = mongoose.model("User", userSchema);
+exports.User = mongoose.model("User", userSchema);
 
 const groceryListSchema = new mongoose.Schema(
   {
@@ -401,7 +401,7 @@ exports.meals = mongoose.model(
   )
 );
 
-exports.suppliers = mongoose.model(
+exports.Supplier = mongoose.model(
   "Supplier",
   new Schema(
     {
@@ -495,7 +495,7 @@ exports.order_groups = mongoose.model(
   )
 );
 
-exports.orders = mongoose.model(
+exports.Order = mongoose.model(
   "Order",
   new Schema(
     {
@@ -593,7 +593,7 @@ exports.categories = mongoose.model(
   )
 );
 
-exports.measurements = mongoose.model(
+exports.Measurement = mongoose.model(
   "Measurement",
   new Schema({
     measurement_name: { type: String },
