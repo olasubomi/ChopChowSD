@@ -1,12 +1,14 @@
 const { categories } = require("../db/dbMongo/config/db_buildSchema");
 
 const createCategory = async (payload) => {
-  try {
-    return await categories.create(payload);
-  } catch (error) {
-    console.log({ error });
-  }
+    try {
+        return await categories.insertMany(payload);
+    } catch (error) {
+        console.log(payload);
+        console.log({ error });
+    }
 };
+
 
 const createCategoriesFromCreateMeal = async (payload) => {
   try {
@@ -50,6 +52,7 @@ const createCategoriesFromCreateProduct = async (payload) => {
       code: error.code || 500,
     };
   }
+
 };
 
 const updateCategory = async (filter, payload) => {

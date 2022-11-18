@@ -43,7 +43,6 @@ const {
 
 const {
   getAllCategories,
-  getStoreCategories,
   createCategory,
   updateCategory,
   getCategory,
@@ -98,6 +97,10 @@ module.exports = {
   addMealSuggestion,
   updateSuggestedMealItem,
   getAllCategories,
+  createCategory,
+  updateCategory,
+  getCategory,
+  deleteCategory,
   getAllProducts,
   getStoreProducts,
   createProduct,
