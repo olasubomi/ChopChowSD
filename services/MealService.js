@@ -5,17 +5,18 @@ const {
   createMeal,
   deleteMeal,
   updateMeal,
-  createMultipleCategories
+  createCategoriesFromCreateMeal,
+  createUtensilsFromCreateMeal
 } = require("../repository/index");
 
 class MealService {
   static async createMeal(payload) {
     try {
       if(payload.meal_categories){
-        createMultipleCategories(payload.meal_categories)
+        createCategoriesFromCreateMeal(payload.meal_categories)
       }
       if(payload.kitchen_utensils){
-
+        createUtensilsFromCreateMeal(payload.kitchen_utensils)
       }
       return await createMeal(payload);
     } catch (error) {

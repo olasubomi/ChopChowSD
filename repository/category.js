@@ -11,16 +11,42 @@ const createCategory = async (payload) => {
 const createCategoriesFromCreateMeal = async (payload) => {
   try {
     payload.map(async (category) => {
-      const checkCategory = await getCategory({ name: category });
+      const checkCategory = await getCategory({ category_name: category });
       if (!checkCategory) {
-        await createCategory({ name: category });
+        await createCategory({
+          category_name: category,
+          category_type: "meal",
+          affiliated_objects: "MEAL",
+        });
       }
     });
   } catch (error) {
     console.log({ error });
     throw {
       error: error,
-      messsage: error.message || "create multiple categores operation failed",
+      messsage: error.message || "create categories operation failed",
+      code: error.code || 500,
+    };
+  }
+};
+
+const createCategoriesFromCreateProduct = async (payload) => {
+  try {
+    payload.map(async (category) => {
+      const checkCategory = await getCategory({ category_name: category });
+      if (!checkCategory) {
+        await createCategory({
+          category_name: category,
+          category_type: "product",
+          affiliated_objects: "Product",
+        });
+      }
+    });
+  } catch (error) {
+    console.log({ error });
+    throw {
+      error: error,
+      messsage: error.message || "create categories operation failed",
       code: error.code || 500,
     };
   }
@@ -102,4 +128,5 @@ module.exports = {
   getCategory,
   deleteCategory,
   createCategoriesFromCreateMeal,
+  createCategoriesFromCreateProduct,
 };

@@ -5,6 +5,7 @@ const {
   getStoreProducts,
   getProduct,
   deleteProduct,
+  createCategoriesFromCreateProduct,
 } = require("../repository/index");
 
 class ProductService {
@@ -16,6 +17,10 @@ class ProductService {
       });
 
       payload.product_images = productImages;
+
+      if (payload.product_categories) {
+        createCategoriesFromCreateProduct(payload.product_categories);
+      }
 
       return await createProduct(payload);
     } catch (error) {

@@ -593,6 +593,19 @@ exports.categories = mongoose.model(
   )
 );
 
+exports.Utensil = mongoose.model(
+  "Utensil",
+  new Schema(
+    {
+      name: { type: String, unique: true },
+
+      publicly_available: { type: Boolean, default: false },
+    },
+
+    { timestamps: true }
+  )
+);
+
 exports.Measurement = mongoose.model(
   "Measurement",
   new Schema({
