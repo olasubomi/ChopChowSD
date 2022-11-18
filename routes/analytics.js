@@ -39,4 +39,10 @@ router.get(
   AnalyticsController.getOrdersCount
 );
 
+router.get(
+  "/get-inventories-count/",
+  verifyAuthentication,
+  AnalyticsController.getInventoriesCount
+);
+
 module.exports = router;

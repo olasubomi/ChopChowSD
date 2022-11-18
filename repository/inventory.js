@@ -2,6 +2,14 @@ const { Inventory } = require("../db/dbMongo/config/inverntory");
 
 exports.createInventory = async (payload) => {
   try {
+    const checkExist = await Inventory.findOne({
+      storeId: payload?.storeId,
+      item: payload?.item,
+      item_type: payload?.item_type,
+    });
+    if (checkExist) {
+      throw  "Item already exists in store inventory";
+    }
     return await Inventory.create(payload);
   } catch (error) {
     throw {
@@ -44,9 +52,7 @@ exports.deleteInventory = async (id) => {
 
 exports.getInventory = async (filter) => {
   try {
-    const inventoryResponse = await Inventory.findOne(filter).populate(
-      "item"
-    );
+    const inventoryResponse = await Inventory.findOne(filter).populate("item");
     return { inventory: inventoryResponse };
   } catch (error) {
     throw {

@@ -68,6 +68,7 @@ const {
   getOrdersCount,
   getMeasurementsCount,
   getGroceryListsCount,
+  getInventoriesCount,
 } = require("./analytics");
 
 const {
@@ -120,6 +121,7 @@ module.exports = {
   getOrdersCount,
   getMeasurementsCount,
   getGroceryListsCount,
+  getInventoriesCount,
   getAllUtensils,
   createUtensil,
   updateUtensil,

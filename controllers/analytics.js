@@ -110,6 +110,23 @@ module.exports = {
     }
   },
 
+  getInventoriesCount: async (req, res) => {
+    try {
+      const inventoriesCount = await AnalyticsService.getInventoriesCount(req.query || {});
+      if (inventoriesCount) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(inventoriesCount));
+      } else {
+        throw inventoriesCount;
+      }
+    } catch (error) {
+      return res
+        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getMeasurementsCount: async (req, res) => {
     try {
       const measurementCount = await AnalyticsService.getMeasurementsCount(

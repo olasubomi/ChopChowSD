@@ -43,7 +43,7 @@ exports.Inventory = mongoose.model(
 
       bulk_discounts: { type: String },
 
-      in_stock: { type: String },
+      in_stock: { type: Boolean, default: true },
     },
 
     { timestamps: true }

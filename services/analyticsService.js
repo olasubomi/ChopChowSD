@@ -6,7 +6,7 @@ const {
   getSuppliersCount,
   getOrdersCount,
   getMeasurementsCount,
-  getGroceryListsCount,
+  getInventoriesCount,
 } = require("../repository/index");
 
 const { percentageCalculator } = require("../utils/helpers");
@@ -97,6 +97,21 @@ class AnalyticsService {
       );
 
       return { ...orderCount, percentage };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getInventoriesCount(filter) {
+    try {
+      const inventoriesCount = await getInventoriesCount(filter);
+
+      const percentage = percentageCalculator(
+        inventoriesCount.docCount,
+        inventoriesCount.totalCount
+      );
+
+      return { ...inventoriesCount, percentage };
     } catch (error) {
       throw error;
     }
