@@ -20,6 +20,7 @@ const productRoutes = require("./routes/product");
 const categoryRoutes = require("./routes/category");
 const storeRoutes = require("./routes/store");
 const analyticsRoutes = require("./routes/analytics");
+const inventoryRoutes = require("./routes/inventory");
 
 //----------------------------------------------------------------------------------
 app.set("view engine", "ejs");
@@ -61,6 +62,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/stores", storeRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/inventory", inventoryRoutes);
 
 // test multer logging
 app.use((error, req, res, next) => {

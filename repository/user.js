@@ -1,13 +1,13 @@
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 const {
   grocery_list,
   products,
-  users,
+  User,
   cart,
 } = require("../db/dbMongo/config/db_buildSchema");
 
 const createUser = async (payload) => {
-  const newUser = await users.create(payload);
+  const newUser = await User.create(payload);
 
   try {
     if (newUser) {
@@ -28,27 +28,42 @@ const createUser = async (payload) => {
 };
 
 const updateUser = async (filter, data) => {
-  return await users.findOneAndUpdate(filter, data);
+  try {
+    return await User.findOneAndUpdate(filter, data, { new: true });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 const deleteUser = async (id) => {
-  return await users.deleteOne({ _id: id });
+  try {
+    return await User.deleteOne({ _id: id });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 const findUser = async (filter) => {
-  return await users.findOne(filter);
+  try {
+    return await User.findOne(filter);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 const findUsers = async (filter, page) => {
   const limit = 10;
   let skip = parseInt(page) === 1 ? 0 : limit * page;
   try {
-    const docCount = await users.countDocuments(filter);
+    const docCount = await User.countDocuments(filter);
 
     if (docCount < skip) {
       skip = (page - 1) * limit;
     }
-    return await users.find(filter).limit(limit).skip(skip);
+    return await User.find(filter).limit(limit).skip(skip);
   } catch (error) {
     throw error;
   }

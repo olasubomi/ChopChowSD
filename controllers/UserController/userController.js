@@ -14,20 +14,20 @@ module.exports = {
         return res
           .status(Response.HTTP_ACCEPTED)
           .json(new SuccessResponse(user).recordCreated());
-      }else{
-        throw user
+      } else {
+        throw user;
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return res
-      .status(Response.HTTP_INTERNAL_SERVER_ERROR)
-      .json(new ErrorResponse(error));
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
     }
   },
 
   signIn: async (req, res) => {
     try {
-      console.log(req.body)
+      console.log(req.body);
       const authenticateUser = await UserService.login(req.body);
       if (authenticateUser) {
         res
@@ -121,14 +121,14 @@ module.exports = {
       const groceryList = await UserService.getGroceryList(userId);
       if (groceryList) {
         res
-          .status(error.code || Response.HTTP_ACCEPTED)
+          .status(Response.HTTP_ACCEPTED)
           .json(new SuccessResponse(groceryList));
       } else {
         throw groceryList;
       }
     } catch (error) {
       return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },
@@ -139,14 +139,15 @@ module.exports = {
         { _id: req.params.userId },
         req.body
       );
-      if (groceryList) {
+      if (updatedProfile) {
         res
-          .status(error.code || Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(groceryList));
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(updatedProfile));
       } else {
-        throw groceryList;
+        throw updatedProfile;
       }
     } catch (error) {
+      console.log(error);
       return res
         .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));

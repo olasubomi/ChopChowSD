@@ -450,7 +450,7 @@ exports.Supplier = mongoose.model(
       inventory: [
         {
           type: mongoose.Types.ObjectId,
-          ref: "Product",
+          ref: "Inventory",
         },
       ],
       comments: [
@@ -588,7 +588,7 @@ exports.categories = mongoose.model(
   "Category",
   new Schema(
     {
-      category_name: { type: String },
+      category_name: { type: String, unique: true },
 
       publicly_available: { type: String },
 
@@ -597,6 +597,19 @@ exports.categories = mongoose.model(
         required: true,
         enum: ["MEAL", "INGREDIENT", "UTENSIL", "PRODUCT", "ANY"],
       },
+    },
+
+    { timestamps: true }
+  )
+);
+
+exports.Utensil = mongoose.model(
+  "Utensil",
+  new Schema(
+    {
+      name: { type: String, unique: true },
+
+      publicly_available: { type: Boolean, default: false },
     },
 
     { timestamps: true }
@@ -629,7 +642,7 @@ exports.addresses = mongoose.model(
   })
 );
 
-exports.payment_details = mongoose.model(
+exports.Payment_details = mongoose.model(
   "Payment_details",
   new Schema(
     {
@@ -654,7 +667,7 @@ exports.payment_details = mongoose.model(
   )
 );
 
-exports.comments = mongoose.model(
+exports.Comment = mongoose.model(
   "Comment",
   new Schema(
     {
@@ -685,7 +698,7 @@ exports.comments = mongoose.model(
   )
 );
 
-exports.replies = mongoose.model(
+exports.Reply = mongoose.model(
   "Reply",
   new Schema(
     {

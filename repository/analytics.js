@@ -7,6 +7,7 @@ const {
   Order,
   Measurement,
 } = require("../db/dbMongo/config/db_buildSchema");
+const { Inventory } = require("../db/dbMongo/config/inverntory");
 
 exports.getMealsCount = async (filter) => {
   try {
@@ -87,6 +88,21 @@ exports.getOrdersCount = async (filter) => {
   try {
     const docCount = await Order.countDocuments(filter);
     const totalCount = await Order.countDocuments();
+    return { totalCount, docCount };
+  } catch (error) {
+    console.log({ error });
+    throw {
+      error: error,
+      message: error.message || "get orders count failed",
+      code: 500,
+    };
+  }
+};
+
+exports.getInventoriesCount = async (filter) => {
+  try {
+    const docCount = await Inventory.countDocuments(filter);
+    const totalCount = await Inventory.countDocuments();
     return { totalCount, docCount };
   } catch (error) {
     console.log({ error });

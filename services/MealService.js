@@ -2,19 +2,22 @@ const {
   getMeals,
   getMeal,
   getAllCategories,
-  getSuggestedMeals,
-  removeSuggestedMeal,
-  createMealFromSuggestion,
   createMeal,
-  addMealSuggestion,
-  updateSuggestedMealItem,
   deleteMeal,
   updateMeal,
+  createCategoriesFromCreateMeal,
+  createUtensilsFromCreateMeal
 } = require("../repository/index");
 
 class MealService {
   static async createMeal(payload) {
     try {
+      if(payload.meal_categories){
+        createCategoriesFromCreateMeal(payload.meal_categories)
+      }
+      if(payload.kitchen_utensils){
+        createUtensilsFromCreateMeal(payload.kitchen_utensils)
+      }
       return await createMeal(payload);
     } catch (error) {
       console.log(error);
@@ -82,6 +85,22 @@ class MealService {
   static async getAllMealCactegories(filter) {
     try {
       return await getAllCategories(filter);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static createCategories(filter) {
+    try {
+       getAllCategories(filter);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static createUtensils(filter) {
+    try {
+      getAllCategories(filter);
     } catch (error) {
       throw error;
     }
