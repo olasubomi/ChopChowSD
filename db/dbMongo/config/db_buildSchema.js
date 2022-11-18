@@ -438,7 +438,7 @@ exports.Supplier = mongoose.model(
       inventory: [
         {
           type: mongoose.Types.ObjectId,
-          ref: "Product",
+          ref: "Inventory",
         },
       ],
       comments: [

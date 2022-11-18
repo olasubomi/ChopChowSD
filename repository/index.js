@@ -70,6 +70,14 @@ const {
   getGroceryListsCount,
 } = require("./analytics");
 
+const {
+  getInventories,
+  getInventory,
+  updateInventory,
+  deleteInventory,
+  createInventory,
+} = require("./inventory");
+
 module.exports = {
   getCustomerGroceryList,
   findUser,
@@ -119,4 +127,9 @@ module.exports = {
   deleteUtensil,
   createUtensilsFromCreateMeal,
   createCategoriesFromCreateProduct,
+  getInventories,
+  getInventory,
+  updateInventory,
+  deleteInventory,
+  createInventory,
 };
