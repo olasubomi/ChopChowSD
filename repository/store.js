@@ -1,8 +1,8 @@
-const { suppliers } = require("../db/dbMongo/config/db_buildSchema");
+const { Supplier } = require("../db/dbMongo/config/db_buildSchema");
 
 const createStore = async (payload) => {
   try {
-    return await suppliers.create(payload);
+    return await Supplier.create(payload);
   } catch (error) {
     console.log({ error });
   }
@@ -10,7 +10,7 @@ const createStore = async (payload) => {
 
 const updateStore = async (filter, payload) => {
   try {
-    return await suppliers.findOneAndUpdate(filter, payload, { new: true });
+    return await Supplier.findOneAndUpdate(filter, payload, { new: true });
   } catch (error) {
     console.log({ error });
   }
@@ -19,7 +19,7 @@ const updateStore = async (filter, payload) => {
 const getAllStores = async (page, filter) => {
   try {
     let getPaginate = await paginate(page, filter);
-    const allProducts = await suppliers
+    const allProducts = await Supplier
       .find(filter || {})
       .limit(getPaginate.limit)
       .skip(getPaginate.skip)
@@ -40,7 +40,7 @@ const getAllStores = async (page, filter) => {
 
 const getStore = async (filter) => {
   try {
-    return await suppliers
+    return await Supplier
       .findOne(filter)
       .populate("sugggested_meals_and_products store_account_users");
   } catch (error) {
@@ -55,7 +55,7 @@ const getStore = async (filter) => {
 
 const deleteStore = async (id) => {
   try {
-    const deleteStore = await suppliers.deleteOne({ _id: id });
+    const deleteStore = await Supplier.deleteOne({ _id: id });
     if (deleteStore) {
       return { message: "store sucessfully removed" };
     }
@@ -73,7 +73,7 @@ const paginate = async (page, filter) => {
   const limit = parseInt(filter.limit) || 10;
   let skip = parseInt(page) === 1 ? 0 : limit * page;
   delete filter.limit;
-  const docCount = await suppliers.countDocuments(filter);
+  const docCount = await Supplier.countDocuments(filter);
   if (docCount < skip) {
     skip = (page - 1) * limit;
   }

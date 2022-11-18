@@ -26,7 +26,7 @@ exports.getMeals = async (page, filter) => {
       .limit(getPaginate.limit)
       .skip(getPaginate.skip)
       .populate("user similar_meals stores_available");
-    return { meals: mealsResponse, count: getpaginate.docCount };
+    return { meals: mealsResponse, count: getPaginate.docCount };
   } catch (error) {
     throw {
       error: error,
