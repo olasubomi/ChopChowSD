@@ -5,7 +5,7 @@ const {
   getStoreProducts,
   getProduct,
   deleteProduct,
-  createCategoriesFromCreateProduct,
+  createCategory,
 } = require("../repository/index");
 
 class ProductService {
@@ -19,7 +19,13 @@ class ProductService {
       payload.product_images = productImages;
 
       if (payload.product_categories) {
-        createCategoriesFromCreateProduct(payload.product_categories);
+        payload.product_categories?.map((category)=>{
+          createCategory({
+              category_name: category,
+              category_type: "Product",
+              affiliated_objects: "PRODUCT",
+            })
+          })
       }
 
       return await createProduct(payload);

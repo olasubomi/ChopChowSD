@@ -2,6 +2,13 @@ const { products } = require("../db/dbMongo/config/db_buildSchema");
 
 const createProduct = async (payload) => {
   try {
+    const checkProductExist = await getProduct({
+      product_name: payload.product_name,
+      product_type: payload.product_type,
+    });
+    if(checkProductExist){
+      throw "Product already exist"
+    }
     return await products.create(payload);
   } catch (error) {
     console.log({ error });
@@ -10,15 +17,11 @@ const createProduct = async (payload) => {
 
 const updateProduct = async (filter, payload) => {
   try {
-    return await products.findOneAndUpdate(
-      filter,
-      payload,
-      { new: true }
-    );
+    return await products.findOneAndUpdate(filter, payload, { new: true });
   } catch (error) {
     console.log({ error });
   }
-};  
+};
 
 const getAllProducts = async (page, filter) => {
   try {
@@ -29,7 +32,7 @@ const getAllProducts = async (page, filter) => {
       .skip(getPaginate.skip);
     return {
       products: allProducts,
-      count: getpaginate.docCount
+      count: getpaginate.docCount,
     };
   } catch (error) {
     console.log({ error });
@@ -69,8 +72,6 @@ const deleteProduct = async (id) => {
     };
   }
 };
-
-
 
 const getStoreProducts = async (page, storeId) => {
   try {

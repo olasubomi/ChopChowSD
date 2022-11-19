@@ -1,15 +1,19 @@
-const {
-  meals,
-} = require("../db/dbMongo/config/db_buildSchema");
+const { meals } = require("../db/dbMongo/config/db_buildSchema");
 
 exports.createMeal = async (payload) => {
   try {
+    const checkMealExist = await meals.findOne({
+      meal_name: payload.meal_name,
+    });
+    if (checkMealExist) {
+      throw { message: "meal already exists" };
+    }
     return await meals.create(payload);
   } catch (error) {
+    console.log({ error });
     throw {
-      error: error,
       messsage: error.message || "create meals operation failed",
-      code: 500,
+      code: error.code || 500,
     };
   }
 };

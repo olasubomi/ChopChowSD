@@ -268,7 +268,7 @@ exports.products = mongoose.model(
     {
       product_name: { type: String, required: true },
 
-      product_images: { type: [{ type: String }], required: true },
+      product_images: { type: [{ type: String }] },
 
       product_size: { type: String },
 
@@ -279,7 +279,7 @@ exports.products = mongoose.model(
         },
       ],
 
-      product_categories: [{ type: String, required: true }],
+      product_categories: [{ type: String }],
 
       product_alternatives: [{ type: String }],
 

@@ -33,23 +33,12 @@ const {
 } = require("./product");
 
 const {
-  getAllUtensils,
-  createUtensil,
-  updateUtensil,
-  getUtensil,
-  deleteUtensil,
-  createUtensilsFromCreateMeal,
-} = require("./utensil");
-
-const {
   getAllCategories,
   getStoreCategories,
   createCategory,
   updateCategory,
   getCategory,
   deleteCategory,
-  createCategoriesFromCreateMeal,
-  createCategoriesFromCreateProduct,
 } = require("./category");
 const {
   getAllStores,
@@ -78,6 +67,8 @@ const {
   deleteInventory,
   createInventory,
 } = require("./inventory");
+
+const { createMeasurement } = require("./measurement");
 
 module.exports = {
   getCustomerGroceryList,
@@ -112,7 +103,6 @@ module.exports = {
   updateStore,
   getStore,
   deleteStore,
-  createCategoriesFromCreateMeal,
   getMealsCount,
   getProductsCount,
   getUsersCount,
@@ -122,16 +112,11 @@ module.exports = {
   getMeasurementsCount,
   getGroceryListsCount,
   getInventoriesCount,
-  getAllUtensils,
-  createUtensil,
-  updateUtensil,
-  getUtensil,
-  deleteUtensil,
-  createUtensilsFromCreateMeal,
-  createCategoriesFromCreateProduct,
   getInventories,
   getInventory,
   updateInventory,
   deleteInventory,
   createInventory,
+  createMeasurement,
+  createCategory,
 };
