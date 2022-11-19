@@ -338,6 +338,18 @@ exports.meals = mongoose.model(
 
       meal_images: [{ type: String }],
 
+      image_or_video_content_1: [{ type: String }],
+
+      image_or_video_content_2: [{ type: String }],
+
+      image_or_video_content_3: [{ type: String }],
+
+      image_or_video_content_4: [{ type: String }],
+
+      image_or_video_content_5: [{ type: String }],
+
+      image_or_video_content_6: [{ type: String }],
+
       prep_time: { type: String, required: true },
 
       cook_time: { type: String, required: true },
@@ -578,14 +590,12 @@ exports.categories = mongoose.model(
     {
       category_name: { type: String, unique: true },
 
-      category_type: { type: String },
-
-      publicly_available: { type: Boolean, default: false },
+      publicly_available: { type: String },
 
       affiliated_objects: {
         type: String,
         required: true,
-        enum: ["MEAL", "INGREDIENT", "UTENSIL", "PRODUCT"],
+        enum: ["MEAL", "INGREDIENT", "UTENSIL", "PRODUCT", "ANY"],
       },
     },
 

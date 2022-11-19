@@ -2,13 +2,16 @@ const { categories } = require("../db/dbMongo/config/db_buildSchema");
 
 const createCategory = async (payload) => {
   try {
-    const checkCategory = await getCategory({ category_name: payload.category_name });
-    if(checkCategory){
-        return checkCategory;
+    const checkCategory = await getCategory({
+      category_name: payload.category_name,
+    });
+    if (checkCategory) {
+      throw { message: "category alrady exist" };
     }
     return await categories.create(payload);
   } catch (error) {
     console.log({ error });
+    throw error;
   }
 };
 
