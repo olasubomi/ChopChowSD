@@ -31,10 +31,10 @@ class MealService {
         });
       }
 
-      if (payload?.formatted_instructions) {
-        payload.formatted_instructions?.map((instruction) => {
-          if (instruction?.measurement) {
-            createMeasurement({ measurement_name: instruction?.measurement });
+      if (payload?.formatted_ingredients) {
+        payload.formatted_ingredients?.map((ingredient) => {
+          if (ingredient?.measurement) {
+            createMeasurement({ measurement_name: ingredient?.measurement });
           }
         });
       }
