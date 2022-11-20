@@ -309,7 +309,7 @@ exports.products = mongoose.model(
 
       hidden_ingredients_in_product: [{ type: String }],
 
-      product_details: { type: String },
+      product_details: [{  }],
 
       status: { type: String, default: "Draft" },
 
