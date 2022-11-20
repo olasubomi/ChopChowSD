@@ -8,7 +8,11 @@ exports.createMeal = async (payload) => {
     });
     if (checkMealExist) {
       console.log("meal already exists");
-      return { meal: checkMealExist, message: "meal already exist" };
+      return {
+        status: 200,
+        meal: checkMealExist,
+        message: "meal already exist",
+      };
     }
     return await meals.create(payload);
   } catch (error) {
