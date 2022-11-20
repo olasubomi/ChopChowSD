@@ -31,15 +31,17 @@ class ProductService {
 
       if (payload.ingredients_in_product) {
         payload?.ingredients_in_product?.map((ingredient) => {
-          createProduct({ product_name: ingredient?.product_name });
-          createMeasurement({name:ingredient.measurement})
+          ingredient = JSON.parse(ingredient);
+          createProduct({ ...ingredient, product_type: "Ingredient" });
+          createMeasurement({ name: ingredient.measurement });
         });
       }
 
       if (payload.hidden_ingredients_in_product) {
         payload?.hidden_ingredients_in_product?.map((ingredient) => {
-          createProduct({ product_name: ingredient?.product_name });
-          createMeasurement({name:ingredient.measurement})
+          ingredient = JSON.parse(ingredient);
+          createProduct({ ...ingredient, product_type: "Ingredient" });
+          createMeasurement({ name: ingredient.measurement });
         });
       }
 
