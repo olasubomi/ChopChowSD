@@ -15,7 +15,7 @@ exports.transformArray = (req, res, next) => {
 
 exports.transformObject = (req, res, next) => {
     if (req.file) {
-        req.body[file.fieldname] = req.ile.location;
+        req.body[req.file.fieldname] = req.file.location;
         next();
     } else {
         next();

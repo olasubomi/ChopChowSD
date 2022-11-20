@@ -4,6 +4,7 @@ exports.createMeal = async (payload) => {
   try {
     const checkMealExist = await meals.findOne({
       meal_name: payload.meal_name,
+      user: payload.user,
     });
     if (checkMealExist) {
       throw { message: "meal already exists" };

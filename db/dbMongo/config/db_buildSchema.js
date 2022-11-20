@@ -366,7 +366,7 @@ exports.meals = mongoose.model(
         },
       ],
 
-      kitchen_utensils: [{ type: String }],
+      kitchen_utensils: [{ }],
 
       tips: [{ type: String }],
 
