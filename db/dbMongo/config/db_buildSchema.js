@@ -118,6 +118,16 @@ const userSchema = new Schema(
 
     location_compatible_device: { type: Boolean },
 
+    address: {
+      street: { type: String },
+
+      city: { type: String },
+
+      zip_code: { type: String },
+
+      country: { type: String },
+    },
+
     driver_address: {
       street: { type: String },
 
