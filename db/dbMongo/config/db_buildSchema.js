@@ -50,15 +50,14 @@ const userSchema = new Schema(
       },
     ],
 
-    delivery_addresses:
-      {
-        phone_number: { type: String },
-        username: { type: String },
-        street: { type: String },
-        city: { type: String },
-        zip_code: { type: String },
-        country: { type: String },
-      },
+    delivery_addresses: {
+      phone_number: { type: String },
+      username: { type: String },
+      street: { type: String },
+      city: { type: String },
+      zip_code: { type: String },
+      country: { type: String },
+    },
     grocery_list: {
       type: mongoose.Types.ObjectId,
       ref: "Grocery_list",
@@ -128,15 +127,19 @@ const userSchema = new Schema(
       country: { type: String },
     },
 
-    driver_address: {
-      street: { type: String },
+    driver_address: [
+      {
+        street: { type: String },
 
-      city: { type: String },
+        street: { type: String },
 
-      zip_code: { type: String },
+        city: { type: String },
 
-      country: { type: String },
-    },
+        zip_code: { type: String },
+
+        country: { type: String },
+      },
+    ],
 
     driver_orders_picked_up: Array,
 
@@ -317,7 +320,7 @@ exports.products = mongoose.model(
 
       hidden_ingredients_in_product: [{ type: String }],
 
-      product_details: [{  }],
+      product_details: [{}],
 
       status: { type: String, default: "Draft" },
 
@@ -384,7 +387,7 @@ exports.meals = mongoose.model(
         type: String,
         required: true,
         default: "DRAFT",
-        enum: ["DRAFT", "DECLINED", "APPROVED",],
+        enum: ["DRAFT", "DECLINED", "APPROVED"],
       },
 
       user: {
@@ -607,7 +610,7 @@ exports.categories = mongoose.model(
         type: String,
         required: true,
         default: "DRAFT",
-        enum: ["DRAFT", "DECLINED", "APPROVED",],
+        enum: ["DRAFT", "DECLINED", "APPROVED"],
       },
 
       affiliated_objects: {
@@ -631,7 +634,7 @@ exports.Utensil = mongoose.model(
         type: String,
         required: true,
         default: "DRAFT",
-        enum: ["DRAFT", "DECLINED", "APPROVED",],
+        enum: ["DRAFT", "DECLINED", "APPROVED"],
       },
     },
 
@@ -648,7 +651,7 @@ exports.Measurement = mongoose.model(
       type: String,
       required: true,
       default: "DRAFT",
-      enum: ["DRAFT", "DECLINED", "APPROVED",],
+      enum: ["DRAFT", "DECLINED", "APPROVED"],
     },
   })
 );
