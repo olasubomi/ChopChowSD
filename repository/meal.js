@@ -7,7 +7,8 @@ exports.createMeal = async (payload) => {
       user: payload.user,
     });
     if (checkMealExist) {
-      throw { message: "meal already exists" };
+      console.log("meal already exists");
+      return { meal: checkMealExist, message: "meal already exist" };
     }
     return await meals.create(payload);
   } catch (error) {

@@ -311,7 +311,7 @@ exports.products = mongoose.model(
 
       product_details: { type: String },
 
-      publicly_available: { type: String, default: "Draft" },
+      status: { type: String, default: "Draft" },
 
       calories: { type: String },
 
@@ -366,13 +366,18 @@ exports.meals = mongoose.model(
         },
       ],
 
-      kitchen_utensils: [{ }],
+      kitchen_utensils: [{}],
 
       tips: [{ type: String }],
 
       image_or_video_content: [{ type: String }],
 
-      publicly_available: { type: String, default: "Draft" },
+      status: {
+        type: String,
+        required: true,
+        default: "DRAFT",
+        enum: ["DRAFT", "DECLINED", "APPROVED",],
+      },
 
       user: {
         type: mongoose.Types.ObjectId,
@@ -590,7 +595,12 @@ exports.categories = mongoose.model(
     {
       category_name: { type: String, unique: true },
 
-      publicly_available: { type: String },
+      status: {
+        type: String,
+        required: true,
+        default: "DRAFT",
+        enum: ["DRAFT", "DECLINED", "APPROVED",],
+      },
 
       affiliated_objects: {
         type: String,
@@ -609,7 +619,12 @@ exports.Utensil = mongoose.model(
     {
       name: { type: String, unique: true },
 
-      publicly_available: { type: Boolean, default: false },
+      status: {
+        type: String,
+        required: true,
+        default: "DRAFT",
+        enum: ["DRAFT", "DECLINED", "APPROVED",],
+      },
     },
 
     { timestamps: true }
@@ -621,7 +636,12 @@ exports.Measurement = mongoose.model(
   new Schema({
     measurement_name: { type: String },
 
-    publicly_available: { type: Boolean, default: true },
+    status: {
+      type: String,
+      required: true,
+      default: "DRAFT",
+      enum: ["DRAFT", "DECLINED", "APPROVED",],
+    },
   })
 );
 
