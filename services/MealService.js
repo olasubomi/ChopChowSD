@@ -34,8 +34,8 @@ class MealService {
       if (payload?.formatted_ingredients) {
         payload.formatted_ingredients?.map((ingredient) => {
           ingredient = JSON.parse(ingredient);
+          createProduct({ ...ingredient, product_type: "Ingredient" });
           if (ingredient?.measurement) {
-            createProduct({...ingredient,product_type:"Ingredient"});
             createMeasurement({ measurement_name: ingredient?.measurement });
           }
         });
