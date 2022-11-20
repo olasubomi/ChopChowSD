@@ -6,8 +6,8 @@ const createProduct = async (payload) => {
       product_name: payload.product_name,
       product_type: payload.product_type,
     });
-    if(checkProductExist){
-      throw "Product already exist"
+    if (checkProductExist) {
+      return { product: checkProductExist, message: "Product already exist" };
     }
     return await products.create(payload);
   } catch (error) {
