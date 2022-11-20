@@ -6,7 +6,8 @@ const createCategory = async (payload) => {
       category_name: payload.category_name,
     });
     if (checkCategory) {
-      throw { message: "category alrady exist" };
+      console.log("category already exist")
+      return checkCategory;
     }
     return await categories.create(payload);
   } catch (error) {
