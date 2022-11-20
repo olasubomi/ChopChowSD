@@ -50,7 +50,7 @@ const userSchema = new Schema(
       },
     ],
 
-    delivery_addresses: [
+    delivery_addresses:
       {
         phone_number: { type: String },
         username: { type: String },
@@ -59,8 +59,6 @@ const userSchema = new Schema(
         zip_code: { type: String },
         country: { type: String },
       },
-    ],
-
     grocery_list: {
       type: mongoose.Types.ObjectId,
       ref: "Grocery_list",
