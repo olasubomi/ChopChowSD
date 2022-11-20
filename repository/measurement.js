@@ -6,7 +6,8 @@ const createMeasurement = async (payload) => {
       measurement_name: payload.measurement_name,
     });
     if (checkMeasurement) {
-      ("measurement already exist");
+      console.log("measurement already exist");
+      checkMeasurement;
     }
     return await Measurement.create(payload);
   } catch (error) {
