@@ -15,7 +15,7 @@ module.exports = {
       }
     } catch (error) {
       return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },
@@ -60,9 +60,9 @@ module.exports = {
   getProduct: async (req, res) => {
     try {
       const product = await ProductService.getProduct(
-        {_id:req.params.productId}
+        { _id: req.params.productId }
       );
-      console.log({product})
+      console.log({ product })
       if (product) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(product));
       } else {
@@ -78,7 +78,7 @@ module.exports = {
   deleteProduct: async (req, res) => {
     try {
       const product = await ProductService.deleteProduct(
-      req.params.productId
+        req.params.productId
       );
       if (product) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(product));
