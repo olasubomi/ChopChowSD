@@ -1,11 +1,11 @@
 exports.transformArray = (req, res, next) => {
-    if (req.files.length > 0) {
-        req.files.map((file) => {
-            if (Array.isArray(req.body[file.fieldname])) {
-                req.body[file.fieldname].push(file.location);
+    if (req?.files?.length > 0) {
+        req?.files?.map((file) => {
+            if (Array.isArray(req?.body[file?.fieldname])) {
+                req?.body[file?.fieldname].push(file.location);
             } else {
                 req.body[file.fieldname] = [];
-                req.body[file.fieldname].push(file.location);
+                req?.body[file?.fieldname].push(file.location);
             }
         });
     }
