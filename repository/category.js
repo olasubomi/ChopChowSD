@@ -33,7 +33,7 @@ const getAllCategories = async (page, filter) => {
       .skip(getPaginate.skip);
     return {
       categories: allCategories,
-      count: getpaginate.docCount,
+      count: getPaginate.docCount,
     };
   } catch (error) {
     console.log({ error });

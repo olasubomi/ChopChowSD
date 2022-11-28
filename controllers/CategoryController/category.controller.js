@@ -46,7 +46,7 @@ module.exports = {
         req.query
       );
       if (categories) {
-        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(categorys));
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(categories));
       } else {
         throw categories;
       }

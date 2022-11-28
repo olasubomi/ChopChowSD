@@ -32,7 +32,7 @@ const getAllProducts = async (page, filter) => {
       .skip(getPaginate.skip);
     return {
       products: allProducts,
-      count: getpaginate.docCount,
+      count: getPaginate.docCount,
     };
   } catch (error) {
     console.log({ error });
