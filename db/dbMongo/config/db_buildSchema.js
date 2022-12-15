@@ -322,7 +322,9 @@ exports.products = mongoose.model(
 
       product_details: [{}],
 
-      status: { type: String, default: "Draft" },
+      product_descriptions: [{ type: String }],
+
+      status: { type: String, default: "PENDING" },
 
       calories: { type: String },
 
@@ -386,8 +388,8 @@ exports.meals = mongoose.model(
       status: {
         type: String,
         required: true,
-        default: "DRAFT",
-        enum: ["DRAFT", "DECLINED", "APPROVED"],
+        default: "PENDING",
+        enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
       },
 
       user: {
@@ -609,8 +611,8 @@ exports.categories = mongoose.model(
       status: {
         type: String,
         required: true,
-        default: "DRAFT",
-        enum: ["DRAFT", "DECLINED", "APPROVED"],
+        default: "PENDING",
+        enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
       },
 
       affiliated_objects: {
@@ -624,6 +626,20 @@ exports.categories = mongoose.model(
   )
 );
 
+exports.descriptions = mongoose.model(
+  "Description",
+  new Schema({
+    description_name: { type: String },
+
+    status: {
+      type: String,
+      required: true,
+      default: "PENDING",
+      enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
+    },
+  })
+);
+
 exports.Utensil = mongoose.model(
   "Utensil",
   new Schema(
@@ -633,8 +649,8 @@ exports.Utensil = mongoose.model(
       status: {
         type: String,
         required: true,
-        default: "DRAFT",
-        enum: ["DRAFT", "DECLINED", "APPROVED"],
+        default: "PENDING",
+        enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
       },
     },
 
@@ -650,8 +666,8 @@ exports.Measurement = mongoose.model(
     status: {
       type: String,
       required: true,
-      default: "DRAFT",
-      enum: ["DRAFT", "DECLINED", "APPROVED"],
+      default: "PENDING",
+      enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
     },
   })
 );
