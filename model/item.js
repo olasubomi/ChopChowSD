@@ -158,7 +158,7 @@ function validateItemMeal(item) {
 
     ingredeints_in_item: Joi.array().items(Joi.object({
       item_name: Joi.string().required(),
-      item_quantity: Joi.number().required(),
+      item_quantity: Joi.number().optional(),
       item_measurement: Joi.string().optional(),
       formatted_string_of_item: Joi.string().required()
     })).optional(),
@@ -234,7 +234,7 @@ function validateItemProduct(item) {
 
     ingredeints_in_item: Joi.array().items(Joi.object({
       item_name: Joi.string().required(),
-      item_quantity: Joi.number().required(),
+      item_quantity: Joi.number().optional(),
       item_measurement: Joi.string().optional(),
       formatted_string_of_item: Joi.string().required()
     })).optional(),

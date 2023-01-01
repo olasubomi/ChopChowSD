@@ -8,6 +8,7 @@ exports.createInventory = async (payload) => {
       item: payload?.item,
       item_type: payload?.item_type,
     });
+    console.log(checkExist, 'existee')
     if (checkExist) {
       throw "Item already exists in store inventory";
     }
@@ -77,6 +78,7 @@ exports.deleteInventory = async (id) => {
     };
   }
 };
+
 
 exports.getInventory = async (filter) => {
   try {

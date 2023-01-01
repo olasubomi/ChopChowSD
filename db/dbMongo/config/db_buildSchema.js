@@ -819,7 +819,7 @@ exports.notifications = mongoose.model(
       notifiableType: {
         type: String,
         required: true,
-        enum: ["User", "Driver", "Product", "Item"],
+        enum: ["User", "Driver", "Product", "Item", "Comment", "Reply"],
       },
     },
 
