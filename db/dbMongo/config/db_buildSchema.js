@@ -105,7 +105,7 @@ const userSchema = new Schema(
       },
     ],
 
-    driver_mode_on: Boolean,
+    driver_mode: Boolean,
 
     driver_hours: Array,
 

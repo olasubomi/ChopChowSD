@@ -1,12 +1,12 @@
 const { categories } = require("../db/dbMongo/config/db_buildSchema");
 
 const createCategory = async (payload) => {
-    try {
-        return await categories.insertMany(payload);
-    } catch (error) {
-        console.log(payload);
-        console.log({ error });
-    }
+  try {
+    return await categories.insertMany(payload);
+  } catch (error) {
+    console.log(payload);
+    console.log({ error });
+  }
 };
 
 
@@ -72,7 +72,7 @@ const getAllCategories = async (page, filter) => {
       .skip(getPaginate.skip);
     return {
       categories: allCategories,
-      count: getpaginate.docCount,
+      count: getPaginate.docCount,
     };
   } catch (error) {
     console.log({ error });
