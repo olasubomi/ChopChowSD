@@ -54,7 +54,9 @@ app.use(
 );
 app.use(bodyParser.json());
 //***********************************************************************************
-
+app.get("/", (req, res) => {
+  res.send("Welcome to Chowdeck")
+});
 app.use("/facebook", facebook);
 app.use("/api/user", userRoutes);
 app.use("/api/meals", mealRoutes);

@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
   }
 
   if (token) {
+    console.log(token);
     verify(token, secret, (err, decoded) => {
       if (err) {
         // lets also check cookie..

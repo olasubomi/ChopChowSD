@@ -11,13 +11,8 @@ const {
 
 class MealService {
   static async createMeal(payload) {
+    console.log("payload from client", payload);
     try {
-      if(payload.meal_categories){
-        createCategoriesFromCreateMeal(payload.meal_categories)
-      }
-      if(payload.kitchen_utensils){
-        createUtensilsFromCreateMeal(payload.kitchen_utensils)
-      }
       return await createMeal(payload);
     } catch (error) {
       console.log(error);

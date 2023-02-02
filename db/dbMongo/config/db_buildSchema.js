@@ -337,6 +337,15 @@ exports.meals = mongoose.model(
       meal_name: { type: String, required: true },
 
       meal_images: [{ type: String }],
+      instructions: [{
+        title: { type: String },
+        instruction: { type: String }
+      }],
+      instruction_images: [{
+        type: String
+      }],
+
+      image_or_video_content: [{ type: String }],
 
       image_or_video_content_1: [{ type: String }],
 
