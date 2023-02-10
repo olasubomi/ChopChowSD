@@ -6,13 +6,13 @@ const verifyAuthentication = require("../controllers/authentication/2.verifyToke
 //meal routes
 router.post(
   "/create",
-
+  verifyAuthentication,
   upload.any(),
   transformArray,
   // validatePayload("createMealSchema"),
   MealsController.createMeal
 );
-router.get("/get-meals/:page", MealsController.getMeals);
+router.get("/get-meals/:page",  MealsController.getMeals);
 router.get("/get-meal/:mealId", MealsController.getSingleMeal);
 router.delete(
   "/delete/:mealId",
