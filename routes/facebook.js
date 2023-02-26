@@ -7,7 +7,7 @@ var passport = require("passport"),
 passport.use(
   new FacebookStrategy(
     {
-      clientID: process.env.FACEBOOK_APP_ID,
+      clientID: "process.env.FACEBOOK_APP_ID",
       clientSecret: process.env.FACEBOOK_APP_SECRET,
       callbackURL: "https://www.chopchowsd.herokuapp.com/renderEJS",
     },
