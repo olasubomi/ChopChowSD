@@ -2,14 +2,26 @@ const { categories } = require("../db/dbMongo/config/db_buildSchema");
 
 const createCategory = async (payload) => {
   try {
-    const checkCategory = await getCategory({
-      category_name: payload.category_name,
+    return await categories.insertMany(payload);
+  } catch (error) {
+    console.log(payload);
+    console.log({ error });
+  }
+};
+
+
+const createCategoriesFromCreateMeal = async (payload) => {
+  try {
+    payload.map(async (category) => {
+      const checkCategory = await getCategory({ category_name: category });
+      if (!checkCategory) {
+        await createCategory({
+          category_name: category,
+          category_type: "meal",
+          affiliated_objects: "MEAL",
+        });
+      }
     });
-    if (checkCategory) {
-      console.log("category already exist")
-      return checkCategory;
-    }
-    return await categories.create(payload);
   } catch (error) {
     console.log({ error });
     throw error;
