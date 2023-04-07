@@ -33,6 +33,16 @@ const {
 } = require("./product");
 
 const {
+  createGroceryList,
+  validateGroceryUser,
+  findAllUserGroceryList,
+  validateGroceryProduct,
+  addProductToList,
+  createNewList,
+  getGroceryList,
+} = require("./grocery");
+
+const {
   getAllUtensils,
   createUtensil,
   updateUtensil,
@@ -107,6 +117,13 @@ module.exports = {
   updateProduct,
   getProduct,
   deleteProduct,
+  createGroceryList,
+  validateGroceryUser,
+  findAllUserGroceryList,
+  validateGroceryProduct,
+  addProductToList,
+  createNewList,
+  getGroceryList,
   createMeal,
   deleteMeal,
   updateMeal,

@@ -10,15 +10,11 @@ const createProduct = async (payload) => {
 
 const updateProduct = async (filter, payload) => {
   try {
-    return await products.findOneAndUpdate(
-      filter,
-      payload,
-      { new: true }
-    );
+    return await products.findOneAndUpdate(filter, payload, { new: true });
   } catch (error) {
     console.log({ error });
   }
-};  
+};
 
 const getAllProducts = async (page, filter) => {
   try {
@@ -29,7 +25,7 @@ const getAllProducts = async (page, filter) => {
       .skip(getPaginate.skip);
     return {
       products: allProducts,
-      count: getpaginate.docCount
+      count: getPaginate.docCount,
     };
   } catch (error) {
     console.log({ error });
@@ -69,8 +65,6 @@ const deleteProduct = async (id) => {
     };
   }
 };
-
-
 
 const getStoreProducts = async (page, storeId) => {
   try {
