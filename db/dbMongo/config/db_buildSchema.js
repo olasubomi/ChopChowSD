@@ -599,8 +599,7 @@ exports.categories = mongoose.model(
     {
       category_name: { type: String, unique: true },
 
-      publicly_available: { type: String },
-
+      publicly_available: { type: String, default: "Pending" },
       affiliated_objects: {
         type: String,
         required: true,
@@ -618,7 +617,7 @@ exports.Utensil = mongoose.model(
     {
       name: { type: String, unique: true },
 
-      publicly_available: { type: Boolean, default: false },
+      publicly_available: { type: Boolean, default: "Draft" },
     },
 
     { timestamps: true }
@@ -630,7 +629,7 @@ exports.Measurement = mongoose.model(
   new Schema({
     measurement_name: { type: String },
 
-    publicly_available: { type: Boolean, default: true },
+    publicly_available: { type: Boolean, default: "Pending" },
   })
 );
 

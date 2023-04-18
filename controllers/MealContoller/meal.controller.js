@@ -36,7 +36,7 @@ module.exports = {
   },
 
   createMeal: async (req, res) => {
-    // req.body.user = req.decoded.id;
+    req.body.user = req.decoded.id;
     try {
       const createMeal = await MealService.createMeal(req.body);
       if (createMeal) {

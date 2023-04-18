@@ -26,7 +26,7 @@ const getAllStores = async (page, filter) => {
       .populate("sugggested_meals_and_products store_account_users");
     return {
       products: allProducts,
-      count: getpaginate.docCount
+      count: getPaginate.docCount
     };
   } catch (error) {
     console.log({ error });

@@ -6,7 +6,7 @@ const verifyAuthentication = require("../controllers/authentication/2.verifyToke
 //meal routes
 router.post(
   "/create",
-
+  verifyAuthentication,
   upload.any(),
   transformArray,
   // validatePayload("createMealSchema"),
