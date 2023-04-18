@@ -6,7 +6,9 @@ exports.transformArray = (req, res, next) => {
             } else {
                 req.body[file.fieldname] = [];
                 req?.body[file?.fieldname].push(file.location);
+
             }
+            
         });
     }
 

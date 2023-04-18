@@ -350,6 +350,15 @@ exports.meals = mongoose.model(
       meal_name: { type: String, required: true },
 
       meal_images: [{ type: String }],
+      instructions: [{ type: String }],
+      instructionTitles: [{ type: String }],
+      instruction_images: [
+        {
+          type: String,
+        },
+      ],
+
+      image_or_video_content: [{ type: String }],
 
       image_or_video_content_1: [{ type: String }],
 
@@ -607,14 +616,12 @@ exports.categories = mongoose.model(
   new Schema(
     {
       category_name: { type: String, unique: true },
-
       status: {
         type: String,
         required: true,
         default: "PENDING",
         enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
       },
-
       affiliated_objects: {
         type: String,
         required: true,
@@ -645,7 +652,6 @@ exports.Utensil = mongoose.model(
   new Schema(
     {
       name: { type: String, unique: true },
-
       status: {
         type: String,
         required: true,

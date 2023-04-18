@@ -1,21 +1,21 @@
 const router = require('express').Router();
-const { upload, transformObject } = require("../utils/middleware");
+const {upload,transformObject } = require("../utils/middleware");
 const { hashPassword } = require("../lib/hashPassword");
 const authunticationLogout = require("../controllers/authentication/authunticationLogout");
 const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
 const UserController = require('../controllers/UserController/userController')
 
-router.post("/signup", upload.single(), transformObject, UserController.signUp);
+router.post("/signup",upload.single(),transformObject, UserController.signUp);
 router.post("/signin", UserController.signIn);
 router.post("/forgotpassword", UserController.forgotPassword);
 router.post("/resetpassword", UserController.resetPassword);
 router.get("/findUser/:id", UserController.findUser);
 router.get("/findUsers/:page", UserController.findUsers);
-router.put("/updateuserprofile/:userId", verifyAuthentication, upload.single(), transformObject, UserController.updateUserProfile);
+router.put("/updateuserprofile/:userId",verifyAuthentication,upload.single(),transformObject, UserController.updateUserProfile);
 
 router.post("/inviteuser", UserController.inviteUser);
 router.post("/notifyuser/", UserController.addNotification);
-router.get("/verifyToken/", verifyAuthentication, UserController.verifyToken);
+router.get("/verifyToken/",verifyAuthentication, UserController.verifyToken);
 
 
 router.get("/hash", hashPassword);
@@ -23,8 +23,6 @@ router.get("/logout", authunticationLogout);
 
 // router.get("/getsuggestedmeals", UserController.getSuggestedMeals);
 router.get("/getUserGroceryList/:userId", verifyAuthentication, UserController.getGroceryList);
-// router.put("/updateGroceryList/:userId", verifyAuthentication, UserController.updateGroceryList);
-
 router.get("/getUserCartList/:userId", verifyAuthentication, UserController.getCartList);
 router.get("/findStoreadmins/:storeId", UserController.findStoreAdmins);
 router.get("/showappadmins/", UserController.getAppAdmins);
