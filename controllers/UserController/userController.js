@@ -2,9 +2,7 @@ const { Response } = require("http-status-codez");
 const UserService = require("../../services/UserService");
 
 const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
-const {
-  ReplicationRuleAndOperatorFilterSensitiveLog,
-} = require("@aws-sdk/client-s3");
+
 
 module.exports = {
   signUp: async (req, res) => {

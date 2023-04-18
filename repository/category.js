@@ -24,35 +24,8 @@ const createCategoriesFromCreateMeal = async (payload) => {
     });
   } catch (error) {
     console.log({ error });
-    throw {
-      error: error,
-      messsage: error.message || "create categories operation failed",
-      code: error.code || 500,
-    };
+    throw error;
   }
-};
-
-const createCategoriesFromCreateProduct = async (payload) => {
-  try {
-    payload.map(async (category) => {
-      const checkCategory = await getCategory({ category_name: category });
-      if (!checkCategory) {
-        await createCategory({
-          category_name: category,
-          category_type: "product",
-          affiliated_objects: "Product",
-        });
-      }
-    });
-  } catch (error) {
-    console.log({ error });
-    throw {
-      error: error,
-      messsage: error.message || "create categories operation failed",
-      code: error.code || 500,
-    };
-  }
-
 };
 
 const updateCategory = async (filter, payload) => {
@@ -130,6 +103,4 @@ module.exports = {
   updateCategory,
   getCategory,
   deleteCategory,
-  createCategoriesFromCreateMeal,
-  createCategoriesFromCreateProduct,
 };
