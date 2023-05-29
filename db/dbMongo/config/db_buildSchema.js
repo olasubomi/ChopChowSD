@@ -397,8 +397,8 @@ exports.meals = mongoose.model(
       status: {
         type: String,
         required: true,
-        default: "PENDING",
-        enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
+        default: "Draft",
+        enum: ["Draft", "Pending", "Public", "Rejected"],
       },
 
       user: {
