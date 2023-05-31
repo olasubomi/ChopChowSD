@@ -43,6 +43,10 @@ const {
 } = require("./grocery");
 
 const {
+  createItems,
+} = require("./item");
+
+const {
   getAllUtensils,
   createUtensil,
   updateUtensil,
@@ -117,6 +121,7 @@ module.exports = {
   updateProduct,
   getProduct,
   deleteProduct,
+  createItems,
   createGroceryList,
   validateGroceryUser,
   findAllUserGroceryList,

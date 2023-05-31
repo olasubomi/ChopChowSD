@@ -19,14 +19,13 @@ const updateStore = async (filter, payload) => {
 const getAllStores = async (page, filter) => {
   try {
     let getPaginate = await paginate(page, filter);
-    const allProducts = await Supplier
-      .find(filter || {})
+    const allProducts = await Supplier.find(filter || {})
       .limit(getPaginate.limit)
       .skip(getPaginate.skip)
       .populate("sugggested_meals_and_products store_account_users");
     return {
       products: allProducts,
-      count: getpaginate.docCount
+      count: getpaginate.docCount,
     };
   } catch (error) {
     console.log({ error });
@@ -40,9 +39,9 @@ const getAllStores = async (page, filter) => {
 
 const getStore = async (filter) => {
   try {
-    return await Supplier
-      .findOne(filter)
-      .populate("sugggested_meals_and_products store_account_users");
+    return await Supplier.findOne(filter).populate(
+      "sugggested_meals_and_products store_account_users"
+    );
   } catch (error) {
     console.log({ error });
     throw {

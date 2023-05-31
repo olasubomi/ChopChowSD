@@ -437,7 +437,7 @@ exports.Supplier = mongoose.model(
 
       hours: [{ type: String }],
 
-      sugggested_meals_and_products: [
+      suggested_meals_and_products: [
         {
           type: mongoose.Types.ObjectId,
           ref: "Meal",
@@ -616,14 +616,14 @@ exports.Utensil = mongoose.model(
   )
 );
 
-exports.Measurement = mongoose.model(
-  "Measurement",
-  new Schema({
-    measurement_name: { type: String },
+//exports.Measurement = mongoose.model(
+//  "Measurement",
+//  new Schema({
+//    measurement_name: { type: String },
 
-    publicly_available: { type: Boolean, default: true },
-  })
-);
+//    publicly_available: { type: Boolean, default: true },
+//  })
+//);
 
 exports.addresses = mongoose.model(
   "addresses",

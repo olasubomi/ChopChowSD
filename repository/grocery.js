@@ -11,7 +11,7 @@ const createGroceryList = async (payload) => {
   }
 };
 
-const validateGroceryUser = async(userId) => {
+const validateGroceryUser = async (userId) => {
   try {
     return await User.findById(userId);
   } catch (error) {
@@ -19,23 +19,23 @@ const validateGroceryUser = async(userId) => {
   }
 };
 
-const findAllUserGroceryList = async(filter) => {
+const findAllUserGroceryList = async (filter) => {
   try {
     return await Grocery.find(filter);
   } catch (error) {
     console.log({ error });
   }
-}
+};
 
-const validateGroceryProduct = async(productId) => {
+const validateGroceryProduct = async (productId) => {
   try {
     return await products.findById(productId);
   } catch (error) {
     console.log({ error });
   }
-}
+};
 
-const addProductToList = async(filter, payload, listedName) => {
+const addProductToList = async (filter, payload, listedName) => {
   try {
     return await Grocery.updateOne(
       filter,
@@ -49,20 +49,17 @@ const addProductToList = async(filter, payload, listedName) => {
   } catch (error) {
     console.log({ error });
   }
-}
+};
 
-const createNewList = async(filter, payload) => {
+const createNewList = async (filter, payload) => {
   try {
-    return await Grocery.updateOne(
-      filter,
-      {
-        $addToSet: payload
-      }
-    );
+    return await Grocery.updateOne(filter, {
+      $addToSet: payload,
+    });
   } catch (error) {
     console.log({ error });
   }
-}
+};
 
 const getGroceryList = async (filter) => {
   try {
@@ -71,7 +68,7 @@ const getGroceryList = async (filter) => {
     console.log({ error });
     throw {
       error: error,
-      messsage: error.message || "Get all groceries operation failed",
+      message: error.message || "Get all groceries operation failed",
       code: error.code || 500,
     };
   }
