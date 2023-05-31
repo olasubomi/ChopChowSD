@@ -50,17 +50,14 @@ const userSchema = new Schema(
       },
     ],
 
-    delivery_addresses: [
-      {
-        phone_number: { type: String },
-        username: { type: String },
-        street: { type: String },
-        city: { type: String },
-        zip_code: { type: String },
-        country: { type: String },
-      },
-    ],
-
+    delivery_addresses: {
+      phone_number: { type: String },
+      username: { type: String },
+      street: { type: String },
+      city: { type: String },
+      zip_code: { type: String },
+      country: { type: String },
+    },
     grocery_list: {
       type: mongoose.Types.ObjectId,
       ref: "Grocery_list",
@@ -120,7 +117,7 @@ const userSchema = new Schema(
 
     location_compatible_device: { type: Boolean },
 
-    driver_address: {
+    address: {
       street: { type: String },
 
       city: { type: String },
@@ -129,6 +126,20 @@ const userSchema = new Schema(
 
       country: { type: String },
     },
+
+    driver_address: [
+      {
+        street: { type: String },
+
+        street: { type: String },
+
+        city: { type: String },
+
+        zip_code: { type: String },
+
+        country: { type: String },
+      },
+    ],
 
     driver_orders_picked_up: Array,
 
@@ -268,7 +279,7 @@ exports.products = mongoose.model(
     {
       product_name: { type: String, required: true },
 
-      product_images: { type: [{ type: String }], required: true },
+      product_images: { type: [{ type: String }] },
 
       product_size: { type: String },
 
@@ -279,7 +290,7 @@ exports.products = mongoose.model(
         },
       ],
 
-      product_categories: [{ type: String, required: true }],
+      product_categories: [{ type: String }],
 
       product_alternatives: [{ type: String }],
 
@@ -309,9 +320,11 @@ exports.products = mongoose.model(
 
       hidden_ingredients_in_product: [{ type: String }],
 
-      product_details: { type: String },
+      product_details: [{}],
 
-      publicly_available: { type: String, default: "Draft" },
+      product_descriptions: [{ type: String }],
+
+      status: { type: String, default: "PENDING" },
 
       calories: { type: String },
 
@@ -337,6 +350,15 @@ exports.meals = mongoose.model(
       meal_name: { type: String, required: true },
 
       meal_images: [{ type: String }],
+      instructions: [{ type: String }],
+      instructionTitles: [{ type: String }],
+      instruction_images: [
+        {
+          type: String,
+        },
+      ],
+
+      image_or_video_content: [{ type: String }],
 
       image_or_video_content_1: [{ type: String }],
 
@@ -366,13 +388,18 @@ exports.meals = mongoose.model(
         },
       ],
 
-      kitchen_utensils: [{ type: String }],
+      kitchen_utensils: [{}],
 
       tips: [{ type: String }],
 
       image_or_video_content: [{ type: String }],
 
-      publicly_available: { type: String, default: "Draft" },
+      status: {
+        type: String,
+        required: true,
+        default: "Draft",
+        enum: ["Draft", "Pending", "Public", "Rejected"],
+      },
 
       user: {
         type: mongoose.Types.ObjectId,
@@ -589,9 +616,12 @@ exports.categories = mongoose.model(
   new Schema(
     {
       category_name: { type: String, unique: true },
-
-      publicly_available: { type: String },
-
+      status: {
+        type: String,
+        required: true,
+        default: "PENDING",
+        enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
+      },
       affiliated_objects: {
         type: String,
         required: true,
@@ -603,13 +633,31 @@ exports.categories = mongoose.model(
   )
 );
 
+exports.descriptions = mongoose.model(
+  "Description",
+  new Schema({
+    description_name: { type: String },
+
+    status: {
+      type: String,
+      required: true,
+      default: "PENDING",
+      enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
+    },
+  })
+);
+
 exports.Utensil = mongoose.model(
   "Utensil",
   new Schema(
     {
       name: { type: String, unique: true },
-
-      publicly_available: { type: Boolean, default: false },
+      status: {
+        type: String,
+        required: true,
+        default: "PENDING",
+        enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
+      },
     },
 
     { timestamps: true }
@@ -621,7 +669,12 @@ exports.Measurement = mongoose.model(
   new Schema({
     measurement_name: { type: String },
 
-    publicly_available: { type: Boolean, default: true },
+    status: {
+      type: String,
+      required: true,
+      default: "PENDING",
+      enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
+    },
   })
 );
 
