@@ -14,7 +14,8 @@ class MealService {
   static async createMeal(payload) {
     try {
       if (payload?.meal_categories) {
-        payload.meal_categories?.map((category) => {
+        
+        JSON.parse(payload?.meal_categories)?.map((category) => {
           createCategory({
             category_name: category,
             category_type: "meal",
@@ -23,7 +24,7 @@ class MealService {
         });
       }
       if (payload?.kitchen_utensils) {
-        payload.kitchen_utensils?.map((utensil) => {
+        JSON.parse(payload.kitchen_utensils)?.map((utensil) => {
           createProduct({
             product_name: utensil,
             product_type: "Utensil",
@@ -32,9 +33,13 @@ class MealService {
       }
 
       if (payload?.formatted_ingredients) {
-        payload.formatted_ingredients?.map((ingredient) => {
-          ingredient = JSON.parse(ingredient);
-          createProduct({ ...ingredient, product_type: "Ingredient" });
+        JSON.parse(payload.formatted_ingredients)?.map((ingredient) => {
+          // ingredient = JSON.parse(ingredient);
+          createProduct({
+            product_name: ingredient,
+            product_type: "Ingredient"
+          })
+          // createProduct({ ...ingredient, product_type: "Ingredient" });
           if (ingredient?.measurement) {
             createMeasurement({ measurement_name: ingredient?.measurement });
           }

@@ -1,6 +1,6 @@
 const { Response } = require("http-status-codez");
 const StoreService = require("../../services/storeService");
-
+const UserService = require('../../services/UserService')
 const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 
 module.exports = {
@@ -8,6 +8,8 @@ module.exports = {
     try {
       req.body.store_owner = req.decoded.id;
       const store = await StoreService.createStore(req.body, req.files);
+      const userId = req.user._id.toString();
+      const user = await UserService.updateUserProfile({ _id: userId }, { user_type: "supplier" })
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {
