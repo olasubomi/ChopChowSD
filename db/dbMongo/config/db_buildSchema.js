@@ -10,7 +10,7 @@ const userSchema = new Schema(
 
     last_name: { type: String, required: true },
 
-    user_type: { type: String, default: "customer" },
+    user_type: { type: String, default: "customer", enum: ['supplier', 'customer'] },
 
     profile_picture: { type: String },
 
