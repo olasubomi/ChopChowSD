@@ -9,6 +9,7 @@ const {
   confirmItem,
   updateControl,
   deleteItem,
+  itemUpdate,
   updateUserComment,
 } = require("../repository/item");
 
@@ -27,6 +28,13 @@ class ItemService {
       itemCategories.push(payload.item_categories);
 
       payload.item_categories = itemCategories;
+
+      payload.item_status = [
+        {
+          status: "Draft",
+          status_note: "Pending Approval",
+        },
+      ];
 
       // validating request body
       const { error } = validate(payload);
@@ -77,7 +85,19 @@ class ItemService {
       if (!checkItem)
         return res.send({ status: 400, message: "This Item does not exist!" });
 
-      return await updateControl(payload);
+      const arrayId = checkItem.item_status[0]._id.toString();
+
+      const updateItem = await itemUpdate(payload, arrayId);
+
+      if (updateItem) {
+        const updated = await confirmItem(payload.itemId);
+        res.status(200).send({
+          message: "Item status updated successfully",
+          data: updated,
+        });
+      } else {
+        res.send("internal Server error");
+      }
     } catch (error) {
       console.log(error);
     }

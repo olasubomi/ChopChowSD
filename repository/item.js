@@ -64,6 +64,25 @@ const deleteItem = async (payload) => {
   });
 };
 
+const itemUpdate = async (payload, arrayId) => {
+  try {
+    return await Item.findOneAndUpdate(
+      { _id: payload.itemId },
+      {
+        $set: {
+          "item_status.$[elemA].status": payload.status,
+          "item_status.$[elemA].status_note": payload.status_note,
+        },
+      },
+      {
+        arrayFilters: [{ "elemA._id": arrayId }],
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const updateUserComment = async (payload) => {};
 
 module.exports = {
@@ -75,4 +94,5 @@ module.exports = {
   confirmItem,
   updateControl,
   deleteItem,
+  itemUpdate,
 };

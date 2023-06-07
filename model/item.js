@@ -92,8 +92,6 @@ function validateItem(item) {
       )
       .optional(),
 
-    publicly_available: Joi.string().optional(),
-
     user: Joi.objectId().required(),
 
     comments: Joi.array().items(
