@@ -17,7 +17,11 @@ exports.transformArray = (req, res, next) => {
 
 exports.transformObject = (req, res, next) => {
     if (req.file) {
+<<<<<<< HEAD
+        req.body[file.fieldname] = req.file.location;
+=======
         req.body[req.file.fieldname] = req.file.location;
+>>>>>>> maroh-master
         next();
     } else {
         next();

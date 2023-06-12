@@ -10,8 +10,8 @@ const s3Client = new S3.S3Client({ region: REGION });
 exports.s3Client = s3Client;
 
 const s3Instance = new AWS3.S3Client({
-  credientials: {
-    accessKeyId,
+  credentials: {
+    accessKeyId: const_id,
     secretAccessKey: const_secret,
   },
   region: const_region,

@@ -464,7 +464,7 @@ exports.Supplier = mongoose.model(
 
       hours: [{ type: String }],
 
-      sugggested_meals_and_products: [
+      suggested_meals_and_products: [
         {
           type: mongoose.Types.ObjectId,
           ref: "Meal",
@@ -662,20 +662,6 @@ exports.Utensil = mongoose.model(
 
     { timestamps: true }
   )
-);
-
-exports.Measurement = mongoose.model(
-  "Measurement",
-  new Schema({
-    measurement_name: { type: String },
-
-    status: {
-      type: String,
-      required: true,
-      default: "PENDING",
-      enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
-    },
-  })
 );
 
 exports.addresses = mongoose.model(
