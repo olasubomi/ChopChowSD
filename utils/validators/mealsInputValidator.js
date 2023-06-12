@@ -16,8 +16,8 @@ exports.createMealSchema = Joi.object({
         "string.empty": `prep time cannot be an empty field`,
         "any.required": `prep time is a required.`,
     }),
-    publicly_available:Joi.boolean().messages({
-        "string.base": `Publicly_available must be a boolean`,
+    status:Joi.boolean().messages({
+        "string.base": `status must be a boolean`,
     }),
     cook_time: Joi.string().required().messages({
         "string.base": ` cook time should be of type string`,

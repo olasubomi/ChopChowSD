@@ -21,11 +21,11 @@ exports.Inventory = mongoose.model(
         required: true,
       },
 
-      quantity_in_stock: { type: String },
+      quantityInStock: { type: String },
 
-      estimated_restock_time: { type: String },
+      estimatedRestockTime: { type: String },
 
-      estimated_preparation_time: { type: String },
+      estimatedPreparationTime: { type: String },
 
       ingredients: [
         {

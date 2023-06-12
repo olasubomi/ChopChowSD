@@ -2,6 +2,13 @@ const { products } = require("../db/dbMongo/config/db_buildSchema");
 
 const createProduct = async (payload) => {
   try {
+    const checkProductExist = await getProduct({
+      product_name: payload.product_name,
+      product_type: payload.product_type,
+    });
+    if (checkProductExist) {
+      return { product: checkProductExist, message: "Product already exist" };
+    }
     return await products.create(payload);
   } catch (error) {
     console.log({ error });
@@ -25,7 +32,7 @@ const getAllProducts = async (page, filter) => {
       .skip(getPaginate.skip);
     return {
       products: allProducts,
-      count: getPaginate.docCount,
+      count: getPaginate.docCount
     };
   } catch (error) {
     console.log({ error });
