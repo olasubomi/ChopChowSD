@@ -1,12 +1,12 @@
 const { categories } = require("../db/dbMongo/config/db_buildSchema");
 
 const createCategory = async (payload) => {
-    try {
-        return await categories.insertMany(payload);
-    } catch (error) {
-        console.log(payload);
-        console.log({ error });
-    }
+  try {
+    return await categories.insertMany(payload);
+  } catch (error) {
+    console.log(payload);
+    console.log({ error });
+  }
 };
 
 
@@ -24,35 +24,8 @@ const createCategoriesFromCreateMeal = async (payload) => {
     });
   } catch (error) {
     console.log({ error });
-    throw {
-      error: error,
-      messsage: error.message || "create categories operation failed",
-      code: error.code || 500,
-    };
+    throw error;
   }
-};
-
-const createCategoriesFromCreateProduct = async (payload) => {
-  try {
-    payload.map(async (category) => {
-      const checkCategory = await getCategory({ category_name: category });
-      if (!checkCategory) {
-        await createCategory({
-          category_name: category,
-          category_type: "product",
-          affiliated_objects: "Product",
-        });
-      }
-    });
-  } catch (error) {
-    console.log({ error });
-    throw {
-      error: error,
-      messsage: error.message || "create categories operation failed",
-      code: error.code || 500,
-    };
-  }
-
 };
 
 const updateCategory = async (filter, payload) => {
@@ -72,7 +45,7 @@ const getAllCategories = async (page, filter) => {
       .skip(getPaginate.skip);
     return {
       categories: allCategories,
-      count: getpaginate.docCount,
+      count: getPaginate.docCount,
     };
   } catch (error) {
     console.log({ error });
@@ -130,6 +103,4 @@ module.exports = {
   updateCategory,
   getCategory,
   deleteCategory,
-  createCategoriesFromCreateMeal,
-  createCategoriesFromCreateProduct,
 };

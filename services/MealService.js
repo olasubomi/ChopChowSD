@@ -5,19 +5,47 @@ const {
   createMeal,
   deleteMeal,
   updateMeal,
-  createCategoriesFromCreateMeal,
-  createUtensilsFromCreateMeal
+  createCategory,
+  createProduct,
+  createMeasurement,
 } = require("../repository/index");
 
 class MealService {
   static async createMeal(payload) {
     try {
-      if(payload.meal_categories){
-        createCategoriesFromCreateMeal(payload.meal_categories)
+      if (payload?.meal_categories) {
+        
+        JSON.parse(payload?.meal_categories)?.map((category) => {
+          createCategory({
+            category_name: category,
+            category_type: "meal",
+            affiliated_objects: "MEAL",
+          });
+        });
       }
-      if(payload.kitchen_utensils){
-        createUtensilsFromCreateMeal(payload.kitchen_utensils)
+      if (payload?.kitchen_utensils) {
+        JSON.parse(payload.kitchen_utensils)?.map((utensil) => {
+          createProduct({
+            product_name: utensil,
+            product_type: "Utensil",
+          });
+        });
       }
+
+      if (payload?.formatted_ingredients) {
+        JSON.parse(payload.formatted_ingredients)?.map((ingredient) => {
+          // ingredient = JSON.parse(ingredient);
+          createProduct({
+            product_name: ingredient,
+            product_type: "Ingredient"
+          })
+          // createProduct({ ...ingredient, product_type: "Ingredient" });
+          if (ingredient?.measurement) {
+            createMeasurement({ measurement_name: ingredient?.measurement });
+          }
+        });
+      }
+
       return await createMeal(payload);
     } catch (error) {
       console.log(error);
@@ -90,9 +118,9 @@ class MealService {
     }
   }
 
-  static createCategories(filter) {
+  static async createCategories(payload) {
     try {
-       getAllCategories(filter);
+      createCategory(payload);
     } catch (error) {
       throw error;
     }

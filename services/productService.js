@@ -5,7 +5,9 @@ const {
   getStoreProducts,
   getProduct,
   deleteProduct,
-  createCategoriesFromCreateProduct,
+  createCategory,
+  createMeasurement,
+  createDescription
 } = require("../repository/index");
 
 class ProductService {
@@ -18,8 +20,42 @@ class ProductService {
 
       payload.product_images = productImages;
 
-      if (payload.product_categories) {
-        createCategoriesFromCreateProduct(payload.product_categories);
+      console.log(payload);
+
+      if (payload?.product_categories) {
+        payload?.product_categories?.map((category) => {
+          createCategory({
+            category_name: category,
+            category_type: "Product",
+            affiliated_objects: "PRODUCT",
+          });
+        });
+      }
+
+      if (payload.ingredients_in_product) {
+        payload?.ingredients_in_product?.map((ingredient) => {
+          ingredient = JSON.parse(ingredient);
+          createProduct({ ...ingredient, product_type: ingredient.product_type });
+          createMeasurement({ name: ingredient.measurement });
+        });
+      }
+
+      if (payload.hidden_ingredients_in_product) {
+        payload?.hidden_ingredients_in_product?.map((ingredient) => {
+          ingredient = JSON.parse(ingredient);
+          createProduct({ ...ingredient, product_type: ingredient.product_type });
+          createMeasurement({ name: ingredient.measurement });
+        });
+      }
+
+      if (payload?.product_descriptions) {
+        payload.product_descriptions?.map((description_object) => {
+          description_object = JSON.parse(description_object);
+          createDescription({ name: description_object.description_name });
+          if (description_object?.measurement) {
+            createMeasurement({ measurement_name: description_object?.measurement });
+          }
+        });
       }
 
       return await createProduct(payload);
