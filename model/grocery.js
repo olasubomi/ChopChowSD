@@ -1,7 +1,7 @@
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 const mongoose = require("mongoose");
-const { products } = require("../db/dbMongo/config/db_buildSchema");
+const { Item } = require("./item");
 
 const grocerySchema = new mongoose.Schema({
   userId: {
@@ -16,10 +16,9 @@ const grocerySchema = new mongoose.Schema({
       },
       groceryItems: [
         {
-          product_id: mongoose.Schema.ObjectId,
-          product: {
-            type: products.schema,
-            required: true,
+          item_id: mongoose.Schema.ObjectId,
+          item: {
+            type: Item.schema,
           },
           quantity: {
             type: Number,
@@ -47,8 +46,8 @@ function validateGrocery(grocery) {
           groceryItems: Joi.array()
             .items(
               Joi.object({
-                product_id: Joi.objectId().optional(),
-                productId: Joi.objectId().required(),
+                item_id: Joi.objectId().optional(),
+                itemId: Joi.objectId().required(),
                 quantity: Joi.number().required(),
                 pickUpTime: Joi.string().required(),
               })
