@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 mongoose.set("debug", true);
+mongoose.set('strictQuery', false);
+
 mongoose.Promise = require("bluebird");
 
 mongoose.connect(
@@ -11,6 +13,7 @@ mongoose.connect(
     console.log("We are connected to Mongo from db_connection in server.js");
   }
 );
+
 
 //Check if we connected to the database or not
 let db = mongoose.connection;
