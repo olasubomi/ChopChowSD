@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 mongoose.set("debug", true);
+mongoose.set('strictQuery', false);
 mongoose.Promise = require("bluebird");
 
 mongoose.connect(
