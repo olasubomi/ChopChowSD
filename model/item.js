@@ -1,7 +1,11 @@
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 const mongoose = require("mongoose");
+<<<<<<< HEAD
 const { products, meals, Utensil } = require("../db/dbMongo/config/db_buildSchema");
+=======
+const { products, meals } = require("../db/dbMongo/config/db_buildSchema");
+>>>>>>> 2f226bc127236b5d77f9bb2009a79a53375959fb
 
 const itemSchema = new mongoose.Schema({
   item_name: { type: String, required: true },
@@ -75,6 +79,7 @@ const itemSchema = new mongoose.Schema({
 
   item_categories: [{ type: mongoose.Types.ObjectId, ref: "categories" }],
 
+<<<<<<< HEAD
   // item_data: { type: meals.schema || products.schema || Utensil.schema },
   item_data: {
     type: mongoose.Schema.Types.ObjectId,
@@ -87,6 +92,9 @@ const itemSchema = new mongoose.Schema({
     required: true
   }
 
+=======
+  item_data: { type: products.schema || meals.schema },
+>>>>>>> 2f226bc127236b5d77f9bb2009a79a53375959fb
 });
 
 const Item = mongoose.model("Item", itemSchema);

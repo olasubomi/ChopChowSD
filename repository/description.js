@@ -1,5 +1,16 @@
 const { Description } = require("../model/description");
 
+// const paginate = async (page, filter) => {
+//   const limit = parseInt(filter.limit) || 10;
+//   let skip = parseInt(page) === 1 ? 0 : limit * page;
+//   delete filter.limit;
+//   const docCount = await descriptions.countDocuments(filter);
+//   if (docCount < skip) {
+//     skip = (page - 1) * limit;
+//   }
+//   return { skip, limit, docCount };
+// };
+
 const saveDescription = async (payload) => {
   try {
     const descriptions = new Description(payload);
@@ -48,6 +59,7 @@ const deleteDescription = async (descriptionId) => {
   }
 };
 
+
 module.exports = {
   saveDescription,
   findDescription,
@@ -55,3 +67,4 @@ module.exports = {
   updateDescription,
   deleteDescription,
 };
+
