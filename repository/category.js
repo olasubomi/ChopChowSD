@@ -9,19 +9,37 @@ const createCategory = async (payload) => {
   }
 };
 
+const createOneCategory = async (payload) => {
+  try {
+    const category = new categories(payload);
+    return await category.save();
+  } catch (error) {
+    console.log(payload);
+    console.log({ error });
+  }
+};
+
 
 const createCategoriesFromCreateMeal = async (payload) => {
   try {
-    payload.map(async (category) => {
+    const resps = payload.map(async (category) => {
       const checkCategory = await getCategory({ category_name: category });
       if (!checkCategory) {
-        await createCategory({
+        const res = await createOneCategory({
           category_name: category,
           category_type: "meal",
           affiliated_objects: "MEAL",
         });
+        console.log('resssss', res)
+        return res
+      } else {
+        return checkCategory?._id?.toString();
       }
-    });
+
+    })
+    return await resps
+
+
   } catch (error) {
     console.log({ error });
     throw error;
@@ -103,4 +121,6 @@ module.exports = {
   updateCategory,
   getCategory,
   deleteCategory,
+  createCategoriesFromCreateMeal,
+  createOneCategory
 };

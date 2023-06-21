@@ -21,7 +21,7 @@ const groceryRoutes = require("./routes/groceries");
 // const itemRoutes = require("./routes/items");
 // const groceryRoutes = require("./routes/groceries");
 const measurementRoutes = require("./routes/measurement");
-const descriptionRoutes = require("./routes/description");
+// const descriptionRoutes = require("./routes/description");
 const itemRoutes = require("./routes/item");
 const categoryRoutes = require("./routes/category");
 const storeRoutes = require("./routes/store");
@@ -69,6 +69,8 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/stores", storeRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/inventory", inventoryRoutes);
+app.use("/api/items", itemRoutes);
+
 
 // test multer logging
 app.use((error, req, res, next) => {

@@ -46,14 +46,8 @@ const {
   createItems,
 } = require("./item");
 
-// const {
-//   getAllUtensils,
-//   createUtensil,
-//   updateUtensil,
-//   getUtensil,
-//   deleteUtensil,
-//   createUtensilsFromCreateMeal,
-// } = require("./utensil");
+
+
 
 const {
   getAllCategories,
@@ -63,13 +57,13 @@ const {
   deleteCategory,
 } = require("./category");
 
-const {
-  getAllDescriptions,
-  createDescription,
-  updateDescription,
-  getDescription,
-  deleteDescription,
-} = require("./description");
+// const {
+//   getAllDescriptions,
+//   createDescription,
+//   updateDescription,
+//   getDescription,
+//   deleteDescription,
+// } = require("./description");
 
 
 const {
@@ -125,11 +119,11 @@ module.exports = {
   updateCategory,
   getCategory,
   deleteCategory,
-  getAllDescriptions,
-  createDescription,
-  updateDescription,
-  getDescription,
-  deleteDescription,
+  // getAllDescriptions,
+  // createDescription,
+  // updateDescription,
+  // getDescription,
+  // deleteDescription,
   getAllProducts,
   getStoreProducts,
   createProduct,

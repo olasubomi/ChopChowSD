@@ -9,7 +9,8 @@ router.get("/", ItemController.getAllItems);
 router.post(
   "/",
   verifyAuthentication,
-  upload.array("item_images"),
+  upload.any("item_images"),
+  // upload.any("instruction_images"),
   ItemController.createItem
 );
 

@@ -13,34 +13,111 @@ const {
   updateUserComment,
 } = require("../repository/item");
 
+const {
+  createProduct
+} = require('../repository/product')
+
+const { createMeal } = require('../repository/meal')
+
+const {
+  createCategoriesFromCreateMeal
+} = require('../repository/category')
+
 class ItemService {
   static async createItem(payload, files, res) {
     try {
+      console.log('payload', payload, files)
+
       let itemImages = [];
-      files.map((file) => {
+      let instructionImages = []
+
+      const item_images = files.filter(ele => ele.fieldname === 'item_images');
+      const instruction_images = files.filter(ele => ele.fieldname === 'instruction_images');
+
+      item_images.map((file) => {
         itemImages.push(file.location);
       });
 
+
+
       payload.item_images = itemImages;
+
+      payload.itemImage0 = itemImages[0];
+      payload.itemImage1 = itemImages[1];
+      payload.itemImage2 = itemImages[2];
+      payload.itemImage3 = itemImages[3];
+
+
+
+
+      //check if user added formatted_ingredients
+      //parse it to be indexed into the db
+      if (payload.formatted_ingredients) {
+        payload.formatted_ingredients = JSON.parse(payload.formatted_ingredients)
+      }
+
+      if (payload.intro) {
+        payload.item_intro = payload.intro
+      }
+
+      if (payload.formatted_instructions) {
+        payload.formatted_instructions = JSON.parse(payload.formatted_instructions)
+      }
+
+      if (payload.meal_categories) {
+        payload.meal_categories = JSON.parse(payload.meal_categories)
+      }
+
+      if (payload.kitchen_utensils) {
+        payload.kitchen_utensils = JSON.parse(payload.kitchen_utensils)
+      }
+
+      if (payload.item_data) {
+        payload.item_data = JSON.parse(payload.item_data)
+      }
+
+      if (payload.item_categories) {
+        payload.item_categories = JSON.parse(payload.item_categories)
+      }
+
+      if (payload.item_type === 'Product') {
+        const product = await createProduct(payload.item_data);
+        payload.item_model = 'Product';
+        payload.item_data = product?._id
+      } else if (payload.item_type === 'Meal') {
+        const meal = await createMeal(payload.item_data);
+
+        instruction_images.map((file, idx) => {
+          instructionImages.push(file.location);
+          payload[`image_or_video_content_${idx + 1}`] = file.location
+        });
+
+        payload.item_data = meal?._id;
+        payload.item_model = 'Meal'
+
+      }
 
       let itemCategories = [];
 
-      itemCategories.push(payload.item_categories);
+      // itemCategories.push(payload.item_categories);
 
-      payload.item_categories = itemCategories;
-
+      const createCategories = await createCategoriesFromCreateMeal(payload.item_categories)
+      const ele = await Promise.all(createCategories)
+        .then(res => {
+          return res
+        })
+      payload.item_categories = ele
       payload.item_status = [
         {
           status: "Draft",
           status_note: "Pending Approval",
         },
       ];
-
       // validating request body
-      const { error } = validate(payload);
+      const { error } = validate(payload); console.log('errr', error)
       if (error) return res.status(400).send(error.details[0].message);
-
       return await createItem(payload);
+
     } catch (error) {
       console.log({ error });
       throw error;

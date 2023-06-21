@@ -281,7 +281,7 @@ exports.products = mongoose.model(
 
       product_images: { type: [{ type: String }] },
 
-      product_size: { type: String },
+      product_size: [{ type: String }],
 
       stores_available: [
         {
