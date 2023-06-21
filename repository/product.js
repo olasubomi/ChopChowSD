@@ -32,11 +32,7 @@ const getAllProducts = async (page, filter) => {
       .skip(getPaginate.skip);
     return {
       products: allProducts,
-<<<<<<< HEAD
       count: getPaginate.docCount,
-=======
-      count: getPaginate.docCount
->>>>>>> 2f226bc127236b5d77f9bb2009a79a53375959fb
     };
   } catch (error) {
     console.log({ error });

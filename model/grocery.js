@@ -47,13 +47,8 @@ function validateGrocery(grocery) {
           groceryItems: Joi.array()
             .items(
               Joi.object({
-<<<<<<< HEAD
-                product_id: Joi.objectId().optional(),
-                productId: Joi.objectId().required(),
-=======
                 item_id: Joi.objectId().optional(),
                 itemId: Joi.objectId().required(),
->>>>>>> 2f226bc127236b5d77f9bb2009a79a53375959fb
                 quantity: Joi.number().required(),
                 pickUpTime: Joi.string().required(),
               })

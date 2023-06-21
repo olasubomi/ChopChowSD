@@ -664,7 +664,6 @@ exports.Utensil = mongoose.model(
   )
 );
 
-<<<<<<< HEAD
 //exports.Measurement = mongoose.model(
 //  "Measurement",
 //  new Schema({
@@ -674,8 +673,6 @@ exports.Utensil = mongoose.model(
 //  })
 //);
 
-=======
->>>>>>> 2f226bc127236b5d77f9bb2009a79a53375959fb
 exports.addresses = mongoose.model(
   "addresses",
   new Schema({
