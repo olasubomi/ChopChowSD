@@ -10,11 +10,11 @@ const itemSchema = new mongoose.Schema({
 
   itemImage0: { type: String, required: true },
 
-  itemImage1: { type: String, required: true },
+  itemImage1: { type: String },
 
-  itemImage2: { type: String, required: true },
+  itemImage2: { type: String },
 
-  itemImage3: { type: String, required: true },
+  itemImage3: { type: String },
 
   item_type: { type: String, required: true },
 
@@ -73,7 +73,9 @@ const itemSchema = new mongoose.Schema({
     },
   ],
 
-  item_categories: [{ type: mongoose.Types.ObjectId, ref: "categories" }],
+  item_categories: [{ type: mongoose.Types.ObjectId, ref: "Category" }],
+
+  // item_categories: [{ type: mongoose.Types.ObjectId, ref: "categories" }],
 
   // item_data: { type: meals.schema || products.schema || Utensil.schema },
   item_data: {
@@ -87,7 +89,7 @@ const itemSchema = new mongoose.Schema({
     required: true
   }
 
-});
+}, { timestamps: true });
 
 const Item = mongoose.model("Item", itemSchema);
 
@@ -99,15 +101,15 @@ function validateItem(item) {
 
     instruction_images: Joi.array().items(Joi.string().required()).optional(),
 
-    itemImage1: Joi.string().required(),
+    itemImage0: Joi.string().required(),
+
+    itemImage1: Joi.string().optional(),
+
+    itemImage2: Joi.string().optional(),
+
+    itemImage3: Joi.string().optional(),
 
     item_model: Joi.string().optional(),
-
-    itemImage2: Joi.string().required(),
-
-    itemImage3: Joi.string().required(),
-
-    itemImage0: Joi.string().required(),
 
     image_or_video_content_1: Joi.string().optional(),
 
@@ -124,7 +126,7 @@ function validateItem(item) {
 
     item_type: Joi.string().required(),
 
-    formatted_instructions: Joi.array().items(Joi.string().required()).optional(),
+    formatted_instructions: Joi.array().items(Joi.object().required()).optional(),
 
     store_available: Joi.objectId().optional(),
 

@@ -358,25 +358,25 @@ exports.meals = mongoose.model(
         },
       ],
 
-      image_or_video_content: [{ type: String }],
+      image_or_video_content: { type: String },
 
-      image_or_video_content_1: [{ type: String }],
+      image_or_video_content_1: { type: String },
 
-      image_or_video_content_2: [{ type: String }],
+      image_or_video_content_2: { type: String },
 
-      image_or_video_content_3: [{ type: String }],
+      image_or_video_content_3: { type: String },
 
-      image_or_video_content_4: [{ type: String }],
+      image_or_video_content_4: { type: String },
 
-      image_or_video_content_5: [{ type: String }],
+      image_or_video_content_5: { type: String },
 
-      image_or_video_content_6: [{ type: String }],
+      image_or_video_content_6: { type: String },
 
       prep_time: { type: String, required: true },
 
       cook_time: { type: String, required: true },
 
-      intro: { type: String, required: true },
+      intro: { type: String },
 
       chef: { type: String, required: true },
 
@@ -419,9 +419,9 @@ exports.meals = mongoose.model(
           ref: "Meal",
         },
       ],
-      formatted_ingredients: [{ type: String, required: true }],
+      formatted_ingredients: [{ type: String }],
 
-      formatted_instructions: [{ type: String, required: true }],
+      formatted_instructions: [{ type: String }],
 
       calories: { type: String },
 

@@ -18,11 +18,6 @@ const userRoutes = require("./routes/user");
 const mealRoutes = require("./routes/meal");
 const productRoutes = require("./routes/product");
 const groceryRoutes = require("./routes/groceries");
-<<<<<<< HEAD
-// const itemRoutes = require("./routes/items");
-// const groceryRoutes = require("./routes/groceries");
-=======
->>>>>>> 2f226bc127236b5d77f9bb2009a79a53375959fb
 const measurementRoutes = require("./routes/measurement");
 // const descriptionRoutes = require("./routes/description");
 const itemRoutes = require("./routes/item");
@@ -61,6 +56,8 @@ app.use(
     extended: true,
   })
 );
+
+
 app.use(bodyParser.json());
 //***********************************************************************************
 

@@ -26,29 +26,22 @@ const {
 class ItemService {
   static async createItem(payload, files, res) {
     try {
-      console.log('payload', payload, files)
 
       let itemImages = [];
       let instructionImages = []
 
-      const item_images = files.filter(ele => ele.fieldname === 'item_images');
-      const instruction_images = files.filter(ele => ele.fieldname === 'instruction_images');
+      const item_images = files.item_images
+      const instruction_images = files.instruction_images
 
       item_images.map((file) => {
         itemImages.push(file.location);
       });
 
-
-
       payload.item_images = itemImages;
 
-      payload.itemImage0 = itemImages[0];
-      payload.itemImage1 = itemImages[1];
-      payload.itemImage2 = itemImages[2];
-      payload.itemImage3 = itemImages[3];
-
-
-
+      itemImages.map((element, idx) => {
+        payload[`itemImage${idx}`] = element;
+      })
 
       //check if user added formatted_ingredients
       //parse it to be indexed into the db
@@ -85,13 +78,13 @@ class ItemService {
         payload.item_model = 'Product';
         payload.item_data = product?._id
       } else if (payload.item_type === 'Meal') {
-        const meal = await createMeal(payload.item_data);
 
         instruction_images.map((file, idx) => {
           instructionImages.push(file.location);
-          payload[`image_or_video_content_${idx + 1}`] = file.location
+          payload.item_data[`image_or_video_content_${idx + 1}`] = file.location
         });
-
+        payload.item_data.user = payload.user;
+        const meal = await createMeal(payload.item_data)
         payload.item_data = meal?._id;
         payload.item_model = 'Meal'
 
@@ -114,6 +107,7 @@ class ItemService {
         },
       ];
       // validating request body
+      console.log('payload', payload)
       const { error } = validate(payload); console.log('errr', error)
       if (error) return res.status(400).send(error.details[0].message);
       return await createItem(payload);

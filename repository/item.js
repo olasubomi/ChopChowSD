@@ -4,7 +4,7 @@ const createItem = async (payload) => {
   try {
     //saving item to mongoDb
     const items = new Item(payload);
-    return await items.save();
+    return (await items.save()).populate('item_data')
   } catch (error) {
     console.log({ error });
   }
@@ -24,7 +24,9 @@ const getStoreItems = async (filter) => {
 
 const getUserItems = async (filter) => {
   try {
-    return await Item.find(filter);
+    return await Item.find(filter)
+      .populate("item_data")
+      .populate('item_categories')
   } catch (error) {
     console.log(error);
   }
@@ -83,7 +85,7 @@ const itemUpdate = async (payload, arrayId) => {
   }
 };
 
-const updateUserComment = async (payload) => {};
+const updateUserComment = async (payload) => { };
 
 module.exports = {
   createItem,

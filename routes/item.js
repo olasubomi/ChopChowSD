@@ -9,8 +9,12 @@ router.get("/", ItemController.getAllItems);
 router.post(
   "/",
   verifyAuthentication,
-  upload.any("item_images"),
-  // upload.any("instruction_images"),
+  upload.fields(
+    [
+      { name: "item_images", maxCount: 4 },
+      { name: 'instruction_images', maxCount: 6 }
+    ]
+  ),
   ItemController.createItem
 );
 
