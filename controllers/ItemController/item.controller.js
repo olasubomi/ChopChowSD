@@ -110,7 +110,8 @@ module.exports = {
 
   deleteItem: async (req, res) => {
     try {
-      const itemDelete = await ItemService.deleteItem(req.body, res);
+      const body = { itemId: req.params.itemId }
+      const itemDelete = await ItemService.deleteItem(body, res);
       if (itemDelete) {
         res
           .status(Response.HTTP_ACCEPTED)

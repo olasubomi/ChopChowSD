@@ -12,7 +12,13 @@ router.post(
   upload.fields(
     [
       { name: "item_images", maxCount: 4 },
-      { name: 'instruction_images', maxCount: 6 }
+      // { name: 'instruction_images', maxCount: 6 },
+      { name: 'image_or_video_content_1', maxCount: 1 },
+      { name: 'image_or_video_content_2', maxCount: 1 },
+      { name: 'image_or_video_content_3', maxCount: 1 },
+      { name: 'image_or_video_content_4', maxCount: 1 },
+      { name: 'image_or_video_content_5', maxCount: 1 },
+      { name: 'image_or_video_content_6', maxCount: 1 },
     ]
   ),
   ItemController.createItem
@@ -30,7 +36,7 @@ router.get("/category-items/:categoryId", ItemController.getCategoryItems);
 
 router.post("/item-control", verifyAuthentication, ItemController.approveItems);
 
-router.delete("/delete", verifyAuthentication, ItemController.deleteItem);
+router.delete("/delete/:itemId", verifyAuthentication, ItemController.deleteItem);
 
 router.post("/comments", verifyAuthentication, ItemController.updateComment);
 

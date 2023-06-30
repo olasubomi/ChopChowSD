@@ -79,10 +79,42 @@ class ItemService {
         payload.item_data = product?._id
       } else if (payload.item_type === 'Meal') {
 
-        instruction_images.map((file, idx) => {
-          instructionImages.push(file.location);
-          payload.item_data[`image_or_video_content_${idx + 1}`] = file.location
-        });
+        if (files.image_or_video_content_1?.length) {
+          files.image_or_video_content_1.map(files => {
+            payload.item_data.image_or_video_content_1 = files.location
+          })
+        }
+
+        if (files.image_or_video_content_2?.length) {
+          files.image_or_video_content_2.map(files => {
+            payload.item_data.image_or_video_content_2 = files.location
+          })
+        }
+
+        if (files.image_or_video_content_3?.length) {
+          files.image_or_video_content_3.map(files => {
+            payload.item_data.image_or_video_content_3 = files.location
+          })
+        }
+
+        if (files.image_or_video_content_4?.length) {
+          files.image_or_video_content_4.map(files => {
+            payload.item_data.image_or_video_content_4 = files.location
+          })
+        }
+
+        if (files.image_or_video_content_5?.length) {
+          files.image_or_video_content_5.map(files => {
+            payload.item_data.image_or_video_content_5 = files.location
+          })
+        }
+
+        if (files.image_or_video_content_6?.length) {
+          files.image_or_video_content_6.map(files => {
+            payload.item_data.image_or_video_content_6 = files.location
+          })
+        }
+
         payload.item_data.user = payload.user;
         const meal = await createMeal(payload.item_data)
         payload.item_data = meal?._id;
@@ -176,6 +208,7 @@ class ItemService {
 
   static async deleteItem(payload, res) {
     try {
+      console.log('payloader', payload)
       const checkItem = await confirmItem(payload.itemId);
       if (!checkItem)
         return res.send({ status: 400, message: "This Item does not exist!" });

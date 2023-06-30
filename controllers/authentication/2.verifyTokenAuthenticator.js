@@ -20,7 +20,6 @@ module.exports = (req, res, next) => {
         });
       } else {
         console.log("Successfully verified authentication token");
-
         req.decoded = decoded;
         next();
       }

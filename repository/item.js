@@ -4,14 +4,14 @@ const createItem = async (payload) => {
   try {
     //saving item to mongoDb
     const items = new Item(payload);
-    return (await items.save()).populate('item_data')
+    return (await (await items.save()).populate('item_data')).populate('item_categories')
   } catch (error) {
     console.log({ error });
   }
 };
 
 const getItems = async () => {
-  return await Item.find();
+  return await Item.find().populate('item_data').populate('item_categories')
 };
 
 const getStoreItems = async (filter) => {
