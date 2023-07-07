@@ -4,7 +4,9 @@ const { upload, transformObject } = require("../utils/middleware");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", ItemController.getAllItems);
+router.get("/:page", ItemController.getAllItems);
+
+router.get('/user/:id', ItemController.getOneItem)
 
 router.post(
   "/",
@@ -27,10 +29,11 @@ router.post(
 router.get("/store-items/:storeId", ItemController.getStoreItems);
 
 router.get(
-  "/user-items/:userId",
-  verifyAuthentication,
+  "/user-items/:page",
+  // verifyAuthentication,
   ItemController.getUserItems
 );
+
 
 router.get("/category-items/:categoryId", ItemController.getCategoryItems);
 

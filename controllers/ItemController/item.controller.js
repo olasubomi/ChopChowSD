@@ -20,7 +20,9 @@ module.exports = {
 
   getAllItems: async (req, res) => {
     try {
-      const items = await ItemService.getAllItems();
+      const items = await ItemService.getAllItems(
+        req.params.page,
+        req.query || {});
       if (items) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(items));
       } else {
@@ -60,6 +62,9 @@ module.exports = {
       const userItems = await ItemService.getAllUserItems(
         {
           user: req.query.userId,
+          type: req.query.type || '',
+          page: req.params.page,
+          limit: req.query.limit || {}
         },
         res
       );
@@ -78,6 +83,27 @@ module.exports = {
       const categoryItems = await ItemService.getAllCategoryItems(
         {
           item_categories: req.query.categoryId,
+        },
+        res
+      );
+      if (categoryItems) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(categoryItems));
+      } else {
+        throw categoryItems;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getOneItem: async (req, res) => {
+    try {
+      console.log('id', req.params.id)
+      const categoryItems = await ItemService.getOneItem(
+        {
+          _id: req.params.id,
         },
         res
       );

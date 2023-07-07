@@ -11,6 +11,7 @@ const {
   deleteItem,
   itemUpdate,
   updateUserComment,
+  getOneUserItem,
 } = require("../repository/item");
 
 const {
@@ -150,9 +151,9 @@ class ItemService {
     }
   }
 
-  static async getAllItems(req, res) {
+  static async getAllItems(req, filter) {
     try {
-      return await getItems();
+      return await getItems(req, filter);
     } catch (error) {
       console.log(error);
     }
@@ -179,6 +180,14 @@ class ItemService {
       return await getCategoryItems(filter);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  static async getOneItem(filter, res) {
+    try {
+      return await getOneUserItem(filter)
+    } catch (error) {
+      console.log(error)
     }
   }
 
