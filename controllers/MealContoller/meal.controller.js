@@ -22,7 +22,7 @@ module.exports = {
 
   getSingleMeal: async (req, res) => {
     try {
-      const meal = await MealService.getMeal(req?.params?.mealId);
+      const meal = await MealService.getMeal({_id:req?.params?.mealId});
       if (meal) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(meal));
       } else {

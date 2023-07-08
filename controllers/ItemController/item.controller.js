@@ -20,7 +20,9 @@ module.exports = {
 
   getAllItems: async (req, res) => {
     try {
-      const items = await ItemService.getAllItems();
+      const items = await ItemService.getAllItems(
+        req.params.page,
+        req.query || {});
       if (items) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(items));
       } else {
@@ -60,6 +62,9 @@ module.exports = {
       const userItems = await ItemService.getAllUserItems(
         {
           user: req.query.userId,
+          type: req.query.type || '',
+          page: req.params.page,
+          limit: req.query.limit || {}
         },
         res
       );
@@ -93,6 +98,27 @@ module.exports = {
     }
   },
 
+  getOneItem: async (req, res) => {
+    try {
+      console.log('id', req.params.id)
+      const categoryItems = await ItemService.getOneItem(
+        {
+          _id: req.params.id,
+        },
+        res
+      );
+      if (categoryItems) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(categoryItems));
+      } else {
+        throw categoryItems;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   approveItems: async (req, res) => {
     try {
       const itemControl = await ItemService.updateAvailability(req.body, res);
@@ -110,7 +136,8 @@ module.exports = {
 
   deleteItem: async (req, res) => {
     try {
-      const itemDelete = await ItemService.deleteItem(req.body, res);
+      const body = { itemId: req.params.itemId }
+      const itemDelete = await ItemService.deleteItem(body, res);
       if (itemDelete) {
         res
           .status(Response.HTTP_ACCEPTED)

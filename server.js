@@ -56,6 +56,8 @@ app.use(
     extended: true,
   })
 );
+
+
 app.use(bodyParser.json());
 //***********************************************************************************
 
@@ -66,11 +68,12 @@ app.use("/api/products", productRoutes);
 app.use("/api/groceries", groceryRoutes);
 app.use("/api/measurement", measurementRoutes);
 // app.use("/api/description", descriptionRoutes);
-app.use("/api/items", itemRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/stores", storeRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/inventory", inventoryRoutes);
+app.use("/api/items", itemRoutes);
+
 
 // test multer logging
 app.use((error, req, res, next) => {

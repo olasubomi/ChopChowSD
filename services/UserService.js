@@ -63,7 +63,6 @@ class UserService {
       if (!userExist) {
         throw { message: "User does not exist" };
       }
-
       const validatePassword = await validatePassWord(
         payload.email,
         payload.password
@@ -71,12 +70,12 @@ class UserService {
       if (!validatePassword) {
         throw { message: "Invalid user credentials" };
       }
-
       const generatedToken = await generateAccessTokens({
         id: userExist._id,
         username: userExist.username,
         email: userExist.email,
       });
+
       return {
         success: true,
         message: "Authentication successful!",
