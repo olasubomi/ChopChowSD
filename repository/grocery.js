@@ -1,10 +1,31 @@
-const { products, User } = require("../db/dbMongo/config/db_buildSchema");
+const { User } = require("../db/dbMongo/config/db_buildSchema");
+const { Item } = require("../model/item");
 const { Grocery } = require("../model/grocery");
 
-const createGroceryList = async (payload) => {
+const createGroceryList = async (
+  payload,
+  listedName,
+  groceryItemBody,
+  item
+) => {
   try {
     //saving grocery list to mongoDb
-    const groceries = new Grocery(payload);
+    const groceries = new Grocery({
+      userId: payload.userId,
+      groceryList: [
+        {
+          listName: listedName,
+          groceryItems: [
+            {
+              item_id: groceryItemBody[0].itemId,
+              item: item,
+              quantity: groceryItemBody[0].quantity,
+              pickUpTime: groceryItemBody[0].pickUpTime,
+            },
+          ],
+        },
+      ],
+    });
     return await groceries.save();
   } catch (error) {
     console.log({ error });
@@ -27,15 +48,15 @@ const findAllUserGroceryList = async (filter) => {
   }
 };
 
-const validateGroceryProduct = async (productId) => {
+const validateGroceryItem = async (itemId) => {
   try {
-    return await products.findById(productId);
+    return await Item.findById(itemId);
   } catch (error) {
-    console.log({ error });
+    console.log(error);
   }
 };
 
-const addProductToList = async (filter, payload, listedName) => {
+const addItemToList = async (filter, payload, listedName) => {
   try {
     return await Grocery.updateOne(
       filter,
@@ -78,8 +99,8 @@ module.exports = {
   createGroceryList,
   validateGroceryUser,
   findAllUserGroceryList,
-  validateGroceryProduct,
+  validateGroceryItem,
   createNewList,
-  addProductToList,
+  addItemToList,
   getGroceryList,
 };

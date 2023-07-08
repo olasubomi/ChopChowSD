@@ -20,8 +20,6 @@ const mealSchema = new mongoose.Schema(
 
     image_or_video_content_5: [{ type: String }],
 
-    image_or_video_content_6: [{ type: String }],
-
     prep_time: { type: String },
 
     cook_time: { type: String },
@@ -62,8 +60,6 @@ function validateMeal(meal) {
     image_or_video_content_4: Joi.array().items(Joi.string()).optional(),
 
     image_or_video_content_5: Joi.array().items(Joi.string()).optional(),
-
-    image_or_video_content_6: Joi.array().items(Joi.string()).optional(),
 
     prep_time: Joi.string().optional(),
 
