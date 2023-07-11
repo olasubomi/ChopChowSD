@@ -1,4 +1,5 @@
-const { Description } = require("../model/description");
+const { item_description } = require("../db/dbMongo/config/db_buildSchema");
+// const { Description } = require("../model/description");
 
 // const paginate = async (page, filter) => {
 //   const limit = parseInt(filter.limit) || 10;
@@ -59,6 +60,45 @@ const deleteDescription = async (descriptionId) => {
   }
 };
 
+const createDescription = async (payload) => {
+  try {
+    const checkIfDescriptionExist = await getDescription({
+      description_key: payload.description_key
+    })
+    if (checkIfDescriptionExist) {
+      return { description: checkIfDescriptionExist, message: "Description already exist" }
+    } else {
+      const newDescription = await saveDescriptionToDB(payload);
+      return { description: newDescription }
+    }
+  } catch (error) {
+    console.log({ error })
+  }
+}
+
+
+const getDescription = async (filter) => {
+  try {
+    return await item_description.findOne(filter);
+  } catch (error) {
+    console.log({ error });
+    throw {
+      error: error,
+      messsage: error.message || "Get one description operation failed",
+      code: error.code || 500,
+    };
+  }
+}
+
+const saveDescriptionToDB = async (payload) => {
+  try {
+    const desc = new item_description(payload);
+    return await desc.save(payload);
+  } catch (error) {
+    console.log({ error });
+  }
+}
+
 
 module.exports = {
   saveDescription,
@@ -66,5 +106,8 @@ module.exports = {
   getAllDescription,
   updateDescription,
   deleteDescription,
+  getDescription,
+  createDescription,
+  saveDescriptionToDB
 };
 

@@ -799,6 +799,20 @@ exports.notifications = mongoose.model(
   )
 );
 
+
+exports.item_description = mongoose.model(
+  "item_description",
+  new Schema({
+    description_key: {
+      type: String,
+      required: true
+    },
+    description_values: {
+      type: Object
+    }
+  })
+)
+
 exports.currencies = mongoose.model(
   "currencies",
   new Schema(

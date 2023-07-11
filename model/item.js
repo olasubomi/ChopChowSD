@@ -69,7 +69,7 @@ const itemSchema = new mongoose.Schema({
       object_name: { type: String },
       object_quantity: { type: Number },
       object_measurement: {},
-      string_narration: { type: String },
+      formatted_string: { type: String },
     },
   ],
 
@@ -171,7 +171,7 @@ function validateItem(item) {
         object_name: Joi.string(),
         object_quantity: Joi.number(),
         object_measurement: Joi.any(),
-        string_narration: Joi.string(),
+        formatted_string: Joi.string(),
       })
     ),
 
