@@ -92,6 +92,17 @@ const {
   createInventory,
 } = require("./inventory");
 
+
+
+const {
+  createComment,
+  createCommentReply,
+  updateComment,
+  getItemComments,
+  getComment,
+  deleteComment,
+} = require("./comment.js")
+
 const { createMeasurement } = require("./measurement");
 
 module.exports = {
@@ -160,4 +171,10 @@ module.exports = {
   createInventory,
   createMeasurement,
   createCategory,
+  createComment,
+  createCommentReply,
+  updateComment,
+  getItemComments,
+  getComment,
+  deleteComment,
 };
