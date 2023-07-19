@@ -72,7 +72,7 @@ module.exports = {
     updateComment: async (req, res) => {
         try {
             const updatedComment = await CommentService.updateComment(
-                { _id: req.params.commentId } || req.query,
+                { _id: req.params.commentId },
                 req.body
             );
             if (updatedComment) {

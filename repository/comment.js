@@ -13,9 +13,12 @@ const createComment = async (payload) => {
 const createCommentReply = async (payload) => {
     try {
         const comment = await Comment.create(payload);
-        await Comment.findByIdAndUpdate(parentCommentId, {
-            $push: { replies: payload.replyTo },
+
+        const updateComment = await Comment.findByIdAndUpdate(payload.parentCommentId, {
+            $push: { replies: comment._id },
         })
+
+        console.log({ updateComment })
         return comment;
     } catch (error) {
         console.log({ error });
@@ -25,6 +28,16 @@ const createCommentReply = async (payload) => {
 
 const updateComment = async (filter, payload) => {
     try {
+        const comment = await Comment.findOne(filter)
+
+        if (payload.rating) {
+            const newRating = await calculateNewAverageRating(comment.rating, comment.totalRating, payload.rating);
+
+            payload.totalRating = newRating.newTotalRatings;
+
+            payload.rating = newRating.newAverageRating;
+        }
+
         return await Comment.findOneAndUpdate(filter, payload, { new: true });
     } catch (error) {
         console.log({ error });
@@ -40,7 +53,13 @@ const getItemComments = async (page, filter) => {
             .find(filter || {})
             .limit(getPaginate.limit)
             .skip(getPaginate.skip)
-            .populate("replies")
+            .populate("created_by").populate({
+                path: "replies",
+                populate: {
+                    path: "created_by",
+                },
+            })
+
         return {
             comments: allComments,
             count: getPaginate.docCount,
@@ -56,7 +75,12 @@ const getItemComments = async (page, filter) => {
 
 const getComment = async (filter) => {
     try {
-        return await Comment.findOne(filter).populate("replies");
+        return await Comment.findOne(filter).populate("created_by").populate({
+            path: "replies",
+            populate: {
+                path: "created_by",
+            },
+        });
     } catch (error) {
         console.log({ error });
         throw {
@@ -93,6 +117,19 @@ const paginate = async (page, filter) => {
     }
     return { skip, limit, docCount };
 };
+
+const calculateNewAverageRating = async (existingRating, totalRatings, newRating) => {
+
+    const totalRatingSum = existingRating * totalRatings + newRating;
+
+    const newTotalRatings = totalRatings + 1;
+
+    let newAverageRating = totalRatingSum / newTotalRatings;
+
+    newAverageRating = newAverageRating.toFixed(2)
+
+    return { newAverageRating, newTotalRatings };
+}
 
 module.exports = {
     createComment,

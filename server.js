@@ -36,9 +36,11 @@ var whitelist = [
   "http://localhost:3000",
   "http://localhost:5000",
   "https://chopchow.app",
+  "moz-extension://c228269d-fdaa-4b34-9ce8-2fe9e965a787"
 ];
 var corsOptions = {
   origin: function (origin, callback) {
+    console.log({ origin })
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
@@ -74,7 +76,7 @@ app.use("/api/stores", storeRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/items", itemRoutes);
-app.use("/api/comments", commentRoutes);
+app.use("/api/comment", commentRoutes);
 
 
 
