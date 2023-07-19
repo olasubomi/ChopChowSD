@@ -27,12 +27,13 @@ const createCategoriesFromCreateMeal = async (payload) => {
       if (!checkCategory) {
         const res = await createOneCategory({
           category_name: category,
-          category_type: "meal",
-          affiliated_objects: "MEAL",
+          category_type: payload.item_type === 'Meal' ? "meal" : "product",
+          affiliated_objects: payload.item_type === 'Meal' ? "MEAL" : "PRODUCT",
         });
-        console.log('resssss', res)
-        return res
+        console.log('resssss', res?._id?.toString())
+        return res?._id?.toString()
       } else {
+
         return checkCategory?._id?.toString();
       }
 

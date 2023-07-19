@@ -34,11 +34,35 @@ const findDescription = async (filter) => {
 
 const getAllDescription = async () => {
   try {
-    return await Description.find();
+    return await item_description.find();
   } catch (error) {
     console.log(error);
   }
 };
+
+const updateItemDescription = async (payload) => {
+  const id = payload._id;
+  delete payload._id
+  try {
+    return await item_description.findOneAndUpdate(
+      { _id: id },
+      { status: payload.status }
+    )
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const deleteItemDescription = async (id) => {
+  try {
+    return await item_description.findByIdAndDelete(
+      { _id: id },
+    )
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 
 const updateDescription = async (payload, descriptionId) => {
   try {
@@ -61,15 +85,16 @@ const deleteDescription = async (descriptionId) => {
 };
 
 const createDescription = async (payload) => {
+  console.log('payloader', payload)
   try {
     const checkIfDescriptionExist = await getDescription({
       description_key: payload.description_key
     })
     if (checkIfDescriptionExist) {
-      return { description: checkIfDescriptionExist, message: "Description already exist" }
+      return { description: checkIfDescriptionExist._id, message: "Description already exist" }
     } else {
       const newDescription = await saveDescriptionToDB(payload);
-      return { description: newDescription }
+      return { description: newDescription._id }
     }
   } catch (error) {
     console.log({ error })
@@ -108,6 +133,8 @@ module.exports = {
   deleteDescription,
   getDescription,
   createDescription,
-  saveDescriptionToDB
+  saveDescriptionToDB,
+  updateItemDescription,
+  deleteItemDescription
 };
 

@@ -80,21 +80,30 @@ class ItemService {
         const product = await createProduct(payload.item_data);
 
         payload.item_data = product?._id;
-        payload.item_model = 'Product';
+        payload.item_type = 'Product';
 
         //product descrition
-        const all_description = JSON.parse(payload.description) || []
+        const all_description = JSON.parse(payload.description) || [];
 
-        all_description.map(async (element) => {
-          await createDescription({
-            description_key: element.object_name
+        let resp = all_description.map(async (element) => {
+          let name = element.object_name;
+          delete element.object_name;
+          const descrp = await createDescription({
+            description_key: name,
+            ...element
           })
           await createNewMeasurment({
             measurement_name: element.object_measurement
           })
-
+          return descrp.description.toString()
         })
-        payload.item_description = all_description;
+
+        const allDesp = await Promise.all(resp)
+          .then(res => {
+            return res
+          })
+
+        payload.item_description = allDesp;
 
       } else if (payload.item_type === 'Meal') {
 
@@ -137,7 +146,7 @@ class ItemService {
         payload.item_data.user = payload.user;
         const meal = await createMeal(payload.item_data)
         payload.item_data = meal?._id;
-        payload.item_model = 'Meal'
+        payload.item_type = 'Meal';
 
       }
 
@@ -145,6 +154,7 @@ class ItemService {
 
       // itemCategories.push(payload.item_categories);
 
+      payload.item_categories = payload.item_categories.map(ele => ele.toString())
       const createCategories = await createCategoriesFromCreateMeal(payload.item_categories)
       const ele = await Promise.all(createCategories)
         .then(res => {

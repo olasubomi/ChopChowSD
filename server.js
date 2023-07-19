@@ -19,7 +19,7 @@ const mealRoutes = require("./routes/meal");
 const productRoutes = require("./routes/product");
 const groceryRoutes = require("./routes/groceries");
 const measurementRoutes = require("./routes/measurement");
-// const descriptionRoutes = require("./routes/description");
+const descriptionRoutes = require("./routes/descriptions");
 const itemRoutes = require("./routes/item");
 const categoryRoutes = require("./routes/category");
 const storeRoutes = require("./routes/store");
@@ -45,7 +45,7 @@ var corsOptions = {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  methods: "GET,PUT,POST,DELETE,OPTIONS",
+  methods: "GET,PUT,POST,DELETE,OPTIONS,PATCH",
   // allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json',
   credentials: true,
 };
@@ -68,7 +68,7 @@ app.use("/api/meals", mealRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/groceries", groceryRoutes);
 app.use("/api/measurement", measurementRoutes);
-// app.use("/api/description", descriptionRoutes);
+app.use("/api/description", descriptionRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/stores", storeRoutes);
 app.use("/api/analytics", analyticsRoutes);

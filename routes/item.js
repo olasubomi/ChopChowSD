@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/:page", ItemController.getAllItems);
 
-router.get('/user/:id', ItemController.getOneItem)
+router.get('/user/:name', ItemController.getOneItem)
 
 router.post(
   "/",
