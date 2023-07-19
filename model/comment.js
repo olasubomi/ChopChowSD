@@ -6,8 +6,9 @@ exports.Comment = mongoose.model(
     new Schema(
         {
             message: { type: String },
+
             rating: { type: Number, default: 0 },
-            total_rating: { type: Number, default: 0 },
+
             item: {
                 type: mongoose.Types.ObjectId,
                 refPath: "Item",

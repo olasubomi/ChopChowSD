@@ -9,12 +9,11 @@ const createComment = async (payload) => {
     }
 };
 
-
 const createCommentReply = async (payload) => {
     try {
         const comment = await Comment.create(payload);
 
-        const updateComment = await Comment.findByIdAndUpdate(payload.parentCommentId, {
+        const updateComment = await Comment.findByIdAndUpdate(payload.parent_comment_id, {
             $push: { replies: comment._id },
         })
 
@@ -28,15 +27,6 @@ const createCommentReply = async (payload) => {
 
 const updateComment = async (filter, payload) => {
     try {
-        const comment = await Comment.findOne(filter)
-
-        if (payload.rating) {
-            const newRating = await calculateNewAverageRating(comment.rating, comment.totalRating, payload.rating);
-
-            payload.totalRating = newRating.newTotalRatings;
-
-            payload.rating = newRating.newAverageRating;
-        }
 
         return await Comment.findOneAndUpdate(filter, payload, { new: true });
     } catch (error) {
@@ -53,7 +43,8 @@ const getItemComments = async (page, filter) => {
             .find(filter || {})
             .limit(getPaginate.limit)
             .skip(getPaginate.skip)
-            .populate("created_by").populate({
+            .populate("created_by")
+            .populate({
                 path: "replies",
                 populate: {
                     path: "created_by",
@@ -118,18 +109,18 @@ const paginate = async (page, filter) => {
     return { skip, limit, docCount };
 };
 
-const calculateNewAverageRating = async (existingRating, totalRatings, newRating) => {
+// const calculateNewAverageRating = async (existingRating, totalRatings, newRating) => {
 
-    const totalRatingSum = existingRating * totalRatings + newRating;
+//     const totalRatingSum = existingRating * totalRatings + newRating;
 
-    const newTotalRatings = totalRatings + 1;
+//     const newTotalRatings = totalRatings + 1;
 
-    let newAverageRating = totalRatingSum / newTotalRatings;
+//     let newAverageRating = totalRatingSum / newTotalRatings;
 
-    newAverageRating = newAverageRating.toFixed(2)
+//     newAverageRating = newAverageRating.toFixed(2)
 
-    return { newAverageRating, newTotalRatings };
-}
+//     return { newAverageRating, newTotalRatings };
+// }
 
 module.exports = {
     createComment,
