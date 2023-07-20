@@ -13,6 +13,7 @@ mongoose.connect(
   }
 );
 
+
 //Check if we connected to the database or not
 let db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection error:"));

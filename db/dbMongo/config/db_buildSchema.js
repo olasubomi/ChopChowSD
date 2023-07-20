@@ -715,37 +715,6 @@ exports.Payment_details = mongoose.model(
   )
 );
 
-exports.Comment = mongoose.model(
-  "Comment",
-  new Schema(
-    {
-      title: { type: String },
-
-      message: { type: String },
-      formated_ingredient: [{ type: String }],
-
-      rating: { type: String },
-
-      owner: {
-        type: mongoose.Types.ObjectId,
-        refPath: "ownerType",
-        required: true,
-      },
-
-      ownerType: {
-        type: String,
-        required: true,
-        enum: ["User", "Meal", "Product"],
-      },
-
-      up_votes: { type: String },
-
-      down_voted: { type: String },
-    },
-    { timestamps: true }
-  )
-);
-
 exports.Reply = mongoose.model(
   "Reply",
   new Schema(
