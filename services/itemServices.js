@@ -22,7 +22,9 @@ const { createMeal } = require('../repository/meal')
 
 const {
   createCategoriesFromCreateMeal
-} = require('../repository/category')
+} = require('../repository/category');
+const { createDescription } = require("../repository/description");
+const { createNewMeasurment } = require("../repository/measurement");
 
 class ItemService {
   static async createItem(payload, files, res) {
@@ -76,8 +78,33 @@ class ItemService {
 
       if (payload.item_type === 'Product') {
         const product = await createProduct(payload.item_data);
-        payload.item_model = 'Product';
-        payload.item_data = product?._id
+
+        payload.item_data = product?._id;
+        payload.item_type = 'Product';
+
+        //product descrition
+        const all_description = JSON.parse(payload.description) || [];
+
+        let resp = all_description.map(async (element) => {
+          let name = element.object_name;
+          delete element.object_name;
+          const descrp = await createDescription({
+            description_key: name,
+            ...element
+          })
+          await createNewMeasurment({
+            measurement_name: element.object_measurement
+          })
+          return descrp.description.toString()
+        })
+
+        const allDesp = await Promise.all(resp)
+          .then(res => {
+            return res
+          })
+
+        payload.item_description = allDesp;
+
       } else if (payload.item_type === 'Meal') {
 
         if (files.image_or_video_content_1?.length) {
@@ -119,7 +146,7 @@ class ItemService {
         payload.item_data.user = payload.user;
         const meal = await createMeal(payload.item_data)
         payload.item_data = meal?._id;
-        payload.item_model = 'Meal'
+        payload.item_type = 'Meal';
 
       }
 
@@ -127,6 +154,7 @@ class ItemService {
 
       // itemCategories.push(payload.item_categories);
 
+      payload.item_categories = payload.item_categories.map(ele => ele.toString())
       const createCategories = await createCategoriesFromCreateMeal(payload.item_categories)
       const ele = await Promise.all(createCategories)
         .then(res => {
@@ -141,6 +169,7 @@ class ItemService {
       ];
       // validating request body
       console.log('payload', payload)
+      delete payload.description;
       const { error } = validate(payload); console.log('errr', error)
       if (error) return res.status(400).send(error.details[0].message);
       return await createItem(payload);

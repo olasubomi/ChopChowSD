@@ -15,6 +15,8 @@ const createProduct = async (payload) => {
   }
 };
 
+
+
 const updateProduct = async (filter, payload) => {
   try {
     return await products.findOneAndUpdate(filter, payload, { new: true });

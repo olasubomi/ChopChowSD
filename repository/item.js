@@ -34,7 +34,8 @@ const getStoreItems = async (filter) => {
 
 const getOneUserItem = async (filter) => {
   try {
-    return await Item.find(filter);
+    return await Item.find(filter)
+      .populate('item_description item_data item_categories');
   } catch (error) {
     console.log(error);
   }
@@ -48,8 +49,7 @@ const getUserItems = async (data) => {
       item_type: { $in: type.split(',') },
       user: user
     })
-      .populate("item_data")
-      .populate('item_categories')
+      .populate("item_data item_categories item_description")
       .skip(getPaginate.skip)
       .limit(getPaginate.limit)
 

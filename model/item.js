@@ -15,8 +15,18 @@ const itemSchema = new mongoose.Schema(
 
     store_available: { type: mongoose.Types.ObjectId, ref: "Supplier" },
 
-    store_name: { type: String, required: true },
-    formatted_instructions: [{ type: Object }],
+
+  itemImage2: { type: String },
+
+  itemImage3: { type: String },
+
+  // item_type: { type: String, required: true },
+
+  store_available: { type: mongoose.Types.ObjectId, ref: "Supplier" },
+
+  formatted_ingredients: [{ type: String }],
+
+  formatted_instructions: [{ type: Object }],
 
   tips: [{ type: String }],
 
@@ -60,19 +70,35 @@ const itemSchema = new mongoose.Schema(
           },
         ],
       },
-    ],
+    },
+  ],
 
-    item_description: [
-      {
-        object_name: { type: String },
-        object_quantity: { type: Number },
-        object_measurement: {},
-        formatted_string: { type: String },
-      },
-    ],
+  user: { type: mongoose.Types.ObjectId, ref: "User" },
 
-    item_categories: [{ type: mongoose.Types.ObjectId, ref: "categories" }],
+  comments: [
+    {
+      comment_user: { type: mongoose.Types.ObjectId, ref: "User" },
+      comment_title: { type: String },
+      comment_message: { type: String },
+      comment_rating: { type: Number },
+      comment_up_votes: { type: Number },
+      comment_down_votes: { type: Number },
+      comment_date_time: { type: Date, required: true },
+      replies: [
+        {
+          replies_message: { type: String },
+          replies_up_votes: { type: Number },
+          replies_down_votes: { type: Number },
+          replies_date_time: { type: Date, required: true },
+        },
+      ],
+    },
+  ],
 
+  item_description: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'item_description'
+  }],
 
   item_categories: [{ type: mongoose.Types.ObjectId, ref: "Category" }],
 
@@ -81,10 +107,10 @@ const itemSchema = new mongoose.Schema(
   // item_data: { type: meals.schema || products.schema || Utensil.schema },
   item_data: {
     type: mongoose.Schema.Types.ObjectId,
-    refPath: 'item_model',
+    refPath: 'item_type',
     required: true
   },
-  item_model: {
+  item_type: {
     type: String,
     enum: ['Meal', 'Product', 'Utensil'],
     required: true
@@ -170,12 +196,8 @@ function validateItem(item) {
     ),
 
     item_description: Joi.array().items(
-      Joi.object({
-        object_name: Joi.string(),
-        object_quantity: Joi.number(),
-        object_measurement: Joi.any(),
-        formatted_string: Joi.string(),
-      })
+
+      Joi.objectId().required()
     ),
 
     item_categories: Joi.array().items(Joi.objectId().required()).required(),

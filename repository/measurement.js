@@ -52,10 +52,45 @@ const deleteMeasurement = async (measurementId) => {
   }
 };
 
+
+
+const createNewMeasurment = async (payload) => {
+  try {
+    const checkIfMeasurementExist = await getMeasurement({
+      measurement_name: payload.measurement_name
+    })
+    if (checkIfMeasurementExist) {
+      return { measurement: checkIfMeasurementExist, message: "Measurement already exist" }
+    } else {
+      const newMeasurment = await saveMeasurement(payload);
+      return { measurement: newMeasurment }
+    }
+  } catch (error) {
+    console.log({ error })
+  }
+}
+
+
+const getMeasurement = async (filter) => {
+  try {
+    return await Measurement.findOne(filter);
+  } catch (error) {
+    console.log({ error });
+    throw {
+      error: error,
+      messsage: error.message || "Get one measurement operation failed",
+      code: error.code || 500,
+    };
+  }
+}
+
+
+
 module.exports = {
   saveMeasurement,
   findMeasurement,
   getAllMeasurement,
   updateMeasurement,
   deleteMeasurement,
+  createNewMeasurment
 };

@@ -768,6 +768,35 @@ exports.notifications = mongoose.model(
   )
 );
 
+
+exports.item_description = mongoose.model(
+  "item_description",
+  new Schema({
+    description_key: {
+      type: String,
+      required: true
+    },
+    object_quantity: {
+      type: Number
+    },
+    object_measurement: {
+      type: mongoose.Schema.Types.Mixed
+    },
+    formatted_string: {
+      type: String
+    },
+    description_values: {
+      type: Object
+    },
+    status: {
+      type: String,
+      required: true,
+      default: "PENDING",
+      enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
+    },
+  })
+)
+
 exports.currencies = mongoose.model(
   "currencies",
   new Schema(
