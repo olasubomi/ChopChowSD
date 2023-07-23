@@ -41,6 +41,8 @@ module.exports = {
 
     createComment: async (req, res) => {
         try {
+
+            req.body.created_by = userId = req.user._id.toString();
             const comment = await CommentService.createComment(req.body);
             if (comment) {
                 res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(comment));
@@ -56,6 +58,7 @@ module.exports = {
 
     createCommentReply: async (req, res) => {
         try {
+            req.body.created_by = userId = req.user._id.toString();
             const comment = await CommentService.createCommentReply(req.body);
             if (comment) {
                 res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(comment));

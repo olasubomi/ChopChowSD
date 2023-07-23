@@ -11,7 +11,12 @@ exports.Comment = mongoose.model(
 
             item: {
                 type: mongoose.Types.ObjectId,
-                refPath: "Item",
+                refPath: "item_type",
+                required: true,
+            },
+            item_type: {
+                type: String,
+                enum: ['User', 'Store', 'Item'],
                 required: true,
             },
             created_by: {

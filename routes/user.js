@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const {upload,transformObject } = require("../utils/middleware");
 const { hashPassword } = require("../lib/hashPassword");
-const authunticationLogout = require("../controllers/authentication/authunticationLogout");
+const authenticationLogout = require("../controllers/authentication/authenticationLogout");
 const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
 const UserController = require('../controllers/UserController/userController')
 
@@ -19,7 +19,7 @@ router.get("/verifyToken/",verifyAuthentication, UserController.verifyToken);
 
 
 router.get("/hash", hashPassword);
-router.get("/logout", authunticationLogout);
+router.get("/logout", authenticationLogout);
 
 // router.get("/getsuggestedmeals", UserController.getSuggestedMeals);
 router.get("/getUserGroceryList/:userId", verifyAuthentication, UserController.getGroceryList);
