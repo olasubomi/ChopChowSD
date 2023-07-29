@@ -3,14 +3,18 @@ Joi.objectId = require("joi-objectid")(Joi);
 const mongoose = require("mongoose");
 const { products, meals, Utensil } = require("../db/dbMongo/config/db_buildSchema");
 
-const itemSchema = new mongoose.Schema({
-  item_name: { type: String, required: true },
+const itemSchema = new mongoose.Schema(
+  {
+    item_name: { type: String, required: true },
 
-  item_images: [{ type: String, required: true }],
+    item_images: [{ type: String, required: true }],
 
-  itemImage0: { type: String, required: true },
+    item_type: { type: String, required: true },
+    
+    item_price: { type: String, required: true },
 
-  itemImage1: { type: String },
+    store_available: { type: mongoose.Types.ObjectId, ref: "Supplier" },
+
 
   itemImage2: { type: String },
 
@@ -28,16 +32,43 @@ const itemSchema = new mongoose.Schema({
 
   hidden_ingredients_in_product: [{ type: String }],
 
-  item_intro: { type: String },
+    formatted_ingredients: [{ type: String }],
 
-  item_status: [
-    {
-      status: {
-        type: String,
-        default: "Draft",
+    hidden_ingredients_in_product: [{ type: String }],
+
+    item_intro: { type: String },
+
+    item_status: [
+      {
+        status: {
+          type: String,
+          default: "Draft",
+        },
+        status_note: {
+          type: String,
+        },
       },
-      status_note: {
-        type: String,
+    ],
+
+    user: { type: mongoose.Types.ObjectId, ref: "User" },
+
+    comments: [
+      {
+        comment_user: { type: mongoose.Types.ObjectId, ref: "User" },
+        comment_title: { type: String },
+        comment_message: { type: String },
+        comment_rating: { type: Number },
+        comment_up_votes: { type: Number },
+        comment_down_votes: { type: Number },
+        comment_date_time: { type: Date, required: true },
+        replies: [
+          {
+            replies_message: { type: String },
+            replies_up_votes: { type: Number },
+            replies_down_votes: { type: Number },
+            replies_date_time: { type: Date, required: true },
+          },
+        ],
       },
     },
   ],
@@ -122,9 +153,11 @@ function validateItem(item) {
 
     item_type: Joi.string().required(),
 
+    item_price: Joi.string().required(),
+
     formatted_instructions: Joi.array().items(Joi.object().required()).optional(),
 
-    store_available: Joi.objectId().optional(),
+    store_name: Joi.objectId().optional(),
 
     formatted_ingredients: Joi.array().items(Joi.string()).optional(),
 
@@ -163,6 +196,7 @@ function validateItem(item) {
     ),
 
     item_description: Joi.array().items(
+
       Joi.objectId().required()
     ),
 

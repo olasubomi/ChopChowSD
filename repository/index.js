@@ -36,15 +36,13 @@ const {
   createGroceryList,
   validateGroceryUser,
   findAllUserGroceryList,
-  validateGroceryProduct,
-  addProductToList,
+  validateGroceryItem,
+  addItemToList,
   createNewList,
   getGroceryList,
 } = require("./grocery");
 
-const {
-  createItems,
-} = require("./item");
+const { createItems } = require("./item");
 
 
 
@@ -94,6 +92,17 @@ const {
   createInventory,
 } = require("./inventory");
 
+
+
+const {
+  createComment,
+  createCommentReply,
+  updateComment,
+  getItemComments,
+  getComment,
+  deleteComment,
+} = require("./comment.js")
+
 const { createMeasurement } = require("./measurement");
 
 module.exports = {
@@ -134,8 +143,8 @@ module.exports = {
   createGroceryList,
   validateGroceryUser,
   findAllUserGroceryList,
-  validateGroceryProduct,
-  addProductToList,
+  validateGroceryItem,
+  addItemToList,
   createNewList,
   getGroceryList,
   createMeal,
@@ -162,4 +171,10 @@ module.exports = {
   createInventory,
   createMeasurement,
   createCategory,
+  createComment,
+  createCommentReply,
+  updateComment,
+  getItemComments,
+  getComment,
+  deleteComment,
 };
