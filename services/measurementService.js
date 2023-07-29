@@ -31,7 +31,10 @@ class MeasurementService {
     });
   }
   static async getMeasurement(req, res) {
-    const measurements = await getAllMeasurement();
+    const measurements = await getAllMeasurement(
+      req.params.page,
+      req.query || {}
+    );
 
     return res.json({ status: 200, data: measurements });
   }

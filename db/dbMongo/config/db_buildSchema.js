@@ -822,10 +822,10 @@ exports.item_description = mongoose.model(
     status: {
       type: String,
       required: true,
-      default: "PENDING",
-      enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
+      default: "Pending",
+      enum: ["Draft", "Pending", "Public", "Rejected"],
     },
-  })
+  }, { timestamps: true })
 )
 
 exports.currencies = mongoose.model(

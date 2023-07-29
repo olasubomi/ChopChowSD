@@ -3,9 +3,9 @@ Joi.objectId = require("joi-objectid")(Joi);
 const mongoose = require("mongoose");
 
 const measurementSchema = new mongoose.Schema({
-  measurement_name: {type: String},
+  measurement_name: { type: String },
   status: { type: String, default: "Draft" },
-});
+}, { timestamps: true });
 
 const Measurement = mongoose.model("Measurement", measurementSchema);
 //const Measurement = mongoose.models.Measurement || mongoose.model('Measurement', measurementSchema);  

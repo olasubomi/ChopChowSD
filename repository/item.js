@@ -1,4 +1,6 @@
+const { filter } = require("bluebird");
 const { Item } = require("../model/item");
+const { item_description } = require("../db/dbMongo/config/db_buildSchema");
 
 const createItem = async (payload) => {
   try {
@@ -12,14 +14,24 @@ const createItem = async (payload) => {
 
 const getItems = async (page, filter) => {
   let getPaginate = await paginate(page, filter);
+
+  let query = {
+    item_type: { $in: filter.type.split(',') },
+  }
+  if (filter.status !== 'all') {
+    query.item_status = {
+      $elemMatch: {
+        status: filter.status
+      }
+    }
+  }
+
+  console.log('query', query)
   const itemResponse = await Item
-    .find({
-      item_type: { $in: filter.type.split(',') }
-    })
+    .find(query)
     .limit(getPaginate.limit)
     .skip(getPaginate.skip)
-    .populate('item_data')
-    .populate('item_categories')
+    .populate('item_data item_categories item_description')
   return { items: itemResponse, count: getPaginate.docCount };
 
 };
@@ -126,6 +138,9 @@ const paginate = async (page, filter) => {
   console.log(skip, limit, docCount)
   return { skip, limit, docCount };
 };
+
+
+
 const paginate2 = async (page, filter) => {
   const limit = parseInt(filter.limit) || 10;
   let skip = parseInt(page) === 1 ? 0 : limit * page;

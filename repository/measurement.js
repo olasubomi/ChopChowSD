@@ -20,9 +20,11 @@ const findMeasurement = async (filter) => {
   }
 };
 
-const getAllMeasurement = async () => {
+const getAllMeasurement = async (page, filter) => {
   try {
-    return await Measurement.find();
+    const status = filter.status !== 'all' ? { status: filter.status } : {}
+
+    return await Measurement.find(status);
   } catch (error) {
     console.log(error);
   }

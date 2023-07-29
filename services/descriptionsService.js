@@ -5,7 +5,9 @@ const {
 
 class DescriptionsService {
     static async getDescriptions(req, res) {
-        const descriptions = await getAllDescription();
+        const descriptions = await getAllDescription(
+            req.params.page,
+            req.query || {});
 
         return res.json({ status: 200, data: descriptions });
     }
