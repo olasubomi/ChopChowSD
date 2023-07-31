@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
+const Joi = require('joi')
 
 const userSchema = new Schema(
   {
@@ -807,3 +808,12 @@ exports.currencies = mongoose.model(
     { timestamps: true }
   )
 );
+
+exports.validateItemDescription = (description) => {
+  const schema = Joi.object({
+    status: Joi.string().required()
+  });
+
+  return schema.validate(description);
+}
+
