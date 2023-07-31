@@ -41,7 +41,6 @@ module.exports = {
 
     createComment: async (req, res) => {
         try {
-
             req.body.created_by = userId = req.user._id.toString();
             const comment = await CommentService.createComment(req.body);
             if (comment) {
