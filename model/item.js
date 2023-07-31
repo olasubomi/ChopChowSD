@@ -10,27 +10,27 @@ const itemSchema = new mongoose.Schema(
     item_images: [{ type: String, required: true }],
 
     item_type: { type: String, required: true },
-    
+
     item_price: { type: String, required: true },
 
     store_available: { type: mongoose.Types.ObjectId, ref: "Supplier" },
 
 
-  itemImage2: { type: String },
+    itemImage2: { type: String },
 
-  itemImage3: { type: String },
+    itemImage3: { type: String },
 
-  // item_type: { type: String, required: true },
+    // item_type: { type: String, required: true },
 
-  store_available: { type: mongoose.Types.ObjectId, ref: "Supplier" },
+    store_available: { type: mongoose.Types.ObjectId, ref: "Supplier" },
 
-  formatted_ingredients: [{ type: String }],
+    formatted_ingredients: [{ type: String }],
 
-  formatted_instructions: [{ type: Object }],
+    formatted_instructions: [{ type: Object }],
 
-  tips: [{ type: String }],
+    tips: [{ type: String }],
 
-  hidden_ingredients_in_product: [{ type: String }],
+    hidden_ingredients_in_product: [{ type: String }],
 
     formatted_ingredients: [{ type: String }],
 
@@ -49,6 +49,9 @@ const itemSchema = new mongoose.Schema(
         },
       },
     ],
+
+    // user: { type: mongoose.Types.ObjectId, ref: "User" },
+
 
     user: { type: mongoose.Types.ObjectId, ref: "User" },
 
@@ -70,53 +73,30 @@ const itemSchema = new mongoose.Schema(
           },
         ],
       },
+    ],
+
+    item_description: [{
+      type: mongoose.Types.ObjectId,
+      ref: 'item_description'
+    }],
+
+    item_categories: [{ type: mongoose.Types.ObjectId, ref: "Category" }],
+
+    // item_categories: [{ type: mongoose.Types.ObjectId, ref: "categories" }],
+
+    // item_data: { type: meals.schema || products.schema || Utensil.schema },
+    item_data: {
+      type: mongoose.Schema.Types.ObjectId,
+      refPath: 'item_type',
+      required: true
     },
-  ],
+    item_type: {
+      type: String,
+      enum: ['Meal', 'Product', 'Utensil'],
+      required: true
+    }
 
-  user: { type: mongoose.Types.ObjectId, ref: "User" },
-
-  comments: [
-    {
-      comment_user: { type: mongoose.Types.ObjectId, ref: "User" },
-      comment_title: { type: String },
-      comment_message: { type: String },
-      comment_rating: { type: Number },
-      comment_up_votes: { type: Number },
-      comment_down_votes: { type: Number },
-      comment_date_time: { type: Date, required: true },
-      replies: [
-        {
-          replies_message: { type: String },
-          replies_up_votes: { type: Number },
-          replies_down_votes: { type: Number },
-          replies_date_time: { type: Date, required: true },
-        },
-      ],
-    },
-  ],
-
-  item_description: [{
-    type: mongoose.Types.ObjectId,
-    ref: 'item_description'
-  }],
-
-  item_categories: [{ type: mongoose.Types.ObjectId, ref: "Category" }],
-
-  // item_categories: [{ type: mongoose.Types.ObjectId, ref: "categories" }],
-
-  // item_data: { type: meals.schema || products.schema || Utensil.schema },
-  item_data: {
-    type: mongoose.Schema.Types.ObjectId,
-    refPath: 'item_type',
-    required: true
-  },
-  item_type: {
-    type: String,
-    enum: ['Meal', 'Product', 'Utensil'],
-    required: true
-  }
-
-}, { timestamps: true });
+  }, { timestamps: true });
 
 const Item = mongoose.model("Item", itemSchema);
 
