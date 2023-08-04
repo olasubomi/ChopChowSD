@@ -14,8 +14,7 @@ class DescriptionsService {
     }
 
     static async updateDescription(req, res) {
-
-        const { error } = validateItemDescription(req.body);
+        const { error } = validateItemDescription(payload);
         if (error) return res.status(400).send(error.details[0].message);
 
         const description = await updateItemDescription(req.body)
