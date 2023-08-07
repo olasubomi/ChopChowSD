@@ -18,11 +18,15 @@ const userRoutes = require("./routes/user");
 const mealRoutes = require("./routes/meal");
 const productRoutes = require("./routes/product");
 const groceryRoutes = require("./routes/groceries");
-const itemRoutes = require("./routes/items");
+const measurementRoutes = require("./routes/measurement");
+const descriptionRoutes = require("./routes/descriptions");
+const itemRoutes = require("./routes/item");
 const categoryRoutes = require("./routes/category");
 const storeRoutes = require("./routes/store");
 const analyticsRoutes = require("./routes/analytics");
 const inventoryRoutes = require("./routes/inventory");
+const commentRoutes = require("./routes/comment")
+const { getDescription } = require("./repository/description");
 
 //----------------------------------------------------------------------------------
 app.set("view engine", "ejs");
@@ -33,16 +37,18 @@ var whitelist = [
   "http://localhost:3000",
   "http://localhost:5000",
   "https://chopchow.app",
+  "moz-extension://c228269d-fdaa-4b34-9ce8-2fe9e965a787"
 ];
 var corsOptions = {
   origin: function (origin, callback) {
+    console.log({ origin })
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  methods: "GET,PUT,POST,DELETE,OPTIONS",
+  methods: "GET,PUT,POST,DELETE,OPTIONS,PATCH",
   // allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json',
   credentials: true,
 };
@@ -54,6 +60,8 @@ app.use(
     extended: true,
   })
 );
+
+
 app.use(bodyParser.json());
 //***********************************************************************************
 
@@ -62,11 +70,18 @@ app.use("/api/user", userRoutes);
 app.use("/api/meals", mealRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/groceries", groceryRoutes);
-app.use("/api/items", itemRoutes);
+app.use("/api/measurement", measurementRoutes);
+app.use("/api/description", descriptionRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/stores", storeRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/inventory", inventoryRoutes);
+app.use("/api/items", itemRoutes);
+app.use("/api/comment", commentRoutes);
+
+
+
+
 
 // test multer logging
 app.use((error, req, res, next) => {

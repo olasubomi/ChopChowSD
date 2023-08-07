@@ -2,7 +2,7 @@ const Validators = require("../validators");
 
 exports.validatePayload = function (validator) {
     if (!Validators.hasOwnProperty(validator))
-        throw new Error(`'${validator}' validator is not exist`);
+        throw new Error(`'${validator}' validator does not exist`);
 
     return async function (req, res, next) {
 
@@ -11,7 +11,7 @@ exports.validatePayload = function (validator) {
             if (req.file) {
                 req.body[req.file.fieldname] = req.file.location;
             }
-            if (req.files.length > 0) {
+            if (req.files && req.files.length > 0) {
                 req.files.map((file) => filesArray.push(file.location));
                 req.body[req.files[0].fieldname] = filesArray;
             }

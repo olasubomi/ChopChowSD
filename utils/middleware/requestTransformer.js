@@ -8,7 +8,7 @@ exports.transformArray = (req, res, next) => {
                 req?.body[file?.fieldname].push(file.location);
 
             }
-            
+
         });
     }
 

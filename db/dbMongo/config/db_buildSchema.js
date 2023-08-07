@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
+const Joi = require('joi')
 
 const userSchema = new Schema(
   {
@@ -10,7 +11,7 @@ const userSchema = new Schema(
 
     last_name: { type: String, required: true },
 
-    user_type: { type: String, default: "customer" },
+    user_type: { type: String, default: "customer", enum: ['supplier', 'customer'] },
 
     profile_picture: { type: String },
 
@@ -281,7 +282,7 @@ exports.products = mongoose.model(
 
       product_images: { type: [{ type: String }] },
 
-      product_size: { type: String },
+      product_size: [{ type: String }],
 
       stores_available: [
         {
@@ -358,25 +359,25 @@ exports.meals = mongoose.model(
         },
       ],
 
-      image_or_video_content: [{ type: String }],
+      image_or_video_content: { type: String },
 
-      image_or_video_content_1: [{ type: String }],
+      image_or_video_content_1: { type: String },
 
-      image_or_video_content_2: [{ type: String }],
+      image_or_video_content_2: { type: String },
 
-      image_or_video_content_3: [{ type: String }],
+      image_or_video_content_3: { type: String },
 
-      image_or_video_content_4: [{ type: String }],
+      image_or_video_content_4: { type: String },
 
-      image_or_video_content_5: [{ type: String }],
+      image_or_video_content_5: { type: String },
 
-      image_or_video_content_6: [{ type: String }],
+      image_or_video_content_6: { type: String },
 
       prep_time: { type: String, required: true },
 
       cook_time: { type: String, required: true },
 
-      intro: { type: String, required: true },
+      intro: { type: String },
 
       chef: { type: String, required: true },
 
@@ -419,9 +420,9 @@ exports.meals = mongoose.model(
           ref: "Meal",
         },
       ],
-      formatted_ingredients: [{ type: String, required: true }],
+      formatted_ingredients: [{ type: String }],
 
-      formatted_instructions: [{ type: String, required: true }],
+      formatted_instructions: [{ type: String }],
 
       calories: { type: String },
 
@@ -464,7 +465,7 @@ exports.Supplier = mongoose.model(
 
       hours: [{ type: String }],
 
-      sugggested_meals_and_products: [
+      suggested_meals_and_products: [
         {
           type: mongoose.Types.ObjectId,
           ref: "Meal",
@@ -664,19 +665,14 @@ exports.Utensil = mongoose.model(
   )
 );
 
-exports.Measurement = mongoose.model(
-  "Measurement",
-  new Schema({
-    measurement_name: { type: String },
+//exports.Measurement = mongoose.model(
+//  "Measurement",
+//  new Schema({
+//    measurement_name: { type: String },
 
-    status: {
-      type: String,
-      required: true,
-      default: "PENDING",
-      enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
-    },
-  })
-);
+//    publicly_available: { type: Boolean, default: true },
+//  })
+//);
 
 exports.addresses = mongoose.model(
   "addresses",
@@ -716,37 +712,6 @@ exports.Payment_details = mongoose.model(
       },
     },
 
-    { timestamps: true }
-  )
-);
-
-exports.Comment = mongoose.model(
-  "Comment",
-  new Schema(
-    {
-      title: { type: String },
-
-      message: { type: String },
-      formated_ingredient: [{ type: String }],
-
-      rating: { type: String },
-
-      owner: {
-        type: mongoose.Types.ObjectId,
-        refPath: "ownerType",
-        required: true,
-      },
-
-      ownerType: {
-        type: String,
-        required: true,
-        enum: ["User", "Meal", "Product"],
-      },
-
-      up_votes: { type: String },
-
-      down_voted: { type: String },
-    },
     { timestamps: true }
   )
 );
@@ -804,6 +769,35 @@ exports.notifications = mongoose.model(
   )
 );
 
+
+exports.item_description = mongoose.model(
+  "item_description",
+  new Schema({
+    description_key: {
+      type: String,
+      required: true
+    },
+    object_quantity: {
+      type: Number
+    },
+    object_measurement: {
+      type: mongoose.Schema.Types.Mixed
+    },
+    formatted_string: {
+      type: String
+    },
+    description_values: {
+      type: Object
+    },
+    status: {
+      type: String,
+      required: true,
+      default: "Pending",
+      enum: ["Draft", "Pending", "Public", "Rejected"],
+    },
+  }, { timestamps: true })
+)
+
 exports.currencies = mongoose.model(
   "currencies",
   new Schema(
@@ -814,3 +808,12 @@ exports.currencies = mongoose.model(
     { timestamps: true }
   )
 );
+
+exports.validateItemDescription = (description) => {
+  const schema = Joi.object({
+    status: Joi.string().required()
+  });
+
+  return schema.validate(description);
+}
+

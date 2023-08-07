@@ -16,7 +16,7 @@ exports.createMeal = async (payload) => {
     }
     return await meals.create(payload);
   } catch (error) {
-    console.log({ error });
+    console.log('meal error', { error });
     throw {
       messsage: error.message || "create meals operation failed",
       code: error.code || 500,

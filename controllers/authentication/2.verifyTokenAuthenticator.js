@@ -19,8 +19,7 @@ module.exports = (req, res, next) => {
           message: "Token is not valid",
         });
       } else {
-        console.log("Successully verifies authentication token");
-
+        console.log("Successfully verified authentication token");
         req.decoded = decoded;
         next();
       }
