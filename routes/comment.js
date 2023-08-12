@@ -10,6 +10,9 @@ router.post("/update/:commentId", protect, validatePayload("updateCommentSchema"
 router.get("/get-all/:page", protect, CommentController.getComments);
 router.delete("/delete/:commentId", protect, CommentController.deleteComment)
 
+router.patch('/upvote/:commentId', protect, CommentController.upvoteComment)
+router.patch('/downvote/:commentId', protect, CommentController.downvoteComment)
+
 
 
 module.exports = router;

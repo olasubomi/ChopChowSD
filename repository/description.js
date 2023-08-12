@@ -38,10 +38,11 @@ const getAllDescription = async (page, filter) => {
 
     const status = filter.status !== 'all' ? { status: filter.status } : {}
 
-    return await item_description.find(status)
+    const resp = await item_description
+      .find(status)
       .limit(getPaginate.limit)
       .skip(getPaginate.skip)
-
+    return { description: resp, count: getPaginate.docCount };
 
   } catch (error) {
     console.log(error);

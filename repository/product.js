@@ -11,7 +11,7 @@ const createProduct = async (payload) => {
     }
     const { error } = validateProduct(payload);
     console.log('errr', error)
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) throw Error(error.details[0].message)
     return await Product.create(payload);
   } catch (error) {
     console.log({ error });

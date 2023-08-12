@@ -11,7 +11,6 @@ const itemSchema = new mongoose.Schema(
 
     item_type: { type: String, required: true },
 
-    item_price: { type: String, required: true },
 
     store_available: { type: mongoose.Types.ObjectId, ref: "Supplier" },
 
@@ -135,7 +134,6 @@ function validateItem(item) {
 
     item_type: Joi.string().required(),
 
-    item_price: Joi.string().required(),
 
     formatted_instructions: Joi.array().items(Joi.object().required()).optional(),
 

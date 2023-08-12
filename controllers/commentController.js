@@ -55,6 +55,54 @@ module.exports = {
         }
     },
 
+    upvoteComment: async (req, res) => {
+        try {
+            const { commentId } = req.params;
+            const userId = req.user._id;
+
+            const comment = await CommentService.getComment({ _id: commentId })
+            if (comment) {
+                const payload = { commentId, userId };
+                await CommentService.upvoteAComment(payload);
+                res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(
+                    {
+                        message: 'Successfully upvoted'
+                    }
+                ));
+            } else {
+                throw comment;
+            }
+        } catch (error) {
+            return res
+                .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+                .json(new ErrorResponse(error));
+        }
+    },
+
+    downvoteComment: async (req, res) => {
+        try {
+            const { commentId } = req.params;
+            const userId = req.user._id;
+
+            const comment = await CommentService.getComment({ _id: commentId })
+            if (comment) {
+                const payload = { commentId, userId };
+                await CommentService.downvoteAComment(payload);
+                res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(
+                    {
+                        message: 'Successfully downvoted'
+                    }
+                ));
+            } else {
+                throw comment;
+            }
+        } catch (error) {
+            return res
+                .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+                .json(new ErrorResponse(error));
+        }
+    },
+
     createCommentReply: async (req, res) => {
         try {
             req.body.created_by = userId = req.user._id.toString();

@@ -5,6 +5,8 @@ const {
     getItemComments,
     getComment,
     deleteComment,
+    upVoteComment,
+    downVoteComment
 } = require("../repository/index");
 
 class CommentService {
@@ -14,6 +16,26 @@ class CommentService {
         } catch (error) {
             console.log({ error });
             throw error;
+        }
+    }
+
+    static async upvoteAComment(payload) {
+        try {
+            const { commentId, userId } = payload;
+            return await upVoteComment(commentId, userId)
+        } catch (e) {
+            console.log({ e })
+            throw e
+        }
+    }
+
+    static async downvoteAComment(payload) {
+        try {
+            const { commentId, userId } = payload;
+            return await downVoteComment(commentId, userId)
+        } catch (e) {
+            console.log({ e })
+            throw e
         }
     }
 
