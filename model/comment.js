@@ -49,12 +49,13 @@ exports.Comment = mongoose.model(
                     const down_votes = this.down_votes;
                     const totalVotes = up_votes + down_votes;
                     if (totalVotes === 0) {
-                        return this.rating = 0
+                        this.rating = 0;
+                        return this.save()
+
                     }
                     const rating = Math.floor((up_votes / totalVotes) * 5)
-                    const total_rating = Math.max(1, rating);
-                    this.rating = total_rating <= 1 ? total_rating : 1;
-                    this.save()
+                    this.rating = rating;
+                    return this.save()
                 }
             }
         }
