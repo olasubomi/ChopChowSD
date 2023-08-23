@@ -142,6 +142,22 @@ const paginate2 = async (page, filter) => {
   console.log(skip, limit, docCount)
   return { skip, limit, docCount };
 };
+
+const updateItem = async (filter, payload) => {
+  try {
+    return await Item.findOneAndUpdate(
+      filter,
+      {
+        $set: payload,
+      },
+      { new: true }
+    );
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+
 const updateUserComment = async (payload) => { };
 
 module.exports = {
@@ -155,5 +171,6 @@ module.exports = {
   deleteItem,
   itemUpdate,
   paginate,
-  getOneUserItem
+  getOneUserItem,
+  updateItem
 };

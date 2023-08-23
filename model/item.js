@@ -28,6 +28,10 @@ const itemSchema = new mongoose.Schema(
 
     tips: [{ type: String }],
 
+    total_rating: { type: Number, required: false, default: 0 },
+
+    average_rating: { type: Number, required: false, default: 0 },
+
     hidden_ingredients_in_product: [{ type: String }],
 
     formatted_ingredients: [{ type: String }],

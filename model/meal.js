@@ -28,6 +28,10 @@ const mealSchema = new mongoose.Schema(
 
     servings: { type: String },
 
+    total_rating: { type: String, required: false },
+
+    average_rating: { type: String, required: false },
+
     kitchen_utensils: [{ type: String }],
 
     tips: [{ type: String }],

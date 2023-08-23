@@ -30,6 +30,10 @@ const userSchema = new Schema(
 
     date_of_birth: { type: String },
 
+    total_rating: { type: Number, required: false, default: 0 },
+
+    average_rating: { type: Number, required: false, default: 0 },
+
     phone_number: {
       // country_code: { type: String, required: true },
       type: String,
@@ -450,6 +454,10 @@ exports.Supplier = mongoose.model(
       profile_picture: { type: String },
 
       background_picture: { type: String },
+
+      total_rating: { type: Number, required: false, default: 0 },
+
+      average_rating: { type: Number, required: false, default: 0 },
 
       supplier_address: {
         phone_number: { type: String },
