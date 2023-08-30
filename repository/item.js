@@ -2,11 +2,12 @@ const { filter } = require("bluebird");
 const { Item } = require("../model/item");
 const { item_description } = require("../db/dbMongo/config/db_buildSchema");
 
+
 const createItem = async (payload) => {
   try {
     //saving item to mongoDb
     const items = new Item(payload);
-    return (await (await items.save()).populate('item_data')).populate('item_categories')
+    return (await (await items.save())).populate('item_categories')
   } catch (error) {
     console.log({ error });
   }
@@ -31,7 +32,7 @@ const getItems = async (page, filter) => {
     .find(query)
     .limit(getPaginate.limit)
     .skip(getPaginate.skip)
-    .populate('item_data item_categories item_description')
+    .populate('item_categories item_description')
   return { items: itemResponse, count: getPaginate.docCount };
 
 };
@@ -47,7 +48,22 @@ const getStoreItems = async (filter) => {
 const getOneUserItem = async (filter) => {
   try {
     return await Item.find(filter)
-      .populate('item_description item_data item_categories');
+      .populate('item_description item_categories');
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const filterItem = async (filter) => {
+  try {
+    return await Item.find({
+      item_name: { $regex: filter, $options: "i" },
+      'item_status': {
+        $elemMatch: {
+          'status': 'Public'
+        }
+      }
+    }).populate('store_available')
   } catch (error) {
     console.log(error);
   }
@@ -61,7 +77,7 @@ const getUserItems = async (data) => {
       item_type: { $in: type.split(',') },
       user: user
     })
-      .populate("item_data item_categories item_description")
+      .populate("item_categories item_description")
       .skip(getPaginate.skip)
       .limit(getPaginate.limit)
 
@@ -157,7 +173,25 @@ const paginate2 = async (page, filter) => {
   console.log(skip, limit, docCount)
   return { skip, limit, docCount };
 };
+
+
 const updateUserComment = async (payload) => { };
+
+
+
+const getSimilarItem = async (itemNames) => {
+  try {
+    return await Item.find({
+      ingredeints_in_item: {
+        $elemMatch: {
+          item_name: itemNames
+        }
+      }
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 module.exports = {
   createItem,
@@ -170,5 +204,7 @@ module.exports = {
   deleteItem,
   itemUpdate,
   paginate,
-  getOneUserItem
+  getOneUserItem,
+  filterItem,
+  getSimilarItem
 };

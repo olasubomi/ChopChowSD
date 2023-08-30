@@ -119,6 +119,24 @@ module.exports = {
     }
   },
 
+  filterItem: async (req, res) => {
+    try {
+      console.log('id', req.params.id)
+      const categoryItems = await ItemService.filterUserItem(
+        req.params.name,
+      );
+      if (categoryItems) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(categoryItems));
+      } else {
+        throw categoryItems;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   approveItems: async (req, res) => {
     try {
       const itemControl = await ItemService.updateAvailability(req.body, res);
