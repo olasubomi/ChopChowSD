@@ -137,6 +137,8 @@ function validateItemMeal(item) {
   const schema = Joi.object({
     item_name: Joi.string().required(),
 
+    listName: Joi.string().optional(),
+
     item_intro: Joi.string().optional(),
 
     item_type: Joi.string().required(),
@@ -209,9 +211,11 @@ function validateItemProduct(item) {
   const schema = Joi.object({
     item_name: Joi.string().required(),
 
+    listName: Joi.string().optional(),
+
     item_intro: Joi.string().optional(),
 
-    item_images: Joi.array().items(Joi.string().required()).optional(),
+    item_images: Joi.array().items(Joi.string().optional()).optional(),
 
     product_size: Joi.string().optional(),
 
@@ -232,7 +236,7 @@ function validateItemProduct(item) {
 
     item_type: Joi.string().required(),
 
-    itemImage0: Joi.string().required(),
+    itemImage0: Joi.string().optional(),
 
     itemImage1: Joi.string().optional(),
 
@@ -259,7 +263,7 @@ function validateItem(item) {
   const schema = Joi.object({
     item_name: Joi.string().required(),
 
-    item_images: Joi.array().items(Joi.string().required()).optional(),
+    item_images: Joi.array().items(Joi.string().optional()).optional(),
 
     instruction_images: Joi.array().items(Joi.string().required()).optional(),
 

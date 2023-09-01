@@ -216,10 +216,10 @@ class GroceryService {
     }
   }
 
-  static async AddNewItemToGroceryList(req, res) {
+  static async AddNewItemToGroceryList(payload, res) {
     try {
       //validate request body
-      const { error, value } = validateItemToBeAddedToAGroceryList(req.body);
+      const { error, value } = validateItemToBeAddedToAGroceryList(payload);
       console.log(error, value)
       if (error) return res.status(400).send(error.details[0].message);
 

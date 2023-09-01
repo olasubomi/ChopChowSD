@@ -27,9 +27,10 @@ const {
 const { createDescription } = require("../repository/description");
 const { createNewMeasurment } = require("../repository/measurement");
 const { createNewIngredient, getAllIngredient } = require("../repository/ingredient");
+const GroceryService = require("./groceryService");
 
 class ItemService {
-  static async createItem(payload, files, res) {
+  static async createItem(payload, files = [], res) {
     try {
 
       console.log(payload)
@@ -37,7 +38,7 @@ class ItemService {
       if (payload.item_type === 'Meal') {
         //check if there are just just items in the payload, item_name and item_itye
         // if yes, then the user is trying to create an item from the grocery list
-        if (Object.keys(payload).length === 3 && payload.item_name && payload.item_type && payload.user) {
+        if (payload.listName) {
           payload.item_status = [
             {
               status: "Draft",
@@ -54,9 +55,23 @@ class ItemService {
               payload[`itemImage${i}`] = item_images[i].location
             }
           }
+
           const { error } = validateItemMeal(payload); console.log('errr', error)
           if (error) return res.status(400).send(error.details[0].message);
-          return await createItem(payload);
+
+          const item = await createItem(payload);
+          const groceryPayload = {
+            userId: payload.user,
+            groceryList: {
+              listName: payload.listName,
+              groceryItems: {
+                itemId: item._id.toString(),
+              }
+            }
+          }
+          await GroceryService.AddNewItemToGroceryList(groceryPayload, res);
+          return item
+
         }
 
         payload.formatted_ingredients = JSON.parse(payload.formatted_ingredients)
@@ -139,19 +154,20 @@ class ItemService {
         return await createItem(payload);
       } else if (payload.item_type === 'Product') {
         // 
+        console.log(payload.listName)
 
-        if (Object.keys(payload).length === 3 && payload.item_name && payload.item_type && payload.user) {
+        if (payload.listName) {
           payload.item_status = [
             {
               status: "Draft",
               status_note: "Pending Approval",
             },
           ];
-          const item_images = files.item_images;
+          const item_images = files.item_images || []
 
           payload.item_images = [];
 
-          if (files.item_images.length) {
+          if (files?.item_images?.length) {
             for (let i = 0; i < item_images.length; i++) {
               payload.item_images.push(item_images[i].location)
               payload[`itemImage${i}`] = item_images[i].location
@@ -159,7 +175,19 @@ class ItemService {
           }
           const { error } = validateItemProduct(payload); console.log('errr', error)
           if (error) return res.status(400).send(error.details[0].message);
-          return await createItem(payload);
+          const item = await createItem(payload);
+
+          const groceryPayload = {
+            userId: payload.user,
+            groceryList: {
+              listName: payload.listName,
+              groceryItems: {
+                itemId: item._id.toString(),
+              }
+            }
+          }
+          await GroceryService.AddNewItemToGroceryList(groceryPayload, res)
+          return item
         }
 
 

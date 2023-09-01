@@ -68,8 +68,8 @@ function validateItemToBeAddedToAGroceryList(list) {
       listName: Joi.string().required(),
       groceryItems: Joi.object({
         itemId: Joi.string().required(),
-        quantity: Joi.string().required(),
-        measurement: Joi.string().required()
+        quantity: Joi.string().optional(),
+        measurement: Joi.string().optional()
       })
     })
   })

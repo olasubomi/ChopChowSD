@@ -20,7 +20,7 @@ module.exports = {
 
   addNewItemToGroceryList: async (req, res) => {
     try {
-      const groceries = await GroceryService.AddNewItemToGroceryList(req, res);
+      const groceries = await GroceryService.AddNewItemToGroceryList(req.body, res);
       console.log('grocery', groceries)
       if (groceries) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(groceries));
