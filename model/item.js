@@ -54,8 +54,6 @@ const itemSchema = new mongoose.Schema(
 
     user: { type: mongoose.Types.ObjectId, ref: "User" },
 
-    user: { type: mongoose.Types.ObjectId, ref: "User" },
-
     comments: [
       {
         comment_user: { type: mongoose.Types.ObjectId, ref: "User" },

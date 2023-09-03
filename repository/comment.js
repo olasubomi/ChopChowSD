@@ -1,5 +1,5 @@
 const { Comment } = require("../model/comment");
-const CommentEventHandler = require("./commentEventEmitter")
+const CommentEventHandler = require("./commentEventEmitter");
 
 
 const eventEmitter = CommentEventHandler.create();
@@ -12,6 +12,12 @@ const createComment = async (payload) => {
         if (payload.rating) {
             eventEmitter.emit("commentEvent", newComment)
         }
+
+        eventEmitter.emit("createPushNotification", {
+            eventType: "comment_created",
+            event: "comment",
+            data: newComment
+        })
 
         return newComment
     } catch (error) {

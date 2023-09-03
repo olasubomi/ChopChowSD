@@ -1,4 +1,6 @@
 const { Item } = require("../model/item");
+const { NotificationService } = require("./notificationService");
+
 
 const createItem = async (payload) => {
   try {
@@ -95,7 +97,8 @@ const deleteItem = async (payload) => {
 
 const itemUpdate = async (payload, arrayId) => {
   try {
-    return await Item.findOneAndUpdate(
+
+    const updatedItem = await Item.findOneAndUpdate(
       { _id: payload.itemId },
       {
         $set: {
@@ -107,6 +110,16 @@ const itemUpdate = async (payload, arrayId) => {
         arrayFilters: [{ "elemA._id": arrayId }],
       }
     );
+
+    if (payload.status || payload.item_status) {
+
+      NotificationService.publishMessage(updatedItem.user, "status_updated",
+        { message: "Item status updated", data: updatedItem })
+
+    }
+
+    return updatedItem;
+
   } catch (error) {
     console.log(error);
   }

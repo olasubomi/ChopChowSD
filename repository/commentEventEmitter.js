@@ -3,6 +3,8 @@ const EventEmitter = require('events');
 const { User, Supplier } = require("../db/dbMongo/config/db_buildSchema")
 const { Comment } = require("../model/comment")
 const { Item } = require("../model/item")
+const { NotificationService } = require("./notificationService")
+
 
 
 
@@ -13,6 +15,7 @@ class CommentEventHandler extends EventEmitter {
         emitter.initializeCommentListener();
         emitter.initializeCommentUpdateListener()
         emitter.initializeCommentDeleteListener()
+        emitter.initializeCommentNotification
         this.emitter = emitter
         return emitter;
     }
@@ -33,6 +36,12 @@ class CommentEventHandler extends EventEmitter {
     initializeCommentDeleteListener() {
         this.on('commentDeletedEvent', async (data) => {
             await this.processCommentEvent(data, "calculateDeletedRatingAverage")
+        });
+    }
+
+    initializePushNotificationListener() {
+        this.on('createPushNotification', async (data) => {
+            await this.createPushNotification(data)
         });
     }
 
@@ -115,6 +124,64 @@ class CommentEventHandler extends EventEmitter {
 
         } catch (error) {
             console.error('Error during event handling:', error);
+        }
+
+    }
+
+
+
+    async createPushNotification(data) {
+
+        if (data.data.item_type === "Item") {
+            const item = await Item.findById(data.data.item)
+            NotificationService.publishMessage(data.data.createdBy, data.event,
+                {
+                    message: `You added a comment on ${item.item_name}`,
+                    comment: data.data
+                });
+
+            NotificationService.publishMessage(item.user, data.event,
+                {
+                    message: `A comment was created on ${item.item_name}`,
+                    comment: data.data
+                });
+
+        }
+
+        if (data.data.item_type === "Supplier") {
+            const supplier = await Supplier.findById(data.item)
+
+            NotificationService.publishMessage(data.data.createdBy, data.event,
+                {
+                    message: `You added a comment on ${item.item_name}`,
+                    comment: data.data
+                });
+
+            NotificationService.publishMessage(supplier.store_owner, data.event,
+                {
+                    message: `A comment was added on ${supplier.store_name}`,
+                    comment: data.data
+                });
+
+        }
+
+        if (data.data.item_type === "User") {
+            const user = await User.findById(data.item)
+
+            NotificationService.publishMessage(data.data.createdBy, data.event,
+                {
+                    message: `You added a comment on user ${user.first_name} ${user.last_name}`,
+                    comment: data.data
+                });
+
+            NotificationService.publishMessage(user._id, data.event,
+                {
+                    message: `A comment was added on ${user.first_name} ${user.last_name}`,
+                    comment: data.data
+                });
+
+
+
         }
 
     }
