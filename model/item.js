@@ -168,7 +168,7 @@ function validateItemMeal(item) {
       status_note: Joi.string().required()
     })).optional(),
 
-    item_images: Joi.array().items(Joi.string().required()).optional(),
+    item_images: Joi.array().items(Joi.string().optional()).optional(),
 
     itemImage0: Joi.string().optional(),
 

@@ -30,10 +30,11 @@ const { createNewIngredient, getAllIngredient } = require("../repository/ingredi
 const GroceryService = require("./groceryService");
 
 class ItemService {
-  static async createItem(payload, files = [], res) {
+  static async createItem(payload, files, res) {
     try {
 
-      console.log(payload)
+      files.item_images = [];
+      console.log(payload, files)
 
       if (payload.item_type === 'Meal') {
         //check if there are just just items in the payload, item_name and item_itye
@@ -49,6 +50,7 @@ class ItemService {
 
           payload.item_images = [];
 
+          console.log('item_images', files.item_images)
           if (files.item_images.length) {
             for (let i = 0; i < item_images.length; i++) {
               payload.item_images.push(item_images[i].location)

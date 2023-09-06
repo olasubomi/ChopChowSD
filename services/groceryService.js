@@ -220,7 +220,7 @@ class GroceryService {
     try {
       //validate request body
       const { error, value } = validateItemToBeAddedToAGroceryList(payload);
-      console.log(error, value)
+      console.log(error, value, 'james')
       if (error) return res.status(400).send(error.details[0].message);
 
       // const value = req.body;
