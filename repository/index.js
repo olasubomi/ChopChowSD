@@ -101,6 +101,8 @@ const {
   getItemComments,
   getComment,
   deleteComment,
+  upVoteComment,
+  downVoteComment
 } = require("./comment.js")
 
 const { createMeasurement } = require("./measurement");
@@ -177,4 +179,6 @@ module.exports = {
   getItemComments,
   getComment,
   deleteComment,
+  upVoteComment,
+  downVoteComment
 };

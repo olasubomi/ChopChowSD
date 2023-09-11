@@ -22,9 +22,17 @@ const findMeasurement = async (filter) => {
 
 const getAllMeasurement = async (page, filter) => {
   try {
+    let getPaginate = await paginateMesr(page, filter)
+
     const status = filter.status !== 'all' ? { status: filter.status } : {}
 
-    return await Measurement.find(status);
+    const resp = await Measurement
+      .find(status)
+      .limit(getPaginate.limit)
+      .skip(getPaginate.skip)
+
+    return { measurement: resp, count: getPaginate.docCount };
+
   } catch (error) {
     console.log(error);
   }
@@ -86,7 +94,20 @@ const getMeasurement = async (filter) => {
   }
 }
 
+const paginateMesr = async (page, filter) => {
+  const limit = parseInt(filter.limit) || 10;
 
+  let skip = parseInt(page) === 1 ? 0 : limit * page;
+  delete filter.limit;
+
+  const docCount = await Measurement.countDocuments();
+  console.log('measure coune', docCount)
+
+  if (docCount < skip) {
+    skip = (page - 1) * limit;
+  }
+  return { skip, limit, docCount };
+}
 
 module.exports = {
   saveMeasurement,

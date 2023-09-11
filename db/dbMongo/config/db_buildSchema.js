@@ -275,7 +275,7 @@ exports.cart = mongoose.model(
 );
 
 exports.products = mongoose.model(
-  "Product",
+  "Products",
   new Schema(
     {
       product_name: { type: String, required: true },
@@ -327,17 +327,6 @@ exports.products = mongoose.model(
 
       status: { type: String, default: "PENDING" },
 
-      calories: { type: String },
-
-      total_carbs: { type: String },
-
-      net_carbs: { type: String },
-
-      fiber: { type: String },
-
-      fat: { type: String },
-
-      protein: { type: String },
     },
     { timestamps: true }
   )

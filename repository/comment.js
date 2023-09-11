@@ -1,4 +1,5 @@
 const { Comment } = require("../model/comment");
+const { findUser } = require("./user");
 
 const createComment = async (payload) => {
     try {
@@ -63,6 +64,98 @@ const getItemComments = async (page, filter) => {
         };
     }
 };
+
+
+const upVoteComment = async (commentId, userId) => {
+    try {
+        const comment = await Comment.findById({ _id: commentId });
+        if (comment) {
+            const hasUserAlreadyUpvoted = comment.up_voted_users.some(_id => _id.toString() === userId.toString());
+            const hasUserDownvoted = comment.down_voted_users.some(_id => _id.toString() === userId.toString());
+
+            if (hasUserDownvoted) {
+                const down_voted_user = comment.down_voted_users;
+                const commentIndex = comment.down_voted_users.findIndex(_id => _id.toString() === userId.toString());
+                down_voted_user.splice(commentIndex, 1)
+                comment.down_voted_users = down_voted_user
+                comment.down_votes = Number(comment.down_votes) - 1;
+            }
+
+            if (!hasUserAlreadyUpvoted) {
+                const user = await findUser({ _id: userId })
+                comment.up_voted_users.push(user);
+                comment.up_votes = comment.up_votes + 1;
+                comment.item_type = 'Item'
+                await comment.save();
+                await comment.calculateRatings();
+            } else {
+                const up_voted_users = comment.up_voted_users;
+                const commentIndex = comment.up_voted_users.findIndex(_id => _id.toString() === userId.toString());
+                up_voted_users.splice(commentIndex, 1)
+                comment.up_voted_users = up_voted_users;
+                comment.up_votes = comment.up_votes - 1;
+                comment.item_type = 'Item'
+
+
+                await comment.save();
+                await comment.calculateRatings();
+                console.log('User has already upvoted')
+            }
+        } else {
+            throw Error(`Comment with id ${commentId} not found`)
+        }
+    } catch (e) {
+        throw {
+            error: e
+        }
+    }
+}
+
+
+const downVoteComment = async (commentId, userId) => {
+    try {
+        const comment = await Comment.findById({ _id: commentId });
+        if (comment) {
+            const hasUserAlreadyDownvoted = comment.down_voted_users.some(_id => _id.toString() === userId.toString());
+            const hasUserUpvoted = comment.up_voted_users.some(_id => _id.toString() === userId.toString());
+
+            if (hasUserUpvoted) {
+                const up_voted_user = comment.up_voted_users;
+                const commentIndex = comment.up_voted_users.findIndex(_id => _id.toString() === userId.toString());
+                up_voted_user.splice(commentIndex, 1)
+                comment.up_voted_users = up_voted_user
+                comment.up_votes = Number(comment.up_votes) - 1;
+                console.log(Number(comment.up_votes) - 1)
+            }
+
+            if (!hasUserAlreadyDownvoted) {
+                const user = await findUser({ _id: userId })
+                comment.down_voted_users.push(user);
+                comment.down_votes = comment.down_votes + 1;
+                await comment.save();
+                await comment.calculateRatings();
+            } else {
+                const down_voted_user = comment.down_voted_users;
+                const commentIndex = comment.down_voted_users.findIndex(_id => _id.toString() === userId.toString());
+                down_voted_user.splice(commentIndex, 1)
+                comment.down_voted_users = down_voted_user;
+                comment.down_votes = comment.down_votes - 1;
+                comment.item_type = 'Item'
+
+
+                await comment.save();
+                await comment.calculateRatings();
+                console.log('User has already downvoted')
+            }
+        } else {
+            throw Error(`Comment with id ${commentId} not found`)
+        }
+    } catch (e) {
+        throw {
+            error: e
+        }
+    }
+}
 
 const getComment = async (filter) => {
     try {
@@ -129,4 +222,6 @@ module.exports = {
     getItemComments,
     getComment,
     deleteComment,
+    upVoteComment,
+    downVoteComment
 };
