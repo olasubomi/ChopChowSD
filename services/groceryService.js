@@ -1,5 +1,5 @@
 const { getOneGroceryList } = require("../controllers/GroceryController/grocery.controller");
-const { validate, validateItemToBeAddedToAGroceryList } = require("../model/grocery");
+const { validate, validateItemToBeAddedToAGroceryList, vaidateJsonDataToBeAddedToGroceryList } = require("../model/grocery");
 const { validateGroceryList, validateGroceryListUpdate } = require("../model/grocery-list");
 const { Item } = require("../model/item");
 
@@ -19,6 +19,7 @@ const {
   removeAnItemFromGroceryList,
   updateGroceryDetails,
   deleteGroceryList,
+  addJsonDataToGroceryList,
 } = require("../repository/grocery");
 const { getSimilarItem } = require("../repository/item");
 
@@ -239,12 +240,27 @@ class GroceryService {
           measurement: value.groceryList.groceryItems.measurement
         })
       }
-
-
-
-
     } catch (error) {
       throw error
+    }
+  }
+
+  static async AddNewJsonItemToGroceryList(payload, res) {
+    try {
+      const { error, value } = vaidateJsonDataToBeAddedToGroceryList(payload);
+      console.log(error, value, 'james')
+      if (error) return res.status(400).send(error.details[0].message);
+
+      const checkExist = await checkIfGroceryListExist({ listName: value.listName })
+      if (checkExist) {
+        return await addJsonDataToGroceryList({
+          listName: value.listName,
+          item_name: value.item_name
+        })
+      }
+      // con
+    } catch (e) {
+      throw e
     }
   }
 
@@ -264,7 +280,7 @@ class GroceryService {
 
 
       const similar = groceryList.groceryItems.map(async curr => {
-        const arr = curr.item.ingredeints_in_item || []
+        const arr = curr?.item?.ingredeints_in_item || []
         const ingredeints_in_item_names = arr.map(element => element.item_name);
         console.log('ingredeints_in_item_names', ingredeints_in_item_names)
         const resp = await getSimilarItem(ingredeints_in_item_names)

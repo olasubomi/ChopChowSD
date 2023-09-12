@@ -138,6 +138,38 @@ const addAnItemToAGroceryList = async (payload) => {
   }
 }
 
+const addJsonDataToGroceryList = async (payload) => {
+  try {
+    await checkIfJsonDataHasAlready({
+      listName: payload.listName,
+      item_name: payload.item_name
+    })
+
+    const data = {
+      id: Math.floor(Math.random() * 1000000000000),
+      item_name: payload.item_name,
+      createdAt: new Date()
+    }
+
+    return await GroceryList.findOneAndUpdate(
+      { listName: payload.listName },
+      {
+        $push: {
+          groceryItems: {
+            itemData: data
+          }
+        }
+      }
+    )
+  } catch (error) {
+    throw {
+      error: error,
+      message: error.message || "Add item grocery list operation failed",
+      code: error.code || 500,
+    };
+  }
+}
+
 
 const checkIfItemAlreadyExistInAGroceryList = async (payload) => {
   try {
@@ -149,6 +181,19 @@ const checkIfItemAlreadyExistInAGroceryList = async (payload) => {
     }
   } catch (error) {
     throw "Check operation failed"
+  }
+}
+
+const checkIfJsonDataHasAlready = async (payload) => {
+  try {
+    const groceryList = await checkIfGroceryListExist({ listName: payload.listName });
+    const doesExist = groceryList.groceryItems.some(element => element.itemData.item_name?.toString() === payload.item_name);
+    if (doesExist) {
+      throw "Item already exist on grocery list"
+    }
+  } catch (e) {
+    throw "Check operation failed"
+
   }
 }
 
@@ -253,5 +298,7 @@ module.exports = {
   getOneGrocery,
   removeAnItemFromGroceryList,
   updateGroceryDetails,
-  deleteGroceryList
+  deleteGroceryList,
+  checkIfJsonDataHasAlready,
+  addJsonDataToGroceryList
 };
