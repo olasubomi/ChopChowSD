@@ -77,6 +77,13 @@ function validateItemToBeAddedToAGroceryList(list) {
   return schema.validate(list)
 }
 
+function vaidateJsonDataToBeAddedToGroceryList(list) {
+  const schema = Joi.object({
+    item_name: Joi.string().required(),
+    listName: Joi.string().required()
+  })
+  return schema.validate(list)
+}
 
 
 
@@ -84,3 +91,4 @@ exports.grocerySchema = grocerySchema;
 exports.Grocery = Grocery;
 exports.validate = validateGrocery;
 exports.validateItemToBeAddedToAGroceryList = validateItemToBeAddedToAGroceryList
+exports.vaidateJsonDataToBeAddedToGroceryList = vaidateJsonDataToBeAddedToGroceryList

@@ -11,6 +11,7 @@ router.get("/:id", verifyAuthentication, GroceryController.getGroceryList);
 
 router.post("/", verifyAuthentication, GroceryController.addNewItemToGroceryList);
 
+router.post('/grocery-item', verifyAuthentication, GroceryController.addNewJsonDataItemToGroceryList)
 
 router.patch('/remove/:groceryListId/:groceryItemId', verifyAuthentication, GroceryController.removeItemFromGroceryList)
 
