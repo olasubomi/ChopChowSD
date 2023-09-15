@@ -9,7 +9,7 @@ passport.use(
     {
       clientID: "process.env.FACEBOOK_APP_ID",
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: "https://www.chopchowsd.herokuapp.com/renderEJS",
+      callbackURL: "https://www.chopchowserver.vercel.app/renderEJS",
     },
     function (accessToken, refreshToken, profile, done) {
       User.findOrCreate(function (err, user) {
