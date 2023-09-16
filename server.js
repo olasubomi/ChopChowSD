@@ -36,9 +36,11 @@ app.use(cookie());
 var whitelist = [
   "http://localhost:3000",
   "http://localhost:5000",
-  "https://chopchow.app",
-  "moz-extension://c228269d-fdaa-4b34-9ce8-2fe9e965a787",
-  'https://cc-next-dev.vercel.app/'
+  "https://www.chopchow.app",
+  'https://cc-next-dev.vercel.app/',
+  "https://chopchow-beeox2y92-chop-chow.vercel.app",
+  "https://cc-next-oty3f0zz0-chop-chow.vercel.app",
+  "moz-extension://c228269d-fdaa-4b34-9ce8-2fe9e965a787"
 ];
 var corsOptions = {
   origin: function (origin, callback) {
