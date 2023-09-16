@@ -175,7 +175,7 @@ const checkIfItemAlreadyExistInAGroceryList = async (payload) => {
   try {
     const groceryList = await checkIfGroceryListExist({ listName: payload.listName });
     console.log('present grocery', groceryList.groceryItems, payload.itemId.toString())
-    const doesExist = groceryList.groceryItems.some(element => element.item.toString() === payload.itemId.toString());
+    const doesExist = groceryList.groceryItems.some(element => element?.item?.toString() === payload.itemId.toString());
     if (doesExist) {
       throw "Item already exist on grocery list"
     }
