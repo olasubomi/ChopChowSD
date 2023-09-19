@@ -12,7 +12,6 @@ const GroceryListSchema = new Schema({
     },
     description: {
         type: String,
-        required: true
     },
     user: {
         type: Schema.Types.ObjectId,
@@ -34,7 +33,12 @@ const GroceryListSchema = new Schema({
         itemData: {
             id: String,
             item_name: String,
-            createdAt: Date
+            createdAt: Date,
+            quantity: String,
+            measurement: {
+                type: Schema.Types.ObjectId,
+                ref: 'Measurement',
+            }
         }
     }],
     status: {
@@ -50,7 +54,7 @@ const GroceryList = mongoose.model('GroceryList', GroceryListSchema);
 const validateGroceryList = (groceryList) => {
     const schema = Joi.object({
         listName: Joi.string().required(),
-        description: Joi.string().required(),
+        description: Joi.string().optional(),
         user: Joi.objectId().required()
     })
 

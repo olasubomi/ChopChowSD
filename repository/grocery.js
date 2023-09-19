@@ -148,7 +148,8 @@ const addJsonDataToGroceryList = async (payload) => {
     const data = {
       id: Math.floor(Math.random() * 1000000000000),
       item_name: payload.item_name,
-      createdAt: new Date()
+      createdAt: new Date(),
+      ...payload
     }
 
     return await GroceryList.findOneAndUpdate(
