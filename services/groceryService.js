@@ -255,7 +255,9 @@ class GroceryService {
       if (checkExist) {
         return await addJsonDataToGroceryList({
           listName: value.listName,
-          item_name: value.item_name
+          item_name: value.item_name,
+          quantity: value.quantity || '',
+          measurement: value.measurement || ''
         })
       }
       // con
