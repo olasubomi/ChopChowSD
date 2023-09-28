@@ -32,13 +32,36 @@ const findDescription = async (filter) => {
   }
 };
 
-const getAllDescription = async () => {
+const getAllDescription = async (page, filter) => {
   try {
-    return await item_description.find();
+    let getPaginate = await paginateDes(page, filter);
+
+    const status = filter.status !== 'all' ? { status: filter.status } : {}
+
+    const resp = await item_description
+      .find(status)
+      .limit(getPaginate.limit)
+      .skip(getPaginate.skip)
+    return { description: resp, count: getPaginate.docCount };
+
   } catch (error) {
     console.log(error);
   }
 };
+
+const paginateDes = async (page, filter) => {
+  const limit = parseInt(filter.limit) || 10;
+
+  let skip = parseInt(page) === 1 ? 0 : limit * page;
+  delete filter.limit;
+
+  const docCount = await item_description.countDocuments();
+
+  if (docCount < skip) {
+    skip = (page - 1) * limit;
+  }
+  return { skip, limit, docCount };
+}
 
 const updateItemDescription = async (payload) => {
   const id = payload._id;
@@ -135,6 +158,7 @@ module.exports = {
   createDescription,
   saveDescriptionToDB,
   updateItemDescription,
-  deleteItemDescription
+  deleteItemDescription,
+  paginateDes
 };
 

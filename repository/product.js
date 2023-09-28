@@ -1,15 +1,18 @@
 const { products } = require("../db/dbMongo/config/db_buildSchema");
+const { Product, validateProduct } = require('../model/product')
 
 const createProduct = async (payload) => {
   try {
     const checkProductExist = await getProduct({
       product_name: payload.product_name,
-      product_type: payload.product_type,
     });
     if (checkProductExist) {
       return { product: checkProductExist, message: "Product already exist" };
     }
-    return await products.create(payload);
+    const { error } = validateProduct(payload);
+    console.log('errr', error)
+    if (error) throw Error(error.details[0].message)
+    return await Product.create(payload);
   } catch (error) {
     console.log({ error });
   }
@@ -48,7 +51,7 @@ const getAllProducts = async (page, filter) => {
 
 const getProduct = async (filter) => {
   try {
-    return await products.findOne(filter);
+    return await Product.findOne(filter);
   } catch (error) {
     console.log({ error });
     throw {

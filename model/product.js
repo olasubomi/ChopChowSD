@@ -16,6 +16,7 @@ const productSchema = new mongoose.Schema(
 
     average_rating: { type: String, required: false },
 
+
     product_alternatives: [{ type: String }],
 
     meals_including_product: [{ type: mongoose.Types.ObjectId, ref: "Meal" }],
@@ -28,6 +29,7 @@ const Product = mongoose.model("Product", productSchema);
 function validateProduct(product) {
   const schema = Joi.object({
     product_size: Joi.string().optional(),
+    product_name: Joi.string().required(),
     product_alternatives: Joi.array().items(Joi.string()).optional(),
     meals_including_product: Joi.array().items(Joi.objectId().optional()),
   });

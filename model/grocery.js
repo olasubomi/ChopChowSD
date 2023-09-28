@@ -61,6 +61,36 @@ function validateGrocery(grocery) {
   return schema.validate(grocery);
 }
 
+function validateItemToBeAddedToAGroceryList(list) {
+  const schema = Joi.object({
+    userId: Joi.objectId().required(),
+    groceryList: Joi.object({
+      listName: Joi.string().required(),
+      groceryItems: Joi.object({
+        itemId: Joi.string().required(),
+        quantity: Joi.string().optional(),
+        measurement: Joi.string().optional()
+      })
+    })
+  })
+
+  return schema.validate(list)
+}
+
+function vaidateJsonDataToBeAddedToGroceryList(list) {
+  const schema = Joi.object({
+    item_name: Joi.string().required(),
+    listName: Joi.string().required(),
+    quantity: Joi.string().optional(),
+    measurement: Joi.string().optional()
+  })
+  return schema.validate(list)
+}
+
+
+
 exports.grocerySchema = grocerySchema;
 exports.Grocery = Grocery;
 exports.validate = validateGrocery;
+exports.validateItemToBeAddedToAGroceryList = validateItemToBeAddedToAGroceryList
+exports.vaidateJsonDataToBeAddedToGroceryList = vaidateJsonDataToBeAddedToGroceryList

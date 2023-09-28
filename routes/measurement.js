@@ -3,7 +3,7 @@ const verifyAuthentication = require("../controllers/authentication/2.verifyToke
 const express = require("express");
 const router = express.Router();
 
-router.get("/", MeasurementController.getMeasurement);
+router.get("/:page", MeasurementController.getMeasurement);
 
 router.post("/", verifyAuthentication, MeasurementController.createMeasurement);
 

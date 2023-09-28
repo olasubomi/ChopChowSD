@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
+const Joi = require('joi')
 
 const userSchema = new Schema(
   {
@@ -278,7 +279,7 @@ exports.cart = mongoose.model(
 );
 
 exports.products = mongoose.model(
-  "Product",
+  "Products",
   new Schema(
     {
       product_name: { type: String, required: true },
@@ -330,17 +331,6 @@ exports.products = mongoose.model(
 
       status: { type: String, default: "PENDING" },
 
-      calories: { type: String },
-
-      total_carbs: { type: String },
-
-      net_carbs: { type: String },
-
-      fiber: { type: String },
-
-      fat: { type: String },
-
-      protein: { type: String },
     },
     { timestamps: true }
   )
@@ -799,10 +789,10 @@ exports.item_description = mongoose.model(
     status: {
       type: String,
       required: true,
-      default: "PENDING",
-      enum: ["DRAFT", "PENDING", "PUBLIC", "REJECTED"],
+      default: "Pending",
+      enum: ["Draft", "Pending", "Public", "Rejected"],
     },
-  })
+  }, { timestamps: true })
 )
 
 exports.currencies = mongoose.model(
@@ -815,3 +805,12 @@ exports.currencies = mongoose.model(
     { timestamps: true }
   )
 );
+
+exports.validateItemDescription = (description) => {
+  const schema = Joi.object({
+    status: Joi.string().required()
+  });
+
+  return schema.validate(description);
+}
+

@@ -8,6 +8,8 @@ router.get("/:page", ItemController.getAllItems);
 
 router.get('/user/:name', ItemController.getOneItem)
 
+router.get('/filter/:name', ItemController.filterItem)
+
 router.post(
   "/",
   verifyAuthentication,
