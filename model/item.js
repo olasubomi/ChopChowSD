@@ -23,11 +23,12 @@ const itemSchema = new mongoose.Schema(
 
     item_price: { type: String },
 
-    // item_data: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   refPath: 'item_type',
-    //   required: true
-    // },
+    total_rating: { type: Number, required: false, default: 0 },
+
+    average_rating: { type: Number, required: false, default: 0 },
+
+    hidden_ingredients_in_product: [{ type: String }],
+
 
     item_type: {
       type: String,
@@ -48,6 +49,9 @@ const itemSchema = new mongoose.Schema(
         },
       },
     ],
+
+    user: { type: mongoose.Types.ObjectId, ref: "User" },
+
 
     comments: [
       {

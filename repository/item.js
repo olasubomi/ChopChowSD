@@ -1,5 +1,6 @@
 const { filter } = require("bluebird");
 const { Item } = require("../model/item");
+const { NotificationService } = require("./notificationService");
 const { item_description } = require("../db/dbMongo/config/db_buildSchema");
 
 
@@ -123,7 +124,8 @@ const deleteItem = async (payload) => {
 
 const itemUpdate = async (payload, arrayId) => {
   try {
-    return await Item.findOneAndUpdate(
+
+    const updatedItem = await Item.findOneAndUpdate(
       { _id: payload.itemId },
       {
         $set: {
@@ -135,6 +137,16 @@ const itemUpdate = async (payload, arrayId) => {
         arrayFilters: [{ "elemA._id": arrayId }],
       }
     );
+
+    if (payload.status || payload.item_status) {
+
+      NotificationService.publishMessage(updatedItem.user, "status_updated",
+        { message: "Item status updated", data: updatedItem })
+
+    }
+
+    return updatedItem;
+
   } catch (error) {
     console.log(error);
   }
@@ -174,6 +186,21 @@ const paginate2 = async (page, filter) => {
   return { skip, limit, docCount };
 };
 
+const updateItem = async (filter, payload) => {
+  try {
+    return await Item.findOneAndUpdate(
+      filter,
+      {
+        $set: payload,
+      },
+      { new: true }
+    );
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+
 
 const updateUserComment = async (payload) => { };
 
@@ -205,6 +232,7 @@ module.exports = {
   itemUpdate,
   paginate,
   getOneUserItem,
+  updateItem
   filterItem,
   getSimilarItem
 };

@@ -1,9 +1,25 @@
 const { Comment } = require("../model/comment");
+const CommentEventHandler = require("./commentEventEmitter");
+const eventEmitter = CommentEventHandler.create();
 const { findUser } = require("./user");
+
 
 const createComment = async (payload) => {
     try {
-        return await Comment.create(payload);
+
+        const newComment = await Comment.create(payload);
+
+        if (payload.rating) {
+            eventEmitter.emit("commentEvent", newComment)
+        }
+
+        eventEmitter.emit("createPushNotification", {
+            eventType: "comment_created",
+            event: "comment",
+            data: newComment
+        })
+
+        return newComment
     } catch (error) {
         console.log({ error });
         throw error
@@ -18,7 +34,6 @@ const createCommentReply = async (payload) => {
             $push: { replies: comment._id },
         })
 
-        console.log({ updateComment })
         return comment;
     } catch (error) {
         console.log({ error });
@@ -28,8 +43,13 @@ const createCommentReply = async (payload) => {
 
 const updateComment = async (filter, payload) => {
     try {
+        const updatedComment = await Comment.findOneAndUpdate(filter, payload, { new: true });
 
-        return await Comment.findOneAndUpdate(filter, payload, { new: true });
+        if (payload.rating) {
+            eventEmitter.emit("commentUpdatedEvent", updatedComment)
+        }
+
+        return updatedComment
     } catch (error) {
         console.log({ error });
         throw error
@@ -177,8 +197,11 @@ const getComment = async (filter) => {
 
 const deleteComment = async (id) => {
     try {
+        const getComment = await Comment.findById(id)
+
         const deleteComment = await Comment.deleteOne({ _id: id });
         if (deleteComment) {
+            eventEmitter.emit("commentDeletedEvent", getComment)
             return { message: "Comment successfully removed" };
         }
     } catch (error) {
@@ -202,18 +225,11 @@ const paginate = async (page, filter) => {
     return { skip, limit, docCount };
 };
 
-// const calculateNewAverageRating = async (existingRating, totalRatings, newRating) => {
+const getItemCommentsCount = async (filter) => {
+    const count = await Comment.countDocuments(filter);
+    return { count }
+};
 
-//     const totalRatingSum = existingRating * totalRatings + newRating;
-
-//     const newTotalRatings = totalRatings + 1;
-
-//     let newAverageRating = totalRatingSum / newTotalRatings;
-
-//     newAverageRating = newAverageRating.toFixed(2)
-
-//     return { newAverageRating, newTotalRatings };
-// }
 
 module.exports = {
     createComment,
@@ -222,6 +238,7 @@ module.exports = {
     getItemComments,
     getComment,
     deleteComment,
+    getItemCommentsCount,
     upVoteComment,
     downVoteComment
 };

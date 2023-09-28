@@ -12,7 +12,10 @@ const productSchema = new mongoose.Schema(
   {
     product_size: { type: String },
 
-    product_name: { type: String },
+    total_rating: { type: String, required: false },
+
+    average_rating: { type: String, required: false },
+
 
     product_alternatives: [{ type: String }],
 
