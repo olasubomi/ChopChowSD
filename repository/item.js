@@ -232,7 +232,7 @@ module.exports = {
   itemUpdate,
   paginate,
   getOneUserItem,
-  updateItem
+  updateItem,
   filterItem,
   getSimilarItem
 };

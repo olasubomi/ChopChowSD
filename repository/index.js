@@ -10,6 +10,7 @@ const {
   validateToken,
   findUser,
 } = require("./user.js");
+
 const {
   getMeals,
   getMeal,
@@ -101,7 +102,7 @@ const {
   getItemComments,
   getComment,
   deleteComment,
-  getItemCommentsCount
+  getItemCommentsCount,
   upVoteComment,
   downVoteComment
 } = require("./comment.js")
