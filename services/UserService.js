@@ -8,11 +8,10 @@ const {
   validatePassWord,
   generatePasswordResetToken,
   updateUser,
+  deleteUser,
   validateToken,
 } = require("../repository");
-const {
-  customer_grocery_list,
-} = require("../db/dbMongo/config/db_buildSchema");
+
 const { forgotPasswordEmail } = require("../mailer/nodemailer");
 const { generateRefreshTokens } = require("../repository/user");
 
@@ -211,6 +210,23 @@ class UserService {
       throw error;
     }
   }
+
+  static async updateUserProfile(userId, payload) {
+    try {
+      return await updateUser(userId, payload);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async deleteUserProfile(userId) {
+    try {
+      return await deleteUser(userId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async getGroceryList(userId) {
     try {
       const getGroceryList = await getCustomerGroceryList(userId);
@@ -220,13 +236,7 @@ class UserService {
     }
   }
 
-  static async updateUserProfile(userId, payload) {
-    try {
-      return await updateUser(userId, payload);
-    } catch (error) {
-      throw error;
-    }
-  }
+
 }
 
 module.exports = UserService;
