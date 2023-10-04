@@ -39,6 +39,6 @@ router.put("/updategrocerysuggestionslist/:listId", UserController.updateGrocery
 
 // router.delete("/removeallgrocerylistitems/:userId", removeList);
 // router.delete("/removegrocerylistitem/:idItem/:userId", removeItem);
-router.delete("/deleteuserprofile", UserController.deleteUserProfile);
+router.delete("/deleteuserprofile/", UserController.deleteUserProfile);
 
 module.exports = router;

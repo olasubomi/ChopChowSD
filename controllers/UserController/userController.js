@@ -136,10 +136,15 @@ module.exports = {
 
   deleteUserProfile: async (req, res) => {
     try {
+      console.log("comes in here");
       const user = await UserService.deleteUserProfile(req.params.id);
       if (userDeleted) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(user));
+        console.log("passes");
+
       } else {
+        console.log("fails");
+
         throw user;
       }
     } catch (error) {
