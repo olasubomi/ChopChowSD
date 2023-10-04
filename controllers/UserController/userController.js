@@ -42,6 +42,25 @@ module.exports = {
     }
   },
 
+  refreshToken: async (req, res) => {
+    try {
+      console.log(req.body);
+      const authenticateUser = await UserService.refreshToken(req);
+      if (authenticateUser) {
+        res
+          .status(authenticateUser.code || Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(authenticateUser));
+      } else {
+        throw authenticateUser;
+      }
+    } catch (error) {
+      console.log({ error });
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   forgotPassword: async (req, res) => {
     try {
       const response = await UserService.forgotPassword(req.body);

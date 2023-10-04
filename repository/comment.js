@@ -107,7 +107,7 @@ const upVoteComment = async (commentId, userId) => {
                 comment.up_votes = comment.up_votes + 1;
                 comment.item_type = 'Item'
                 await comment.save();
-                await comment.calculateRatings();
+                // await comment.calculateRatings();
             } else {
                 const up_voted_users = comment.up_voted_users;
                 const commentIndex = comment.up_voted_users.findIndex(_id => _id.toString() === userId.toString());
@@ -118,7 +118,7 @@ const upVoteComment = async (commentId, userId) => {
 
 
                 await comment.save();
-                await comment.calculateRatings();
+                // await comment.calculateRatings();
                 console.log('User has already upvoted')
             }
         } else {
@@ -153,7 +153,7 @@ const downVoteComment = async (commentId, userId) => {
                 comment.down_voted_users.push(user);
                 comment.down_votes = comment.down_votes + 1;
                 await comment.save();
-                await comment.calculateRatings();
+                // await comment.calculateRatings();
             } else {
                 const down_voted_user = comment.down_voted_users;
                 const commentIndex = comment.down_voted_users.findIndex(_id => _id.toString() === userId.toString());
@@ -164,7 +164,7 @@ const downVoteComment = async (commentId, userId) => {
 
 
                 await comment.save();
-                await comment.calculateRatings();
+                // await comment.calculateRatings();
                 console.log('User has already downvoted')
             }
         } else {

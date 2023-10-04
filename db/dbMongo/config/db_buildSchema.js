@@ -214,6 +214,15 @@ userSchema.methods.generateAccessTokens = async function (payload) {
   return accessToken;
 };
 
+
+userSchema.methods.generateRefreshTokens = async function (payload) {
+  const refreshToken = await sign(payload, process.env.SECRET, {
+    expiresIn: "7d",
+  });
+
+  return refreshToken;
+};
+
 userSchema.methods.generatePasswordResetToken = async function (payload) {
   let user = this;
 

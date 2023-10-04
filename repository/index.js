@@ -101,7 +101,7 @@ const {
   getItemComments,
   getComment,
   deleteComment,
-  getItemCommentsCount
+  getItemCommentsCount,
   upVoteComment,
   downVoteComment
 } = require("./comment.js")

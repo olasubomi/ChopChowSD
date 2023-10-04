@@ -4,9 +4,13 @@ const { hashPassword } = require("../lib/hashPassword");
 // const authenticationLogout = require("../controllers/authentication/authenticationLogout");
 const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
 const UserController = require('../controllers/UserController/userController')
+const { verifyRefreshToken } = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+
+
 
 router.post("/signup", upload.single(), transformObject, UserController.signUp);
 router.post("/signin", UserController.signIn);
+router.get("/refresh-token", verifyRefreshToken, UserController.refreshToken);
 router.post("/forgotpassword", UserController.forgotPassword);
 router.post("/resetpassword", UserController.resetPassword);
 router.get("/findUser/:id", UserController.findUser);
