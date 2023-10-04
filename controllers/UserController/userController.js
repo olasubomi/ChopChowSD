@@ -42,6 +42,25 @@ module.exports = {
     }
   },
 
+  refreshToken: async (req, res) => {
+    try {
+      console.log(req.body);
+      const authenticateUser = await UserService.refreshToken(req);
+      if (authenticateUser) {
+        res
+          .status(authenticateUser.code || Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(authenticateUser));
+      } else {
+        throw authenticateUser;
+      }
+    } catch (error) {
+      console.log({ error });
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   forgotPassword: async (req, res) => {
     try {
       const response = await UserService.forgotPassword(req.body);
@@ -113,24 +132,6 @@ module.exports = {
     }
   },
 
-  getGroceryList: async (req, res) => {
-    const { userId } = req.params;
-    try {
-      const groceryList = await UserService.getGroceryList(userId);
-      if (groceryList) {
-        res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(groceryList));
-      } else {
-        throw groceryList;
-      }
-    } catch (error) {
-      return res
-        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
-        .json(new ErrorResponse(error));
-    }
-  },
-
   updateUserProfile: async (req, res) => {
     try {
       const updatedProfile = await UserService.updateUserProfile(
@@ -148,6 +149,44 @@ module.exports = {
       console.log(error);
       return res
         .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  deleteUserProfile: async (req, res) => {
+    try {
+      console.log("comes in here");
+      const user = await UserService.deleteUserProfile(req.params.id);
+      if (userDeleted) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(user));
+        console.log("passes");
+
+      } else {
+        console.log("fails");
+
+        throw user;
+      }
+    } catch (error) {
+      return res
+        .status(error?.code || Response?.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  getGroceryList: async (req, res) => {
+    const { userId } = req.params;
+    try {
+      const groceryList = await UserService.getGroceryList(userId);
+      if (groceryList) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(groceryList));
+      } else {
+        throw groceryList;
+      }
+    } catch (error) {
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },
@@ -189,9 +228,5 @@ module.exports = {
 
   updateGrocerySuggestionsList: async (req, res) => {
     return res.status(200);
-  },
-
-  closeAccount: async (req, res) => {
-    return res.status(200);
-  },
+  }
 };

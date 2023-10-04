@@ -10,6 +10,7 @@ const {
   validateToken,
   findUser,
 } = require("./user.js");
+
 const {
   getMeals,
   getMeal,
@@ -42,7 +43,7 @@ const {
   getGroceryList,
 } = require("./grocery");
 
-const { createItems } = require("./item");
+const { createItems, updateItem, getOneUserItem } = require("./item");
 
 
 
@@ -101,6 +102,7 @@ const {
   getItemComments,
   getComment,
   deleteComment,
+  getItemCommentsCount,
   upVoteComment,
   downVoteComment
 } = require("./comment.js")
@@ -147,6 +149,8 @@ module.exports = {
   findAllUserGroceryList,
   validateGroceryItem,
   addItemToList,
+  updateItem,
+  getOneUserItem,
   createNewList,
   getGroceryList,
   createMeal,
@@ -179,6 +183,7 @@ module.exports = {
   getItemComments,
   getComment,
   deleteComment,
+  getItemCommentsCount,
   upVoteComment,
   downVoteComment
 };

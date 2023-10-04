@@ -31,6 +31,10 @@ const userSchema = new Schema(
 
     date_of_birth: { type: String },
 
+    total_rating: { type: Number, required: false, default: 0 },
+
+    average_rating: { type: Number, required: false, default: 0 },
+
     phone_number: {
       // country_code: { type: String, required: true },
       type: String,
@@ -208,6 +212,15 @@ userSchema.methods.generateAccessTokens = async function (payload) {
   });
 
   return accessToken;
+};
+
+
+userSchema.methods.generateRefreshTokens = async function (payload) {
+  const refreshToken = await sign(payload, process.env.SECRET, {
+    expiresIn: "7d",
+  });
+
+  return refreshToken;
 };
 
 userSchema.methods.generatePasswordResetToken = async function (payload) {
@@ -440,6 +453,10 @@ exports.Supplier = mongoose.model(
       profile_picture: { type: String },
 
       background_picture: { type: String },
+
+      total_rating: { type: Number, required: false, default: 0 },
+
+      average_rating: { type: Number, required: false, default: 0 },
 
       supplier_address: {
         phone_number: { type: String },

@@ -16,7 +16,7 @@ router.post(
   transformObject,
   ProductController.updateProduct
 );
-router.get("/get-all-products/:page", ProductController.getAllProducts);
+router.get("/get-all-products/:page", verifyAuthentication, ProductController.getAllProducts);
 router.get("/getproduct/:productId", ProductController.getProduct);
 router.delete(
   "/deleteproduct/:productId",

@@ -87,6 +87,15 @@ const generateAccessTokens = async (payload) => {
   }
 };
 
+const generateRefreshTokens = async (payload) => {
+  try {
+    const user = await findUser({ email: payload.email });
+    return await user.generateRefreshTokens(payload);
+  } catch (error) {
+    throw error;
+  }
+};
+
 const generatePasswordResetToken = async (payload) => {
   const user = await findUser({ email: payload.email });
   return await user.generatePasswordResetToken(payload);
@@ -123,4 +132,5 @@ module.exports = {
   generatePasswordResetToken,
   validateToken,
   getUserGroceryList,
+  generateRefreshTokens
 };

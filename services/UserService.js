@@ -8,12 +8,12 @@ const {
   validatePassWord,
   generatePasswordResetToken,
   updateUser,
+  deleteUser,
   validateToken,
 } = require("../repository");
-const {
-  customer_grocery_list,
-} = require("../db/dbMongo/config/db_buildSchema");
+
 const { forgotPasswordEmail } = require("../mailer/nodemailer");
+const { generateRefreshTokens } = require("../repository/user");
 
 class UserService {
   static async userSignup(payload) {
@@ -55,6 +55,32 @@ class UserService {
     }
   }
 
+  static async refreshToken(req) {
+    try {
+      const user = req.user;
+      const generatedToken = await generateAccessTokens({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      });
+
+      const generatedRefreshToken = await generateRefreshTokens({
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      });
+
+      return {
+        success: true,
+        message: "User refreshed successfully",
+        token: generatedToken,
+        refreshToken: generatedRefreshToken,
+      };
+    } catch (e) {
+      console.log('Refresh token error', e)
+    }
+  }
+
   static async login(payload) {
     try {
 
@@ -76,10 +102,17 @@ class UserService {
         email: userExist.email,
       });
 
+      const generatedRefreshToken = await generateRefreshTokens({
+        id: userExist._id,
+        username: userExist.username,
+        email: userExist.email,
+      });
+
       return {
         success: true,
         message: "Authentication successful!",
         token: generatedToken,
+        refreshToken: generatedRefreshToken,
         user: userExist,
       };
     } catch (error) {
@@ -177,6 +210,23 @@ class UserService {
       throw error;
     }
   }
+
+  static async updateUserProfile(userId, payload) {
+    try {
+      return await updateUser(userId, payload);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async deleteUserProfile(userId) {
+    try {
+      return await deleteUser(userId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async getGroceryList(userId) {
     try {
       const getGroceryList = await getCustomerGroceryList(userId);
@@ -186,13 +236,7 @@ class UserService {
     }
   }
 
-  static async updateUserProfile(userId, payload) {
-    try {
-      return await updateUser(userId, payload);
-    } catch (error) {
-      throw error;
-    }
-  }
+
 }
 
 module.exports = UserService;

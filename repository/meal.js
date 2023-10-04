@@ -1,5 +1,6 @@
 const { meals } = require("../db/dbMongo/config/db_buildSchema");
 
+
 exports.createMeal = async (payload) => {
   try {
     const checkMealExist = await meals.findOne({
@@ -72,13 +73,15 @@ exports.getMeal = async (filter) => {
 
 exports.updateMeal = async (filter, payload) => {
   try {
-    return await meals.findOneAndUpdate(
+    const updatedMeal = await meals.findOneAndUpdate(
       filter,
       {
         $set: payload,
       },
       { new: true }
     );
+
+    return updateMeal
   } catch (error) {
     console.log({ error });
   }
