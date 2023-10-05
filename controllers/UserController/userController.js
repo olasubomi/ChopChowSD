@@ -157,7 +157,7 @@ module.exports = {
     try {
       console.log("comes in here");
       const user = await UserService.deleteUserProfile(req.params.id);
-      if (userDeleted) {
+      if (user) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(user));
         console.log("passes");
 
