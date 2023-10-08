@@ -22,6 +22,7 @@ const {
   addJsonDataToGroceryList,
 } = require("../repository/grocery");
 const { getSimilarItem } = require("../repository/item");
+const { createNewMeasurment } = require("../repository/measurement");
 
 class GroceryService {
   static async createGroceryList(payload, res) {
@@ -253,12 +254,27 @@ class GroceryService {
 
       const checkExist = await checkIfGroceryListExist({ listName: value.listName })
       if (checkExist) {
-        return await addJsonDataToGroceryList({
-          listName: value.listName,
-          item_name: value.item_name,
-          quantity: value.quantity || '',
-          measurement: value.measurement || ''
+        return await addJsonDataToGroceryList({ ...value })
+      }
+      // con
+    } catch (e) {
+      throw e
+    }
+  }
+
+
+  static async AddNewMeasurementToGroceryList(payload, res) {
+    try {
+      const { error, value } = vaidateJsonDataToBeAddedToGroceryList(payload);
+      if (error) return res.status(400).send(error.details[0].message);
+
+      const checkExist = await checkIfGroceryListExist({ listName: value.listName })
+      if (checkExist) {
+        const measurement = await createNewMeasurment({
+          measurement_name: value.measurement
         })
+        return await addJsonDataToGroceryList({ ...value, measurement: measurement?.measurement?._id }, value.measurement)
+
       }
       // con
     } catch (e) {
