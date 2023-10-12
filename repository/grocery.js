@@ -138,16 +138,24 @@ const addAnItemToAGroceryList = async (payload) => {
   }
 }
 
-const addJsonDataToGroceryList = async (payload) => {
+const addJsonDataToGroceryList = async (payload, measurement_name) => {
   try {
-    await checkIfJsonDataHasAlready({
-      listName: payload.listName,
-      item_name: payload.item_name
-    })
+    if (payload.item_name) {
+      await checkIfJsonDataHasAlready({
+        listName: payload.listName,
+        item_name: payload.item_name
+      })
+    }
+
+    if (measurement_name) {
+      await checkIfMeasurementDataHasAlready({
+        listName: payload.listName,
+        measurement_name: measurement_name
+      })
+    }
 
     const data = {
       id: Math.floor(Math.random() * 1000000000000),
-      item_name: payload.item_name,
       createdAt: new Date(),
       ...payload
     }
@@ -163,6 +171,7 @@ const addJsonDataToGroceryList = async (payload) => {
       }
     )
   } catch (error) {
+    console.log('errr', error)
     throw {
       error: error,
       message: error.message || "Add item grocery list operation failed",
@@ -198,10 +207,35 @@ const checkIfJsonDataHasAlready = async (payload) => {
   }
 }
 
+const checkIfMeasurementDataHasAlready = async (payload) => {
+  try {
+    const groceryList = await checkIfGroceryListExist({ listName: payload.listName });
+    console.log(groceryList.groceryItems, 'groceryList')
+    groceryList.groceryItems.map(eleme => {
+      console.log(eleme.itemData.measurement)
+    })
+    const doesExist = groceryList.groceryItems.some(element => element.itemData?.measurement?.measurement_name.toString() === payload.measurement_name);
+    if (doesExist) {
+      throw "Meausurement already exist on grocery list"
+    }
+  } catch (e) {
+    console.log(e, 'eelele')
+    throw "Check operation failed"
+
+  }
+}
+
+
 
 const checkIfGroceryListExist = async (filter) => {
   try {
-    return await GroceryList.findOne(filter).populate('groceryItems')
+    return await GroceryList.findOne(filter).
+      populate({
+        path: 'groceryItems',
+        populate: {
+          path: 'item measurement itemData.measurement'
+        }
+      })
   } catch (error) {
     throw {
       error: error,
@@ -223,6 +257,7 @@ const getAllGroceryList = async (userId) => {
         }
       })
 
+
   } catch (error) {
     throw error
   }
@@ -235,7 +270,7 @@ const getOneGrocery = async (id) => {
       .populate({
         path: 'groceryItems',
         populate: {
-          path: 'item measurement'
+          path: 'item measurement itemData.measurement'
         }
       })
   } catch (error) {
@@ -301,5 +336,6 @@ module.exports = {
   updateGroceryDetails,
   deleteGroceryList,
   checkIfJsonDataHasAlready,
-  addJsonDataToGroceryList
+  addJsonDataToGroceryList,
+  checkIfMeasurementDataHasAlready
 };

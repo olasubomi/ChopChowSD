@@ -50,6 +50,22 @@ module.exports = {
     }
   },
 
+  addNewMeasurementToGroceryList: async (req, res) => {
+    try {
+      const groceries = await GroceryService.AddNewMeasurementToGroceryList(req.body, res);
+      console.log('grocery', groceries)
+      if (groceries) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(groceries));
+      } else {
+        throw groceries;
+      }
+    } catch (error) {
+      return res
+        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getGroceryList: async (req, res) => {
     try {
       const groceries = await GroceryService.getGroceryList(

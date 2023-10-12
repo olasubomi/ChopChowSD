@@ -13,6 +13,8 @@ router.post("/", verifyAuthentication, GroceryController.addNewItemToGroceryList
 
 router.post('/grocery-item', verifyAuthentication, GroceryController.addNewJsonDataItemToGroceryList)
 
+router.post('/grocery-measurement', verifyAuthentication, GroceryController.addNewMeasurementToGroceryList)
+
 router.patch('/remove/:groceryListId/:groceryItemId', verifyAuthentication, GroceryController.removeItemFromGroceryList)
 
 router.post('/create', verifyAuthentication, GroceryController.createNewGroceryList)

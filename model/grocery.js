@@ -79,7 +79,7 @@ function validateItemToBeAddedToAGroceryList(list) {
 
 function vaidateJsonDataToBeAddedToGroceryList(list) {
   const schema = Joi.object({
-    item_name: Joi.string().required(),
+    item_name: Joi.string().optional(),
     listName: Joi.string().required(),
     quantity: Joi.string().optional(),
     measurement: Joi.string().optional()
