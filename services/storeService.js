@@ -55,9 +55,9 @@ class StoreService {
     }
   }
 
-  static async getSinglStore(filter) {
+  static async getSinglStore(filter, req) {
     try {
-      return await getStore(filter);
+      return await getStore(filter, req);
     } catch (error) {
       throw error;
     }

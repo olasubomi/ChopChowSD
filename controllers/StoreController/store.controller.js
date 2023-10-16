@@ -60,7 +60,7 @@ module.exports = {
     try {
       const store = await StoreService.getSinglStore({
         _id: req.params.storeId,
-      });
+      }, req);
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {
