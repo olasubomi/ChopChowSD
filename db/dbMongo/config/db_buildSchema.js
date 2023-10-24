@@ -208,7 +208,7 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 
 userSchema.methods.generateAccessTokens = async function (payload) {
   const accessToken = await sign(payload, process.env.SECRET, {
-    expiresIn: "1h",
+    expiresIn: "2h",
   });
 
   return accessToken;
@@ -776,6 +776,24 @@ exports.notifications = mongoose.model(
 );
 
 
+exports.Other = mongoose.model(
+  "other",
+  new Schema({
+    item_name: {
+      type: String,
+      required: true
+    },
+    item_image: String,
+    item_status: {
+      type: String,
+      default: "Draft"
+    }
+  },
+    {
+      timestamps: true
+    })
+)
+
 exports.item_description = mongoose.model(
   "item_description",
   new Schema({
@@ -814,6 +832,15 @@ exports.currencies = mongoose.model(
     { timestamps: true }
   )
 );
+
+exports.validateItemOther = (other) => {
+  const schema = Joi.object({
+    item_name: Joi.string().required(),
+    item_image: Joi.string().optional(),
+    listName: Joi.string().required()
+  })
+  return schema.validate(other)
+}
 
 exports.validateItemDescription = (description) => {
   const schema = Joi.object({

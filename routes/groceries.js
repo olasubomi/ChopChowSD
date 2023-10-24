@@ -2,6 +2,8 @@ const GroceryController = require("../controllers/GroceryController/grocery.cont
 const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
 const express = require("express");
 const router = express.Router();
+const { upload } = require("../utils/middleware");
+
 
 router.get("/list", verifyAuthentication, GroceryController.getAllGroceryListForAUser)
 
@@ -14,6 +16,8 @@ router.post("/", verifyAuthentication, GroceryController.addNewItemToGroceryList
 router.post('/grocery-item', verifyAuthentication, GroceryController.addNewJsonDataItemToGroceryList)
 
 router.post('/grocery-measurement', verifyAuthentication, GroceryController.addNewMeasurementToGroceryList)
+
+router.post('/grocery-other', verifyAuthentication, upload.single('item_image'), GroceryController.addNewOtherToGroceryList)
 
 router.patch('/remove/:groceryListId/:groceryItemId', verifyAuthentication, GroceryController.removeItemFromGroceryList)
 

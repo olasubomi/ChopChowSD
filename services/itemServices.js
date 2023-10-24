@@ -36,6 +36,7 @@ class ItemService {
       files.item_images = [];
       console.log(payload, files)
 
+
       if (payload.item_type === 'Meal') {
         //check if there are just just items in the payload, item_name and item_itye
         // if yes, then the user is trying to create an item from the grocery list

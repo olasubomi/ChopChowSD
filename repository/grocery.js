@@ -1,4 +1,4 @@
-const { User } = require("../db/dbMongo/config/db_buildSchema");
+const { User, Other } = require("../db/dbMongo/config/db_buildSchema");
 const { Item } = require("../model/item");
 const { Grocery } = require("../model/grocery");
 const { GroceryList } = require("../model/grocery-list");
@@ -138,6 +138,36 @@ const addAnItemToAGroceryList = async (payload) => {
   }
 }
 
+const addOtherGroceryList = async (payload) => {
+  try {
+    if (payload.item_name) {
+      await checkIfOtherHasBeenAdded({
+        listName: payload.listName,
+        item_name: payload.item_name
+      })
+    }
+
+    const data = await createGroceryListOther({
+      item_image: payload.item_image,
+      item_name: payload.item_name,
+    })
+
+    return await GroceryList.findOneAndUpdate(
+      { listName: payload.listName },
+      {
+        $push: {
+          groceryItems: {
+            other: data
+          }
+        }
+      }
+    )
+
+  } catch (error) {
+    console.log('error', error)
+  }
+}
+
 const addJsonDataToGroceryList = async (payload, measurement_name) => {
   try {
     if (payload.item_name) {
@@ -207,6 +237,28 @@ const checkIfJsonDataHasAlready = async (payload) => {
   }
 }
 
+const checkIfOtherHasBeenAdded = async (payload) => {
+  console.log('check payload', payload)
+  try {
+    const groceryList = await checkIfGroceryListExist({ listName: payload.listName });
+    const doesExist = groceryList.groceryItems.some(element => element?.other?.item_name?.toString() === payload?.item_name);
+    console.log(doesExist, 'doesExist')
+    if (doesExist) {
+      throw "Other already exist on grocery list"
+    }
+  } catch (e) {
+    console.log('e', e)
+    throw "Check operation failed"
+  }
+}
+
+const createGroceryListOther = async (payload) => {
+  const newOther = new Other(payload);
+  await newOther.save();
+  return newOther
+}
+
+
 const checkIfMeasurementDataHasAlready = async (payload) => {
   try {
     const groceryList = await checkIfGroceryListExist({ listName: payload.listName });
@@ -233,7 +285,7 @@ const checkIfGroceryListExist = async (filter) => {
       populate({
         path: 'groceryItems',
         populate: {
-          path: 'item measurement itemData.measurement'
+          path: 'item measurement itemData.measurement other'
         }
       })
   } catch (error) {
@@ -253,7 +305,7 @@ const getAllGroceryList = async (userId) => {
       .populate({
         path: 'groceryItems',
         populate: {
-          path: 'item measurement'
+          path: 'item measurement other'
         }
       })
 
@@ -270,7 +322,7 @@ const getOneGrocery = async (id) => {
       .populate({
         path: 'groceryItems',
         populate: {
-          path: 'item measurement itemData.measurement'
+          path: 'item measurement itemData.measurement other'
         }
       })
   } catch (error) {
@@ -337,5 +389,7 @@ module.exports = {
   deleteGroceryList,
   checkIfJsonDataHasAlready,
   addJsonDataToGroceryList,
-  checkIfMeasurementDataHasAlready
+  checkIfMeasurementDataHasAlready,
+  checkIfOtherHasBeenAdded,
+  addOtherGroceryList
 };
