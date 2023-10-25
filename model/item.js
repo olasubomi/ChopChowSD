@@ -32,7 +32,7 @@ const itemSchema = new mongoose.Schema(
 
     item_type: {
       type: String,
-      enum: ['Meal', 'Product', 'Utensil'],
+      enum: ['Meal', 'Product', 'Utensil', 'Other'],
       required: true
     },
 

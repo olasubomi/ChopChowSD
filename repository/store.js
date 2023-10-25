@@ -1,4 +1,5 @@
 const { Supplier } = require("../db/dbMongo/config/db_buildSchema");
+const { Item } = require("../model/item");
 
 const createStore = async (payload) => {
   try {
@@ -37,11 +38,22 @@ const getAllStores = async (page, filter) => {
   }
 };
 
-const getStore = async (filter) => {
+const getStore = async (filter, req) => {
   try {
-    return await Supplier.findOne(filter).populate(
+
+    const supplier = await Supplier.findOne(filter).populate(
       "store_account_users"
-    );
+    )
+    if (supplier) {
+      const items = await Item.find({ user: supplier.store_owner })
+      return {
+        supplier,
+        items
+      }
+    } else {
+      return {}
+    }
+
     // "sugggested_meals_and_products store_account_users"
 
   } catch (error) {

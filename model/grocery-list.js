@@ -39,6 +39,10 @@ const GroceryListSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'Measurement',
             }
+        },
+        other: {
+            type: Schema.Types.ObjectId,
+            ref: "other"
         }
     }],
     status: {

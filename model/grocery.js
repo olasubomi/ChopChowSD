@@ -74,6 +74,8 @@ function validateItemToBeAddedToAGroceryList(list) {
     })
   })
 
+
+
   return schema.validate(list)
 }
 
@@ -86,6 +88,7 @@ function vaidateJsonDataToBeAddedToGroceryList(list) {
   })
   return schema.validate(list)
 }
+
 
 
 

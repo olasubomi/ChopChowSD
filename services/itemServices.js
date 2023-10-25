@@ -36,6 +36,7 @@ class ItemService {
       files.item_images = [];
       console.log(payload, files)
 
+
       if (payload.item_type === 'Meal') {
         //check if there are just just items in the payload, item_name and item_itye
         // if yes, then the user is trying to create an item from the grocery list
@@ -260,6 +261,45 @@ class ItemService {
         const { error } = validateItemProduct(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
         return await createItem(payload);
+      } else if (payload.item_type === 'Other') {
+        console.log(payload, 'payayayay')
+        const { error } = validateItemMeal(payload); console.log('errr', error)
+        if (error) return res.status(400).send(error.details[0].message);
+
+        let obj = {}
+        if (files?.item_images?.length) {
+          for (let i = 0; i < item_images.length; i++) {
+            obj.item_images.push(item_images[i].location)
+            obj[`itemImage${i}`] = item_images[i].location
+          }
+          obj.item_images = files?.item_images
+        }
+
+        console.log({
+          item_name: payload.item_name,
+          item_type: payload.item_type,
+          ...obj
+        }, 'item patload')
+
+        const item = await createItem({
+          item_name: payload.item_name,
+          item_type: payload.item_type,
+          ...obj
+        });
+
+        const payload_ = {
+          userId: payload.user,
+          groceryList: {
+            listName: payload.listName,
+            groceryItems: {
+              itemId: item._id.toString()
+            }
+          }
+        }
+
+        console.log(payload_, 'payload_payload_')
+        return await GroceryService.AddNewItemToGroceryList(payload_, res);
+
       }
 
       // let itemImages = [];

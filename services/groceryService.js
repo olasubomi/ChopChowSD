@@ -1,4 +1,5 @@
 const { getOneGroceryList } = require("../controllers/GroceryController/grocery.controller");
+const { validateItemOther } = require("../db/dbMongo/config/db_buildSchema");
 const { validate, validateItemToBeAddedToAGroceryList, vaidateJsonDataToBeAddedToGroceryList } = require("../model/grocery");
 const { validateGroceryList, validateGroceryListUpdate } = require("../model/grocery-list");
 const { Item } = require("../model/item");
@@ -20,6 +21,8 @@ const {
   updateGroceryDetails,
   deleteGroceryList,
   addJsonDataToGroceryList,
+  addOtherToJson,
+  addOtherGroceryList,
 } = require("../repository/grocery");
 const { getSimilarItem } = require("../repository/item");
 const { createNewMeasurment } = require("../repository/measurement");
@@ -274,6 +277,27 @@ class GroceryService {
           measurement_name: value.measurement
         })
         return await addJsonDataToGroceryList({ ...value, measurement: measurement?.measurement?._id }, value.measurement)
+
+      }
+      // con
+    } catch (e) {
+      throw e
+    }
+  }
+
+  static async AddNewOtherToGroceryList(payload, res) {
+    try {
+
+      const { error, value } = validateItemOther(payload);
+      if (error) return res.status(400).send(error.details[0].message);
+
+      const checkExist = await checkIfGroceryListExist({ listName: value.listName })
+      if (checkExist) {
+        return await addOtherGroceryList({
+          listName: value.listName,
+          item_name: value.item_name,
+          item_image: payload.item_image
+        })
 
       }
       // con

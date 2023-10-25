@@ -34,6 +34,7 @@ const getItems = async (page, filter) => {
     .limit(getPaginate.limit)
     .skip(getPaginate.skip)
     .populate('item_categories item_description')
+    .populate('store_available')
   return { items: itemResponse, count: getPaginate.docCount };
 
 };
