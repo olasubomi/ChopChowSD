@@ -74,6 +74,8 @@ function validateItemToBeAddedToAGroceryList(list) {
     })
   })
 
+
+
   return schema.validate(list)
 }
 
