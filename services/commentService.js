@@ -6,7 +6,8 @@ const {
     getComment,
     deleteComment,
     upVoteComment,
-    downVoteComment
+    downVoteComment,
+    getAllUserComment
 } = require("../repository/index");
 
 class CommentService {
@@ -68,6 +69,14 @@ class CommentService {
     static async getComment(filter) {
         try {
             return await getComment(filter);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async getUserComment(filter) {
+        try {
+            return await getAllUserComment(filter);
         } catch (error) {
             throw error;
         }

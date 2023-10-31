@@ -13,6 +13,7 @@ const {
   updateUserComment,
   getOneUserItem,
   filterItem,
+  getItemsForAUser,
 } = require("../repository/item");
 
 const {
@@ -484,10 +485,19 @@ class ItemService {
       console.log(error);
     }
   }
-
+  getItemsForAUser
   static async getOneItem(filter, res) {
     try {
       return await getOneUserItem(filter)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  static async getItemForOneUser(userId, res) {
+    console.log(userId, 'userid')
+    try {
+      return await getItemsForAUser(userId)
     } catch (error) {
       console.log(error)
     }

@@ -55,6 +55,8 @@ module.exports = {
         }
     },
 
+
+
     upvoteComment: async (req, res) => {
         try {
             const { commentId } = req.params;
@@ -107,6 +109,21 @@ module.exports = {
         try {
             req.body.created_by = userId = req.user._id.toString();
             const comment = await CommentService.createCommentReply(req.body);
+            if (comment) {
+                res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(comment));
+            } else {
+                throw comment;
+            }
+        } catch (error) {
+            return res
+                .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+                .json(new ErrorResponse(error));
+        }
+    },
+
+    getAllUserComment: async (req, res) => {
+        try {
+            const comment = await CommentService.getUserComment(req.params.userId)
             if (comment) {
                 res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(comment));
             } else {

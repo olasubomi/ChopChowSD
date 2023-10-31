@@ -97,6 +97,16 @@ const getCategoryItems = async (filter) => {
   }
 };
 
+const getItemsForAUser = async (userId) => {
+  try {
+    return await Item.find({
+      user: userId
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const confirmItem = async (payload) => {
   try {
     return await Item.findById(payload);
@@ -235,5 +245,6 @@ module.exports = {
   getOneUserItem,
   updateItem,
   filterItem,
-  getSimilarItem
+  getSimilarItem,
+  getItemsForAUser
 };

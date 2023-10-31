@@ -85,6 +85,15 @@ const getItemComments = async (page, filter) => {
     }
 };
 
+const getAllUserComment = async (userId) => {
+    try {
+        const comments = await Comment.find({ created_by: userId }).populate('created_by');
+        return comments;
+    } catch (e) {
+        console.log(e, 'e');
+    }
+}
+
 
 const upVoteComment = async (commentId, userId) => {
     try {
@@ -240,5 +249,6 @@ module.exports = {
     deleteComment,
     getItemCommentsCount,
     upVoteComment,
-    downVoteComment
+    downVoteComment,
+    getAllUserComment
 };
