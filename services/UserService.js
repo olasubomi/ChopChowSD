@@ -12,7 +12,7 @@ const {
   validateToken,
 } = require("../repository");
 
-const { forgotPasswordEmail } = require("../mailer/nodemailer");
+const { forgotPasswordEmail, signUpEmail } = require("../mailer/nodemailer");
 const { generateRefreshTokens } = require("../repository/user");
 
 class UserService {
@@ -35,8 +35,27 @@ class UserService {
           message: "User already exist",
         };
       }
+      console.log(payload.email)
+      const userEmail = signUpEmail(payload.email);
+      console.log(userEmail)
+      if (userEmail) {
+        const newUser = await createUser(payload);
+        const generatedToken = await generateAccessTokens({
+          id: newUser._id,
+          username: newUser.username,
+          email: newUser.email,
+        });
 
-      const newUser = await createUser(payload);
+        return {
+          user: newUser,
+          token: generatedToken,
+          message: "User sucessfully registered",
+        };
+      } else {
+        throw {
+          message: "Unauthorised Email"
+        }
+      }
 
       const generatedToken = await generateAccessTokens({
         id: newUser._id,
