@@ -58,9 +58,31 @@ module.exports = {
 
   getStore: async (req, res) => {
     try {
-      const store = await StoreService.getSinglStore({
-        _id: req.params.storeId,
-      }, req);
+      let query = {}
+
+      if (req.query?.userId) {
+        query.store_owner = req.query?.userId
+      } else {
+        query._id = req.params.storeId
+      }
+      console.log('uqery', query)
+      const store = await StoreService.getSinglStore(query, req);
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  queryStore: async (req, res) => {
+    try {
+
+      const store = await StoreService.getAllStore(req.params.name, req);
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {

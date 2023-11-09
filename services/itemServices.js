@@ -31,10 +31,10 @@ const { createNewIngredient, getAllIngredient } = require("../repository/ingredi
 const GroceryService = require("./groceryService");
 
 class ItemService {
-  static async createItem(payload, files, res) {
+  static async createItem(payload, files = [], res) {
     try {
 
-      files.item_images = [];
+      // files.item_images = [];
       console.log(payload, files)
 
 
@@ -156,27 +156,30 @@ class ItemService {
         const { error } = validateItemMeal(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
         return await createItem(payload);
-      } else if (payload.item_type === 'Product') {
+      } else if (payload.item_type === 'Product' || payload.item_type === 'Utensil') {
         // 
         console.log(payload.listName)
+        payload.item_status = [
+          {
+            status: "Draft",
+            status_note: "Pending Approval",
+          },
+        ];
+
+        console.log(files?.item_images, 'files?.item_images')
+        if (files?.item_images?.length) {
+          for (let i = 0; i < item_images.length; i++) {
+            payload.item_images.push(item_images[i].location)
+            payload[`itemImage${i}`] = item_images[i].location
+          }
+        }
 
         if (payload.listName) {
-          payload.item_status = [
-            {
-              status: "Draft",
-              status_note: "Pending Approval",
-            },
-          ];
+
           const item_images = files.item_images || []
 
           payload.item_images = [];
 
-          if (files?.item_images?.length) {
-            for (let i = 0; i < item_images.length; i++) {
-              payload.item_images.push(item_images[i].location)
-              payload[`itemImage${i}`] = item_images[i].location
-            }
-          }
           const { error } = validateItemProduct(payload); console.log('errr', error)
           if (error) return res.status(400).send(error.details[0].message);
           const item = await createItem(payload);
@@ -196,10 +199,10 @@ class ItemService {
 
 
         console.log(payload)
-        payload.formatted_ingredients = JSON.parse(payload.formatted_ingredients)
-        payload.item_data = JSON.parse(payload.item_data)
+        payload.formatted_ingredients = JSON.parse(payload.formatted_ingredients || "[]")
+        payload.item_data = JSON.parse(payload.item_data || "{}")
         //product descrition
-        const all_description = JSON.parse(payload.description) || [];
+        const all_description = JSON.parse(payload.description) || "[]";
 
         let resp = all_description.map(async (element) => {
           let name = element.object_name;
@@ -220,8 +223,10 @@ class ItemService {
             return res
           })
         payload.item_description = allDesp;
-        payload.product_size = payload.item_data.product_size;
+        if (payload?.item_data?.product_size) {
+          payload.product_size = payload.item_data.product_size;
 
+        }
         payload.item_categories = JSON.parse(payload.item_categories).map(ele => ele.toString())
 
         const createCategories = await createCategoriesFromCreateMeal(payload.item_categories)
@@ -247,13 +252,10 @@ class ItemService {
             formatted_string_of_item
           })
 
-
-
           const abc = await createNewIngredient({
             item_name
           })
           console.log('abe', abc)
-
         }
 
         delete payload.item_data;
