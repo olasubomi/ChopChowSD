@@ -40,6 +40,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    is_verified: {
+      type: String,
+      default: false,
+    },
 
     food_preferences: [
       {
@@ -166,6 +170,7 @@ const userSchema = new Schema(
 
     tokens: {
       passwordResetToken: { type: String },
+      emailValidationToken: { type: String }
     },
   },
 
@@ -207,10 +212,13 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 };
 
 userSchema.methods.generateAccessTokens = async function (payload) {
+  let user = this;
   const accessToken = await sign(payload, process.env.SECRET, {
     expiresIn: "2h",
   });
+  user.tokens.emailValidationToken = accessToken;
 
+  await user.save();
   return accessToken;
 };
 
@@ -236,6 +244,8 @@ userSchema.methods.generatePasswordResetToken = async function (payload) {
 
   return passwordResetToken;
 };
+
+
 
 userSchema.methods.hashPassword = async function (password) {
   return await bcrypt.hash(password, 10);

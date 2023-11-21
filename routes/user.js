@@ -20,6 +20,7 @@ router.put("/updateuserprofile/:userId", verifyAuthentication, upload.single(), 
 router.post("/inviteuser", UserController.inviteUser);
 router.post("/notifyuser/", UserController.addNotification);
 router.get("/verifyToken/", verifyAuthentication, UserController.verifyToken);
+router.get("/verifyEmail", UserController.verifyEmail);
 
 
 router.get("/hash", hashPassword);
@@ -40,6 +41,8 @@ router.put("/updatenotifications/:userId", UserController.updateNotificiations);
 // router.put("/addnewitemtogrocerylist/:newItem/:userId", verifyAuthentication, addGroceryItemToUserList.add);
 router.put("/updatecartlist/:listId", UserController.updateCartList);
 router.put("/updategrocerysuggestionslist/:listId", UserController.updateGrocerySuggestionsList);
+
+
 
 // router.delete("/removeallgrocerylistitems/:userId", removeList);
 // router.delete("/removegrocerylistitem/:idItem/:userId", removeItem);
