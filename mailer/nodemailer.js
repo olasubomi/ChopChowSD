@@ -36,7 +36,7 @@ function signUpEmail(generatedToken, newUser) {
     html:
       `<b>Hello ${newUser.first_name} Thanks for signing up. Verify your email address to complete your signup so as to login successfully.</b> 
       <p>This link <b> expires in 2 hours</b>.</p>
-      <p> Click <a href =${`${currentURL}login?userid=${newUser._id}&token=${generatedToken}`}> here</a>
+      <p> Click <a href =${`${currentURL}verifyemail?userid=${newUser._id}&token=${generatedToken}`}> here</a>
       to proceed.</p>
       <p>Subomi A.<br></br>` +
       "Customer Satisfaction Specialist,<br></br>" +
