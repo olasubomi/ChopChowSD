@@ -66,6 +66,34 @@ const getStore = async (filter, req) => {
   }
 };
 
+const getAllSupplier = async (filter, req) => {
+  try {
+
+    const supplier = await Supplier.find({
+      store_name: { $regex: filter, $options: "i" }
+    }).populate(
+      "store_account_users"
+    )
+    if (supplier) {
+      return {
+        supplier,
+      }
+    } else {
+      return {}
+    }
+
+    // "sugggested_meals_and_products store_account_users"
+
+  } catch (error) {
+    console.log({ error });
+    throw {
+      error: error,
+      messsage: error.message || "Get single store operation failed",
+      code: error.code || 500,
+    };
+  }
+};
+
 const deleteStore = async (id) => {
   try {
     const deleteStore = await Supplier.deleteOne({ _id: id });
@@ -99,4 +127,5 @@ module.exports = {
   updateStore,
   getStore,
   deleteStore,
+  getAllSupplier
 };

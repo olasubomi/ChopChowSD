@@ -19,6 +19,8 @@ const itemSchema = new mongoose.Schema(
 
     item_intro: { type: String },
 
+    item_available: { type: Boolean },
+
     item_categories: [{ type: mongoose.Types.ObjectId, ref: "Category" }],
 
     item_price: { type: String },
@@ -29,6 +31,7 @@ const itemSchema = new mongoose.Schema(
 
     hidden_ingredients_in_product: [{ type: String }],
 
+    item_price: { type: Number },
 
     item_type: {
       type: String,
@@ -77,7 +80,9 @@ const itemSchema = new mongoose.Schema(
       item_name: String,
       item_quantity: Number,
       item_measurement: String,
-      formatted_string_of_item: String
+      formatted_string_of_item: String,
+      item_price: Number,
+      product_available: Boolean
     }],
 
     total_rating: { type: Number, default: 0 },
@@ -164,7 +169,7 @@ function validateItemMeal(item) {
       Joi.object({
         title: Joi.string().required(),
         instructionSteps: Joi.array().items(Joi.string().required()),
-        dataName: Joi.string().required()
+        dataName: Joi.any().optional()
       })).optional(),
 
     item_status: Joi.array().items(Joi.object({

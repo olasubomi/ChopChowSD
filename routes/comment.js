@@ -12,6 +12,8 @@ router.delete("/delete/:commentId", protect, CommentController.deleteComment)
 
 router.patch('/upvote/:commentId', protect, CommentController.upvoteComment)
 router.patch('/downvote/:commentId', protect, CommentController.downvoteComment)
+router.get('/user/:userId', protect, CommentController.getAllUserComment)
+
 
 
 

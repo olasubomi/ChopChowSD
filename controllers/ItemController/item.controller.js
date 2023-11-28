@@ -35,6 +35,22 @@ module.exports = {
     }
   },
 
+  getOneUserItem: async (req, res) => {
+    try {
+      const items = await ItemService.getItemForOneUser(
+        req.params.userId);
+      if (items) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(items));
+      } else {
+        throw items;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getStoreItems: async (req, res) => {
     try {
       const storeItems = await ItemService.getAllStoreItems(

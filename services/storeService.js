@@ -5,6 +5,7 @@ const {
   getStore,
   deleteStore,
 } = require("../repository/index");
+const { getAllSupplier } = require("../repository/store");
 
 class StoreService {
   static async createStore(payload, files) {
@@ -30,16 +31,17 @@ class StoreService {
 
   static async updateStore(filter, payload, files) {
     try {
-      if (files) {
+      if (files?.length) {
         files.map((file) => {
-          if (file?.fileName === "profile_picture") {
-            payload.profile_picture = file?.url;
+          if (file?.fieldname === "profile_picture") {
+            payload.profile_picture = file?.location;
           }
-          if (file?.fileName === "background_picture") {
-            payload.background_picture = file?.url;
+          if (file?.fieldname === "background_picture") {
+            payload.background_picture = file?.location;
           }
         });
       }
+      console.log('payload--', payload)
       return await updateStore(filter, payload);
     } catch (error) {
       console.log({ error });
@@ -66,6 +68,14 @@ class StoreService {
   static async removeStore(id) {
     try {
       return await deleteStore(id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getAllStore(filter) {
+    try {
+      return await getAllSupplier(filter);
     } catch (error) {
       throw error;
     }

@@ -1,4 +1,5 @@
 const { Inventory } = require("../db/dbMongo/config/inverntory");
+const { Item } = require("../model/item");
 
 exports.createInventory = async (payload) => {
   try {
@@ -8,8 +9,35 @@ exports.createInventory = async (payload) => {
       item_type: payload?.item_type,
     });
     if (checkExist) {
-      throw  "Item already exists in store inventory";
+      throw "Item already exists in store inventory";
     }
+    const item = await Item.findById({ _id: payload?.item })
+    let ingredeints_in_item = [...item.ingredeints_in_item]
+    let arr = []
+
+    ingredeints_in_item?.map((element) => {
+      const current = payload?.ingredients?.find(ele => ele?.item_name === element?.item_name)
+      arr.push(
+        {
+          item_price: Number(current?.set_price),
+          product_available: current?.product_available,
+          item_quantity: current?.item_quantity,
+          item_name: element?.item_name,
+          item_measurement: element?.item_measurement,
+          formatted_string_of_item: element?.formatted_string_of_item,
+          _id: element._id
+        }
+      )
+    })
+    await Item.findByIdAndUpdate({ _id: payload?.item }, {
+      $set: {
+        item_price: Number(payload?.meal_price),
+        item_available: payload?.in_stock,
+        meal_prep_time: payload?.estimated_preparation_time,
+        ingredeints_in_item: arr
+      },
+    }, { new: true })
+
     return await Inventory.create(payload);
   } catch (error) {
     throw {

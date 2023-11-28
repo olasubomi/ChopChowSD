@@ -41,8 +41,12 @@ router.get("/category-items/:categoryId", ItemController.getCategoryItems);
 
 router.post("/item-control", verifyAuthentication, ItemController.approveItems);
 
+router.get("/users/:userId", verifyAuthentication, ItemController.getOneUserItem);
+
 router.delete("/delete/:itemId", verifyAuthentication, ItemController.deleteItem);
 
 router.post("/comments", verifyAuthentication, ItemController.updateComment);
+
+router.get("/suggested-meal/:id", verifyAuthentication)
 
 module.exports = router;

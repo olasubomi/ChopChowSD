@@ -15,6 +15,8 @@ router.post(
 
 router.get("/getstore/:storeId", StoreController.getStore);
 router.get("/getallstores/:page", StoreController.getStores); // sort by location/rating
+router.get("/store/:name", StoreController.queryStore);
+
 
 router.put(
   "/updatestore/:storeId",
