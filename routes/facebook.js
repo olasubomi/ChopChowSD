@@ -12,12 +12,18 @@ passport.use(
       callbackURL: "https://www.chopchowserver.vercel.app/renderEJS",
     },
     function (accessToken, refreshToken, profile, done) {
-      User.findOrCreate(function (err, user) {
+      const newUser = User.findOrCreate(function (err, user) {
         if (err) {
           return done(err);
         }
         done(null, user);
+
       });
+      if (newUser) {
+        const validUser =  findOne(newUser._id);
+        User.findOneAndUpdate({ _id: validUser._id }, { is_verified: true }, { new: true });
+        return;
+      }
     }
   )
 );
