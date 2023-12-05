@@ -165,7 +165,8 @@ class ItemService {
             status_note: "Pending Approval",
           },
         ];
-
+        const item_images = files.item_images || []
+        payload.item_images = []
         console.log(files?.item_images, 'files?.item_images')
         if (files?.item_images?.length) {
           for (let i = 0; i < item_images.length; i++) {
@@ -176,7 +177,6 @@ class ItemService {
 
         if (payload.listName) {
 
-          const item_images = files.item_images || []
 
           payload.item_images = [];
 
