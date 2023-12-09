@@ -465,11 +465,17 @@ exports.Supplier = mongoose.model(
         city: { type: String },
         zip_code: { type: String },
         country: { type: String },
+        lat: { type: String },
+        lng: { type: String },
+        place_id: { type: String },
+        address: { type: String }
       },
+
+      description: { type: String },
 
       email: { type: String },
 
-      hours: [{ type: String }],
+      hours: { type: Object },
 
       suggested_meals_and_products: [
         {

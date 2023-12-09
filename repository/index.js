@@ -71,6 +71,7 @@ const {
   updateStore,
   getStore,
   deleteStore,
+  getAllSupplierByAddress
 } = require("./store");
 
 const {
@@ -187,5 +188,6 @@ module.exports = {
   getItemCommentsCount,
   upVoteComment,
   downVoteComment,
-  getAllUserComment
+  getAllUserComment,
+  getAllSupplierByAddress
 };
