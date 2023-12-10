@@ -95,6 +95,21 @@ module.exports = {
     }
   },
 
+  queryStoreByAddress: async (req, res) => {
+    try {
+      const store = await StoreService.getAllStoresByAddress(req.params.address, req.body);
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   deleteStore: async (req, res) => {
     try {
       const store = await StoreService.removeStore(req.params.StoreId);
