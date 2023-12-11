@@ -11,7 +11,7 @@ const userSchema = new Schema(
 
     last_name: { type: String, required: true },
 
-    user_type: { type: String, default: "customer", enum: ['supplier', 'customer'] },
+    user_type: { type: String, default: "customer", enum: ['supplier', 'customer', 'admin'] },
 
     profile_picture: { type: String },
 
