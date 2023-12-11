@@ -7,6 +7,7 @@ module.exports = {
   createStore: async (req, res) => {
     try {
       req.body.store_owner = req.decoded.id;
+
       const store = await StoreService.createStore(req.body, req.files);
       const userId = req.user._id.toString();
       const user = await UserService.updateUserProfile({ _id: userId }, { user_type: "supplier" })
@@ -83,6 +84,21 @@ module.exports = {
     try {
 
       const store = await StoreService.getAllStore(req.params.name, req);
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  queryStoreByAddress: async (req, res) => {
+    try {
+      const store = await StoreService.getAllStoresByAddress(req.params.address, req.body);
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {

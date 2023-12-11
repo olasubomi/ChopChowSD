@@ -165,11 +165,9 @@ class ItemService {
             status_note: "Pending Approval",
           },
         ];
-        payload.item_images = [];
-
-
+        const item_images = files.item_images || []
+        payload.item_images = []
         console.log(files?.item_images, 'files?.item_images')
-        const item_images = files?.item_images || [];
 
         if (files?.item_images?.length) {
           for (let i = 0; i < files?.item_images.length; i++) {

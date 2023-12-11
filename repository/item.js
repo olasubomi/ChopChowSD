@@ -56,16 +56,32 @@ const getOneUserItem = async (filter) => {
   }
 };
 
+
 const filterItem = async (filter) => {
   try {
     return await Item.find({
-      item_name: { $regex: filter, $options: "i" },
-      'item_status': {
-        $elemMatch: {
-          'status': 'Public'
+      $or: [
+        {
+          ingredeints_in_item: {
+            $exists: true,
+            $ne: [],
+            $elemMatch: {
+              item_name: filter
+            }
+          }
+        },
+        {
+          item_name: { $regex: filter, $options: "i" },
+          'item_status': {
+            $elemMatch: {
+              'status': 'Public'
+            }
+          }
         }
-      }
-    }).populate('store_available')
+      ]
+    })
+      .populate('store_available');
+
   } catch (error) {
     console.log(error);
   }

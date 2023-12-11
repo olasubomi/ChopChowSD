@@ -4,6 +4,7 @@ const {
   updateStore,
   getStore,
   deleteStore,
+  getAllSupplierByAddress
 } = require("../repository/index");
 const { getAllSupplier } = require("../repository/store");
 
@@ -21,7 +22,10 @@ class StoreService {
           }
         });
       }
+      payload.supplier_address = payload.supplier_address ? JSON.parse(payload.supplier_address) : {};
+      payload.hours = payload.hours ? JSON.parse(payload.hours) : {};
 
+      console.log(payload)
       return await createStore(payload);
     } catch (error) {
       console.log({ error });
@@ -76,6 +80,14 @@ class StoreService {
   static async getAllStore(filter) {
     try {
       return await getAllSupplier(filter);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getAllStoresByAddress(filter, payload) {
+    try {
+      return await getAllSupplierByAddress(filter, payload);
     } catch (error) {
       throw error;
     }
