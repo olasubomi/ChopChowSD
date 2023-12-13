@@ -168,8 +168,9 @@ class ItemService {
         const item_images = files.item_images || []
         payload.item_images = []
         console.log(files?.item_images, 'files?.item_images')
+
         if (files?.item_images?.length) {
-          for (let i = 0; i < item_images.length; i++) {
+          for (let i = 0; i < files?.item_images.length; i++) {
             payload.item_images.push(item_images[i].location)
             payload[`itemImage${i}`] = item_images[i].location
           }
@@ -218,14 +219,16 @@ class ItemService {
           return descrp.description.toString()
         })
 
-        const allDesp = await Promise.all(resp)
-          .then(res => {
-            return res
-          })
-        payload.item_description = allDesp;
-        if (payload?.item_data?.product_size) {
-          payload.product_size = payload.item_data.product_size;
+        if (resp) {
+          const allDesp = await Promise.all(resp)
+            .then(res => {
+              return res
+            })
+          payload.item_description = allDesp;
+          if (payload?.item_data?.product_size) {
+            payload.product_size = payload.item_data.product_size;
 
+          }
         }
         payload.item_categories = JSON.parse(payload.item_categories).map(ele => ele.toString())
 
@@ -260,6 +263,9 @@ class ItemService {
 
         delete payload.item_data;
         delete payload.description;
+        if (payload.item_description?.length === 0) {
+          delete payload.item_description
+        }
 
         const { error } = validateItemProduct(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);

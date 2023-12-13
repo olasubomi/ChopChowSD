@@ -7,6 +7,7 @@ module.exports = {
   createStore: async (req, res) => {
     try {
       req.body.store_owner = req.decoded.id;
+
       const store = await StoreService.createStore(req.body, req.files);
       const userId = req.user._id.toString();
       const user = await UserService.updateUserProfile({ _id: userId }, { user_type: "supplier" })
