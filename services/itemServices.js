@@ -78,16 +78,17 @@ class ItemService {
 
         }
 
-        payload.formatted_ingredients = JSON.parse(payload.formatted_ingredients)
-        payload.item_categories = JSON.parse(payload.item_categories)
-        payload.meal_formatted_instructions = JSON.parse(payload.formatted_instructions)
-        payload.item_data = JSON.parse(payload.item_data)
-        payload.meal_prep_time = payload.item_data.prep_time
-        payload.meal_cook_time = payload.item_data.cook_time
-        payload.meal_chef = payload.item_data.chef
-        payload.meal_servings = payload.item_data.servings
-        payload.meal_kitchen_utensils = JSON.parse(payload.item_data.kitchen_utensils)
-        payload.meal_tips = payload.item_data.tips;
+        payload.formatted_ingredients = JSON.parse(payload?.formatted_ingredients || "[]")
+        payload.item_categories = JSON.parse(payload?.item_categories || "[]")
+        payload.meal_formatted_instructions = JSON.parse(payload?.formatted_instructions || "[]")
+        payload.item_data = JSON.parse(payload?.item_data || "{}")
+        payload.meal_prep_time = payload?.item_data.prep_time
+        payload.meal_cook_time = payload?.item_data.cook_time
+        payload.meal_chef = payload?.item_data.chef
+        payload.meal_servings = payload?.item_data.servings
+        payload.meal_kitchen_utensils = JSON.parse(payload?.item_data?.kitchen_utensils || "[]")
+        payload.meal_tips = payload?.item_data?.tips;
+
         payload.item_status = [
           {
             status: "Draft",
@@ -98,17 +99,18 @@ class ItemService {
 
         payload.item_images = [];
 
-        if (files.item_images.length) {
+
+
+        if (Array.isArray(files)) {
           for (let i = 0; i < item_images.length; i++) {
             payload.item_images.push(item_images[i].location)
             payload[`itemImage${i}`] = item_images[i].location
           }
-        }
-
-        for (let i = 1; i < 6; i++) {
-          if (files[`image_or_video_content_${i}`] !== undefined) {
-            const image = files[`image_or_video_content_${i}`];
-            payload[`meal_image_or_video_content${i}`] = image[0].location
+          for (let i = 1; i < 6; i++) {
+            if (files[`image_or_video_content_${i}`] !== undefined) {
+              const image = files[`image_or_video_content_${i}`];
+              payload[`meal_image_or_video_content${i}`] = image[0].location
+            }
           }
         }
 
@@ -137,7 +139,6 @@ class ItemService {
           })
 
         }
-        console.log(payload, 'payloading')
 
 
 
@@ -152,6 +153,25 @@ class ItemService {
 
         delete payload.formatted_instructions;
         delete payload.item_data
+
+        const keys = Object.keys(payload);
+        keys.map((element) => {
+          if (keys.indexOf(element) !== keys.lastIndexOf(element)) {
+            delete payload[element]
+          }
+        })
+        for (let ele in payload) {
+
+          if (!Boolean(payload[ele])) {
+            delete payload[ele]
+          }
+          if (Array.isArray(payload[ele]) && payload[ele].length === 0) {
+            delete payload[ele]
+
+          }
+        }
+        console.log(payload, 'payloading')
+
 
         const { error } = validateItemMeal(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
@@ -267,6 +287,15 @@ class ItemService {
           delete payload.item_description
         }
 
+        for (let ele in payload) {
+          if (!Boolean(payload[ele])) {
+            delete payload[ele]
+          }
+          if (Array.isArray(payload[ele]) && payload[ele].length === 0) {
+            delete payload[ele]
+
+          }
+        }
         const { error } = validateItemProduct(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
         return await createItem(payload);
