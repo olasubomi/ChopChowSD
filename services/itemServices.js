@@ -219,14 +219,16 @@ class ItemService {
           return descrp.description.toString()
         })
 
-        const allDesp = await Promise.all(resp)
-          .then(res => {
-            return res
-          })
-        payload.item_description = allDesp;
-        if (payload?.item_data?.product_size) {
-          payload.product_size = payload.item_data.product_size;
+        if (resp) {
+          const allDesp = await Promise.all(resp)
+            .then(res => {
+              return res
+            })
+          payload.item_description = allDesp;
+          if (payload?.item_data?.product_size) {
+            payload.product_size = payload.item_data.product_size;
 
+          }
         }
         payload.item_categories = JSON.parse(payload.item_categories).map(ele => ele.toString())
 
@@ -261,6 +263,9 @@ class ItemService {
 
         delete payload.item_data;
         delete payload.description;
+        if (payload.item_description?.length === 0) {
+          delete payload.item_description
+        }
 
         const { error } = validateItemProduct(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
