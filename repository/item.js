@@ -1,7 +1,7 @@
 const { filter } = require("bluebird");
 const { Item } = require("../model/item");
 const { NotificationService } = require("./notificationService");
-const { item_description } = require("../db/dbMongo/config/db_buildSchema");
+const { item_description, notifications, User } = require("../db/dbMongo/config/db_buildSchema");
 
 
 const createItem = async (payload) => {
@@ -166,7 +166,16 @@ const itemUpdate = async (payload, arrayId) => {
     );
 
     if (payload.status || payload.item_status) {
-
+      const notfication = await notifications.create({
+        message: `Suggested Meal: ${updatedItem.item_name} ${payload.status}`,
+        notifiableType: "Item",
+        notifiable: updatedItem
+      })
+      await User.findByIdAndUpdate({
+        _id: updatedItem.user,
+      }, {
+        $push: { notifications: notfication }
+      })
       NotificationService.publishMessage(updatedItem.user, "status_updated",
         { message: "Item status updated", data: updatedItem })
 

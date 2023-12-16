@@ -468,7 +468,8 @@ exports.Supplier = mongoose.model(
         lat: { type: String },
         lng: { type: String },
         place_id: { type: String },
-        address: { type: String }
+        address: { type: String },
+        state: { type: String }
       },
 
       description: { type: String },
@@ -773,7 +774,7 @@ exports.notifications = mongoose.model(
       notifiableType: {
         type: String,
         required: true,
-        enum: ["User", "Driver", "Product"],
+        enum: ["User", "Driver", "Product", "Item"],
       },
     },
 
