@@ -47,7 +47,7 @@ const deleteUser = async (id) => {
 
 const findUser = async (filter) => {
   try {
-    return await User.findOne(filter);
+    return await User.findOne(filter).populate('notifications')
   } catch (error) {
     console.log(error);
     throw error;

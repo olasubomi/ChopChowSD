@@ -6,7 +6,7 @@ const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 module.exports = {
   createStore: async (req, res) => {
     try {
-      req.body.store_owner = req.decoded.id;
+      // req.body.store_owner = req.decoded.id;
 
       const store = await StoreService.createStore(req.body, req.files);
       const userId = req.user._id.toString();
