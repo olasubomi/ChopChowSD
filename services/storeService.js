@@ -46,6 +46,8 @@ class StoreService {
         });
       }
       console.log('payload--', payload)
+      payload.supplier_address = JSON.parse(payload.supplier_address || "{}")
+      payload.hours = payload.hours ? JSON.parse(payload.hours) : {};
       return await updateStore(filter, payload);
     } catch (error) {
       console.log({ error });
