@@ -29,9 +29,12 @@ const { createDescription } = require("../repository/description");
 const { createNewMeasurment } = require("../repository/measurement");
 const { createNewIngredient, getAllIngredient } = require("../repository/ingredient");
 const GroceryService = require("./groceryService");
+const { capitalize } = require("lodash");
 
 class ItemService {
   static async createItem(payload, files = [], res) {
+
+
     try {
 
       // files.item_images = [];
@@ -118,10 +121,10 @@ class ItemService {
 
         for (let ingredient of payload?.formatted_ingredients || []) {
           const splited = ingredient.split(' ');
-          const item_name = splited.slice(3).join(' ');
+          const item_name = splited.slice(3).join(' ')
           const item_quantity = Number(splited[0])
           const item_measurement = splited[1]
-          const formatted_string_of_item = ingredient
+          const formatted_string_of_item = capitalize(ingredient || '')
 
           payload.ingredeints_in_item.push({
             item_name,
@@ -229,7 +232,7 @@ class ItemService {
           let name = element.object_name;
           delete element.object_name;
           const descrp = await createDescription({
-            description_key: name,
+            description_key: capitalize(name),
             ...element
           })
 

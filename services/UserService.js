@@ -84,7 +84,7 @@ class UserService {
   static async login(payload) {
     try {
 
-      const userExist = await findUser({ email: payload.email });
+      const userExist = await findUser({ email: payload.email })
 
       if (!userExist) {
         throw { message: "User does not exist" };
