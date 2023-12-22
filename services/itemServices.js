@@ -104,16 +104,18 @@ class ItemService {
 
 
 
-        if (Array.isArray(files)) {
+        if (Array.isArray(files?.item_images)) {
           for (let i = 0; i < item_images.length; i++) {
             payload.item_images.push(item_images[i].location)
             payload[`itemImage${i}`] = item_images[i].location
           }
-          for (let i = 1; i < 6; i++) {
-            if (files[`image_or_video_content_${i}`] !== undefined) {
-              const image = files[`image_or_video_content_${i}`];
-              payload[`meal_image_or_video_content${i}`] = image[0].location
-            }
+
+        }
+
+        for (let i = 1; i < 6; i++) {
+          if (files[`image_or_video_content_${i}`] !== undefined) {
+            const image = files[`image_or_video_content_${i}`];
+            payload[`meal_image_or_video_content${i}`] = image[0].location
           }
         }
 
