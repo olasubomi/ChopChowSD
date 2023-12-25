@@ -29,9 +29,12 @@ const { createDescription } = require("../repository/description");
 const { createNewMeasurment } = require("../repository/measurement");
 const { createNewIngredient, getAllIngredient } = require("../repository/ingredient");
 const GroceryService = require("./groceryService");
+const { capitalize } = require("lodash");
 
 class ItemService {
   static async createItem(payload, files = [], res) {
+
+
     try {
 
       // files.item_images = [];
@@ -101,16 +104,18 @@ class ItemService {
 
 
 
-        if (Array.isArray(files)) {
+        if (Array.isArray(files?.item_images)) {
           for (let i = 0; i < item_images.length; i++) {
             payload.item_images.push(item_images[i].location)
             payload[`itemImage${i}`] = item_images[i].location
           }
-          for (let i = 1; i < 6; i++) {
-            if (files[`image_or_video_content_${i}`] !== undefined) {
-              const image = files[`image_or_video_content_${i}`];
-              payload[`meal_image_or_video_content${i}`] = image[0].location
-            }
+
+        }
+
+        for (let i = 1; i < 6; i++) {
+          if (files[`image_or_video_content_${i}`] !== undefined) {
+            const image = files[`image_or_video_content_${i}`];
+            payload[`meal_image_or_video_content${i}`] = image[0].location
           }
         }
 
@@ -118,10 +123,10 @@ class ItemService {
 
         for (let ingredient of payload?.formatted_ingredients || []) {
           const splited = ingredient.split(' ');
-          const item_name = splited.slice(3).join(' ');
+          const item_name = splited.slice(3).join(' ')
           const item_quantity = Number(splited[0])
           const item_measurement = splited[1]
-          const formatted_string_of_item = ingredient
+          const formatted_string_of_item = capitalize(ingredient || '')
 
           payload.ingredeints_in_item.push({
             item_name,
@@ -229,7 +234,7 @@ class ItemService {
           let name = element.object_name;
           delete element.object_name;
           const descrp = await createDescription({
-            description_key: name,
+            description_key: capitalize(name),
             ...element
           })
 
