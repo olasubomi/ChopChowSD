@@ -1,10 +1,13 @@
+const { validateStoreInformation } = require("../db/dbMongo/config/db_buildSchema");
 const {
   getAllStores,
   createStore,
   updateStore,
   getStore,
   deleteStore,
-  getAllSupplierByAddress
+  getAllSupplierByAddress,
+  getAllStoresForUser,
+  checkStoreAvailability
 } = require("../repository/index");
 const { getAllSupplier } = require("../repository/store");
 
@@ -55,6 +58,30 @@ class StoreService {
     }
   }
 
+  static async claimStore(filter, payload, file) {
+    try {
+      if (file) {
+        payload.business_ownership_proof = file.location
+      }
+      const { error } = validateStoreInformation(payload);
+      const store = await checkStoreAvailability({
+        user: filter.userId,
+        store: filter.storeId
+      });
+      if (!Object.is(store, null)) {
+
+      }
+      console.log('errr', error)
+      if (error) throw new Error(error.details[0].message);
+
+      return await updateStore(filter, { business_information: payload });
+    } catch (error) {
+      console.log({ error });
+      throw error;
+    }
+  }
+
+
   static async getStores(page, filter) {
     try {
       return await getAllStores(page, filter);
@@ -90,6 +117,14 @@ class StoreService {
   static async getAllStoresByAddress(filter, payload) {
     try {
       return await getAllSupplierByAddress(filter, payload);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getAllUserStore(filter, payload) {
+    try {
+      return await getAllStoresForUser(filter, payload);
     } catch (error) {
       throw error;
     }

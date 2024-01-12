@@ -443,6 +443,35 @@ exports.meals = mongoose.model(
   )
 );
 
+exports.StoreClaim = mongoose.model(
+  "Store Claim",
+  new Schema(
+    {
+      store: {
+        type: Schema.Types.ObjectId,
+        ref: "Supplier"
+      },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      },
+      business_information: {
+        business_name: { type: String, required: true },
+        business_address: { type: String, required: true },
+        business_reg_number: { type: String, required: true },
+        business_ownership_proof: { type: String, required: true },
+
+      },
+      status: {
+        type: String,
+        default: 'UNAPPROVED',
+        enum: ['PENDING', 'APPROVED', 'REJECTED', 'UNAPPROVED']
+      }
+
+    }
+  )
+)
+
 exports.Supplier = mongoose.model(
   "Supplier",
   new Schema(
@@ -457,6 +486,7 @@ exports.Supplier = mongoose.model(
       total_rating: { type: Number, required: false, default: 0 },
 
       average_rating: { type: Number, required: false, default: 0 },
+
 
       supplier_address: {
         phone_number: { type: String },
@@ -857,3 +887,12 @@ exports.validateItemDescription = (description) => {
   return schema.validate(description);
 }
 
+exports.validateStoreInformation = (values) => {
+  const schema = Joi.object({
+    business_name: Joi.string().required(),
+    business_address: Joi.string().required(),
+    business_reg_number: Joi.string().required(),
+    business_ownership_proof: Joi.string().required(),
+  })
+  return schema.validate(values)
+}

@@ -42,6 +42,25 @@ module.exports = {
     }
   },
 
+  claimStore: async (req, res) => {
+    try {
+      const store = await StoreService.claimStore(
+        { _id: req.params.id },
+        req.body,
+        req.files || req.file || null
+      );
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      return res
+        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getStores: async (req, res) => {
     try {
       const store = await StoreService.getStores(req.params.page, req.query);
@@ -99,6 +118,21 @@ module.exports = {
   queryStoreByAddress: async (req, res) => {
     try {
       const store = await StoreService.getAllStoresByAddress(req.params.address, req.body);
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  getAllStoresForAuser: async (req, res) => {
+    try {
+      const store = await StoreService.getAllUserStore({ store_owner: req.params.userId });
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {
