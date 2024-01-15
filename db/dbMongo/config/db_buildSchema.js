@@ -549,6 +549,11 @@ exports.Supplier = mongoose.model(
           ref: "User",
         },
       ],
+      status: {
+        type: String,
+        enum: ['PENDING', 'PRIVATE', 'PUBLIC', 'DRAFT', 'REJECTED'],
+        default: "PENDING"
+      }
     },
     { timestamps: true }
   )

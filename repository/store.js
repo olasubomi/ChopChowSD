@@ -227,6 +227,7 @@ const getAllSupplierByAddress = async (filter, payload) => {
 const deleteStore = async (id) => {
   try {
     const deleteStore = await Supplier.deleteOne({ _id: id });
+    console.log(deleteStore, 'delete')
     if (deleteStore) {
       return { message: "store sucessfully removed" };
     }
