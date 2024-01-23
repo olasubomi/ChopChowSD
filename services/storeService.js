@@ -56,6 +56,13 @@ class StoreService {
       if (payload.hours) {
         payload.hours = payload.hours ? JSON.parse(payload.hours) : {};
       }
+      if (payload.currency) {
+        payload.currency = payload.currency ? JSON.parse(payload.currency) : {};
+      }
+      // for (let ele in payload) {
+      //   payload[ele] = JSON.parse(payload.ele)
+      // }
+
       return await updateStore(filter, payload);
     } catch (error) {
       console.log({ error });

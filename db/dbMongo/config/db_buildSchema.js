@@ -487,6 +487,16 @@ exports.Supplier = mongoose.model(
 
       average_rating: { type: Number, required: false, default: 0 },
 
+      currency: {
+        name: {
+          type: String,
+          default: "USD"
+        },
+        symbol: {
+          type: String,
+          default: "$"
+        }
+      },
 
       supplier_address: {
         phone_number: { type: String },

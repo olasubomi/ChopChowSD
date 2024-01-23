@@ -94,6 +94,7 @@ const {
   updateInventory,
   deleteInventory,
   createInventory,
+  allUserInventory
 } = require("./inventory");
 
 
@@ -193,5 +194,6 @@ module.exports = {
   getAllUserComment,
   getAllSupplierByAddress,
   getAllStoresForUser,
-  checkStoreAvailability
+  checkStoreAvailability,
+  allUserInventory
 };

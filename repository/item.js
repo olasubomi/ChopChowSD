@@ -98,7 +98,6 @@ const getUserItems = async (data) => {
       .populate("item_categories item_description")
       .skip(getPaginate.skip)
       .limit(getPaginate.limit)
-
     return { items: itemResponse, count: getPaginate.docCount };
   } catch (error) {
     console.log(error);

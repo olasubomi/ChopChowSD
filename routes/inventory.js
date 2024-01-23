@@ -12,6 +12,11 @@ router.post(
   verifyAuthentication,
   InventoryController.updateInventory
 );
+
+router.get(
+  '/user-inventory/:userId',
+  InventoryController.getUserInventory
+)
 router.get(
   "/get-all-inentories/:page",
   verifyAuthentication,
