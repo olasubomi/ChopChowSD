@@ -328,11 +328,12 @@ class ItemService {
         }
         const { error } = validateItemProduct(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
-        if (query?.action == 'update') {
-
+        if (query?.action === 'update') {
+          return await updateItem({ _id: query?._id }, payload)
         } else {
           return await createItem(payload);
         }
+
       } else if (payload.item_type === 'Other') {
         console.log(payload, 'payayayay')
         const { error } = validateItemMeal(payload); console.log('errr', error)
