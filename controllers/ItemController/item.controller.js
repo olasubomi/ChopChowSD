@@ -5,7 +5,7 @@ const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 module.exports = {
   createItem: async (req, res) => {
     try {
-      const item = await ItemService.createItem(req.body, req.files, res);
+      const item = await ItemService.createItem(req.body, req.files, res, req.query);
       if (item) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(item));
       } else {
