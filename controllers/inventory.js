@@ -25,7 +25,7 @@ module.exports = {
   getInventory: async (req, res) => {
     try {
       const inventory = await InventoryService.getInventory(
-        {_id:req?.params?.inventoryId}
+        { _id: req?.params?.inventoryId }
       );
       if (inventory) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(inventory));
@@ -79,6 +79,26 @@ module.exports = {
       const updatedInventory = await InventoryService.updateInventory(
         { _id: req.params.inventoryId } || req.query,
         req.body
+      );
+      if (updatedInventory) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(updatedInventory));
+      } else {
+        throw updatedInventory;
+      }
+    } catch (error) {
+      return res
+        .status(error?.code || Response?.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  getUserInventory: async (req, res) => {
+    try {
+      const updatedInventory = await InventoryService.getAllUserInventory(
+        { userId: req.params.userId },
+        req.query
       );
       if (updatedInventory) {
         res

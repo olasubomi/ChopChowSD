@@ -123,22 +123,30 @@ class ItemService {
         payload.ingredeints_in_item = []
 
         for (let ingredient of payload?.formatted_ingredients || []) {
-          const splited = ingredient.split(' ');
-          const item_name = splited.slice(3).join(' ')
-          const item_quantity = Number(splited[0])
-          const item_measurement = splited[1]
-          const formatted_string_of_item = capitalize(ingredient || '')
+          const item_name = ingredient?.item_name //splited.slice(splited.length - 1).join(' ')
+          const item_quantity = ingredient?.item_quantity// Number(splited[0])
+          const item_measurement = ingredient?.item_measurement //splited[1]
+          const formatted_string_of_item = capitalize(ingredient?.formatted_string_of_item || '')
+          let obj = {}
+          if (ingredient.item_name) {
+            obj.item_name = ingredient.item_name
+          }
+          if (ingredient.item_quantity) {
+            obj.item_quantity = ingredient.item_quantity
+          }
+          if (ingredient.item_measurement) {
+            obj.item_measurement = ingredient.item_measurement
+          }
+          if (ingredient.formatted_string_of_item) {
+            obj.formatted_string_of_item = ingredient.formatted_string_of_item
+          }
+          payload.ingredeints_in_item.push(obj)
 
-          payload.ingredeints_in_item.push({
-            item_name,
-            item_quantity,
-            item_measurement,
-            formatted_string_of_item
-          })
-
-          await createNewMeasurment({
-            measurement_name: item_measurement
-          })
+          if (item_measurement) {
+            await createNewMeasurment({
+              measurement_name: item_measurement
+            })
+          }
 
           await createNewIngredient({
             item_name
@@ -159,6 +167,7 @@ class ItemService {
 
         delete payload.formatted_instructions;
         delete payload.item_data
+        delete payload.formatted_ingredients
 
         const keys = Object.keys(payload);
         keys.map((element) => {
@@ -274,18 +283,26 @@ class ItemService {
         payload.ingredeints_in_item = []
 
         for (let ingredient of payload?.formatted_ingredients || []) {
-          const splited = ingredient.split(' ');
-          const item_name = splited.slice(3).join(' ');
-          const item_quantity = Number(splited[0])
-          const item_measurement = splited[1]
-          const formatted_string_of_item = ingredient
+          // const splited = ingredient.split(' ');
+          const item_name = ingredient?.item_name //splited.slice(splited.length - 1).join(' ')
+          const item_quantity = ingredient?.item_quantity// Number(splited[0])
+          const item_measurement = ingredient?.item_measurement //splited[1]
+          const formatted_string_of_item = capitalize(ingredient?.formatted_string_of_item || '')
 
-          payload.ingredeints_in_item.push({
-            item_name,
-            item_quantity,
-            item_measurement,
-            formatted_string_of_item
-          })
+          let obj = {}
+          if (ingredient.item_name) {
+            obj.item_name = ingredient.item_name
+          }
+          if (ingredient.item_quantity) {
+            obj.item_quantity = ingredient.item_quantity
+          }
+          if (ingredient.item_measurement) {
+            obj.item_measurement = ingredient.item_measurement
+          }
+          if (ingredient.formatted_string_of_item) {
+            obj.formatted_string_of_item = ingredient.formatted_string_of_item
+          }
+          payload.ingredeints_in_item.push(obj)
 
           const abc = await createNewIngredient({
             item_name
@@ -295,6 +312,7 @@ class ItemService {
 
         delete payload.item_data;
         delete payload.description;
+        delete payload.formatted_ingredients;
         if (payload.item_description?.length === 0) {
           delete payload.item_description
         }

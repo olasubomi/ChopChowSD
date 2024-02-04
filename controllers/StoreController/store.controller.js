@@ -37,6 +37,25 @@ module.exports = {
       }
     } catch (error) {
       return res
+        .status((error && error.code) || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  claimStore: async (req, res) => {
+    try {
+      const store = await StoreService.claimStore(
+        { _id: req.params.id },
+        req.body,
+        req.files || req.file || null
+      );
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      return res
         .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
@@ -111,9 +130,24 @@ module.exports = {
     }
   },
 
+  getAllStoresForAuser: async (req, res) => {
+    try {
+      const store = await StoreService.getAllUserStore({ store_owner: req.params.userId });
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   deleteStore: async (req, res) => {
     try {
-      const store = await StoreService.removeStore(req.params.StoreId);
+      const store = await StoreService.removeStore(req.params.storeId);
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {

@@ -101,6 +101,7 @@ const createNewGroceryList = async (payload) => {
     const groceryList = new GroceryList(payload);
     return await groceryList.save();
   } catch (error) {
+    console.log(error, 'rrr')
     throw {
       error: error,
       message: error.message || "Create grocery list operation failed",

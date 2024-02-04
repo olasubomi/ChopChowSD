@@ -23,7 +23,7 @@ module.exports = {
   updateCategory: async (req, res) => {
     try {
       const category = await CategoryService.updateCategory(
-        { _id: req.params.categoryId, ...req.query },
+        { _id: req.params.CategoryId, ...req.query },
         req.body,
         req.files || req.file || null
       );
@@ -33,8 +33,9 @@ module.exports = {
         throw category;
       }
     } catch (error) {
+      console.log(error, 'err')
       return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },
