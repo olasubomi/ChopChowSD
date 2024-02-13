@@ -1,4 +1,8 @@
-const { validate, validateItemMeal, validateItemProduct } = require("../model/item");
+const {
+  validate,
+  validateItemMeal,
+  validateItemProduct,
+} = require("../model/item");
 
 const {
   createItem,
@@ -14,21 +18,21 @@ const {
   getOneUserItem,
   filterItem,
   getItemsForAUser,
+  getAllItems
   updateItem,
 } = require("../repository/item");
 
-const {
-  createProduct
-} = require('../repository/product')
+const { createProduct } = require("../repository/product");
 
-const { createMeal } = require('../repository/meal')
+const { createMeal } = require("../repository/meal");
 
-const {
-  createCategoriesFromCreateMeal
-} = require('../repository/category');
+const { createCategoriesFromCreateMeal } = require("../repository/category");
 const { createDescription } = require("../repository/description");
 const { createNewMeasurment } = require("../repository/measurement");
-const { createNewIngredient, getAllIngredient } = require("../repository/ingredient");
+const {
+  createNewIngredient,
+  getAllIngredient,
+} = require("../repository/ingredient");
 const GroceryService = require("./groceryService");
 const { capitalize } = require("lodash");
 
@@ -37,12 +41,10 @@ class ItemService {
 
 
     try {
-
       // files.item_images = [];
-      console.log(payload, files)
+      console.log(payload, files);
 
-
-      if (payload.item_type === 'Meal') {
+      if (payload.item_type === "Meal") {
         //check if there are just just items in the payload, item_name and item_itye
         // if yes, then the user is trying to create an item from the grocery list
         if (payload.listName) {
@@ -56,15 +58,16 @@ class ItemService {
 
           payload.item_images = [];
 
-          console.log('item_images', files.item_images)
+          console.log("item_images", files.item_images);
           if (files.item_images.length) {
             for (let i = 0; i < item_images.length; i++) {
-              payload.item_images.push(item_images[i].location)
-              payload[`itemImage${i}`] = item_images[i].location
+              payload.item_images.push(item_images[i].location);
+              payload[`itemImage${i}`] = item_images[i].location;
             }
           }
 
-          const { error } = validateItemMeal(payload); console.log('errr', error)
+          const { error } = validateItemMeal(payload);
+          console.log("errr", error);
           if (error) return res.status(400).send(error.details[0].message);
 
           const item = await createItem(payload);
@@ -74,13 +77,13 @@ class ItemService {
               listName: payload.listName,
               groceryItems: {
                 itemId: item._id.toString(),
-              }
-            }
-          }
+              },
+            },
+          };
           await GroceryService.AddNewItemToGroceryList(groceryPayload, res);
-          return item
-
+          return item;
         }
+
 
         payload.formatted_ingredients = JSON.parse(payload?.formatted_ingredients || "[]")
         payload.item_categories = JSON.parse(payload?.item_categories || "[]")
@@ -107,8 +110,8 @@ class ItemService {
 
         if (Array.isArray(files?.item_images)) {
           for (let i = 0; i < item_images.length; i++) {
-            payload.item_images.push(item_images[i].location)
-            payload[`itemImage${i}`] = item_images[i].location
+            payload.item_images.push(item_images[i].location);
+            payload[`itemImage${i}`] = item_images[i].location;
           }
 
         }
@@ -116,13 +119,14 @@ class ItemService {
         for (let i = 1; i < 6; i++) {
           if (files[`image_or_video_content_${i}`] !== undefined) {
             const image = files[`image_or_video_content_${i}`];
-            payload[`meal_image_or_video_content${i}`] = image[0].location
+            payload[`meal_image_or_video_content${i}`] = image[0].location;
           }
         }
 
-        payload.ingredeints_in_item = []
+        payload.ingredeints_in_item = [];
 
         for (let ingredient of payload?.formatted_ingredients || []) {
+
           const item_name = ingredient?.item_name //splited.slice(splited.length - 1).join(' ')
           const item_quantity = ingredient?.item_quantity// Number(splited[0])
           const item_measurement = ingredient?.item_measurement //splited[1]
@@ -149,23 +153,22 @@ class ItemService {
           }
 
           await createNewIngredient({
-            item_name
-          })
-
+            item_name,
+          });
         }
-
-
 
         // payload.item_categories = JSON.parse(payload.item_categories).map(ele => ele.toString())
 
-        const createCategories = await createCategoriesFromCreateMeal(payload.item_categories)
-        const ele = await Promise.all(createCategories)
-          .then(res => {
-            return res
-          })
-        payload.item_categories = ele
+        const createCategories = await createCategoriesFromCreateMeal(
+          payload.item_categories
+        );
+        const ele = await Promise.all(createCategories).then((res) => {
+          return res;
+        });
+        payload.item_categories = ele;
 
         delete payload.formatted_instructions;
+
         delete payload.item_data
         delete payload.formatted_ingredients
 
@@ -188,10 +191,10 @@ class ItemService {
         console.log(payload, 'payloading')
 
 
-        const { error } = validateItemMeal(payload); console.log('errr', error)
+        const { error } = validateItemMeal(payload);
+        console.log("errr", error);
         if (error) return res.status(400).send(error.details[0].message);
-
-
+        
         if (query?.action == 'update') {
           return await updateItem({ _id: query?._id }, payload)
         } else {
@@ -206,6 +209,7 @@ class ItemService {
             status_note: "Pending Approval",
           },
         ];
+
         const item_images = files.item_images || []
         payload.item_images = []
         console.log(files?.item_images, 'files?.item_images')
@@ -218,11 +222,10 @@ class ItemService {
         }
 
         if (payload.listName) {
-
-
           payload.item_images = [];
 
-          const { error } = validateItemProduct(payload); console.log('errr', error)
+          const { error } = validateItemProduct(payload);
+          console.log("errr", error);
           if (error) return res.status(400).send(error.details[0].message);
           const item = await createItem(payload);
 
@@ -232,17 +235,18 @@ class ItemService {
               listName: payload.listName,
               groceryItems: {
                 itemId: item._id.toString(),
-              }
-            }
-          }
-          await GroceryService.AddNewItemToGroceryList(groceryPayload, res)
-          return item
+              },
+            },
+          };
+          await GroceryService.AddNewItemToGroceryList(groceryPayload, res);
+          return item;
         }
 
-
-        console.log(payload)
-        payload.formatted_ingredients = JSON.parse(payload.formatted_ingredients || "[]")
-        payload.item_data = JSON.parse(payload.item_data || "{}")
+        console.log(payload);
+        payload.formatted_ingredients = JSON.parse(
+          payload.formatted_ingredients || "[]"
+        );
+        payload.item_data = JSON.parse(payload.item_data || "{}");
         //product descrition
         const all_description = JSON.parse(payload.description) || "[]";
 
@@ -250,6 +254,7 @@ class ItemService {
           let name = element.object_name;
           delete element.object_name;
           const descrp = await createDescription({
+
             description_key: capitalize(name),
             ...element
           })
@@ -271,20 +276,24 @@ class ItemService {
 
           }
         }
-        payload.item_categories = JSON.parse(payload.item_categories).map(ele => ele.toString())
+        payload.item_categories = JSON.parse(payload.item_categories).map(
+          (ele) => ele.toString()
+        );
 
-        const createCategories = await createCategoriesFromCreateMeal(payload.item_categories)
-        const ele = await Promise.all(createCategories)
-          .then(res => {
-            return res
-          })
-        payload.item_categories = ele
+        const createCategories = await createCategoriesFromCreateMeal(
+          payload.item_categories
+        );
+        const ele = await Promise.all(createCategories).then((res) => {
+          return res;
+        });
+        payload.item_categories = ele;
 
-        payload.ingredeints_in_item = []
+        payload.ingredeints_in_item = [];
 
         console.log(payload?.formatted_ingredients, 'formatted_ingredients')
 
         for (let ingredient of payload?.formatted_ingredients || []) {
+
           // const splited = ingredient.split(' ');
           const item_name = ingredient?.item_name //splited.slice(splited.length - 1).join(' ')
           const item_quantity = ingredient?.item_quantity// Number(splited[0])
@@ -307,9 +316,9 @@ class ItemService {
           payload.ingredeints_in_item.push(obj)
 
           const abc = await createNewIngredient({
-            item_name
-          })
-          console.log('abe', abc)
+            item_name,
+          });
+          console.log("abe", abc);
         }
 
         delete payload.item_data;
@@ -318,6 +327,7 @@ class ItemService {
         if (payload.item_description?.length === 0) {
           delete payload.item_description
         }
+
 
         for (let ele in payload) {
           if (!Boolean(payload[ele])) {
@@ -343,25 +353,28 @@ class ItemService {
         const { error } = validateItemMeal(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
 
-        let obj = {}
+        let obj = {};
         if (files?.item_images?.length) {
           for (let i = 0; i < item_images.length; i++) {
-            obj.item_images.push(item_images[i].location)
-            obj[`itemImage${i}`] = item_images[i].location
+            obj.item_images.push(item_images[i].location);
+            obj[`itemImage${i}`] = item_images[i].location;
           }
-          obj.item_images = files?.item_images
+          obj.item_images = files?.item_images;
         }
 
-        console.log({
-          item_name: payload.item_name,
-          item_type: payload.item_type,
-          ...obj
-        }, 'item patload')
+        console.log(
+          {
+            item_name: payload.item_name,
+            item_type: payload.item_type,
+            ...obj,
+          },
+          "item patload"
+        );
 
         const item = await createItem({
           item_name: payload.item_name,
           item_type: payload.item_type,
-          ...obj
+          ...obj,
         });
 
         const payload_ = {
@@ -369,14 +382,13 @@ class ItemService {
           groceryList: {
             listName: payload.listName,
             groceryItems: {
-              itemId: item._id.toString()
-            }
-          }
-        }
+              itemId: item._id.toString(),
+            },
+          },
+        };
 
-        console.log(payload_, 'payload_payload_')
+        console.log(payload_, "payload_payload_");
         return await GroceryService.AddNewItemToGroceryList(payload_, res);
-
       }
 
       // let itemImages = [];
@@ -522,8 +534,7 @@ class ItemService {
       // const { error } = validate(payload); console.log('errr', error)
       // if (error) return res.status(400).send(error.details[0].message);
       // return await createItem(payload);
-      return res.json({ success: true })
-
+      return res.json({ success: true });
     } catch (error) {
       console.log({ error });
       throw error;
@@ -533,6 +544,14 @@ class ItemService {
   static async getAllItems(req, filter) {
     try {
       return await getItems(req, filter);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async getAllProductItems(filter) {
+    try {
+      return await getAllItems(filter);
     } catch (error) {
       console.log(error);
     }
@@ -561,29 +580,37 @@ class ItemService {
       console.log(error);
     }
   }
-  getItemsForAUser
+  getItemsForAUser;
   static async getOneItem(filter, res) {
     try {
-      return await getOneUserItem(filter)
+      return await getOneUserItem(filter);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
   static async getItemForOneUser(userId, res) {
-    console.log(userId, 'userid')
+    console.log(userId, "userid");
     try {
-      return await getItemsForAUser(userId)
+      return await getItemsForAUser(userId);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
-  static async filterUserItem(filter, res) {
+  // static async filterUserItem(filter, res) {
+  //   try {
+  //     return await filterItem(filter)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  static async filterUserItem(filter, itemType, res) {
     try {
-      return await filterItem(filter)
+      return await filterItem(filter, itemType);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -613,7 +640,7 @@ class ItemService {
 
   static async deleteItem(payload, res) {
     try {
-      console.log('payloader', payload)
+      console.log("payloader", payload);
       const checkItem = await confirmItem(payload.itemId);
       if (!checkItem)
         return res.send({ status: 400, message: "This Item does not exist!" });

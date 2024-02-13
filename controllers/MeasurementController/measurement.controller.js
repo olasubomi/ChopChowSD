@@ -38,6 +38,23 @@ module.exports = {
     }
   },
 
+  getAllProductMeasurement: async (req, res) => {
+    try {
+      const measurements = await MeasurementService.getAllProductMeasurement(req, res);
+      if (measurements) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(measurements));
+      } else {
+        throw measurements;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  // 
+
   updateMeasurement: async (req, res) => {
     try {
       const measurements = await MeasurementService.updateMeasurement(

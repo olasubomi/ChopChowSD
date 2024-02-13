@@ -4,11 +4,11 @@ const { upload, transformObject } = require("../utils/middleware");
 const express = require("express");
 const router = express.Router();
 
+router.get("/", ItemController.getAllProductItems);
 router.get("/:page", ItemController.getAllItems);
-
 router.get('/user/:name', ItemController.getOneItem)
 
-router.get('/filter/:name', ItemController.filterItem)
+router.get('/filter/:name?item_type=product', ItemController.filterItem)
 
 router.post(
   "/",

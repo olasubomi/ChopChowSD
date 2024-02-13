@@ -5,6 +5,7 @@ const {
   saveMeasurement,
   findMeasurement,
   getAllMeasurement,
+  getProductMeasurement,
   updateMeasurement,
   deleteMeasurement,
 } = require("../repository/measurement");
@@ -38,6 +39,16 @@ class MeasurementService {
 
     return res.json({ status: 200, data: measurements });
   }
+
+  static async getAllProductMeasurement(req, res) {
+    const measurements = await getProductMeasurement(
+      req.query || {}
+    );
+
+    return res.json({ status: 200, data: measurements });
+  }
+
+  
 
   static async updateMeasurement(payload, res) {
     //validating request body

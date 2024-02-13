@@ -38,6 +38,20 @@ const getAllMeasurement = async (page, filter) => {
   }
 };
 
+const getProductMeasurement = async (filter) => {
+  try {
+    const resp = await Measurement
+      .find({ status: "Public" })
+
+    return { count: resp.length, measurement: resp };
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// getFilteredMeasuremenByName
+
 const updateMeasurement = async (payload, measurementId) => {
   try {
     return await Measurement.findOneAndUpdate(
@@ -113,6 +127,7 @@ module.exports = {
   saveMeasurement,
   findMeasurement,
   getAllMeasurement,
+  getProductMeasurement,
   updateMeasurement,
   deleteMeasurement,
   createNewMeasurment
