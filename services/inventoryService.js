@@ -4,6 +4,7 @@ const {
   updateInventory,
   deleteInventory,
   createInventory,
+  allUserInventory
 } = require("../repository/index");
 
 class InventoryService {
@@ -19,6 +20,15 @@ class InventoryService {
   static async updateInventory(filter, payload) {
     try {
       return await updateInventory(filter, payload);
+    } catch (error) {
+      console.log({ error });
+      throw error;
+    }
+  }
+
+  static async getAllUserInventory(filter, query) {
+    try {
+      return await allUserInventory(filter, query);
     } catch (error) {
       console.log({ error });
       throw error;

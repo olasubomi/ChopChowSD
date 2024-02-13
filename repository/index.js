@@ -72,6 +72,9 @@ const {
   updateStore,
   getStore,
   deleteStore,
+  getAllSupplierByAddress,
+  getAllStoresForUser,
+  checkStoreAvailability
 } = require("./store");
 
 const {
@@ -92,6 +95,7 @@ const {
   updateInventory,
   deleteInventory,
   createInventory,
+  allUserInventory
 } = require("./inventory");
 
 
@@ -189,5 +193,9 @@ module.exports = {
   getItemCommentsCount,
   upVoteComment,
   downVoteComment,
-  getAllUserComment
+  getAllUserComment,
+  getAllSupplierByAddress,
+  getAllStoresForUser,
+  checkStoreAvailability,
+  allUserInventory
 };

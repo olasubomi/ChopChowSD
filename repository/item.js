@@ -1,7 +1,7 @@
 const { filter } = require("bluebird");
 const { Item } = require("../model/item");
 const { NotificationService } = require("./notificationService");
-const { item_description } = require("../db/dbMongo/config/db_buildSchema");
+const { item_description, notifications, User } = require("../db/dbMongo/config/db_buildSchema");
 
 const createItem = async (payload) => {
   try {
@@ -100,6 +100,7 @@ const filterItem = async (filter, itemType) => {
     }
 
     return await Item.find(query).populate("store_available");
+
   } catch (error) {
     console.log(error);
   }
@@ -116,7 +117,6 @@ const getUserItems = async (data) => {
       .populate("item_categories item_description")
       .skip(getPaginate.skip)
       .limit(getPaginate.limit);
-
     return { items: itemResponse, count: getPaginate.docCount };
   } catch (error) {
     console.log(error);
@@ -183,10 +183,19 @@ const itemUpdate = async (payload, arrayId) => {
     );
 
     if (payload.status || payload.item_status) {
-      NotificationService.publishMessage(updatedItem.user, "status_updated", {
-        message: "Item status updated",
-        data: updatedItem,
-      });
+
+      const notfication = await notifications.create({
+        message: `Suggested Meal: ${updatedItem.item_name} ${payload.status}`,
+        notifiableType: "Item",
+        notifiable: updatedItem
+      })
+      await User.findByIdAndUpdate({
+        _id: updatedItem.user,
+      }, {
+        $push: { notifications: notfication }
+      })
+      NotificationService.publishMessage(updatedItem.user, "status_updated",
+        { message: "Item status updated", data: updatedItem })
     }
 
     return updatedItem;

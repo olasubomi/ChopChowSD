@@ -7,9 +7,9 @@ const itemSchema = new mongoose.Schema(
   {
     item_name: { type: String, required: true },
 
-    item_images: [{ type: String, default: 'https://meal-chunk-images-and-videos.s3.amazonaws.com/1693356964128' }],
+    item_images: [{ type: String, default: 'https://meal-chunk-images-and-videos.s3.amazonaws.com/1702314208024' }],
 
-    itemImage0: { type: String, default: 'https://meal-chunk-images-and-videos.s3.amazonaws.com/1693356964128' },
+    itemImage0: { type: String, default: 'https://meal-chunk-images-and-videos.s3.amazonaws.com/1702314208024' },
 
     itemImage1: { type: String },
 
@@ -152,14 +152,14 @@ function validateItemMeal(item) {
 
     item_type: Joi.string().required(),
 
-    formatted_ingredients: Joi.array().items(Joi.string().required()).optional(),
+    // formatted_ingredients: Joi.array().items(Joi.string().required()).optional(),
 
     user: Joi.string().required(),
 
     ingredeints_in_item: Joi.array().items(Joi.object({
       item_name: Joi.string().required(),
-      item_quantity: Joi.number().required(),
-      item_measurement: Joi.string().required(),
+      item_quantity: Joi.number().optional(),
+      item_measurement: Joi.string().optional(),
       formatted_string_of_item: Joi.string().required()
     })).optional(),
 
@@ -234,14 +234,14 @@ function validateItemProduct(item) {
 
     ingredeints_in_item: Joi.array().items(Joi.object({
       item_name: Joi.string().required(),
-      item_quantity: Joi.number().required(),
-      item_measurement: Joi.string().required(),
+      item_quantity: Joi.number().optional(),
+      item_measurement: Joi.string().optional(),
       formatted_string_of_item: Joi.string().required()
     })).optional(),
 
     user: Joi.objectId().required(),
 
-    formatted_ingredients: Joi.array().items(Joi.string()).optional(),
+    // formatted_ingredients: Joi.array().items(Joi.string()).optional(),
 
     item_type: Joi.string().required(),
 
@@ -306,7 +306,7 @@ function validateItem(item) {
 
     store_name: Joi.objectId().optional(),
 
-    formatted_ingredients: Joi.array().items(Joi.string()).optional(),
+    // formatted_ingredients: Joi.array().items(Joi.string()).optional(),
 
     hidden_ingredients_in_product: Joi.array().items(Joi.string()).optional(),
 

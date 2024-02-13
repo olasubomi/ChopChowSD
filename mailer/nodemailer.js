@@ -19,7 +19,7 @@ let transporter = nodemailer.createTransport({
 });
 
 //var currentURL = `https://${process.env.APP_HOST}`
-var currentURL = "http://localhost:3000/"
+var currentURL = "https://chopchow.app/"
 function signUpEmail(generatedToken, newUser) {
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing

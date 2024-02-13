@@ -6,7 +6,8 @@ const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 module.exports = {
   createStore: async (req, res) => {
     try {
-      req.body.store_owner = req.decoded.id;
+      // req.body.store_owner = req.decoded.id;
+
       const store = await StoreService.createStore(req.body, req.files);
       const userId = req.user._id.toString();
       const user = await UserService.updateUserProfile({ _id: userId }, { user_type: "supplier" })
@@ -26,6 +27,25 @@ module.exports = {
     try {
       const store = await StoreService.updateStore(
         { _id: req.params.storeId, ...req.query },
+        req.body,
+        req.files || req.file || null
+      );
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      return res
+        .status((error && error.code) || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  claimStore: async (req, res) => {
+    try {
+      const store = await StoreService.claimStore(
+        { _id: req.params.id },
         req.body,
         req.files || req.file || null
       );
@@ -95,9 +115,39 @@ module.exports = {
     }
   },
 
+  queryStoreByAddress: async (req, res) => {
+    try {
+      const store = await StoreService.getAllStoresByAddress(req.params.address, req.body);
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  getAllStoresForAuser: async (req, res) => {
+    try {
+      const store = await StoreService.getAllUserStore({ store_owner: req.params.userId });
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   deleteStore: async (req, res) => {
     try {
-      const store = await StoreService.removeStore(req.params.StoreId);
+      const store = await StoreService.removeStore(req.params.storeId);
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {
