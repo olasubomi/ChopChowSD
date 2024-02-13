@@ -282,6 +282,8 @@ class ItemService {
 
         payload.ingredeints_in_item = []
 
+        console.log(payload?.formatted_ingredients, 'formatted_ingredients')
+
         for (let ingredient of payload?.formatted_ingredients || []) {
           // const splited = ingredient.split(' ');
           const item_name = ingredient?.item_name //splited.slice(splited.length - 1).join(' ')
@@ -328,6 +330,8 @@ class ItemService {
         }
         const { error } = validateItemProduct(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
+
+        console.log(query, 'query?.action')
         if (query?.action === 'update') {
           return await updateItem({ _id: query?._id }, payload)
         } else {
