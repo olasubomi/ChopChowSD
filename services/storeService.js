@@ -1,10 +1,13 @@
+const { validateStoreInformation } = require("../db/dbMongo/config/db_buildSchema");
 const {
   getAllStores,
   createStore,
   updateStore,
   getStore,
   deleteStore,
-  getAllSupplierByAddress
+  getAllSupplierByAddress,
+  getAllStoresForUser,
+  checkStoreAvailability
 } = require("../repository/index");
 const { getAllSupplier } = require("../repository/store");
 
@@ -46,14 +49,50 @@ class StoreService {
         });
       }
       console.log('payload--', payload)
-      payload.supplier_address = JSON.parse(payload.supplier_address || "{}")
-      payload.hours = payload.hours ? JSON.parse(payload.hours) : {};
+      if (payload.supplier_address) {
+        payload.supplier_address = JSON.parse(payload.supplier_address || "{}")
+
+      }
+      if (payload.hours) {
+        payload.hours = payload.hours ? JSON.parse(payload.hours) : {};
+      }
+      if (payload.currency) {
+        payload.currency = payload.currency ? JSON.parse(payload.currency) : {};
+      }
+      // for (let ele in payload) {
+      //   payload[ele] = JSON.parse(payload.ele)
+      // }
+
       return await updateStore(filter, payload);
     } catch (error) {
       console.log({ error });
       throw error;
     }
   }
+
+  static async claimStore(filter, payload, file) {
+    try {
+      if (file) {
+        payload.business_ownership_proof = file.location
+      }
+      const { error } = validateStoreInformation(payload);
+      const store = await checkStoreAvailability({
+        user: filter.userId,
+        store: filter.storeId
+      });
+      if (!Object.is(store, null)) {
+
+      }
+      console.log('errr', error)
+      if (error) throw new Error(error.details[0].message);
+
+      return await updateStore(filter, { business_information: payload });
+    } catch (error) {
+      console.log({ error });
+      throw error;
+    }
+  }
+
 
   static async getStores(page, filter) {
     try {
@@ -87,9 +126,25 @@ class StoreService {
     }
   }
 
+  static async allStores(filter) {
+    try {
+      return await getAllSupplier(filter);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async getAllStoresByAddress(filter, payload) {
     try {
       return await getAllSupplierByAddress(filter, payload);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getAllUserStore(filter, payload) {
+    try {
+      return await getAllStoresForUser(filter, payload);
     } catch (error) {
       throw error;
     }

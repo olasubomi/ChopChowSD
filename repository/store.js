@@ -1,4 +1,4 @@
-const { Supplier } = require("../db/dbMongo/config/db_buildSchema");
+const { Supplier, StoreClaim } = require("../db/dbMongo/config/db_buildSchema");
 const { Item } = require("../model/item");
 const moment = require('moment');
 
@@ -18,6 +18,66 @@ const updateStore = async (filter, payload) => {
     console.log({ error });
   }
 };
+
+const newStoreClaim = async (payload) => {
+  const newClaim = new StoreClaim({ ...payload, status: "PENDING" })
+  return await newClaim.save()
+}
+
+const getAllStoreClaims = async () => {
+  return await StoreClaim.find();
+}
+
+const updateStoreClaimStatus = (status) => {
+  switch (status) {
+    case "APPROVED":
+
+  }
+}
+
+const checkStoreAvailability = async (filter) => {
+  try {
+    const store = await StoreClaim.findOne({
+      user: filter.user,
+      store: filter.store
+    })
+
+    let message = '';
+    const store_ = await getStore({
+      _id: filter.store
+    })
+
+    if (store) {
+      switch (store.status) {
+        case "PENDING":
+          if (filter.user?.toString() === store.user?._id?.toString()) {
+            message = 'The admin is yes to approve your ownship of this store'
+            return null;
+          } else {
+            return store_
+          }
+        case 'APPROVED':
+          message = 'Store has been approved'
+          return null
+        case "REJECTED":
+          if (filter.user?.toString() === store.user?._id?.toString()) {
+            message = 'The admin has already rejected to claim for this store'
+            return null
+          } else {
+            return store_
+          }
+
+        case "UNAPPROVED":
+          return store_;
+        default: return null;
+      }
+    } else {
+      throw new Error('Store cannot be found')
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
 
 const getAllStores = async (page, filter) => {
   try {
@@ -39,6 +99,21 @@ const getAllStores = async (page, filter) => {
     };
   }
 };
+
+const getAllStoresForUser = async (filter) => {
+  try {
+    const allProducts = await Supplier.find(filter)
+    return allProducts
+  } catch (error) {
+    console.log({ error });
+    throw {
+      error: error,
+      messsage: error.message || "Get all stores operation failed",
+      code: error.code || 500,
+    };
+  }
+};
+
 
 const getStore = async (filter, req) => {
   try {
@@ -152,6 +227,7 @@ const getAllSupplierByAddress = async (filter, payload) => {
 const deleteStore = async (id) => {
   try {
     const deleteStore = await Supplier.deleteOne({ _id: id });
+    console.log(deleteStore, 'delete')
     if (deleteStore) {
       return { message: "store sucessfully removed" };
     }
@@ -209,5 +285,7 @@ module.exports = {
   deleteStore,
   getAllSupplier,
   getAllSupplierByAddress,
-  calculateDistanceInMiles
+  calculateDistanceInMiles,
+  getAllStoresForUser,
+  checkStoreAvailability
 };

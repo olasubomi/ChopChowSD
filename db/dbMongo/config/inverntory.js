@@ -9,8 +9,12 @@ exports.Inventory = mongoose.model(
 
       item: {
         type: mongoose.Types.ObjectId,
-        refPath: "item_type",
+        ref: "Item",
         required: true,
+      },
+      user: {
+        type: mongoose.Types.ObjectId,
+        ref: "User"
       },
 
       prepackagedMeal: { type: Boolean, default: false },

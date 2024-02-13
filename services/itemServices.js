@@ -14,6 +14,7 @@ const {
   getOneUserItem,
   filterItem,
   getItemsForAUser,
+  updateItem,
 } = require("../repository/item");
 
 const {
@@ -32,7 +33,7 @@ const GroceryService = require("./groceryService");
 const { capitalize } = require("lodash");
 
 class ItemService {
-  static async createItem(payload, files = [], res) {
+  static async createItem(payload, files = [], res, query = { action: 'create', _id: "" }) {
 
 
     try {
@@ -189,7 +190,13 @@ class ItemService {
 
         const { error } = validateItemMeal(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
-        return await createItem(payload);
+
+
+        if (query?.action == 'update') {
+          return await updateItem({ _id: query?._id }, payload)
+        } else {
+          return await createItem(payload);
+        }
       } else if (payload.item_type === 'Product' || payload.item_type === 'Utensil') {
         // 
         console.log(payload.listName)
@@ -275,6 +282,8 @@ class ItemService {
 
         payload.ingredeints_in_item = []
 
+        console.log(payload?.formatted_ingredients, 'formatted_ingredients')
+
         for (let ingredient of payload?.formatted_ingredients || []) {
           // const splited = ingredient.split(' ');
           const item_name = ingredient?.item_name //splited.slice(splited.length - 1).join(' ')
@@ -321,7 +330,14 @@ class ItemService {
         }
         const { error } = validateItemProduct(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
-        return await createItem(payload);
+
+        console.log(query, 'query?.action')
+        if (query?.action === 'update') {
+          return await updateItem({ _id: query?._id }, payload)
+        } else {
+          return await createItem(payload);
+        }
+
       } else if (payload.item_type === 'Other') {
         console.log(payload, 'payayayay')
         const { error } = validateItemMeal(payload); console.log('errr', error)
@@ -607,6 +623,8 @@ class ItemService {
       console.log(error);
     }
   }
+
+
 
   static async updateComment(payload, res) {
     try {

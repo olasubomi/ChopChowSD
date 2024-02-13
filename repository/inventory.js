@@ -8,6 +8,7 @@ exports.createInventory = async (payload) => {
       item: payload?.item,
       item_type: payload?.item_type,
     });
+    console.log(checkExist, 'existee')
     if (checkExist) {
       throw "Item already exists in store inventory";
     }
@@ -54,7 +55,7 @@ exports.getInventories = async (page, filter) => {
     const inventoriesResponse = await Inventory.find(filter)
       .limit(getPaginate.limit)
       .skip(getPaginate.skip)
-      .populate("item");
+
     return { inventory: inventoriesResponse, count: getPaginate.docCount };
   } catch (error) {
     throw {
@@ -78,6 +79,7 @@ exports.deleteInventory = async (id) => {
   }
 };
 
+
 exports.getInventory = async (filter) => {
   try {
     const inventoryResponse = await Inventory.findOne(filter).populate("item");
@@ -85,11 +87,52 @@ exports.getInventory = async (filter) => {
   } catch (error) {
     throw {
       error: error,
+
       messsage: error.message || "Get inventory operation failed",
       code: 500,
     };
   }
 };
+
+exports.allUserInventory = async (filter, query = {}) => {
+  try {
+
+    if (Object.values(query).length) {
+      query = {
+        path: "item",
+        model: "Item",
+        match: { item_name: query?.item_name },
+        select: "item_name itemImage0 item_price store_available",
+      }
+    } else {
+      query = {
+        path: "item",
+        select: "item_name itemImage0 item_price store_available",
+      }
+    }
+
+    console.log('usery', query)
+    const inventoryItems = await Inventory.
+      find({ 'user': filter.userId })
+      .populate(query)
+      .populate({
+        path: "storeId",
+        select: "store_name, currency"
+      })
+
+    return { inventoryItems };
+  } catch (error) {
+    console.error('Error:', error);
+
+    throw {
+      error: error,
+      message: error.message || "Get inventory operation failed",
+      code: 500,
+    };
+  }
+};
+
+
 
 exports.updateInventory = async (filter, payload) => {
   try {

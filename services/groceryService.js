@@ -210,7 +210,8 @@ class GroceryService {
       payload.user = req.decoded.id;
       const { error } = validateGroceryList(payload);
       if (error) return res.status(400).send(error.details[0].message);
-      const groceryList = await checkIfGroceryListExist({ listName: payload.listName })
+
+      const groceryList = await checkIfGroceryListExist({ listName: payload.listName, user: req?.decoded?.id })
       if (!groceryList) {
         return await createNewGroceryList(payload);
       } else {
