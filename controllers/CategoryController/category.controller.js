@@ -57,6 +57,21 @@ module.exports = {
     }
   },
 
+  getAllProductCategories: async (req, res) => {
+    try {
+      const categories = await CategoryService.getProductCategories(req.query);
+      if (categories) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(categories));
+      } else {
+        throw categories;
+      }
+    } catch (error) {
+      return res
+        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getCategory: async (req, res) => {
     try {
       const category = await CategoryService.getCategory(

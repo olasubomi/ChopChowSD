@@ -22,7 +22,25 @@ module.exports = {
     try {
       const items = await ItemService.getAllItems(
         req.params.page,
-        req.query || {});
+        req.query || {}
+      );
+      if (items) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(items));
+      } else {
+        throw items;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  getAllProductItems: async (req, res) => {
+    try {
+      const items = await ItemService.getAllProductItems(
+        req.query || {}
+      );
       if (items) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(items));
       } else {
@@ -37,8 +55,7 @@ module.exports = {
 
   getOneUserItem: async (req, res) => {
     try {
-      const items = await ItemService.getItemForOneUser(
-        req.params.userId);
+      const items = await ItemService.getItemForOneUser(req.params.userId);
       if (items) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(items));
       } else {
@@ -78,9 +95,9 @@ module.exports = {
       const userItems = await ItemService.getAllUserItems(
         {
           user: req.query.userId,
-          type: req.query.type || '',
+          type: req.query.type || "",
           page: req.params.page,
-          limit: req.query.limit || {}
+          limit: req.query.limit || {},
         },
         res
       );
@@ -116,7 +133,7 @@ module.exports = {
 
   getOneItem: async (req, res) => {
     try {
-      console.log('id', req.params.id)
+      console.log("id", req.params.id);
       const categoryItems = await ItemService.getOneItem(
         {
           item_name: req.params.name,
@@ -135,12 +152,32 @@ module.exports = {
     }
   },
 
+  // filterItem: async (req, res) => {
+  //   try {
+  //     console.log('id', req.params.id)
+  //     const categoryItems = await ItemService.filterUserItem(
+  //       req.params.name,
+  //     );
+  //     if (categoryItems) {
+  //       res
+  //         .status(Response.HTTP_ACCEPTED)
+  //         .json(new SuccessResponse(categoryItems));
+  //     } else {
+  //       throw categoryItems;
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // },
+
   filterItem: async (req, res) => {
     try {
-      console.log('id', req.params.id)
+      const itemType = req.query.item_type; // Extract the itemType from query parameters
       const categoryItems = await ItemService.filterUserItem(
         req.params.name,
+        itemType
       );
+
       if (categoryItems) {
         res
           .status(Response.HTTP_ACCEPTED)
@@ -150,6 +187,9 @@ module.exports = {
       }
     } catch (error) {
       console.log(error);
+      // res
+      //   .status()
+      //   .json();
     }
   },
 
@@ -170,7 +210,7 @@ module.exports = {
 
   deleteItem: async (req, res) => {
     try {
-      const body = { itemId: req.params.itemId }
+      const body = { itemId: req.params.itemId };
       const itemDelete = await ItemService.deleteItem(body, res);
       if (itemDelete) {
         res

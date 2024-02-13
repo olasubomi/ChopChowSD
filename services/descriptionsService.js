@@ -1,12 +1,20 @@
 
 const { validateItemDescription } = require("../db/dbMongo/config/db_buildSchema");
 const {
-    getAllDescription, updateItemDescription, deleteItemDescription, getDescription,
+    getAllDescription, updateItemDescription, deleteItemDescription, getDescription, getProductDescription
 } = require("../repository/description");
 
 class DescriptionsService {
     static async getDescriptions(req, res) {
         const descriptions = await getAllDescription(
+            req.params.page,
+            req.query || {});
+
+        return res.json({ status: 200, data: descriptions });
+    }
+
+    static async getProductDescription(req, res) {
+        const descriptions = await getProductDescription(
             req.params.page,
             req.query || {});
 

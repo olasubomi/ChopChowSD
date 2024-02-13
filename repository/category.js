@@ -76,6 +76,29 @@ const getAllCategories = async (page, filter) => {
   }
 };
 
+const getAllProductCategories = async (filter) => {
+  console.log("getAllProductCategories RANNNNs")
+  try {
+    const allCategories = await categories
+      // .find(filter || {})
+      .find({ status: "Public" })
+
+    console.log("allCategoriesallCategories", allCategories);
+
+    return {
+      categories: allCategories,
+      count: allCategories.length,
+    };
+  } catch (error) {
+    console.log({ error });
+    throw {
+      error: error,
+      messsage: error.message || "Get all categories operation failed",
+      code: error.code || 500,
+    };
+  }
+};
+
 const getCategory = async (filter) => {
   try {
     return await categories.findOne(filter);
@@ -122,6 +145,7 @@ module.exports = {
   updateCategory,
   getCategory,
   deleteCategory,
+  getAllProductCategories,
   createCategoriesFromCreateMeal,
   createOneCategory
 };

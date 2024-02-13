@@ -1,6 +1,7 @@
 const {
     createCategory,
     updateCategory,
+    getAllProductCategories,
     getAllCategories,
     getCategory,
     deleteCategory,
@@ -28,6 +29,14 @@ class CategoryService {
     static async getAllCategories(page, filter) {
         try {
             return await getAllCategories(page, filter);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async getProductCategories(filter) {
+        try {
+            return await getAllProductCategories(filter);
         } catch (error) {
             throw error;
         }

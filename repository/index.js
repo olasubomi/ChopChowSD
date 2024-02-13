@@ -52,6 +52,7 @@ const {
   getAllCategories,
   createCategory,
   updateCategory,
+  getAllProductCategories,
   getCategory,
   deleteCategory,
 } = require("./category");
@@ -129,6 +130,7 @@ module.exports = {
   addMealSuggestion,
   updateSuggestedMealItem,
   getAllCategories,
+  getAllProductCategories,
   createCategory,
   updateCategory,
   getCategory,

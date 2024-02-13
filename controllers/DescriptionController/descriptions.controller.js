@@ -18,6 +18,22 @@ module.exports = {
         }
     },
 
+    getProductDescription: async (req, res) => {
+        try {
+            const descriptions = await DescriptionsService.getProductDescription(req, res);
+            if (descriptions) {
+                res
+                    .status(Response.HTTP_ACCEPTED)
+                    .json(new SuccessResponse(descriptions));
+            } else {
+                throw descriptions;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+
     updateDescription: async (req, res) => {
         try {
             const desription = await DescriptionsService.updateDescription(req, res)

@@ -49,6 +49,18 @@ const getAllDescription = async (page, filter) => {
   }
 };
 
+const getProductDescription = async (filter) => {
+  try {
+
+    const resp = await item_description
+      .find()
+    return { description: resp, count: resp.length };
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const paginateDes = async (page, filter) => {
   const limit = parseInt(filter.limit) || 10;
 
@@ -159,6 +171,7 @@ module.exports = {
   saveDescriptionToDB,
   updateItemDescription,
   deleteItemDescription,
+  getProductDescription,
   paginateDes
 };
 
