@@ -66,9 +66,18 @@ exports.getInventories = async (page, filter) => {
   }
 };
 
-exports.deleteInventory = async (id) => {
+exports.deleteInventory = async (id, item_id) => {
   try {
+    console.log(item_id, 'pp')
     const inventoryResponse = await Inventory.deleteOne({ _id: id });
+    if (item_id) {
+      await Item.findByIdAndUpdate({
+        _id: item_id
+      }, {
+        item_available: false,
+        item_price: 0
+      })
+    }
     return { message: "deleted sucessfully" };
   } catch (error) {
     throw {

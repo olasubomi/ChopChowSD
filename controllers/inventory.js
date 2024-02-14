@@ -58,7 +58,8 @@ module.exports = {
   deleteInventory: async (req, res) => {
     try {
       const removeInventory = await InventoryService.deleteInventory(
-        req.params.inventoryId
+        req.params.inventoryId,
+        req.query?.item_id
       );
       if (removeInventory) {
         res
