@@ -43,7 +43,7 @@ module.exports.verifyRefreshToken = (req, res, next) => {
     token = token.slice(7, token.length);
   }
 
-  if (token) {
+  if (!Object.is(token, null)) {
     verify(token, secret, (err, decoded) => {
       if (err) {
         // lets also check cookie..

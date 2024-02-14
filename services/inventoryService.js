@@ -51,9 +51,9 @@ class InventoryService {
     }
   }
 
-  static async deleteInventory(id) {
+  static async deleteInventory(id, item_id) {
     try {
-      return await deleteInventory(id);
+      return await deleteInventory(id, item_id);
     } catch (error) {
       throw error;
     }
