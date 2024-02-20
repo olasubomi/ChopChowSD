@@ -14,6 +14,8 @@ const {
 
 const { forgotPasswordEmail } = require("../mailer/nodemailer");
 const { generateRefreshTokens } = require("../repository/user");
+const { User, notifications } = require("../db/dbMongo/config/db_buildSchema");
+const { nofication } = require("../controllers/UserController/userController");
 
 class UserService {
   static async userSignup(payload) {
@@ -52,6 +54,19 @@ class UserService {
     } catch (error) {
       console.log("caught");
       throw error;
+    }
+  }
+
+  static async deleteUserNotification(req) {
+    console.log('ppp', req.params)
+    try {
+      await User.findByIdAndUpdate({ _id: req.decoded.id }, {
+        $pull: { notifications: { $in: [req.params.id] } }
+      })
+      return await notifications.findByIdAndDelete({ _id: req.params.id })
+
+    } catch (error) {
+      throw error
     }
   }
 
