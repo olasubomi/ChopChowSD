@@ -35,6 +35,8 @@ router.get("/getUserGroceryList/:userId", verifyAuthentication, UserController.g
 router.get("/getUserCartList/:userId", verifyAuthentication, UserController.getCartList);
 router.get("/findStoreadmins/:storeId", UserController.findStoreAdmins);
 router.get("/showappadmins/", UserController.getAppAdmins);
+router.delete("/notification/:id", verifyAuthentication, UserController.manageNotification);
+
 
 // router.get("/get-ids-items/:userId", getIdsItems);
 // router.get("/get-ids-users", getIdsUsers);
