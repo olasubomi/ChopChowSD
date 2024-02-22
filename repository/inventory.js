@@ -69,8 +69,8 @@ exports.getInventories = async (page, filter) => {
 exports.deleteInventory = async (id, item_id) => {
   try {
     console.log(item_id, 'pp')
-    const inventoryResponse = await Inventory.deleteOne({ _id: id });
     if (item_id) {
+      const inventoryResponse = await Inventory.deleteOne({ _id: id });
       await Item.findByIdAndUpdate({
         _id: item_id
       }, {
