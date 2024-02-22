@@ -8,6 +8,7 @@ const { verifyRefreshToken } = require("../controllers/authentication/2.verifyTo
 
 
 
+
 router.post("/signup", upload.single(), transformObject, UserController.signUp);
 router.post("/signin", UserController.signIn);
 router.get("/refresh-token", verifyRefreshToken, UserController.refreshToken);
@@ -15,11 +16,15 @@ router.post("/forgotpassword", UserController.forgotPassword);
 router.post("/resetpassword", UserController.resetPassword);
 router.get("/findUser/:id", UserController.findUser);
 router.get("/findUsers/:page", UserController.findUsers);
-router.put("/updateuserprofile/:userId", verifyAuthentication, upload.single(), transformObject, UserController.updateUserProfile);
+router.put("/updateuserprofile/:userId", verifyAuthentication,
+    upload.single("profile_picture"), transformObject, UserController.updateUserProfile
+);
+
 
 router.post("/inviteuser", UserController.inviteUser);
 router.post("/notifyuser/", UserController.addNotification);
 router.get("/verifyToken/", verifyAuthentication, UserController.verifyToken);
+router.get("/verifyEmail", UserController.verifyEmail);
 
 
 router.get("/hash", hashPassword);
@@ -42,6 +47,8 @@ router.put("/updatenotifications/:userId", UserController.updateNotificiations);
 // router.put("/addnewitemtogrocerylist/:newItem/:userId", verifyAuthentication, addGroceryItemToUserList.add);
 router.put("/updatecartlist/:listId", UserController.updateCartList);
 router.put("/updategrocerysuggestionslist/:listId", UserController.updateGrocerySuggestionsList);
+
+
 
 // router.delete("/removeallgrocerylistitems/:userId", removeList);
 // router.delete("/removegrocerylistitem/:idItem/:userId", removeItem);

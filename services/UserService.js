@@ -12,10 +12,11 @@ const {
   validateToken,
 } = require("../repository");
 
-const { forgotPasswordEmail } = require("../mailer/nodemailer");
+const { forgotPasswordEmail, signUpEmail } = require("../mailer/nodemailer");
 const { generateRefreshTokens } = require("../repository/user");
 const { User, notifications } = require("../db/dbMongo/config/db_buildSchema");
 const { nofication } = require("../controllers/UserController/userController");
+const bcrypt = require('bcryptjs');
 
 class UserService {
   static async userSignup(payload) {
@@ -32,6 +33,7 @@ class UserService {
       }
       const userExist = await findUser({ email: payload.email });
 
+
       if (userExist) {
         throw {
           message: "User already exist",
@@ -46,10 +48,13 @@ class UserService {
         email: newUser.email,
       });
 
+      console.log("generated Token", generatedToken)
+
+      await signUpEmail(generatedToken, newUser);
+
       return {
         user: newUser,
-        token: generatedToken,
-        message: "User sucessfully registered",
+        message: newUser.is_verified ? "User sucessfully registered" : "Verification link sent",
       };
     } catch (error) {
       console.log("caught");
@@ -251,7 +256,73 @@ class UserService {
     }
   }
 
+  static async emailVerification(payload) {
+    try {
+      const mess = "";
+      console.log("verifyemailservice", payload)
+      const validUser = await findUser({ _id: payload.userid });
+      console.log("verifyemailservice", validUser)
+      const validToken = validUser.tokens.emailValidationToken;
 
+      const compareToken = bcrypt.compare(payload.token, validToken)
+      console.log("verifyemailservicecomparetoken", compareToken)
+      if (compareToken) {
+        if (validUser._id) {
+          if (!validUser.is_verified) {
+            const { expiresAt } = validUser
+            if (expiresAt < Date.now() || validToken) {
+              updateUser({ _id: validUser._id }, { is_verified: true })
+
+            } else {
+              mess = "Link has expired, please signup again";
+              await deleteUser({ _id: validUser._id })
+              throw {
+                message: mess
+              }
+
+            }
+          } else {
+            throw {
+              message: "User has been verified. Please Login"
+            };
+          }
+        } else {
+          await deleteUser({ _id: validUser._id })
+          throw {
+            message: "User Account record doesn't exist "
+          };
+        }
+
+      } else {
+        await deleteUser({ _id: validUser._id })
+        throw {
+
+          message: "Invalid access token, Sign up"
+        };
+      }
+
+      const confirmedUser = await findUser({ _id: validUser._id });
+      console.log("verify confirmedUser", confirmedUser)
+      const generatedToken = await generateAccessTokens({
+        id: confirmedUser._id,
+        username: confirmedUser.username,
+        email: confirmedUser.email,
+      });
+
+
+      return {
+        user: confirmedUser,
+        token: generatedToken,
+        message: confirmedUser.is_verified ? "User sucessfully registered" : "Verification link sent",
+      };
+    } catch (error) {
+      console.log("caught");
+      throw error;
+    }
+  }
 }
+
+
+
 
 module.exports = UserService;
