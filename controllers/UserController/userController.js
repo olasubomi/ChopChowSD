@@ -8,12 +8,15 @@ module.exports = {
   signUp: async (req, res) => {
     try {
       const user = await UserService.userSignup(req.body);
-      if (user) {
+      console.log("verified email", user.user.is_verified)
+      if (user.user.is_verified) {
         return res
           .status(Response.HTTP_ACCEPTED)
           .json(new SuccessResponse(user).recordCreated());
       } else {
-        throw user;
+        return res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(user).recordCreated());
       }
     } catch (error) {
       console.log(error);
@@ -286,5 +289,25 @@ module.exports = {
 
   updateGrocerySuggestionsList: async (req, res) => {
     return res.status(200);
+  },
+  //Email Verification
+  verifyEmail: async (req, res) => {
+    try {
+      console.log("verifyemailcontroller", req.body)
+      const user = await UserService.emailVerification(req.body);
+      console.log("verifyemailcontroller", user)
+      if (user) {
+        return res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(user).recordCreated());
+      } else {
+        throw user;
+      }
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
   }
 };

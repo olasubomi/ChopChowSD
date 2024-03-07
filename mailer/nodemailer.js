@@ -8,6 +8,7 @@ let transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
   secure: false,
+
   tls: {
     rejectUnauthorized: false,
   },
@@ -17,7 +18,9 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-function signUpEmail(to) {
+//var currentURL = `https://${process.env.APP_HOST}`
+var currentURL = "https://chopchow.app/"
+function signUpEmail(generatedToken, newUser) {
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
   //let testAccount = await nodemailer.createTestAccount();
@@ -27,12 +30,15 @@ function signUpEmail(to) {
   // send mail with defined transport object
   let info = transporter.sendMail({
     from: user, // sender address
-    to: to, // list of receivers
-    subject: "Sign Up successful!, ChopChow", // Subject line
-    text: "Thanks for signing up. You can login now.", // plain text body
+    to: newUser.email, // list of receivers
+    subject: "Sign Up successful!, Verify your ChopChow Account", // Subject line
+    text: "Thanks for signing up. Verify your email address to complete your signup so as to login successful.", // plain text body
     html:
-      "<b>Thanks for signing up. You can login now.</b>" +
-      "<p>Subomi A.<br></br>" +
+      `<b>Hello ${newUser.first_name} Thanks for signing up. Verify your email address to complete your signup so as to login successfully.</b> 
+      <p>This link <b> expires in 2 hours</b>.</p>
+      <p> Click <a href =${`${currentURL}verifyemail?userid=${newUser._id}&token=${generatedToken}`}> here</a>
+      to proceed.</p>
+      <p>Subomi A.<br></br>` +
       "Customer Satisfaction Specialist,<br></br>" +
       "ChopChow", // html body
   });
