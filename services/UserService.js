@@ -58,13 +58,43 @@ class UserService {
   }
 
   static async deleteUserNotification(req) {
-    console.log('ppp', req.params)
+    console.log('ppp', req.decoded)
     try {
       await User.findByIdAndUpdate({ _id: req.decoded.id }, {
         $pull: { notifications: { $in: [req.params.id] } }
       })
       return await notifications.findByIdAndDelete({ _id: req.params.id })
 
+    } catch (error) {
+      throw error
+    }
+  }
+
+
+  static async getUserNotification(req) {
+    try {
+      const user = await User.findById({ _id: req.decoded.id })
+        .populate({
+          path: "notifications",
+          populate: {
+            path: 'notifiable',
+
+          }
+        })
+      return user.notifications
+    } catch (error) {
+      throw error
+    }
+  }
+
+  static async updateUserNotification(req,) {
+    try {
+      const user = await notifications.findByIdAndUpdate({
+        _id: req.params.id
+      }, {
+        read: true
+      })
+      return user
     } catch (error) {
       throw error
     }

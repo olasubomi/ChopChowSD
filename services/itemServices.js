@@ -561,7 +561,6 @@ class ItemService {
       console.log(error);
     }
   }
-  getItemsForAUser
   static async getOneItem(filter, res) {
     try {
       return await getOneUserItem(filter)

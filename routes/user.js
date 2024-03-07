@@ -16,7 +16,6 @@ router.post("/resetpassword", UserController.resetPassword);
 router.get("/findUser/:id", UserController.findUser);
 router.get("/findUsers/:page", UserController.findUsers);
 router.put("/updateuserprofile/:userId", verifyAuthentication, upload.single(), transformObject, UserController.updateUserProfile);
-
 router.post("/inviteuser", UserController.inviteUser);
 router.post("/notifyuser/", UserController.addNotification);
 router.get("/verifyToken/", verifyAuthentication, UserController.verifyToken);
@@ -31,6 +30,8 @@ router.get("/getUserCartList/:userId", verifyAuthentication, UserController.getC
 router.get("/findStoreadmins/:storeId", UserController.findStoreAdmins);
 router.get("/showappadmins/", UserController.getAppAdmins);
 router.delete("/notification/:id", verifyAuthentication, UserController.manageNotification);
+router.get("/notifications", verifyAuthentication, UserController.userNotification);
+router.patch("/notification/:id", verifyAuthentication, UserController.updateNotification)
 
 
 // router.get("/get-ids-items/:userId", getIdsItems);

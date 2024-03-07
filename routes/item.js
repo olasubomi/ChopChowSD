@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("/:page", ItemController.getAllItems);
 
 router.get('/user/:name', ItemController.getOneItem)
+router.get('/item/:id', ItemController.getOneItemById)
 
 router.get('/filter/:name', ItemController.filterItem)
 

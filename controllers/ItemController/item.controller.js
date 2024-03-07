@@ -134,7 +134,26 @@ module.exports = {
       console.log(error);
     }
   },
-
+  getOneItemById: async (req, res) => {
+    try {
+      console.log('id', req.params.id)
+      const categoryItems = await ItemService.getOneItem(
+        {
+          _id: req.params.id,
+        },
+        res
+      );
+      if (categoryItems) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(categoryItems));
+      } else {
+        throw categoryItems;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
   filterItem: async (req, res) => {
     try {
       console.log('id', req.params.id)
