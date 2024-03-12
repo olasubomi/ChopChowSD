@@ -164,7 +164,7 @@ const itemUpdate = async (payload, arrayId) => {
       }
     );
 
-    if (payload.status || payload.item_status) {
+    if (payload.status || payload.item_status && payload.item_status !== 'Pending' && payload.status !== 'Pending') {
       const notfication = await notifications.create({
         message: `Suggested Meal: ${updatedItem.item_name} ${payload.status}`,
         notifiableType: "Item",

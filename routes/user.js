@@ -16,15 +16,7 @@ router.post("/forgotpassword", UserController.forgotPassword);
 router.post("/resetpassword", UserController.resetPassword);
 router.get("/findUser/:id", UserController.findUser);
 router.get("/findUsers/:page", UserController.findUsers);
-<<<<<<< HEAD
 router.put("/updateuserprofile/:userId", verifyAuthentication, upload.single(), transformObject, UserController.updateUserProfile);
-=======
-router.put("/updateuserprofile/:userId", verifyAuthentication,
-    upload.single("profile_picture"), transformObject, UserController.updateUserProfile
-);
-
-
->>>>>>> 55c5777d2049de6afe000bb270cbb061a4bb607f
 router.post("/inviteuser", UserController.inviteUser);
 router.post("/notifyuser/", UserController.addNotification);
 router.get("/verifyToken/", verifyAuthentication, UserController.verifyToken);
