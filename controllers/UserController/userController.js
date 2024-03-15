@@ -65,6 +65,44 @@ module.exports = {
     }
   },
 
+  userNotification: async (req, res) => {
+    try {
+      console.log(req.params);
+      const notification = await UserService.getUserNotification(req);
+      if (notification) {
+        res
+          .status(notification.code || Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(notification));
+      } else {
+        throw notification;
+      }
+    } catch (error) {
+      console.log({ error });
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  updateNotification: async (req, res) => {
+    try {
+      console.log(req.params);
+      const notification = await UserService.updateUserNotification(req);
+      if (notification) {
+        res
+          .status(notification.code || Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(notification));
+      } else {
+        throw notification;
+      }
+    } catch (error) {
+      console.log({ error });
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   refreshToken: async (req, res) => {
     try {
       console.log(req.body);

@@ -818,7 +818,10 @@ exports.notifications = mongoose.model(
     {
       message: { type: String },
 
-      read: Boolean,
+      read: {
+        type: Boolean,
+        default: false
+      },
 
       notifiable: {
         type: mongoose.Types.ObjectId,
