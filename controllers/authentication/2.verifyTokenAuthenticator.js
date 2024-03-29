@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
 
   if (token) {
     verify(token, secret, (err, decoded) => {
+      console.log(err, 'ereoopppppp')
       if (err) {
         // lets also check cookie..
         console.log("Error when veryfiying authentication token");
@@ -19,7 +20,7 @@ module.exports = (req, res, next) => {
           message: "Token is not valid",
         });
       } else {
-        console.log("Successfully verified authentication token");
+        console.log("Successfully verified authentication token==", decoded);
         req.decoded = decoded;
         next();
       }
@@ -54,7 +55,7 @@ module.exports.verifyRefreshToken = (req, res, next) => {
           message: "Token is not valid",
         });
       } else {
-        console.log("Successfully verified authentication token");
+        console.log("Successfully refresh authentication token", decoded);
         req.user = decoded;
         next();
       }

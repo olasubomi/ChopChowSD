@@ -108,6 +108,7 @@ class UserService {
   static async refreshToken(req) {
     try {
       const user = req.user;
+      console.log(user, 'userrrrr=rr=')
       const generatedToken = await generateAccessTokens({
         id: user.id,
         username: user.username,
@@ -115,7 +116,7 @@ class UserService {
       });
 
       const generatedRefreshToken = await generateRefreshTokens({
-        id: user._id,
+        id: user.id,
         username: user.username,
         email: user.email,
       });
@@ -157,7 +158,11 @@ class UserService {
         username: userExist.username,
         email: userExist.email,
       });
-
+      console.log({
+        id: userExist._id,
+        username: userExist.username,
+        email: userExist.email,
+      }, 'refrehhhh')
       return {
         success: true,
         message: "Authentication successful!",

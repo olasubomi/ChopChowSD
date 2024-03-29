@@ -310,6 +310,7 @@ class GroceryService {
   static async getAllGroceryList(req) {
     const id = req.query?.id || req.decoded.id;
     try {
+      console.log('user id', id)
       return await getAllGroceryList(id)
     } catch (error) {
       throw error

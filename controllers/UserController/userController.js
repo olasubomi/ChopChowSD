@@ -105,7 +105,7 @@ module.exports = {
 
   refreshToken: async (req, res) => {
     try {
-      console.log(req.body);
+      console.log(req.decoded, 'decodedd');
       const authenticateUser = await UserService.refreshToken(req);
       if (authenticateUser) {
         res
