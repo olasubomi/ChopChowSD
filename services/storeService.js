@@ -38,7 +38,11 @@ class StoreService {
 
   static async updateStore(filter, payload, files) {
     try {
+      delete payload.profile_picture;
+      delete payload.background_picture
+      console.log(files)
       if (files?.length) {
+
         files.map((file) => {
           if (file?.fieldname === "profile_picture") {
             payload.profile_picture = file?.location;
@@ -49,6 +53,7 @@ class StoreService {
         });
       }
       console.log('payload--', payload)
+
       if (payload.supplier_address) {
         payload.supplier_address = JSON.parse(payload.supplier_address || "{}")
 

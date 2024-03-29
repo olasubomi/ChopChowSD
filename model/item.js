@@ -7,9 +7,9 @@ const itemSchema = new mongoose.Schema(
   {
     item_name: { type: String, required: true },
 
-    item_images: [{ type: String, default: 'https://meal-chunk-images-and-videos.s3.amazonaws.com/1702314208024' }],
+    item_images: [{ type: String }],
 
-    itemImage0: { type: String, default: 'https://meal-chunk-images-and-videos.s3.amazonaws.com/1702314208024' },
+    itemImage0: { type: String },
 
     itemImage1: { type: String },
 
