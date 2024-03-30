@@ -1,4 +1,3 @@
-const { signUpSchema, resetPasswordSchema } = require("../utils/validators");
 const {
   getCustomerGroceryList,
   findUser,
@@ -11,11 +10,14 @@ const {
   deleteUser,
   validateToken,
 } = require("../repository");
-
-const { forgotPasswordEmail, signUpEmail } = require("../mailer/nodemailer");
+const { signUpSchema, resetPasswordSchema } = require("../utils/validators");
+const { requestNumber, } = require("../utils/authentication/vonage/requestNumber");
+const { verifyNumber, } = require("../utils/authentication/vonage/verifyNumber");
+const { cancelNumberVerification, } = require("../utils/authentication/vonage/cancelNumberVerification");
+const { forgotPasswordEmail, signUpEmail } = require("../utils/mailer/nodemailer");
 const { generateRefreshTokens } = require("../repository/user");
 const { User, notifications } = require("../db/dbMongo/config/db_buildSchema");
-const { nofication } = require("../controllers/UserController/userController");
+// const { nofication } = require("../controllers/UserController/userController");
 const bcrypt = require('bcryptjs');
 
 class UserService {
@@ -75,7 +77,6 @@ class UserService {
     }
   }
 
-
   static async getUserNotification(req) {
     try {
       const user = await User.findById({ _id: req.decoded.id })
@@ -92,7 +93,7 @@ class UserService {
     }
   }
 
-  static async updateUserNotification(req,) {
+  static async updateUserNotification(req) {
     try {
       const user = await notifications.findByIdAndUpdate({
         _id: req.params.id
@@ -355,6 +356,34 @@ class UserService {
       throw error;
     }
   }
+
+  static async requestNumber(req, res) {
+    try {
+      // confirm request edge cases,
+      return await requestNumber(req, res);
+    } catch (e) {
+      console.log('Failed to send phone verification text', e)
+    }
+  }
+
+  static async verifyNumber(req, res, next) {
+    try {
+      // confirm verification edge cases,
+      return await verifyNumber(req, res, next);
+    } catch (e) {
+      console.log('Failed to verify phone pin', e)
+    }
+  }
+
+  static async cancelNumberVerification(req, res) {
+    try {
+      // confirm cancellation edge cases,
+      return await cancelNumberVerification(req, res);
+    } catch (e) {
+      console.log('Failed to cancel phone verification', e)
+    }
+  }
+
 }
 
 

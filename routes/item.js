@@ -1,5 +1,5 @@
 const ItemController = require("../controllers/ItemController/item.controller");
-const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const { upload, transformObject } = require("../utils/middleware");
 const express = require("express");
 const router = express.Router();
