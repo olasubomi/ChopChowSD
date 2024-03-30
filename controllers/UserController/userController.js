@@ -1,6 +1,5 @@
-const { Response } = require("http-status-codez");
 const UserService = require("../../services/UserService");
-
+const { Response } = require("http-status-codez");
 const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 
 
@@ -301,6 +300,7 @@ module.exports = {
           .status(Response.HTTP_ACCEPTED)
           .json(new SuccessResponse(user).recordCreated());
       } else {
+
         throw user;
       }
     } catch (error) {
@@ -309,5 +309,56 @@ module.exports = {
         .status(Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
+  },
+
+  //
+  requestNumber: async (req, res) => {
+    try {
+      console.log("reading req body in controller", req.body)
+      console.log(req.body);
+      return await UserService.requestNumber(req, res);
+    } catch (error) {
+      console.log("Error with calling request service");
+      console.log(error);
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  //
+  verifyNumber: async (req, res, next) => {
+    try {
+      console.log("verify req body", req.body)
+      return await UserService.verifyNumber(req, res, next);
+    }
+    catch (error) {
+      console.log(error);
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  //
+  cancelNumberVerification: async (req, res) => {
+    try {
+      console.log("verify req body", req.body)
+      return await UserService.cancelNumberVerification(req, res);
+      // if (cancelled) {
+      //   return res
+      //     .status(Response.HTTP_ACCEPTED)
+      //     .json(new SuccessResponse(cancelled).recordCreated());
+      // } else {
+      //   throw cancelled;
+      // }
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
   }
+
+
 };

@@ -1,5 +1,5 @@
 const GroceryController = require("../controllers/GroceryController/grocery.controller");
-const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const express = require("express");
 const router = express.Router();
 const { upload } = require("../utils/middleware");
