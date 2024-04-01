@@ -13,6 +13,7 @@ const {
 const { signUpSchema, resetPasswordSchema } = require("../utils/validators");
 const { requestNumber, } = require("../utils/authentication/vonage/requestNumber");
 const { verifyNumber, } = require("../utils/authentication/vonage/verifyNumber");
+const { sendOTPCode } = require("../utils/authentication/vonage/verify");
 const { cancelNumberVerification, } = require("../utils/authentication/vonage/cancelNumberVerification");
 const { forgotPasswordEmail, signUpEmail } = require("../utils/mailer/nodemailer");
 const { generateRefreshTokens } = require("../repository/user");
@@ -44,15 +45,11 @@ class UserService {
 
       const newUser = await createUser(payload);
 
-      const generatedToken = await generateAccessTokens({
-        id: newUser._id,
-        username: newUser.username,
-        email: newUser.email,
-      });
+      const otp = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+      otp.toString();
 
-      console.log("generated Token", generatedToken)
-
-      await signUpEmail(generatedToken, newUser);
+      await sendOTPCode(payload.phone_number, newUser._id, otp.toString());
+      await signUpEmail(otp.toString(), newUser);
 
       return {
         user: newUser,
