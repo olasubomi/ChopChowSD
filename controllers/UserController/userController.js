@@ -312,6 +312,24 @@ module.exports = {
   },
 
   //
+  sendEmailOTP: async (req, res) => {
+    try {
+      return await UserService.sendEmailOTP(req.body.email);
+    } catch (error) {
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+  verifyEmailOTP: async (req, res) => {
+    try {
+      return await UserService.verifyEmailOTP(req.body.email, req.body.otp);
+    } catch (error) {
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
   requestNumber: async (req, res) => {
     try {
       console.log("reading req body in controller", req.body)
@@ -339,6 +357,7 @@ module.exports = {
         .json(new ErrorResponse(error));
     }
   },
+
 
   //
   cancelNumberVerification: async (req, res) => {

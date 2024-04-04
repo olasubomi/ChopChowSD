@@ -45,11 +45,6 @@ class UserService {
 
       const newUser = await createUser(payload);
 
-      const otp = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-      otp.toString();
-
-      await sendOTPCode(payload.phone_number, newUser._id, otp.toString());
-      await signUpEmail(otp.toString(), newUser);
 
       return {
         user: newUser,
@@ -366,11 +361,71 @@ class UserService {
   static async verifyNumber(req, res, next) {
     try {
       // confirm verification edge cases,
-      return await verifyNumber(req, res, next);
+      const result = await verifyNumber(req, res, next);
+      console.log('result', result)
+
+      if (result) {
+
+        const user = await findUser({ email: result.email });
+        if (!user) throw { message: "User not found" };
+
+        return await updateUser(
+          { _id: user.id },
+          {
+            phone_number_is_verified: true,
+            is_verified: true,
+          }
+        );
+      }
+
+      throw { message: "user verification failed" };
     } catch (e) {
-      console.log('Failed to verify phone pin', e)
+      throw e;
     }
   }
+
+  static async sendEmailOTP(email) {
+    try {
+      // confirm verification edge cases,
+      const otp = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+      const user = await findUser({ email: payload.email });
+      if (!user) throw { message: "User not found" };
+      await updateUser(
+        { _id: user.id },
+        {
+          email_token: otp,
+        }
+      );
+      return await signUpEmail(otp.toString(), email);
+
+    } catch (e) {
+      throw e;
+    }
+  }
+  static async verifyEmailOTP(email, otp) {
+    try {
+      // confirm verification edge cases,
+      const otp = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+      const user = await findUser({ email: payload.email });
+
+      if (!user) throw { message: "User not found" };
+
+      if (user.email_token == otp) {
+        return await updateUser(
+          { _id: user.id },
+          {
+            email_is_verified: true,
+            is_verified: true,
+          }
+        );
+      }
+      throw { message: "Incorrect OTP" };
+
+    } catch (e) {
+      throw
+    }
+  }
+
 
   static async cancelNumberVerification(req, res) {
     try {
