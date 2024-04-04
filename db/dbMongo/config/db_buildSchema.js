@@ -569,6 +569,10 @@ exports.Supplier = mongoose.model(
           ref: "User",
         },
       ],
+      sub_app_admin: [{
+        type: mongoose.Types.ObjectId,
+        ref: "User"
+      }],
       status: {
         type: String,
         enum: ['PENDING', 'PRIVATE', 'PUBLIC', 'DRAFT', 'REJECTED'],
