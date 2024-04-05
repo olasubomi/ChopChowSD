@@ -28,7 +28,7 @@ class StoreService {
       payload.supplier_address = payload.supplier_address ? JSON.parse(payload.supplier_address) : {};
       payload.hours = payload.hours ? JSON.parse(payload.hours) : {};
 
-      console.log(payload)
+
       return await createStore(payload);
     } catch (error) {
       console.log({ error });

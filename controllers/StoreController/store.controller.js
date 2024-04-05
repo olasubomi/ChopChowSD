@@ -132,7 +132,12 @@ module.exports = {
 
   getAllStoresForAuser: async (req, res) => {
     try {
-      const store = await StoreService.getAllUserStore({ store_owner: req.params.userId });
+      const store = await StoreService.getAllUserStore({
+        $or: [
+          { store_owner: req.params.userId },
+          { sub_app_admin: { $in: [req.params.userId] } }
+        ]
+      });
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {
