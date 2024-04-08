@@ -8,7 +8,7 @@ module.exports.requestNumber = function (req, res) {
     console.log("Comes in request file: ");
     console.log(req.body.number);
 
-    vonage.verify.start({ number: req.body.number, brand: "Chop Chow" })
+    vonage.verify.start({ number: req.body.number, code_length: '6', brand: "Chop Chow" })
         .then(resp => {
             console.log(resp);
             return res.status(200).send(JSON.stringify(resp));

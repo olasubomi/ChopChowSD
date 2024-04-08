@@ -28,7 +28,7 @@ function signUpEmail(generatedToken, newUser) {
   // create reusable transporter object using the default SMTP transport
 
   // send mail with defined transport object
-  let info = transporter.sendMail({
+  return transporter.sendMail({
     from: user, // sender address
     to: newUser.email, // list of receivers
     subject: "Sign Up successful!, Verify your ChopChow Account", // Subject line
@@ -53,13 +53,6 @@ function signUpEmail(generatedToken, newUser) {
     `
   });
 
-
-  /*     console.log('Message sent: %s', info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-    // Preview only available when sending through an Ethereal account
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou... */
 }
 
 function forgotPasswordEmail(toEmail, resetLink) {

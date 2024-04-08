@@ -21,7 +21,7 @@ router.get("/verifyToken/", verifyAuthentication, UserController.verifyToken);
 router.get("/verifyEmail", UserController.verifyEmail);
 router.post("/requestnumber", UserController.requestNumber);
 router.post("/verifynumber", UserController.verifyNumber);
-router.post("/sendEmailOTP", UserController.sendEmailOTP);
+router.post("/sendemailotp", UserController.sendEmailOTP);
 router.post("/verifyEmailOTP", UserController.verifyEmailOTP);
 router.delete("/cancelnumberverification", UserController.cancelNumberVerification);
 router.get("/hash", hashPassword);
