@@ -28,27 +28,31 @@ function signUpEmail(generatedToken, newUser) {
   // create reusable transporter object using the default SMTP transport
 
   // send mail with defined transport object
-  let info = transporter.sendMail({
+  return transporter.sendMail({
     from: user, // sender address
     to: newUser.email, // list of receivers
     subject: "Sign Up successful!, Verify your ChopChow Account", // Subject line
-    text: "Thanks for signing up. Verify your email address to complete your signup so as to login successful.", // plain text body
-    html:
-      `<b>Hello ${newUser.first_name} Thanks for signing up. Verify your email address to complete your signup so as to login successfully.</b> 
-      <p>This link <b> expires in 2 hours</b>.</p>
-      <p> Click <a href =${`${currentURL}verifyemail?userid=${newUser._id}&token=${generatedToken}`}> here</a>
-      to proceed.</p>
-      <p>Subomi A.<br></br>` +
-      "Customer Satisfaction Specialist,<br></br>" +
-      "ChopChow", // html body
+    html: `
+      <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+        <div style="margin:50px auto;width:70%;padding:20px 0">
+          <div style="border-bottom:1px solid #eee">
+            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">ChopChow</a>
+          </div>
+          <p style="font-size:1.1em">Hello ${newUser.first_name},</p>
+          <p>Thank you for signing up. Verify your email address to complete your signup so as to login successfully.</p>
+          <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${generatedToken}</h2>
+          <p style="font-size:0.9em;">Regards,<br />ChopChow</p>
+          <hr style="border:none;border-top:1px solid #eee" />
+          <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+            <p>ChopChow Inc</p>
+            <p>1600 Amphitheatre Parkway</p>
+            <p>California</p>
+          </div>
+        </div>
+      </div>
+    `
   });
 
-  /*     console.log('Message sent: %s', info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-    // Preview only available when sending through an Ethereal account
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou... */
 }
 
 function forgotPasswordEmail(toEmail, resetLink) {

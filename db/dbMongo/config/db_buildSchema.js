@@ -36,13 +36,26 @@ const userSchema = new Schema(
     average_rating: { type: Number, required: false, default: 0 },
 
     phone_number: {
-      // country_code: { type: String, required: true },
+
       type: String,
       required: true,
     },
     is_verified: {
       type: Boolean,
       default: false,
+    },
+    phone_number_is_verified: {
+      type: Boolean,
+      required: false,
+    },
+    email_is_verified: {
+
+      type: Boolean,
+      required: false,
+    },
+    email_token: {
+
+      type: String,
     },
 
     food_preferences: [

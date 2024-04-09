@@ -44,15 +44,6 @@ class UserService {
 
       const newUser = await createUser(payload);
 
-      const generatedToken = await generateAccessTokens({
-        id: newUser._id,
-        username: newUser.username,
-        email: newUser.email,
-      });
-
-      console.log("generated Token", generatedToken)
-
-      await signUpEmail(generatedToken, newUser);
 
       return {
         user: newUser,
@@ -369,11 +360,110 @@ class UserService {
   static async verifyNumber(req, res, next) {
     try {
       // confirm verification edge cases,
-      return await verifyNumber(req, res, next);
+      const result = await verifyNumber(req, res, next);
+      console.log('result', result)
+
+      if (result) {
+
+        const user = await findUser({ email: result.email });
+        if (!user) throw { message: "User not found" };
+
+        await updateUser(
+          { _id: user.id },
+          {
+            phone_number_is_verified: true,
+            is_verified: true,
+          }
+        );
+        const generatedToken = await generateAccessTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
+
+        const generatedRefreshToken = await generateRefreshTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
+        return {
+          success: true,
+          message: "Authentication successful!",
+          token: generatedToken,
+          refreshToken: generatedRefreshToken,
+          user: user,
+        };
+      }
+
+      throw { message: "user verification failed" };
     } catch (e) {
-      console.log('Failed to verify phone pin', e)
+      throw e;
     }
   }
+
+  static async sendEmailOTP(email) {
+    try {
+      // confirm verification edge cases,
+      const otp = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+      const user = await findUser({ email });
+      const email_token = await bcrypt.hash(otp.toString(), 10)
+      if (!user) throw { message: "User not found" };
+      await updateUser(
+        { _id: user.id },
+        {
+          email_token,
+        }
+      );
+      console.log('req.body.email', otp.toString(), email)
+      await signUpEmail(otp.toString(), { email, user });
+      return;
+    } catch (e) {
+      throw e;
+    }
+  }
+  static async verifyEmailOTP(email, otp) {
+    try {
+      // confirm verification edge cases, 
+      const user = await findUser({ email });
+
+      if (!user) throw { message: "User not found" };
+
+      const compareToken = await bcrypt.compare(otp, user.email_token)
+      console.log('compareToken', compareToken)
+      if (compareToken) {
+        await updateUser(
+          { _id: user.id },
+          {
+            email_is_verified: true,
+            is_verified: true,
+          }
+        );
+        const generatedToken = await generateAccessTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
+
+        const generatedRefreshToken = await generateRefreshTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
+        return {
+          success: true,
+          message: "Authentication successful!",
+          token: generatedToken,
+          refreshToken: generatedRefreshToken,
+          user: user,
+        };
+      }
+      throw { message: "Incorrect OTP" };
+
+    } catch (e) {
+      throw e
+    }
+  }
+
 
   static async cancelNumberVerification(req, res) {
     try {
