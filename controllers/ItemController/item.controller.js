@@ -75,13 +75,21 @@ module.exports = {
 
   getUserItems: async (req, res) => {
     try {
+      let query = {
+        user: req.query.userId,
+        type: req.query.type || '',
+        page: req.params.page,
+        limit: req.query.limit || {},
+
+      }
+      if (req.query.item_name) {
+        query.filterBy = {
+          item_name: { $regex: req.query.item_name, $options: "i" },
+
+        }
+      }
       const userItems = await ItemService.getAllUserItems(
-        {
-          user: req.query.userId,
-          type: req.query.type || '',
-          page: req.params.page,
-          limit: req.query.limit || {}
-        },
+        query,
         res
       );
       if (userItems) {
@@ -156,9 +164,10 @@ module.exports = {
   },
   filterItem: async (req, res) => {
     try {
-      console.log('id', req.params.id)
+      console.log('id', req.query)
       const categoryItems = await ItemService.filterUserItem(
         req.params.name,
+        req.query
       );
       if (categoryItems) {
         res

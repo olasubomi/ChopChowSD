@@ -621,9 +621,9 @@ class ItemService {
     }
   }
 
-  static async filterUserItem(filter, res) {
+  static async filterUserItem(filter, query) {
     try {
-      return await filterItem(filter)
+      return await filterItem(filter, query)
     } catch (error) {
       console.log(error)
     }
