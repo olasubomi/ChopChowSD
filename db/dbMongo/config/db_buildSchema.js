@@ -15,8 +15,6 @@ const userSchema = new Schema(
 
     profile_picture: { type: String },
 
-    super_app_admin: { type: Boolean, default: false },
-
     sub_app_admin: { type: Boolean, default: false },
 
     super_store_admin: { type: Boolean, default: false },
