@@ -2,6 +2,7 @@ const { Inventory } = require("../db/dbMongo/config/inverntory");
 const { Item } = require("../model/item");
 
 exports.createInventory = async (payload) => {
+  console.log(payload, 'pay')
   try {
     const checkExist = await Inventory.findOne({
       storeId: payload?.storeId,
