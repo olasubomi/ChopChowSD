@@ -135,7 +135,7 @@ module.exports = {
       const store = await StoreService.getAllUserStore({
         $or: [
           { store_owner: req.params.userId },
-          { sub_app_admin: { $in: [req.params.userId] } }
+          { sub_store_admin: { $in: [req.params.userId] } }
         ]
       });
       if (store) {
