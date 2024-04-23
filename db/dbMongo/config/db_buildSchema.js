@@ -17,7 +17,7 @@ const userSchema = new Schema(
 
     sub_app_admin: { type: Boolean, default: false },
 
-    super_store_admin: { type: Boolean, default: false },
+    hasSupplierAffiliation: { type: Boolean, default: false },
 
     sub_store_admin: { type: Boolean, default: false },
 
