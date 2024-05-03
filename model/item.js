@@ -21,6 +21,11 @@ const itemSchema = new mongoose.Schema(
 
     item_available: { type: Boolean },
 
+    rejectionMessage: {
+      title: String,
+      message: String
+    },
+
     item_categories: [{ type: mongoose.Types.ObjectId, ref: "Category" }],
 
     item_price: { type: String },

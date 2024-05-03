@@ -1,4 +1,4 @@
-const { validate, validateItemMeal, validateItemProduct } = require("../model/item");
+const { validate, validateItemMeal, validateItemProduct, Item } = require("../model/item");
 
 const {
   createItem,
@@ -623,7 +623,6 @@ class ItemService {
       console.log(error);
     }
   }
-
 
 
   static async updateComment(payload, res) {
