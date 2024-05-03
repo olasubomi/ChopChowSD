@@ -2,6 +2,7 @@ const { Inventory } = require("../db/dbMongo/config/inverntory");
 const { Item } = require("../model/item");
 
 exports.createInventory = async (payload) => {
+  console.log(payload, 'pay')
   try {
     const checkExist = await Inventory.findOne({
       storeId: payload?.storeId,
@@ -66,9 +67,18 @@ exports.getInventories = async (page, filter) => {
   }
 };
 
-exports.deleteInventory = async (id) => {
+exports.deleteInventory = async (id, item_id) => {
   try {
-    const inventoryResponse = await Inventory.deleteOne({ _id: id });
+    console.log(item_id, 'pp')
+    if (item_id) {
+      const inventoryResponse = await Inventory.deleteOne({ _id: id });
+      await Item.findByIdAndUpdate({
+        _id: item_id
+      }, {
+        item_available: false,
+        item_price: 0
+      })
+    }
     return { message: "deleted sucessfully" };
   } catch (error) {
     throw {

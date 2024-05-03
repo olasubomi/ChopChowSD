@@ -25,7 +25,6 @@ class NotificationService {
       console.log("pusher initialization error")
 
     }
-
   }
 
   // Publish a message to a specific channel

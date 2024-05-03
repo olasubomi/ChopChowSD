@@ -75,13 +75,21 @@ module.exports = {
 
   getUserItems: async (req, res) => {
     try {
+      let query = {
+        user: req.query.userId,
+        type: req.query.type || '',
+        page: req.params.page,
+        limit: req.query.limit || {},
+
+      }
+      if (req.query.item_name) {
+        query.filterBy = {
+          item_name: { $regex: req.query.item_name, $options: "i" },
+
+        }
+      }
       const userItems = await ItemService.getAllUserItems(
-        {
-          user: req.query.userId,
-          type: req.query.type || '',
-          page: req.params.page,
-          limit: req.query.limit || {}
-        },
+        query,
         res
       );
       if (userItems) {
@@ -134,12 +142,32 @@ module.exports = {
       console.log(error);
     }
   },
-
-  filterItem: async (req, res) => {
+  getOneItemById: async (req, res) => {
     try {
       console.log('id', req.params.id)
+      const categoryItems = await ItemService.getOneItem(
+        {
+          _id: req.params.id,
+        },
+        res
+      );
+      if (categoryItems) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(categoryItems));
+      } else {
+        throw categoryItems;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  filterItem: async (req, res) => {
+    try {
+      console.log('id', req.query)
       const categoryItems = await ItemService.filterUserItem(
         req.params.name,
+        req.query
       );
       if (categoryItems) {
         res

@@ -104,19 +104,45 @@ class ItemService {
         payload.item_images = [];
 
 
+        if (query?.action === 'update') {
+          const item = await Item.findById(query?._id);
+          if (Array.isArray(files?.item_images)) {
+            for (let i = 0; i < item_images.length; i++) {
+              payload.item_images = item.item_images
+              payload.item_images.push(item_images[i].location)
+              if (item.item_images.length) {
+                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].location
 
-        if (Array.isArray(files?.item_images)) {
-          for (let i = 0; i < item_images.length; i++) {
-            payload.item_images.push(item_images[i].location)
-            payload[`itemImage${i}`] = item_images[i].location
+              } else {
+                payload[`itemImage${i}`] = item_images[i].location
+
+              }
+            }
+
           }
 
-        }
+          for (let i = 1; i < 6; i++) {
+            if (files[`image_or_video_content_${i}`] !== undefined) {
+              const image = files[`image_or_video_content_${i}`];
+              payload[`meal_image_or_video_content${i}`] = image[0].location
+            }
+          }
 
-        for (let i = 1; i < 6; i++) {
-          if (files[`image_or_video_content_${i}`] !== undefined) {
-            const image = files[`image_or_video_content_${i}`];
-            payload[`meal_image_or_video_content${i}`] = image[0].location
+        } else {
+
+          if (Array.isArray(files?.item_images)) {
+            for (let i = 0; i < item_images.length; i++) {
+              payload.item_images.push(item_images[i].location)
+              payload[`itemImage${i}`] = item_images[i].location
+            }
+
+          }
+
+          for (let i = 1; i < 6; i++) {
+            if (files[`image_or_video_content_${i}`] !== undefined) {
+              const image = files[`image_or_video_content_${i}`];
+              payload[`meal_image_or_video_content${i}`] = image[0].location
+            }
           }
         }
 
@@ -210,13 +236,30 @@ class ItemService {
         payload.item_images = []
         console.log(files?.item_images, 'files?.item_images')
 
-        if (files?.item_images?.length) {
-          for (let i = 0; i < files?.item_images.length; i++) {
-            payload.item_images.push(item_images[i].location)
-            payload[`itemImage${i}`] = item_images[i].location
+        if (query?.action === 'update') {
+          const item = await Item.findById(query?._id);
+          if (files?.item_images?.length) {
+            for (let i = 0; i < files?.item_images.length; i++) {
+              payload.item_images = item.item_images
+              payload.item_images.push(item_images[i].location)
+              if (item.item_images.length) {
+                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].location
+
+              } else {
+                payload[`itemImage${i}`] = item_images[i].location
+
+              }
+            }
+          }
+
+        } else {
+          if (files?.item_images?.length) {
+            for (let i = 0; i < files?.item_images.length; i++) {
+              payload.item_images.push(item_images[i].location)
+              payload[`itemImage${i}`] = item_images[i].location
+            }
           }
         }
-
         if (payload.listName) {
 
 
@@ -330,7 +373,7 @@ class ItemService {
         }
         const { error } = validateItemProduct(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
-
+        console.log(payload, files, 'payoload')
         console.log(query, 'query?.action')
         if (query?.action === 'update') {
           return await updateItem({ _id: query?._id }, payload)
@@ -561,7 +604,6 @@ class ItemService {
       console.log(error);
     }
   }
-  getItemsForAUser
   static async getOneItem(filter, res) {
     try {
       return await getOneUserItem(filter)
@@ -579,9 +621,9 @@ class ItemService {
     }
   }
 
-  static async filterUserItem(filter, res) {
+  static async filterUserItem(filter, query) {
     try {
-      return await filterItem(filter)
+      return await filterItem(filter, query)
     } catch (error) {
       console.log(error)
     }

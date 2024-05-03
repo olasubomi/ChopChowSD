@@ -1,10 +1,17 @@
-const { Supplier, StoreClaim } = require("../db/dbMongo/config/db_buildSchema");
+const { Supplier, StoreClaim, User } = require("../db/dbMongo/config/db_buildSchema");
 const { Item } = require("../model/item");
 const moment = require('moment');
 
 
 const createStore = async (payload) => {
   try {
+    if (payload?.store_owner) {
+      await User.findByIdAndUpdate({ _id: payload?.store_owner }, { hasSupplierAffiliation: true })
+    } else if (payload?.store_admin) {
+      await User.findByIdAndUpdate({ _id: payload?.store_admin }, { sub_store_admin: true })
+      payload.sub_app_admin = [payload.store_admin]
+    }
+
     return await Supplier.create(payload);
   } catch (error) {
     console.log({ error });

@@ -8,12 +8,15 @@ module.exports = {
   signUp: async (req, res) => {
     try {
       const user = await UserService.userSignup(req.body);
-      if (user) {
+      console.log("verified email", user.user.is_verified)
+      if (user.user.is_verified) {
         return res
           .status(Response.HTTP_ACCEPTED)
           .json(new SuccessResponse(user).recordCreated());
       } else {
-        throw user;
+        return res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(user).recordCreated());
       }
     } catch (error) {
       console.log(error);
@@ -42,9 +45,67 @@ module.exports = {
     }
   },
 
+
+  manageNotification: async (req, res) => {
+    try {
+      console.log(req.params);
+      const notification = await UserService.deleteUserNotification(req);
+      if (notification) {
+        res
+          .status(notification.code || Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(notification));
+      } else {
+        throw notification;
+      }
+    } catch (error) {
+      console.log({ error });
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  userNotification: async (req, res) => {
+    try {
+      console.log(req.params);
+      const notification = await UserService.getUserNotification(req);
+      if (notification) {
+        res
+          .status(notification.code || Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(notification));
+      } else {
+        throw notification;
+      }
+    } catch (error) {
+      console.log({ error });
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  updateNotification: async (req, res) => {
+    try {
+      console.log(req.params);
+      const notification = await UserService.updateUserNotification(req);
+      if (notification) {
+        res
+          .status(notification.code || Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(notification));
+      } else {
+        throw notification;
+      }
+    } catch (error) {
+      console.log({ error });
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   refreshToken: async (req, res) => {
     try {
-      console.log(req.body);
+      console.log(req.decoded, 'decodedd');
       const authenticateUser = await UserService.refreshToken(req);
       if (authenticateUser) {
         res
@@ -228,5 +289,25 @@ module.exports = {
 
   updateGrocerySuggestionsList: async (req, res) => {
     return res.status(200);
+  },
+  //Email Verification
+  verifyEmail: async (req, res) => {
+    try {
+      console.log("verifyemailcontroller", req.body)
+      const user = await UserService.emailVerification(req.body);
+      console.log("verifyemailcontroller", user)
+      if (user) {
+        return res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(user).recordCreated());
+      } else {
+        throw user;
+      }
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
   }
 };

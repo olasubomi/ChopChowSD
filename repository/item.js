@@ -56,8 +56,17 @@ const getOneUserItem = async (filter) => {
 };
 
 
-const filterItem = async (filter) => {
+const filterItem = async (filter, query = {}) => {
   try {
+    console.log(query, {
+      item_name: { $regex: filter, $options: "i" },
+      'item_status': {
+        $elemMatch: {
+          'status': 'Public'
+        }
+      },
+      ...query
+    })
     return await Item.find({
       $or: [
         {
@@ -75,8 +84,9 @@ const filterItem = async (filter) => {
             $elemMatch: {
               'status': 'Public'
             }
-          }
-        }
+          },
+          ...query
+        },
       ]
     })
       .populate('store_available');
@@ -88,11 +98,12 @@ const filterItem = async (filter) => {
 
 const getUserItems = async (data) => {
   try {
-    const { type, page, limit, user } = data;
+    const { type, page, limit, user, filterBy = {} } = data;
     let getPaginate = await paginate2(page, { type, limit, user });
     const itemResponse = await Item.find({
       item_type: { $in: type.split(',') },
-      user: user
+      user: user,
+      ...filterBy
     })
       .populate("item_categories item_description")
       .skip(getPaginate.skip)
@@ -166,8 +177,8 @@ const itemUpdate = async (payload, arrayId) => {
         arrayFilters: [{ "elemA._id": arrayId }],
       }
     );
-
-    if (payload.status || payload.item_status) {
+    console.log(payload, 'pay')
+    if (payload.item_status !== 'Pending' && payload.status !== 'Pending') {
       const notfication = await notifications.create({
         message: `Suggested Meal: ${updatedItem.item_name} ${payload.status}`,
         notifiableType: "Item",
