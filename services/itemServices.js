@@ -667,7 +667,6 @@ class ItemService {
   }
 
 
-
   static async updateComment(payload, res) {
     try {
       const comment = await updateUserComment(payload);
