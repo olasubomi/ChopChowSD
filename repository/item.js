@@ -28,7 +28,6 @@ const getItems = async (page, filter) => {
     }
   }
 
-  console.log('query', query)
   const itemResponse = await Item
     .find(query)
     .limit(getPaginate.limit)
@@ -169,6 +168,10 @@ const itemUpdate = async (payload, arrayId) => {
         $set: {
           "item_status.$[elemA].status": payload.status,
           "item_status.$[elemA].status_note": payload.status_note,
+          "rejectionMessage": {
+            "title": payload?.title ?? "",
+            "message": payload?.message ?? ""
+          }
         },
       },
       {
