@@ -138,6 +138,7 @@ module.exports = {
 
   resetPassword: async (req, res) => {
     try {
+      console.log("141", req.body)
       const response = await UserService.resetPassword(req.body);
       if (response) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(response));
