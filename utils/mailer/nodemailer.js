@@ -55,6 +55,19 @@ function signUpEmail(generatedToken, newUser) {
 
 }
 
+
+
+
+function passwordResetEmail(toEmail) {
+  let info = transporter.sendMail({
+    from: user, // sender address
+    to: toEmail, // list of receivers
+    subject: "ChopChow password reset successfully.", // Subject line
+    text: "Your password is reset.", // plain text body
+    html: "<b>Your password has been reset reset. </b>", // html body
+  });
+}
+
 function forgotPasswordEmail(toEmail, resetLink) {
   console.log("Comes in forgot password func");
   let info = transporter.sendMail({
@@ -67,15 +80,6 @@ function forgotPasswordEmail(toEmail, resetLink) {
   }).then((data) => { }).catch(error => { console.log({ error }) })
 }
 
-function passwordResetEmail(toEmail) {
-  let info = transporter.sendMail({
-    from: user, // sender address
-    to: toEmail, // list of receivers
-    subject: "ChopChow password reset successfully.", // Subject line
-    text: "Your password is reset.", // plain text body
-    html: "<b>Your password is reset. </b>", // html body
-  });
-}
 
 //signUpEmail().catch(console.error);
 module.exports = { signUpEmail, forgotPasswordEmail, passwordResetEmail };

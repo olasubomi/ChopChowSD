@@ -14,11 +14,12 @@ const { signUpSchema, resetPasswordSchema } = require("../utils/validators");
 const { requestNumber, } = require("../utils/authentication/vonage/requestNumber");
 const { verifyNumber, } = require("../utils/authentication/vonage/verifyNumber");
 const { cancelNumberVerification, } = require("../utils/authentication/vonage/cancelNumberVerification");
-const { forgotPasswordEmail, signUpEmail } = require("../utils/mailer/nodemailer");
+const { forgotPasswordEmail, signUpEmail, passwordResetEmail } = require("../utils/mailer/nodemailer");
 const { generateRefreshTokens } = require("../repository/user");
 const { User, notifications } = require("../db/dbMongo/config/db_buildSchema");
 // const { nofication } = require("../controllers/UserController/userController");
 const bcrypt = require('bcryptjs');
+require('dotenv').config();
 
 class UserService {
   static async userSignup(payload) {
@@ -166,7 +167,6 @@ class UserService {
       throw error;
     }
   }
-
   static async forgotPassword(payload) {
     try {
       const { email } = payload;
@@ -179,7 +179,8 @@ class UserService {
         email: userExists.email,
         id: userExists._id,
       });
-      let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}`;
+      //let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}&email=${userExists.email}`;
+      let resetLink = `http://${process.env.APP_HOST}/resetpassword?token=${generatePasswordToken}&email=${userExists.email}`;
       forgotPasswordEmail(userExists.email, resetLink);
       return {
         msg: "Email with reset link has been sent to you.",
@@ -190,8 +191,10 @@ class UserService {
     }
   }
 
+
   static async resetPassword(payload) {
     try {
+
       const validatepayload = resetPasswordSchema.validate(payload);
       if (!validatepayload) {
         throw {
@@ -203,7 +206,7 @@ class UserService {
       const tokenExist = await findUser({
         "tokens.passwordResetToken": payload.token,
       });
-      console.log(tokenExist);
+
 
       if (!tokenExist) {
         throw {
@@ -212,13 +215,14 @@ class UserService {
         };
       }
       const decodeToken = await validateToken(payload.token);
+
       if (!decodeToken) {
         throw {
           message: "Token expired",
           code: 400,
         };
       }
-      const newPassword = await tokenExist.hashPassword(payload.password1);
+      const newPassword = await tokenExist.hashPassword(payload.password);
       const resetPassword = await updateUser(
         { _id: decodeToken.id },
         {
@@ -231,6 +235,7 @@ class UserService {
           code: 500,
         };
       }
+      await passwordResetEmail(tokenExist.email)
       return { message: "password reset successful" };
     } catch (error) {
       console.log(error);
@@ -480,3 +485,38 @@ class UserService {
 
 
 module.exports = UserService;
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // static async forgotPassword(payload) {
+  //   try {
+  //     const { email } = payload;
+  //     // Check username as well when testing forgot password
+  //     const userExists = await findUser({ email });
+  //     if (!userExists) {
+  //       throw { code: 401, message: "user does not exist" };
+  //     }
+  //     const generatePasswordToken = await generatePasswordResetToken({
+  //       email: userExists.email,
+  //       id: userExists._id,
+  //     });
+  //     let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}`;
+  //     forgotPasswordEmail(userExists.email, resetLink);
+  //     return {
+  //       msg: "Email with reset link has been sent to you.",
+  //       done: true,
+  //     };
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
