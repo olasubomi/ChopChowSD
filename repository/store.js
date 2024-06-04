@@ -6,10 +6,11 @@ const moment = require('moment');
 const createStore = async (payload) => {
   try {
     if (payload?.store_owner) {
+      payload.store_admins = [payload?.store_owner]
       await User.findByIdAndUpdate({ _id: payload?.store_owner }, { hasSupplierAffiliation: true })
     } else if (payload?.store_admin) {
       await User.findByIdAndUpdate({ _id: payload?.store_admin }, { sub_store_admin: true })
-      payload.sub_app_admin = [payload.store_admin]
+      payload.store_sub_admins = [payload.store_admin]
     }
 
     return await Supplier.create(payload);

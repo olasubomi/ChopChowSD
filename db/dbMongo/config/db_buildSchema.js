@@ -508,6 +508,11 @@ exports.Supplier = mongoose.model(
 
       average_rating: { type: Number, required: false, default: 0 },
 
+      store_admins: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+      }],
+
       currency: {
         name: {
           type: String,
@@ -581,6 +586,10 @@ exports.Supplier = mongoose.model(
         },
       ],
       sub_app_admin: [{
+        type: mongoose.Types.ObjectId,
+        ref: "User"
+      }],
+      store_sub_admins: [{
         type: mongoose.Types.ObjectId,
         ref: "User"
       }],
