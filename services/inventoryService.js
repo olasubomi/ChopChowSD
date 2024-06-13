@@ -6,6 +6,7 @@ const {
   createInventory,
   allUserInventory
 } = require("../repository/index");
+const { getStoreInventory } = require("../repository/inventory");
 
 class InventoryService {
   static async createInventory(payload) {
@@ -50,7 +51,13 @@ class InventoryService {
       throw error;
     }
   }
-
+  static async getStoreInventory(filter) {
+    try {
+      return await getStoreInventory(filter);
+    } catch (error) {
+      throw error;
+    }
+  }
   static async deleteInventory(id, item_id) {
     try {
       return await deleteInventory(id, item_id);

@@ -57,7 +57,7 @@ class ItemService {
           payload.item_images = [];
 
           console.log('item_images', files.item_images)
-          if (files.item_images.length) {
+          if (files?.item_images?.length) {
             for (let i = 0; i < item_images.length; i++) {
               payload.item_images.push(item_images[i].location)
               payload[`itemImage${i}`] = item_images[i].location

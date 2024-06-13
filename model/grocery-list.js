@@ -69,7 +69,7 @@ const validateGroceryList = (groceryList) => {
 function validateGroceryListUpdate(grocery) {
     const schema = Joi.object({
         listName: Joi.string().required(),
-        description: Joi.string().required(),
+        description: Joi.string().optional(),
         status: Joi.string().optional()
     })
     return schema.validate(grocery)
