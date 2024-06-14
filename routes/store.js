@@ -18,8 +18,9 @@ router.get("/getallstores/:page", StoreController.getStores); // sort by locatio
 router.get("/store/:name", StoreController.queryStore);
 router.post("/list/:address", StoreController.queryStoreByAddress);
 router.post("/add-user/:storeId", StoreController.addUserToStore);
-
 router.patch('/claimstore/:id', StoreController.claimStore)
+
+
 router.get('/user/:userId', StoreController.getAllStoresForAuser)
 
 router.put(
