@@ -122,12 +122,41 @@ const getAllStoresForUser = async (filter) => {
   }
 };
 
+const addUserToStoreAdmin = async (user, storeId) => {
+  try {
+    const app_user = await User.findOne({
+      email: user.email
+    })
+
+    if (!app_user) {
+      // const created_user = await
+      throw new Error("User does not exist")
+    }
+
+    const store = await Supplier.findOne({
+      _id: storeId
+    })
+
+    const store_admins = store.store_sub_admins.map((ele) => ele?._id);
+    if (!store_admins.includes(app_user?._id)) {
+      store.store_sub_admins.push(app_user);
+      return await store.save()
+    } else {
+      throw new Error("This user has aleady been added to this store as a store sub admin")
+    }
+
+
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 
 const getStore = async (filter, req) => {
   try {
 
     const supplier = await Supplier.findOne(filter).populate(
-      "store_account_users"
+      "store_account_users store_sub_admins"
     )
     if (supplier) {
       const items = await Item.find({ user: supplier.store_owner })
@@ -295,5 +324,6 @@ module.exports = {
   getAllSupplierByAddress,
   calculateDistanceInMiles,
   getAllStoresForUser,
-  checkStoreAvailability
+  checkStoreAvailability,
+  addUserToStoreAdmin
 };

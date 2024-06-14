@@ -130,6 +130,21 @@ module.exports = {
     }
   },
 
+  addUserToStore: async (req, res) => {
+    try {
+      const store = await StoreService.addUserToStore(req.body, req.params.storeId);
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getAllStoresForAuser: async (req, res) => {
     try {
       const store = await StoreService.getAllUserStore({

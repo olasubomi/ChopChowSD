@@ -15,6 +15,8 @@ const userSchema = new Schema(
 
     profile_picture: { type: String },
 
+
+
     sub_app_admin: { type: Boolean, default: false },
 
     hasSupplierAffiliation: { type: Boolean, default: false },
