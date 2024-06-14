@@ -1,6 +1,5 @@
-const { Response } = require("http-status-codez");
 const UserService = require("../../services/UserService");
-
+const { Response } = require("http-status-codez");
 const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 
 
@@ -139,6 +138,7 @@ module.exports = {
 
   resetPassword: async (req, res) => {
     try {
+      console.log("141", req.body)
       const response = await UserService.resetPassword(req.body);
       if (response) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(response));
@@ -293,14 +293,13 @@ module.exports = {
   //Email Verification
   verifyEmail: async (req, res) => {
     try {
-      console.log("verifyemailcontroller", req.body)
       const user = await UserService.emailVerification(req.body);
-      console.log("verifyemailcontroller", user)
       if (user) {
         return res
           .status(Response.HTTP_ACCEPTED)
           .json(new SuccessResponse(user).recordCreated());
       } else {
+
         throw user;
       }
     } catch (error) {
@@ -309,5 +308,76 @@ module.exports = {
         .status(Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
+  },
+
+  //
+  sendEmailOTP: async (req, res) => {
+    try {
+      await UserService.sendEmailOTP(req.body.email);
+      return res.status(200);
+    } catch (error) {
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+  verifyEmailOTP: async (req, res) => {
+    try {
+      const result = await UserService.verifyEmailOTP(req.body.email, req.body.otp)
+      return res
+        .status(Response.HTTP_ACCEPTED)
+        .json(new SuccessResponse(result));
+    } catch (error) {
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+  requestNumber: async (req, res) => {
+    try {
+      await UserService.requestNumber(req, res);
+      return res.status(200);
+    } catch (error) {
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  //
+  verifyNumber: async (req, res, next) => {
+    try {
+      console.log("verify req body", req.body)
+      return await UserService.verifyNumber(req, res, next);
+    }
+    catch (error) {
+      console.log(error);
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+
+  //
+  cancelNumberVerification: async (req, res) => {
+    try {
+      console.log("verify req body", req.body)
+      return await UserService.cancelNumberVerification(req, res);
+      // if (cancelled) {
+      //   return res
+      //     .status(Response.HTTP_ACCEPTED)
+      //     .json(new SuccessResponse(cancelled).recordCreated());
+      // } else {
+      //   throw cancelled;
+      // }
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
   }
+
+
 };

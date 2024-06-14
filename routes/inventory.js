@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const InventoryController = require("../controllers/inventory");
-const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 
 router.post(
   "/create-inventory",

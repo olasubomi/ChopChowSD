@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const StoreController = require("../controllers/StoreController/store.controller");
-const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const { upload } = require("../utils/middleware");
 const { protect } = require('../utils/middleware/authmiddleware')
 

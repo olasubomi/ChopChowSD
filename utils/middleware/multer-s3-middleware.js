@@ -12,6 +12,10 @@ exports.upload = multer({
         s3: s3,
         bucket: process.env.S3_BUCKET,
         acl: "public-read",
+        filename: function (req, file, cb) {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, file.fieldname + '-' + uniqueSuffix + '-' + file.originalname);
+        },
         metadata: function (req, file, cb) {
             cb(null, { fieldName: file.fieldname });
         },

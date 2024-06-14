@@ -1,4 +1,3 @@
-const { signUpSchema, resetPasswordSchema } = require("../utils/validators");
 const {
   getCustomerGroceryList,
   findUser,
@@ -11,12 +10,16 @@ const {
   deleteUser,
   validateToken,
 } = require("../repository");
-
-const { forgotPasswordEmail, signUpEmail } = require("../mailer/nodemailer");
+const { signUpSchema, resetPasswordSchema } = require("../utils/validators");
+const { requestNumber, } = require("../utils/authentication/vonage/requestNumber");
+const { verifyNumber, } = require("../utils/authentication/vonage/verifyNumber");
+const { cancelNumberVerification, } = require("../utils/authentication/vonage/cancelNumberVerification");
+const { forgotPasswordEmail, signUpEmail, passwordResetEmail } = require("../utils/mailer/nodemailer");
 const { generateRefreshTokens } = require("../repository/user");
 const { User, notifications } = require("../db/dbMongo/config/db_buildSchema");
-const { nofication } = require("../controllers/UserController/userController");
+// const { nofication } = require("../controllers/UserController/userController");
 const bcrypt = require('bcryptjs');
+require('dotenv').config();
 
 class UserService {
   static async userSignup(payload) {
@@ -42,15 +45,6 @@ class UserService {
 
       const newUser = await createUser(payload);
 
-      const generatedToken = await generateAccessTokens({
-        id: newUser._id,
-        username: newUser.username,
-        email: newUser.email,
-      });
-
-      console.log("generated Token", generatedToken)
-
-      await signUpEmail(generatedToken, newUser);
 
       return {
         user: newUser,
@@ -75,7 +69,6 @@ class UserService {
     }
   }
 
-
   static async getUserNotification(req) {
     try {
       const user = await User.findById({ _id: req.decoded.id })
@@ -92,7 +85,7 @@ class UserService {
     }
   }
 
-  static async updateUserNotification(req,) {
+  static async updateUserNotification(req) {
     try {
       const user = await notifications.findByIdAndUpdate({
         _id: req.params.id
@@ -174,7 +167,6 @@ class UserService {
       throw error;
     }
   }
-
   static async forgotPassword(payload) {
     try {
       const { email } = payload;
@@ -187,7 +179,8 @@ class UserService {
         email: userExists.email,
         id: userExists._id,
       });
-      let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}`;
+      //let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}&email=${userExists.email}`;
+      let resetLink = `http://${process.env.APP_HOST}/resetpassword?token=${generatePasswordToken}&email=${userExists.email}`;
       forgotPasswordEmail(userExists.email, resetLink);
       return {
         msg: "Email with reset link has been sent to you.",
@@ -198,8 +191,10 @@ class UserService {
     }
   }
 
+
   static async resetPassword(payload) {
     try {
+
       const validatepayload = resetPasswordSchema.validate(payload);
       if (!validatepayload) {
         throw {
@@ -211,7 +206,7 @@ class UserService {
       const tokenExist = await findUser({
         "tokens.passwordResetToken": payload.token,
       });
-      console.log(tokenExist);
+
 
       if (!tokenExist) {
         throw {
@@ -220,13 +215,14 @@ class UserService {
         };
       }
       const decodeToken = await validateToken(payload.token);
+
       if (!decodeToken) {
         throw {
           message: "Token expired",
           code: 400,
         };
       }
-      const newPassword = await tokenExist.hashPassword(payload.password1);
+      const newPassword = await tokenExist.hashPassword(payload.password);
       const resetPassword = await updateUser(
         { _id: decodeToken.id },
         {
@@ -239,6 +235,7 @@ class UserService {
           code: 500,
         };
       }
+      await passwordResetEmail(tokenExist.email)
       return { message: "password reset successful" };
     } catch (error) {
       console.log(error);
@@ -355,9 +352,171 @@ class UserService {
       throw error;
     }
   }
+
+  static async requestNumber(req, res) {
+    try {
+      // confirm request edge cases,
+      return await requestNumber(req, res);
+    } catch (e) {
+      console.log('Failed to send phone verification text', e)
+    }
+  }
+
+  static async verifyNumber(req, res, next) {
+    try {
+      // confirm verification edge cases,
+      const result = await verifyNumber(req, res, next);
+      console.log('result', result)
+
+      if (result) {
+
+        const user = await findUser({ email: result.email });
+        if (!user) throw { message: "User not found" };
+
+        await updateUser(
+          { _id: user.id },
+          {
+            phone_number_is_verified: true,
+            is_verified: true,
+          }
+        );
+        const generatedToken = await generateAccessTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
+
+        const generatedRefreshToken = await generateRefreshTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
+        return {
+          success: true,
+          message: "Authentication successful!",
+          token: generatedToken,
+          refreshToken: generatedRefreshToken,
+          user: user,
+        };
+      }
+
+      throw { message: "user verification failed" };
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async sendEmailOTP(email) {
+    try {
+      // confirm verification edge cases,
+      const otp = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+      const user = await findUser({ email });
+      const email_token = await bcrypt.hash(otp.toString(), 10)
+      if (!user) throw { message: "User not found" };
+      await updateUser(
+        { _id: user.id },
+        {
+          email_token,
+        }
+      );
+      console.log('req.body.email', otp.toString(), email)
+      await signUpEmail(otp.toString(), { email, user });
+      return;
+    } catch (e) {
+      throw e;
+    }
+  }
+  static async verifyEmailOTP(email, otp) {
+    try {
+      // confirm verification edge cases, 
+      const user = await findUser({ email });
+
+      if (!user) throw { message: "User not found" };
+
+      const compareToken = await bcrypt.compare(otp, user.email_token)
+      console.log('compareToken', compareToken)
+      if (compareToken) {
+        await updateUser(
+          { _id: user.id },
+          {
+            email_is_verified: true,
+            is_verified: true,
+          }
+        );
+        const generatedToken = await generateAccessTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
+
+        const generatedRefreshToken = await generateRefreshTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
+        return {
+          success: true,
+          message: "Authentication successful!",
+          token: generatedToken,
+          refreshToken: generatedRefreshToken,
+          user: user,
+        };
+      }
+      throw { message: "Incorrect OTP" };
+
+    } catch (e) {
+      throw e
+    }
+  }
+
+
+  static async cancelNumberVerification(req, res) {
+    try {
+      // confirm cancellation edge cases,
+      return await cancelNumberVerification(req, res);
+    } catch (e) {
+      console.log('Failed to cancel phone verification', e)
+    }
+  }
+
 }
 
 
 
 
 module.exports = UserService;
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // static async forgotPassword(payload) {
+  //   try {
+  //     const { email } = payload;
+  //     // Check username as well when testing forgot password
+  //     const userExists = await findUser({ email });
+  //     if (!userExists) {
+  //       throw { code: 401, message: "user does not exist" };
+  //     }
+  //     const generatePasswordToken = await generatePasswordResetToken({
+  //       email: userExists.email,
+  //       id: userExists._id,
+  //     });
+  //     let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}`;
+  //     forgotPasswordEmail(userExists.email, resetLink);
+  //     return {
+  //       msg: "Email with reset link has been sent to you.",
+  //       done: true,
+  //     };
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }

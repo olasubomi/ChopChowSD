@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const MealsController = require("../controllers/MealContoller/meal.controller");
 const { upload, transformArray } = require("../utils/middleware");
-const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 
 //meal routes
 router.post(
