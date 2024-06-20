@@ -55,6 +55,39 @@ function signUpEmail(generatedToken, newUser) {
 
 }
 
+function createUserEmail(newUser) {
+  // Generate test SMTP service account from ethereal.email
+  // Only needed if you don't have a real mail account for testing
+  //let testAccount = await nodemailer.createTestAccount();
+
+  // create reusable transporter object using the default SMTP transport
+
+  // send mail with defined transport object
+  return transporter.sendMail({
+    from: user, // sender address
+    to: newUser.email, // list of receivers
+    subject: "Onboarding Successful", // Subject line
+    html: `
+      <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+        <div style="margin:50px auto;width:70%;padding:20px 0">
+          <div style="border-bottom:1px solid #eee">
+            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">ChopChow</a>
+          </div>
+          <p style="font-size:1.1em">Hello ${newUser.first_name},</p>
+          <p>An account has been created for you, use this temporal password - ${newUser.password} to access the dashboard.</p>
+          <p style="font-size:0.9em;">Regards,<br />ChopChow</p>
+          <hr style="border:none;border-top:1px solid #eee" />
+          <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+            <p>ChopChow Inc</p>
+            <p>1600 Amphitheatre Parkway</p>
+            <p>California</p>
+          </div>
+        </div>
+      </div>
+    `
+  });
+
+}
 
 
 
@@ -82,4 +115,4 @@ function forgotPasswordEmail(toEmail, resetLink) {
 
 
 //signUpEmail().catch(console.error);
-module.exports = { signUpEmail, forgotPasswordEmail, passwordResetEmail };
+module.exports = { signUpEmail, forgotPasswordEmail, passwordResetEmail, createUserEmail };

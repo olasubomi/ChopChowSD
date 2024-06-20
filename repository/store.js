@@ -1,6 +1,8 @@
 const { Supplier, StoreClaim, User } = require("../db/dbMongo/config/db_buildSchema");
 const { Item } = require("../model/item");
 const moment = require('moment');
+const { createUser } = require("./user");
+const { createUserEmail } = require("../utils/mailer/nodemailer");
 
 
 const createStore = async (payload) => {
@@ -122,17 +124,47 @@ const getAllStoresForUser = async (filter) => {
   }
 };
 
+const removeUserFromStore = async (userId, storeId) => {
+  try {
+    const user = await User.findById(userId);
+    if (!user) throw new Error("User does not exist");
+    const store = await Supplier.findOne({
+      _id: storeId
+    })
+
+    const store_admins = store.store_sub_admins.map((ele) => ele?._id);
+    if (store_admins.includes(userId)) {
+      let store_sub_admins = [...store_admins];
+      store_sub_admins.splice(store_admins.indexOf(userId), 1)
+      store.store_sub_admins = store_sub_admins;
+      return await store.save();
+    } else {
+      throw new Error("This user has aleady been added to this store as a store sub admin")
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 const addUserToStoreAdmin = async (user, storeId) => {
   try {
-    const app_user = await User.findOne({
+    let app_user = await User.findOne({
       email: user.email
     })
 
     if (!app_user) {
       // const created_user = await
-      throw new Error("User does not exist")
+      const password = Math.floor(Math.random() * 10000000)
+      app_user = await createUser({
+        ...user, password, phone_number: user.number,
+        username: user.first_name
+      });
+      createUserEmail({
+        email: user.email,
+        password,
+        first_name: user.first_name,
+      })
     }
-
     const store = await Supplier.findOne({
       _id: storeId
     })
@@ -325,5 +357,6 @@ module.exports = {
   calculateDistanceInMiles,
   getAllStoresForUser,
   checkStoreAvailability,
-  addUserToStoreAdmin
+  addUserToStoreAdmin,
+  removeUserFromStore
 };
