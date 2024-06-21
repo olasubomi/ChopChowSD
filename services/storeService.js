@@ -147,7 +147,7 @@ class StoreService {
     }
   }
 
-  static async removeUserFromStore(filter, payload) {
+  static async removeUserFromStore(userId, storeId) {
     try {
       return await removeUserFromStore(userId, storeId);
     } catch (error) {

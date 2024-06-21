@@ -132,14 +132,15 @@ const removeUserFromStore = async (userId, storeId) => {
       _id: storeId
     })
 
-    const store_admins = store.store_sub_admins.map((ele) => ele?._id);
+    const store_admins = store.store_sub_admins.map((ele) => ele?._id.toString());
+    console.log(store_admins)
     if (store_admins.includes(userId)) {
       let store_sub_admins = [...store_admins];
       store_sub_admins.splice(store_admins.indexOf(userId), 1)
       store.store_sub_admins = store_sub_admins;
       return await store.save();
     } else {
-      throw new Error("This user has aleady been added to this store as a store sub admin")
+      throw new Error("This user has aleady been removed from this store as a store sub admin")
     }
   } catch (e) {
     console.log(e)
@@ -154,6 +155,7 @@ const addUserToStoreAdmin = async (user, storeId) => {
 
     if (!app_user) {
       // const created_user = await
+      console.log(user)
       const password = Math.floor(Math.random() * 10000000)
       app_user = await createUser({
         ...user, password, phone_number: user.number,
@@ -169,17 +171,23 @@ const addUserToStoreAdmin = async (user, storeId) => {
       _id: storeId
     })
 
-    const store_admins = store.store_sub_admins.map((ele) => ele?._id);
-    if (!store_admins.includes(app_user?._id)) {
+    const store_admins = store.store_sub_admins.map((ele) => ele?._id.toString());
+    if (!store_admins.includes(app_user?._id.toString())) {
       store.store_sub_admins.push(app_user);
       return await store.save()
     } else {
-      throw new Error("This user has aleady been added to this store as a store sub admin")
+      throw {
+        messsage: "User has already been added to the store as a sub-admin",
+      };
     }
 
 
-  } catch (e) {
-    console.log(e)
+  } catch (error) {
+    throw {
+      error: error,
+      messsage: error.message || "User has already been added to the store as a sub-admin",
+      code: error.code || 500,
+    };
   }
 }
 
