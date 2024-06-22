@@ -38,15 +38,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    is_verified: {
-      type: Boolean,
-      default: false,
-    },
-    phone_number_is_verified: {
+    phone_number_verified: {
       type: Boolean,
       required: false,
     },
-    email_is_verified: {
+    email_verified: {
 
       type: Boolean,
       required: false,

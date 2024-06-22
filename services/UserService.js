@@ -376,8 +376,8 @@ class UserService {
         await updateUser(
           { _id: user.id },
           {
-            phone_number_is_verified: true,
-            is_verified: true,
+            phone_number_verified: true,
+
           }
         );
         const generatedToken = await generateAccessTokens({
@@ -439,8 +439,8 @@ class UserService {
         await updateUser(
           { _id: user.id },
           {
-            email_is_verified: true,
-            is_verified: true,
+            email_verified: true,
+
           }
         );
         const generatedToken = await generateAccessTokens({
