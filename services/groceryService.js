@@ -233,7 +233,7 @@ class GroceryService {
       // console.log('value', value)
 
       //check if groceryList exist
-      const checkExist = await checkIfGroceryListExist({ listName: value.groceryList.listName })
+      const checkExist = await checkIfGroceryListExist({ listName: value.groceryList.listName, user: value.userId })
       if (checkExist) {
 
         //this function checks if an item has been added to a grocery list, if not it adds
@@ -242,7 +242,8 @@ class GroceryService {
           listName: value.groceryList.listName,
           itemId: value.groceryList.groceryItems.itemId,
           quantity: value.groceryList.groceryItems.quantity,
-          measurement: value.groceryList.groceryItems.measurement
+          measurement: value.groceryList.groceryItems.measurement,
+          userId: value.userId
         })
       }
     } catch (error) {
@@ -321,10 +322,9 @@ class GroceryService {
 
 
 
-  static async getOneGroceryList(id) {
+  static async getOneGroceryList(id, user) {
     try {
-      const groceryList = await getOneGrocery(id);
-
+      const groceryList = await getOneGrocery(id, user);
 
       const similar = groceryList.groceryItems.map(async curr => {
         const arr = curr?.item?.ingredeints_in_item || []
