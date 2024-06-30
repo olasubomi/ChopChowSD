@@ -1,5 +1,5 @@
 const { getOneGroceryList } = require("../controllers/GroceryController/grocery.controller");
-const { validateItemOther } = require("../db/dbMongo/config/db_buildSchema");
+const { validateItemOther, descriptions } = require("../db/dbMongo/config/db_buildSchema");
 const { validate, validateItemToBeAddedToAGroceryList, vaidateJsonDataToBeAddedToGroceryList } = require("../model/grocery");
 const { validateGroceryList, validateGroceryListUpdate } = require("../model/grocery-list");
 const { Item } = require("../model/item");
@@ -372,7 +372,11 @@ class GroceryService {
   static async updateGroceryList(id, payload) {
     try {
       //validate request body;
-      const { error, value } = validateGroceryListUpdate(payload);
+      const { error, value } = validateGroceryListUpdate({
+        ...payload,
+        description: payload.description || ''
+      });
+      console.log(error, value, 'valie')
       if (error) throw `${error.details[0].message}`
       const checkExist = await checkIfGroceryListExist({ _id: id });
       if (checkExist) {
