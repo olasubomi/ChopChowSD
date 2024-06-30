@@ -20,7 +20,7 @@ passport.use(new GoogleStrategy({
 
     if (newUser) {
       const validUser = findOne(newUser._id);
-      User.findOneAndUpdate({ _id: validUser._id }, { is_verified: true }, { new: true });
+      User.findOneAndUpdate({ _id: validUser._id }, { email_verified: true }, { new: true });
       return;
     }
   }

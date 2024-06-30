@@ -8,15 +8,11 @@ module.exports = {
     try {
       const user = await UserService.userSignup(req.body);
       console.log("verified email", user.user.is_verified)
-      if (user.user.is_verified) {
-        return res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(user).recordCreated());
-      } else {
-        return res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(user).recordCreated());
-      }
+
+      return res
+        .status(Response.HTTP_ACCEPTED)
+        .json(new SuccessResponse(user).recordCreated());
+
     } catch (error) {
       console.log(error);
       return res
