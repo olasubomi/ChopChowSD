@@ -11,15 +11,13 @@ const userSchema = new Schema(
 
     last_name: { type: String, required: true },
 
-    user_type: { type: String, default: "customer", enum: ['supplier', 'customer'] },
+    user_type: { type: String, default: "customer", enum: ['supplier', 'customer', 'admin', 'driver'] },
 
     profile_picture: { type: String },
 
-    super_app_admin: { type: Boolean, default: false },
-
     sub_app_admin: { type: Boolean, default: false },
 
-    super_store_admin: { type: Boolean, default: false },
+    hasSupplierAffiliation: { type: Boolean, default: false },
 
     sub_store_admin: { type: Boolean, default: false },
 
@@ -36,13 +34,26 @@ const userSchema = new Schema(
     average_rating: { type: Number, required: false, default: 0 },
 
     phone_number: {
-      // country_code: { type: String, required: true },
+
       type: String,
       required: true,
     },
-    is_verified: {
+    phone_number_verified: {
       type: Boolean,
-      default: false,
+      required: false,
+    },
+    email_verified: {
+
+      type: Boolean,
+      required: false,
+    },
+    isVerified: {
+      type: Boolean,
+      required: false,
+    },
+    email_token: {
+
+      type: String,
     },
 
     food_preferences: [
@@ -276,26 +287,7 @@ const groceryListSchema = new mongoose.Schema(
 
 exports.grocery_list = mongoose.model("Grocery_list", groceryListSchema);
 
-exports.cart = mongoose.model(
-  "Cart",
-  new Schema(
-    {
-      total: { type: String },
 
-      user: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-      },
-      cart_items: [
-        {
-          type: mongoose.Types.ObjectId,
-          ref: "Order_items",
-        },
-      ],
-    },
-    { timestamps: true }
-  )
-);
 
 exports.products = mongoose.model(
   "Products",
@@ -453,6 +445,35 @@ exports.meals = mongoose.model(
   )
 );
 
+exports.StoreClaim = mongoose.model(
+  "Store Claim",
+  new Schema(
+    {
+      store: {
+        type: Schema.Types.ObjectId,
+        ref: "Supplier"
+      },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      },
+      business_information: {
+        business_name: { type: String, required: true },
+        business_address: { type: String, required: true },
+        business_reg_number: { type: String, required: true },
+        business_ownership_proof: { type: String, required: true },
+
+      },
+      status: {
+        type: String,
+        default: 'UNAPPROVED',
+        enum: ['PENDING', 'APPROVED', 'REJECTED', 'UNAPPROVED']
+      }
+
+    }
+  )
+)
+
 exports.Supplier = mongoose.model(
   "Supplier",
   new Schema(
@@ -468,6 +489,17 @@ exports.Supplier = mongoose.model(
 
       average_rating: { type: Number, required: false, default: 0 },
 
+      currency: {
+        name: {
+          type: String,
+          default: "USD"
+        },
+        symbol: {
+          type: String,
+          default: "$"
+        }
+      },
+
       supplier_address: {
         phone_number: { type: String },
         username: { type: String },
@@ -475,11 +507,18 @@ exports.Supplier = mongoose.model(
         city: { type: String },
         zip_code: { type: String },
         country: { type: String },
+        lat: { type: String },
+        lng: { type: String },
+        place_id: { type: String },
+        address: { type: String },
+        state: { type: String }
       },
+
+      description: { type: String },
 
       email: { type: String },
 
-      hours: [{ type: String }],
+      hours: { type: Object },
 
       suggested_meals_and_products: [
         {
@@ -522,6 +561,15 @@ exports.Supplier = mongoose.model(
           ref: "User",
         },
       ],
+      sub_app_admin: [{
+        type: mongoose.Types.ObjectId,
+        ref: "User"
+      }],
+      status: {
+        type: String,
+        enum: ['PENDING', 'PRIVATE', 'PUBLIC', 'DRAFT', 'REJECTED'],
+        default: "PENDING"
+      }
     },
     { timestamps: true }
   )
@@ -549,76 +597,6 @@ exports.order_groups = mongoose.model(
 
     { timestamps: true }
   )
-);
-
-exports.Order = mongoose.model(
-  "Order",
-  new Schema(
-    {
-      total_order_price: { type: String },
-
-      order_items: [
-        {
-          type: mongoose.Types.ObjectId,
-          ref: "Order_items",
-        },
-      ],
-
-      user: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-      },
-      pickup_details: { type: {} },
-
-      intermediaries_details: ObjectId, //need more clarifiaction on these
-
-      delivery_details: { type: {} },
-
-      payment_details: { type: {} },
-
-      drivers_id: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-      },
-
-      order_group: Array,
-
-      status: {
-        type: String,
-        required: true,
-        default: "PENDING",
-        enum: ["DELIVERED", "PENDING", "PROCESSED", "PICKEDUP"],
-      },
-    },
-
-    { timestamps: true }
-  )
-);
-
-exports.order_items = mongoose.model(
-  "Order_items",
-  new Schema({
-    item: {
-      type: mongoose.Types.ObjectId,
-      refPath: "item_type",
-      required: true,
-    },
-
-    item_type: {
-      type: String,
-      required: true,
-      enum: ["Meal", "Product"],
-    },
-
-    store: {
-      type: [mongoose.Types.ObjectId],
-      ref: "Supplier",
-    },
-
-    quantity_of_item: { type: String },
-
-    estimated_time_of_arrival: Date,
-  })
 );
 
 exports.regions = mongoose.model(
@@ -766,7 +744,10 @@ exports.notifications = mongoose.model(
     {
       message: { type: String },
 
-      read: Boolean,
+      read: {
+        type: Boolean,
+        default: false
+      },
 
       notifiable: {
         type: mongoose.Types.ObjectId,
@@ -777,7 +758,7 @@ exports.notifications = mongoose.model(
       notifiableType: {
         type: String,
         required: true,
-        enum: ["User", "Driver", "Product"],
+        enum: ["User", "Driver", "Product", "Item", "Comment", "Reply"],
       },
     },
 
@@ -860,3 +841,12 @@ exports.validateItemDescription = (description) => {
   return schema.validate(description);
 }
 
+exports.validateStoreInformation = (values) => {
+  const schema = Joi.object({
+    business_name: Joi.string().required(),
+    business_address: Joi.string().required(),
+    business_reg_number: Joi.string().required(),
+    business_ownership_proof: Joi.string().required(),
+  })
+  return schema.validate(values)
+}
