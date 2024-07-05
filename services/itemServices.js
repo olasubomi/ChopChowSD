@@ -1,4 +1,4 @@
-const { validate, validateItemMeal, validateItemProduct } = require("../model/item");
+const { validate, validateItemMeal, validateItemProduct, Item } = require("../model/item");
 
 const {
   createItem,
@@ -14,6 +14,7 @@ const {
   getOneUserItem,
   filterItem,
   getItemsForAUser,
+  updateItem,
 } = require("../repository/item");
 
 const {
@@ -29,12 +30,15 @@ const { createDescription } = require("../repository/description");
 const { createNewMeasurment } = require("../repository/measurement");
 const { createNewIngredient, getAllIngredient } = require("../repository/ingredient");
 const GroceryService = require("./groceryService");
+const { capitalize } = require("lodash");
 
 class ItemService {
-  static async createItem(payload, files, res) {
+  static async createItem(payload, files = [], res, query = { action: 'create', _id: "" }) {
+
+
     try {
 
-      files.item_images = [];
+      // files.item_images = [];
       console.log(payload, files)
 
 
@@ -78,16 +82,17 @@ class ItemService {
 
         }
 
-        payload.formatted_ingredients = JSON.parse(payload.formatted_ingredients)
-        payload.item_categories = JSON.parse(payload.item_categories)
-        payload.meal_formatted_instructions = JSON.parse(payload.formatted_instructions)
-        payload.item_data = JSON.parse(payload.item_data)
-        payload.meal_prep_time = payload.item_data.prep_time
-        payload.meal_cook_time = payload.item_data.cook_time
-        payload.meal_chef = payload.item_data.chef
-        payload.meal_servings = payload.item_data.servings
-        payload.meal_kitchen_utensils = JSON.parse(payload.item_data.kitchen_utensils)
-        payload.meal_tips = payload.item_data.tips;
+        payload.formatted_ingredients = JSON.parse(payload?.formatted_ingredients || "[]")
+        payload.item_categories = JSON.parse(payload?.item_categories || "[]")
+        payload.meal_formatted_instructions = JSON.parse(payload?.formatted_instructions || "[]")
+        payload.item_data = JSON.parse(payload?.item_data || "{}")
+        payload.meal_prep_time = payload?.item_data.prep_time
+        payload.meal_cook_time = payload?.item_data.cook_time
+        payload.meal_chef = payload?.item_data.chef
+        payload.meal_servings = payload?.item_data.servings
+        payload.meal_kitchen_utensils = JSON.parse(payload?.item_data?.kitchen_utensils || "[]")
+        payload.meal_tips = payload?.item_data?.tips;
+
         payload.item_status = [
           {
             status: "Draft",
@@ -98,46 +103,82 @@ class ItemService {
 
         payload.item_images = [];
 
-        if (files.item_images.length) {
-          for (let i = 0; i < item_images.length; i++) {
-            payload.item_images.push(item_images[i].location)
-            payload[`itemImage${i}`] = item_images[i].location
-          }
-        }
 
-        for (let i = 1; i < 6; i++) {
-          if (files[`image_or_video_content_${i}`] !== undefined) {
-            const image = files[`image_or_video_content_${i}`];
-            payload[`meal_image_or_video_content${i}`] = image[0].location
+        if (query?.action === 'update') {
+          const item = await Item.findById(query?._id);
+          if (Array.isArray(files?.item_images)) {
+            for (let i = 0; i < item_images.length; i++) {
+              payload.item_images = item.item_images
+              payload.item_images.push(item_images[i].location)
+              if (item.item_images.length) {
+                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].location
+
+              } else {
+                payload[`itemImage${i}`] = item_images[i].location
+
+              }
+            }
+
+          }
+
+          for (let i = 1; i < 6; i++) {
+            if (files[`image_or_video_content_${i}`] !== undefined) {
+              const image = files[`image_or_video_content_${i}`];
+              payload[`meal_image_or_video_content${i}`] = image[0].location
+            }
+          }
+
+        } else {
+
+          if (Array.isArray(files?.item_images)) {
+            for (let i = 0; i < item_images.length; i++) {
+              payload.item_images.push(item_images[i].location)
+              payload[`itemImage${i}`] = item_images[i].location
+            }
+
+          }
+
+          for (let i = 1; i < 6; i++) {
+            if (files[`image_or_video_content_${i}`] !== undefined) {
+              const image = files[`image_or_video_content_${i}`];
+              payload[`meal_image_or_video_content${i}`] = image[0].location
+            }
           }
         }
 
         payload.ingredeints_in_item = []
 
         for (let ingredient of payload?.formatted_ingredients || []) {
-          const splited = ingredient.split(' ');
-          const item_name = splited.slice(3).join(' ');
-          const item_quantity = Number(splited[0])
-          const item_measurement = splited[1]
-          const formatted_string_of_item = ingredient
+          const item_name = ingredient?.item_name //splited.slice(splited.length - 1).join(' ')
+          const item_quantity = ingredient?.item_quantity// Number(splited[0])
+          const item_measurement = ingredient?.item_measurement //splited[1]
+          const formatted_string_of_item = capitalize(ingredient?.formatted_string_of_item || '')
+          let obj = {}
+          if (ingredient.item_name) {
+            obj.item_name = ingredient.item_name
+          }
+          if (ingredient.item_quantity) {
+            obj.item_quantity = ingredient.item_quantity
+          }
+          if (ingredient.item_measurement) {
+            obj.item_measurement = ingredient.item_measurement
+          }
+          if (ingredient.formatted_string_of_item) {
+            obj.formatted_string_of_item = ingredient.formatted_string_of_item
+          }
+          payload.ingredeints_in_item.push(obj)
 
-          payload.ingredeints_in_item.push({
-            item_name,
-            item_quantity,
-            item_measurement,
-            formatted_string_of_item
-          })
-
-          await createNewMeasurment({
-            measurement_name: item_measurement
-          })
+          if (item_measurement) {
+            await createNewMeasurment({
+              measurement_name: item_measurement
+            })
+          }
 
           await createNewIngredient({
             item_name
           })
 
         }
-        console.log(payload, 'payloading')
 
 
 
@@ -152,31 +193,78 @@ class ItemService {
 
         delete payload.formatted_instructions;
         delete payload.item_data
+        delete payload.formatted_ingredients
+
+        const keys = Object.keys(payload);
+        keys.map((element) => {
+          if (keys.indexOf(element) !== keys.lastIndexOf(element)) {
+            delete payload[element]
+          }
+        })
+        for (let ele in payload) {
+
+          if (!Boolean(payload[ele])) {
+            delete payload[ele]
+          }
+          if (Array.isArray(payload[ele]) && payload[ele].length === 0) {
+            delete payload[ele]
+
+          }
+        }
+        console.log(payload, 'payloading')
+
 
         const { error } = validateItemMeal(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
-        return await createItem(payload);
-      } else if (payload.item_type === 'Product') {
+
+
+        if (query?.action == 'update') {
+          return await updateItem({ _id: query?._id }, payload)
+        } else {
+          return await createItem(payload);
+        }
+      } else if (payload.item_type === 'Product' || payload.item_type === 'Utensil') {
         // 
         console.log(payload.listName)
+        payload.item_status = [
+          {
+            status: "Draft",
+            status_note: "Pending Approval",
+          },
+        ];
+        const item_images = files.item_images || []
+        payload.item_images = []
+        console.log(files?.item_images, 'files?.item_images')
 
-        if (payload.listName) {
-          payload.item_status = [
-            {
-              status: "Draft",
-              status_note: "Pending Approval",
-            },
-          ];
-          const item_images = files.item_images || []
-
-          payload.item_images = [];
-
+        if (query?.action === 'update') {
+          const item = await Item.findById(query?._id);
           if (files?.item_images?.length) {
-            for (let i = 0; i < item_images.length; i++) {
+            for (let i = 0; i < files?.item_images.length; i++) {
+              payload.item_images = item.item_images
+              payload.item_images.push(item_images[i].location)
+              if (item.item_images.length) {
+                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].location
+
+              } else {
+                payload[`itemImage${i}`] = item_images[i].location
+
+              }
+            }
+          }
+
+        } else {
+          if (files?.item_images?.length) {
+            for (let i = 0; i < files?.item_images.length; i++) {
               payload.item_images.push(item_images[i].location)
               payload[`itemImage${i}`] = item_images[i].location
             }
           }
+        }
+        if (payload.listName) {
+
+
+          payload.item_images = [];
+
           const { error } = validateItemProduct(payload); console.log('errr', error)
           if (error) return res.status(400).send(error.details[0].message);
           const item = await createItem(payload);
@@ -196,16 +284,16 @@ class ItemService {
 
 
         console.log(payload)
-        payload.formatted_ingredients = JSON.parse(payload.formatted_ingredients)
-        payload.item_data = JSON.parse(payload.item_data)
+        payload.formatted_ingredients = JSON.parse(payload.formatted_ingredients || "[]")
+        payload.item_data = JSON.parse(payload.item_data || "{}")
         //product descrition
-        const all_description = JSON.parse(payload.description) || [];
+        const all_description = JSON.parse(payload.description) || "[]";
 
         let resp = all_description.map(async (element) => {
           let name = element.object_name;
           delete element.object_name;
           const descrp = await createDescription({
-            description_key: name,
+            description_key: capitalize(name),
             ...element
           })
 
@@ -215,13 +303,17 @@ class ItemService {
           return descrp.description.toString()
         })
 
-        const allDesp = await Promise.all(resp)
-          .then(res => {
-            return res
-          })
-        payload.item_description = allDesp;
-        payload.product_size = payload.item_data.product_size;
+        if (resp) {
+          const allDesp = await Promise.all(resp)
+            .then(res => {
+              return res
+            })
+          payload.item_description = allDesp;
+          if (payload?.item_data?.product_size) {
+            payload.product_size = payload.item_data.product_size;
 
+          }
+        }
         payload.item_categories = JSON.parse(payload.item_categories).map(ele => ele.toString())
 
         const createCategories = await createCategoriesFromCreateMeal(payload.item_categories)
@@ -233,35 +325,62 @@ class ItemService {
 
         payload.ingredeints_in_item = []
 
+        console.log(payload?.formatted_ingredients, 'formatted_ingredients')
+
         for (let ingredient of payload?.formatted_ingredients || []) {
-          const splited = ingredient.split(' ');
-          const item_name = splited.slice(3).join(' ');
-          const item_quantity = Number(splited[0])
-          const item_measurement = splited[1]
-          const formatted_string_of_item = ingredient
+          // const splited = ingredient.split(' ');
+          const item_name = ingredient?.item_name //splited.slice(splited.length - 1).join(' ')
+          const item_quantity = ingredient?.item_quantity// Number(splited[0])
+          const item_measurement = ingredient?.item_measurement //splited[1]
+          const formatted_string_of_item = capitalize(ingredient?.formatted_string_of_item || '')
 
-          payload.ingredeints_in_item.push({
-            item_name,
-            item_quantity,
-            item_measurement,
-            formatted_string_of_item
-          })
-
-
+          let obj = {}
+          if (ingredient.item_name) {
+            obj.item_name = ingredient.item_name
+          }
+          if (ingredient.item_quantity) {
+            obj.item_quantity = ingredient.item_quantity
+          }
+          if (ingredient.item_measurement) {
+            obj.item_measurement = ingredient.item_measurement
+          }
+          if (ingredient.formatted_string_of_item) {
+            obj.formatted_string_of_item = ingredient.formatted_string_of_item
+          }
+          payload.ingredeints_in_item.push(obj)
 
           const abc = await createNewIngredient({
             item_name
           })
           console.log('abe', abc)
-
         }
 
         delete payload.item_data;
         delete payload.description;
+        delete payload.formatted_ingredients;
+        if (payload.item_description?.length === 0) {
+          delete payload.item_description
+        }
 
+        for (let ele in payload) {
+          if (!Boolean(payload[ele])) {
+            delete payload[ele]
+          }
+          if (Array.isArray(payload[ele]) && payload[ele].length === 0) {
+            delete payload[ele]
+
+          }
+        }
         const { error } = validateItemProduct(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
-        return await createItem(payload);
+        console.log(payload, files, 'payoload')
+        console.log(query, 'query?.action')
+        if (query?.action === 'update') {
+          return await updateItem({ _id: query?._id }, payload)
+        } else {
+          return await createItem(payload);
+        }
+
       } else if (payload.item_type === 'Other') {
         console.log(payload, 'payayayay')
         const { error } = validateItemMeal(payload); console.log('errr', error)
@@ -485,7 +604,6 @@ class ItemService {
       console.log(error);
     }
   }
-  getItemsForAUser
   static async getOneItem(filter, res) {
     try {
       return await getOneUserItem(filter)
@@ -503,9 +621,9 @@ class ItemService {
     }
   }
 
-  static async filterUserItem(filter, res) {
+  static async filterUserItem(filter, query) {
     try {
-      return await filterItem(filter)
+      return await filterItem(filter, query)
     } catch (error) {
       console.log(error)
     }
@@ -547,6 +665,7 @@ class ItemService {
       console.log(error);
     }
   }
+
 
   static async updateComment(payload, res) {
     try {

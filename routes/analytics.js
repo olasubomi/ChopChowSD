@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const AnalyticsController = require("../controllers/analytics");
-const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 
 //analytics routes
 router.get(

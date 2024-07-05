@@ -1,5 +1,8 @@
 const DescriptionController = require("../controllers/DescriptionController/description.controller");
-const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
+
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
+
 const express = require("express");
 const router = express.Router();
 

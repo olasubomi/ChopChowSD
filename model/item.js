@@ -7,9 +7,9 @@ const itemSchema = new mongoose.Schema(
   {
     item_name: { type: String, required: true },
 
-    item_images: [{ type: String, default: 'https://meal-chunk-images-and-videos.s3.amazonaws.com/1693356964128' }],
+    item_images: [{ type: String }],
 
-    itemImage0: { type: String, default: 'https://meal-chunk-images-and-videos.s3.amazonaws.com/1693356964128' },
+    itemImage0: { type: String },
 
     itemImage1: { type: String },
 
@@ -18,6 +18,13 @@ const itemSchema = new mongoose.Schema(
     itemImage3: { type: String },
 
     item_intro: { type: String },
+
+    item_available: { type: Boolean },
+
+    rejectionMessage: {
+      title: String,
+      message: String
+    },
 
     item_categories: [{ type: mongoose.Types.ObjectId, ref: "Category" }],
 
@@ -29,6 +36,7 @@ const itemSchema = new mongoose.Schema(
 
     hidden_ingredients_in_product: [{ type: String }],
 
+    item_price: { type: Number },
 
     item_type: {
       type: String,
@@ -77,7 +85,9 @@ const itemSchema = new mongoose.Schema(
       item_name: String,
       item_quantity: Number,
       item_measurement: String,
-      formatted_string_of_item: String
+      formatted_string_of_item: String,
+      item_price: Number,
+      product_available: Boolean
     }],
 
     total_rating: { type: Number, default: 0 },
@@ -147,14 +157,14 @@ function validateItemMeal(item) {
 
     item_type: Joi.string().required(),
 
-    formatted_ingredients: Joi.array().items(Joi.string().required()).optional(),
+    // formatted_ingredients: Joi.array().items(Joi.string().required()).optional(),
 
     user: Joi.string().required(),
 
     ingredeints_in_item: Joi.array().items(Joi.object({
       item_name: Joi.string().required(),
-      item_quantity: Joi.number().required(),
-      item_measurement: Joi.string().required(),
+      item_quantity: Joi.number().optional(),
+      item_measurement: Joi.string().optional(),
       formatted_string_of_item: Joi.string().required()
     })).optional(),
 
@@ -164,7 +174,7 @@ function validateItemMeal(item) {
       Joi.object({
         title: Joi.string().required(),
         instructionSteps: Joi.array().items(Joi.string().required()),
-        dataName: Joi.string().required()
+        dataName: Joi.any().optional()
       })).optional(),
 
     item_status: Joi.array().items(Joi.object({
@@ -229,14 +239,14 @@ function validateItemProduct(item) {
 
     ingredeints_in_item: Joi.array().items(Joi.object({
       item_name: Joi.string().required(),
-      item_quantity: Joi.number().required(),
-      item_measurement: Joi.string().required(),
+      item_quantity: Joi.number().optional(),
+      item_measurement: Joi.string().optional(),
       formatted_string_of_item: Joi.string().required()
     })).optional(),
 
     user: Joi.objectId().required(),
 
-    formatted_ingredients: Joi.array().items(Joi.string()).optional(),
+    // formatted_ingredients: Joi.array().items(Joi.string()).optional(),
 
     item_type: Joi.string().required(),
 
@@ -301,7 +311,7 @@ function validateItem(item) {
 
     store_name: Joi.objectId().optional(),
 
-    formatted_ingredients: Joi.array().items(Joi.string()).optional(),
+    // formatted_ingredients: Joi.array().items(Joi.string()).optional(),
 
     hidden_ingredients_in_product: Joi.array().items(Joi.string()).optional(),
 

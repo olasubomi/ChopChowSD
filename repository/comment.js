@@ -1,4 +1,6 @@
+const { notifications, User } = require("../db/dbMongo/config/db_buildSchema");
 const { Comment } = require("../model/comment");
+const { Item } = require("../model/item");
 const CommentEventHandler = require("./commentEventEmitter");
 const eventEmitter = CommentEventHandler.create();
 const { findUser } = require("./user");
@@ -8,6 +10,23 @@ const createComment = async (payload) => {
     try {
 
         const newComment = await Comment.create(payload);
+        const item = await Item.findById({
+            _id: payload.item
+        })
+        if (item) {
+            const user = await User.findById({
+                _id: item.user._id
+            })
+            const notfication = await notifications.create({
+                message: `${user.first_name} left a comment on your ${item.item_name} item`,
+                notifiableType: "Comment",
+                notifiable: newComment
+            })
+
+            user.notifications.push(notfication)
+            await user.save()
+        }
+
 
         if (payload.rating) {
             eventEmitter.emit("commentEvent", newComment)

@@ -1,7 +1,7 @@
 const { filter } = require("bluebird");
 const { Item } = require("../model/item");
 const { NotificationService } = require("./notificationService");
-const { item_description } = require("../db/dbMongo/config/db_buildSchema");
+const { item_description, notifications, User } = require("../db/dbMongo/config/db_buildSchema");
 
 
 const createItem = async (payload) => {
@@ -28,7 +28,6 @@ const getItems = async (page, filter) => {
     }
   }
 
-  console.log('query', query)
   const itemResponse = await Item
     .find(query)
     .limit(getPaginate.limit)
@@ -56,16 +55,42 @@ const getOneUserItem = async (filter) => {
   }
 };
 
-const filterItem = async (filter) => {
+
+const filterItem = async (filter, query = {}) => {
   try {
-    return await Item.find({
+    console.log(query, {
       item_name: { $regex: filter, $options: "i" },
       'item_status': {
         $elemMatch: {
           'status': 'Public'
         }
-      }
-    }).populate('store_available')
+      },
+      ...query
+    })
+    return await Item.find({
+      $or: [
+        {
+          ingredeints_in_item: {
+            $exists: true,
+            $ne: [],
+            $elemMatch: {
+              item_name: filter
+            }
+          }
+        },
+        {
+          item_name: { $regex: filter, $options: "i" },
+          'item_status': {
+            $elemMatch: {
+              'status': 'Public'
+            }
+          },
+          ...query
+        },
+      ]
+    })
+      .populate('store_available');
+
   } catch (error) {
     console.log(error);
   }
@@ -73,16 +98,16 @@ const filterItem = async (filter) => {
 
 const getUserItems = async (data) => {
   try {
-    const { type, page, limit, user } = data;
+    const { type, page, limit, user, filterBy = {} } = data;
     let getPaginate = await paginate2(page, { type, limit, user });
     const itemResponse = await Item.find({
       item_type: { $in: type.split(',') },
-      user: user
+      user: user,
+      ...filterBy
     })
       .populate("item_categories item_description")
       .skip(getPaginate.skip)
       .limit(getPaginate.limit)
-
     return { items: itemResponse, count: getPaginate.docCount };
   } catch (error) {
     console.log(error);
@@ -142,15 +167,28 @@ const itemUpdate = async (payload, arrayId) => {
         $set: {
           "item_status.$[elemA].status": payload.status,
           "item_status.$[elemA].status_note": payload.status_note,
+          "rejectionMessage": {
+            "title": payload?.title ?? "",
+            "message": payload?.message ?? ""
+          }
         },
       },
       {
         arrayFilters: [{ "elemA._id": arrayId }],
       }
     );
-
-    if (payload.status || payload.item_status) {
-
+    console.log(payload, 'pay')
+    if (payload.item_status !== 'Pending' && payload.status !== 'Pending') {
+      const notfication = await notifications.create({
+        message: `Suggested Meal: ${updatedItem.item_name} ${payload.status}`,
+        notifiableType: "Item",
+        notifiable: updatedItem
+      })
+      await User.findByIdAndUpdate({
+        _id: updatedItem.user,
+      }, {
+        $push: { notifications: notfication }
+      })
       NotificationService.publishMessage(updatedItem.user, "status_updated",
         { message: "Item status updated", data: updatedItem })
 

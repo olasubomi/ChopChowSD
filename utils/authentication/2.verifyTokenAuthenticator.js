@@ -8,10 +8,13 @@ module.exports = (req, res, next) => {
     token = token.slice(7, token.length);
   }
 
+
   if (token) {
     verify(token, secret, (err, decoded) => {
+      console.log(err, 'ereoopppppp')
       if (err) {
         // lets also check cookie..
+
         console.log("Error when veryfiying authentication token");
         console.log(err);
         return res.status(401).json({
@@ -19,7 +22,7 @@ module.exports = (req, res, next) => {
           message: "Token is not valid",
         });
       } else {
-        console.log("Successfully verified authentication token");
+        console.log("Successfully verified authentication token==", decoded);
         req.decoded = decoded;
         next();
       }
@@ -43,7 +46,7 @@ module.exports.verifyRefreshToken = (req, res, next) => {
     token = token.slice(7, token.length);
   }
 
-  if (token) {
+  if (!Object.is(token, null)) {
     verify(token, secret, (err, decoded) => {
       if (err) {
         // lets also check cookie..
@@ -54,7 +57,7 @@ module.exports.verifyRefreshToken = (req, res, next) => {
           message: "Token is not valid",
         });
       } else {
-        console.log("Successfully verified authentication token");
+        console.log("Successfully refresh authentication token", decoded);
         req.user = decoded;
         next();
       }

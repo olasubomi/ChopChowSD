@@ -9,8 +9,12 @@ exports.Inventory = mongoose.model(
 
       item: {
         type: mongoose.Types.ObjectId,
-        refPath: "item_type",
+        ref: "Item",
         required: true,
+      },
+      user: {
+        type: mongoose.Types.ObjectId,
+        ref: "User"
       },
 
       prepackagedMeal: { type: Boolean, default: false },
@@ -27,15 +31,16 @@ exports.Inventory = mongoose.model(
 
       estimatedPreparationTime: { type: String },
 
+      meal_price: { type: String },
+
       ingredients: [
         {
-          name: { type: String },
+          item_name: { type: String },
 
           set_price: {
             type: String,
           },
-
-          quantity: { type: String },
+          item_quantity: { type: String },
 
           product_available: Boolean,
         },

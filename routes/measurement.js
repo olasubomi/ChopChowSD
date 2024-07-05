@@ -1,5 +1,5 @@
 const MeasurementController = require("../controllers/MeasurementController/measurement.controller");
-const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const express = require("express");
 const router = express.Router();
 

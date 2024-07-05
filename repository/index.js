@@ -22,7 +22,7 @@ const {
   updateSuggestedMealItem,
   deleteMeal,
   updateMeal,
-} = require("./meal");
+} = require("./meal.js");
 
 const {
   getAllProducts,
@@ -31,7 +31,7 @@ const {
   updateProduct,
   getProduct,
   deleteProduct,
-} = require("./product");
+} = require("./product.js");
 
 const {
   createGroceryList,
@@ -41,9 +41,9 @@ const {
   addItemToList,
   createNewList,
   getGroceryList,
-} = require("./grocery");
+} = require("./grocery.js");
 
-const { createItems, updateItem, getOneUserItem } = require("./item");
+const { createItems, updateItem, getOneUserItem } = require("./item.js");
 
 
 
@@ -54,7 +54,7 @@ const {
   updateCategory,
   getCategory,
   deleteCategory,
-} = require("./category");
+} = require("./category.js");
 
 // const {
 //   getAllDescriptions,
@@ -71,7 +71,10 @@ const {
   updateStore,
   getStore,
   deleteStore,
-} = require("./store");
+  getAllSupplierByAddress,
+  getAllStoresForUser,
+  checkStoreAvailability
+} = require("./store.js");
 
 const {
   getMealsCount,
@@ -83,7 +86,7 @@ const {
   getMeasurementsCount,
   getGroceryListsCount,
   getInventoriesCount,
-} = require("./analytics");
+} = require("./analytics.js");
 
 const {
   getInventories,
@@ -91,7 +94,8 @@ const {
   updateInventory,
   deleteInventory,
   createInventory,
-} = require("./inventory");
+  allUserInventory
+} = require("./inventory.js");
 
 
 
@@ -108,7 +112,7 @@ const {
   getAllUserComment
 } = require("./comment.js")
 
-const { createMeasurement } = require("./measurement");
+const { createMeasurement } = require("./measurement.js");
 
 module.exports = {
   getCustomerGroceryList,
@@ -187,5 +191,9 @@ module.exports = {
   getItemCommentsCount,
   upVoteComment,
   downVoteComment,
-  getAllUserComment
+  getAllUserComment,
+  getAllSupplierByAddress,
+  getAllStoresForUser,
+  checkStoreAvailability,
+  allUserInventory
 };

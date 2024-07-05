@@ -1,5 +1,5 @@
 const ItemController = require("../controllers/ItemController/item.controller");
-const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const { upload, transformObject } = require("../utils/middleware");
 const express = require("express");
 const router = express.Router();
@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("/:page", ItemController.getAllItems);
 
 router.get('/user/:name', ItemController.getOneItem)
+router.get('/item/:id', ItemController.getOneItemById)
 
 router.get('/filter/:name', ItemController.filterItem)
 
