@@ -40,15 +40,18 @@ const userSchema = new Schema(
     },
     phone_number_verified: {
       type: Boolean,
+      default: false,
       required: false,
     },
     email_verified: {
 
       type: Boolean,
+      default: false,
       required: false,
     },
     isVerified: {
       type: Boolean,
+      default: false,
       required: false,
     },
     email_token: {
