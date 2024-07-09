@@ -24,7 +24,7 @@ class CartService {
                 const IsCartCreated = await findCartUser({ user: userExist._id })
                 if (IsCartCreated) {
                     const getItemType = getProduct({ _id: payload.itemId })
-                    await addToCartList(payload, getProductType.item_type);
+                    await addToCartList(payload, getItemType.item_type);
                 }
 
             }
@@ -33,7 +33,7 @@ class CartService {
 
 
             return {
-                user: newUser,
+
                 message: "Added to cart successfully"
             };
         } catch (error) {
