@@ -1,35 +1,46 @@
-// class CartService {
-//     static async createCart(payload) {
-//         try {
-//             // validate input data with joi
-//             //const validate = cartSchema.validate(payload);
 
-//             // if (validate.error) {
-//             //     throw {
-//             //         message: validate.error.details[0].message,
-
-//             //         path: validate.error.details[0].path[0],
-//             //     };
-//             // }
-//             const userExist = await findUser({ email: payload.email });
+const { getProduct } = require("../repository");
+const { findCartUser } = require("../repository/cart");
+const { findUser } = require("../repository/user");
 
 
-//             if (userExist && userExist.isVerified) {
-//                 throw {
-//                     message: "User already exist",
-//                 };
-//             }
+class CartService {
+    static async addToCart(payload) {
+        try {
+            //validate input data with joi
+            const validate = cartSchema.validate(payload);
 
-//             const newUser = await createUser(payload);
+            if (validate.error) {
+                throw {
+                    message: validate.error.details[0].message,
+
+                    path: validate.error.details[0].path[0],
+                };
+            }
+            const userExist = await findUser({ _id: payload.userId });
 
 
-//             return {
-//                 user: newUser,
-//                 message: "User sucessfully registered"
-//             };
-//         } catch (error) {
-//             console.log("caught");
-//             throw error;
-//         }
-//     }
-// }
+            if (userExist && userExist.isVerified) {
+                const IsCartCreated = await findCartUser({ user: userExist._id })
+                if (IsCartCreated) {
+                    const getProductType = getProduct({ _id: payload.itemId })
+                    const add2cart = await addToCartList(payload, getProductType.item_type);
+                }
+
+            }
+
+
+
+
+            return {
+                user: newUser,
+                message: "User sucessfully registered"
+            };
+        } catch (error) {
+            console.log("caught");
+            throw error;
+        }
+    }
+}
+
+module.exports = CartService

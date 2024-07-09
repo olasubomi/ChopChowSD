@@ -83,7 +83,7 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/comment", commentRoutes);
-//app.use("/api/cart", cartRoutes);
+app.use("/api/cart", cartRoutes);
 
 
 

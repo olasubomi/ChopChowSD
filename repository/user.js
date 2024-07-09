@@ -3,8 +3,8 @@ const {
   grocery_list,
   products,
   User,
-  cart,
 } = require("../db/dbMongo/config/db_buildSchema");
+const { cart } = require("../model/cart")
 
 const createUser = async (payload) => {
   const newUser = await User.create(payload);

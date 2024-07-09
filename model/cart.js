@@ -25,16 +25,16 @@ exports.cart = mongoose.model(
 
 
 
-// function validateCart(cart) {
-//     const schema = Joi.object({
-//         total: joi.string().optional(),
+function validateCart(cart) {
+    const schema = Joi.object({
+        total: Joi.string().optional(),
 
-//         user: joi.objectJoi.string().optional(),
+        user: Joi.object().optional(),
 
-//         cart_items: Joi.array().items(Joi.string()).optional(),
-//     });
+        cart_items: Joi.array().items(Joi.object()).optional(),
+    });
 
-//     return schema.validate(cart);
-// }
+    return schema.validate(cart);
+}
 
-// exports.validateCart = validateCart;
+exports.validateCart = validateCart;

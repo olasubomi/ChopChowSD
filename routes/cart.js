@@ -1,9 +1,12 @@
-// const router = require("express").Router();
+const CartController = require("../controllers/CartController/cart.controller");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 
-// router.post(
-//     "/create",
-//     verifyAuthentication,
-//     CartController.AddToCount
-// );
+const router = require("express").Router();
 
-// module.exports = router;
+router.post(
+    "/create",
+    verifyAuthentication,
+    CartController.CreateCart
+);
+
+module.exports = router;
