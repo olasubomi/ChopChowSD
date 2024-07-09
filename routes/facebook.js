@@ -20,8 +20,8 @@ passport.use(
 
       });
       if (newUser) {
-        const validUser =  findOne(newUser._id);
-        User.findOneAndUpdate({ _id: validUser._id }, { is_verified: true }, { new: true });
+        const validUser = findOne(newUser._id);
+        User.findOneAndUpdate({ _id: validUser._id }, { email_verified: true }, { new: true });
         return;
       }
     }

@@ -26,6 +26,7 @@ const storeRoutes = require("./routes/store");
 const analyticsRoutes = require("./routes/analytics");
 const inventoryRoutes = require("./routes/inventory");
 const commentRoutes = require("./routes/comment")
+const cartRoutes = require("./routes/cart")
 const { getDescription } = require("./repository/description");
 
 //----------------------------------------------------------------------------------
@@ -82,6 +83,7 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/comment", commentRoutes);
+app.use("/api/cart", cartRoutes);
 
 
 
