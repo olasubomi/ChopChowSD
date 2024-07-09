@@ -382,8 +382,13 @@ class UserService {
 
         await updateUser(
           { _id: user.id },
+
           {
-            phone_number_verified: true,
+            $set: {
+              phone_number_verified: true,
+              isVerified: true
+            }
+
 
           }
         );

@@ -21,7 +21,12 @@ passport.use(
       });
       if (newUser) {
         const validUser = findOne(newUser._id);
-        User.findOneAndUpdate({ _id: validUser._id }, { email_verified: true }, { new: true });
+        User.findOneAndUpdate({ _id: validUser._id }, {
+          $set: {
+            email_verified: true,
+            isVerified: true
+          }
+        }, { new: true });
         return;
       }
     }
