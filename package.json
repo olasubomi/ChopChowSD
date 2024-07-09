@@ -1,6 +1,9 @@
 {
   "name": "chop_chow_sd_express_server_serving_api_requests",
   "version": "1.0.0",
+  "engines": {
+    "node": "20.x"
+  },
   "main": "server.js",
   "license": "MIT",
   "dependencies": {
