@@ -36,23 +36,23 @@ const userSchema = new Schema(
     phone_number: {
 
       type: String,
-      required: true,
+      required: false,
     },
     phone_number_verified: {
       type: Boolean,
       default: false,
-      required: false,
+      required: true,
     },
     email_verified: {
 
       type: Boolean,
       default: false,
-      required: false,
+      required: true,
     },
     isVerified: {
       type: Boolean,
       default: false,
-      required: false,
+      required: true,
     },
     email_token: {
 
