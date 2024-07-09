@@ -1,5 +1,5 @@
+const { Vonage } = require('@vonage/server-sdk');
 module.exports.requestNumber = function (req, res) {
-    const { Vonage } = require('@vonage/server-sdk');
     const vonage = new Vonage({
         apiKey: process.env.VONAGE_KEY,
         apiSecret: process.env.VONAGE_SECRET
