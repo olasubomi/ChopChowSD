@@ -15,21 +15,59 @@ const createItem = async (payload) => {
 };
 
 const getItems = async (page, filter) => {
-  let getPaginate = await paginate(page, filter);
 
   let query = {
-    item_type: { $in: filter.type.split(',') },
+    // item_type: { $in: filter.type.split(',') },
   }
-  if (filter.status !== 'all') {
+  // if (filter.status !== 'all') {
+  //   query.item_status = {
+  //     $elemMatch: {
+  //       status: filter.status
+  //     }
+  //   }
+  // }
+  let sort = {
+    createdAt: Number(filter?.createdAt),
+    item_name: Number(filter?.item_name),
+  }
+
+  query.item_type = filter?.item_type
+
+  if (filter?.item_status) {
     query.item_status = {
       $elemMatch: {
-        status: filter.status
+        status: filter.item_status
       }
     }
   }
 
+  if (filter.user) {
+    query.user = filter.user
+  }
+  if (filter?.limit) {
+    query.limit = Number(filter.limit)
+  }
+
+  if (filter?.type) {
+    query.item_type = { $in: filter.type.split(',') }
+  }
+
+  for (let ele in sort) {
+    if (typeof sort[ele] === 'undefined') {
+      delete sort[ele]
+    }
+  }
+
+  for (let ele in query) {
+    if (typeof query[ele] === 'undefined') {
+      delete query[ele]
+    }
+  }
+  let getPaginate = await paginate(page, query);
+
   const itemResponse = await Item
     .find(query)
+    .sort(sort)
     .limit(getPaginate.limit)
     .skip(getPaginate.skip)
     .populate('item_categories item_description user')
@@ -50,11 +88,50 @@ const getOneUserItem = async (filter) => {
   console.log('user from backend')
   try {
     return await Item.find(filter)
-      .populate('item_description item_categories');
+      .populate('item_description item_categories user');
   } catch (error) {
     console.log(error);
   }
 };
+
+const searchItem = async (filter = {}) => {
+  try {
+    let sort = {
+      createdAt: filter.createdAt,
+      item_name: filter?.item_name,
+    }
+
+    let query = {
+      item_type: filter?.item_type,
+
+    }
+    if (filter?.item_status) {
+      query.item_status = {
+        $elemMatch: {
+          status: filter.item_status
+        }
+      }
+    }
+    for (let ele in sort) {
+      if (typeof sort[ele] === 'undefined') {
+        delete sort[ele]
+      }
+    }
+
+    for (let ele in query) {
+      if (typeof query[ele] === 'undefined') {
+        delete query[ele]
+      }
+    }
+
+    return await Item.find({
+      ...query
+    }).sort(sort)
+  }
+  catch (e) {
+    console.log(e)
+  }
+}
 
 
 const filterItem = async (filter, query = {}) => {
@@ -206,14 +283,15 @@ const paginate = async (page, filter) => {
   let skip = parseInt(page) === 1 ? 0 : limit * page;
   delete filter.limit;
   const docCount = await Item.countDocuments(
-    {
-      item_type: { $in: filter.type.split(',') }
-    }
+    filter
+    // {
+    //   item_type: { $in: filter.type.split(',') }
+    // }
   );
   if (docCount < skip) {
     skip = (page - 1) * limit;
   }
-  console.log(skip, limit, docCount)
+  console.log(skip, limit, docCount, 'limm')
   return { skip, limit, docCount };
 };
 
@@ -285,5 +363,6 @@ module.exports = {
   updateItem,
   filterItem,
   getSimilarItem,
-  getItemsForAUser
+  getItemsForAUser,
+  searchItem
 };

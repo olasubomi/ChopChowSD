@@ -15,6 +15,7 @@ const {
   filterItem,
   getItemsForAUser,
   updateItem,
+  searchItem,
 } = require("../repository/item");
 
 const {
@@ -43,6 +44,7 @@ class ItemService {
 
 
       if (payload.item_type === 'Meal') {
+        console.log('action 1')
         //check if there are just just items in the payload, item_name and item_itye
         // if yes, then the user is trying to create an item from the grocery list
         if (payload.listName) {
@@ -137,6 +139,7 @@ class ItemService {
             }
 
           }
+          console.log('action 2')
 
           for (let i = 1; i < 6; i++) {
             if (files[`image_or_video_content_${i}`] !== undefined) {
@@ -145,9 +148,30 @@ class ItemService {
             }
           }
         }
+        console.log('action 3')
 
         payload.ingredeints_in_item = []
 
+        const items_names = (payload?.formatted_ingredients || [])?.map((ele) => ele?.item_name);
+        Promise.all(
+          items_names.map(async (ele) => {
+            const item_exist = await Item.findOne({
+              item_name: ele,
+              item_type: 'Product'
+            })
+            if (!item_exist) await Item.create(
+              {
+                item_name: ele,
+                item_type: 'Product',
+                user: payload.user,
+                item_status: [{
+                  status: 'Draft'
+                }]
+              }
+            )
+          })
+        )
+        console.log('action 4')
         for (let ingredient of payload?.formatted_ingredients || []) {
           const item_name = ingredient?.item_name //splited.slice(splited.length - 1).join(' ')
           const item_quantity = ingredient?.item_quantity// Number(splited[0])
@@ -173,17 +197,18 @@ class ItemService {
               measurement_name: item_measurement
             })
           }
-
+          console.log('action 5')
           await createNewIngredient({
             item_name
           })
 
         }
+        console.log('action 6')
 
 
 
         // payload.item_categories = JSON.parse(payload.item_categories).map(ele => ele.toString())
-
+        console.log('action 7')
         const createCategories = await createCategoriesFromCreateMeal(payload.item_categories)
         const ele = await Promise.all(createCategories)
           .then(res => {
@@ -201,6 +226,7 @@ class ItemService {
             delete payload[element]
           }
         })
+        console.log('action 8')
         for (let ele in payload) {
 
           if (!Boolean(payload[ele])) {
@@ -212,7 +238,7 @@ class ItemService {
           }
         }
         console.log(payload, 'payloading')
-
+        console.log('action 9')
 
         const { error } = validateItemMeal(payload); console.log('errr', error)
         if (error) return res.status(400).send(error.details[0].message);
@@ -326,6 +352,27 @@ class ItemService {
         payload.ingredeints_in_item = []
 
         console.log(payload?.formatted_ingredients, 'formatted_ingredients')
+
+        const items_names = (payload?.formatted_ingredients || [])?.map((ele) => ele?.item_name);
+
+        Promise.all(
+          items_names.map(async (ele) => {
+            const item_exist = await Item.findOne({
+              item_name: ele,
+              item_type: 'Product'
+            })
+            if (!item_exist) await Item.create(
+              {
+                item_name: ele,
+                item_type: 'Product',
+                user: payload.user,
+                item_status: [{
+                  status: 'Draft'
+                }]
+              }
+            )
+          })
+        )
 
         for (let ingredient of payload?.formatted_ingredients || []) {
           // const splited = ingredient.split(' ');
@@ -621,9 +668,9 @@ class ItemService {
     }
   }
 
-  static async filterUserItem(filter, query) {
+  static async searchItems(filter) {
     try {
-      return await filterItem(filter, query)
+      return await searchItem(filter)
     } catch (error) {
       console.log(error)
     }

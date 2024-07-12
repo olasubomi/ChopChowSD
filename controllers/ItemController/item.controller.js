@@ -181,6 +181,24 @@ module.exports = {
     }
   },
 
+  searchItems: async (req, res) => {
+    try {
+      console.log('id', req.query)
+      const categoryItems = await ItemService.searchItems(
+        req.query
+      );
+      if (categoryItems) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(categoryItems));
+      } else {
+        throw categoryItems;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   approveItems: async (req, res) => {
     try {
       const itemControl = await ItemService.updateAvailability(req.body, res);

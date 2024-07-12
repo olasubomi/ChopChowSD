@@ -11,6 +11,9 @@ router.get('/item/:id', ItemController.getOneItemById)
 
 router.get('/filter/:name', ItemController.filterItem)
 
+router.get('/search/get', ItemController.searchItems)
+
+
 router.post(
   "/",
   verifyAuthentication,
