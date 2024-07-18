@@ -16,10 +16,10 @@ const createUser = async (payload) => {
         products: [],
       });
 
-      await cart.create({
-        user: newUser._id,
-        total: "0",
-      });
+      // await cart.create({
+      //   user: newUser._id,
+      //   total: "0",
+      // });
     }
     return newUser;
   } catch (error) {

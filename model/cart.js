@@ -5,7 +5,6 @@ exports.cart = mongoose.model(
     "Cart",
     new Schema(
         {
-            total: { type: String },
 
             user: {
                 type: mongoose.Types.ObjectId,
@@ -15,7 +14,7 @@ exports.cart = mongoose.model(
                 {
                     type: mongoose.Types.ObjectId,
                     ref: "Order_items",
-                },
+                }, ``
             ],
         },
         { timestamps: true }
@@ -27,7 +26,6 @@ exports.cart = mongoose.model(
 
 function validateCart(cart) {
     const schema = Joi.object({
-        total: Joi.string().optional(),
 
         user: Joi.object().optional(),
 

@@ -1,10 +1,10 @@
 const { User } = require("../db/dbMongo/config/db_buildSchema");
-const { cart } = require("../model/cart");
+const { Order } = require("../model/order");
 
-const addToCartList = async (payload) => {
+const addToMyOrderList = async (payload) => {
     try {
         //saving cart list to mongoDb
-        const cartlist = new cart({
+        const orderlist = new Order({
 
             user: payload.userId,
             cart_items: {
@@ -16,57 +16,66 @@ const addToCartList = async (payload) => {
             }
 
         });
-        return await cartlist.save();
+        return await orderlist.save();
     } catch (error) {
         console.log({ error });
     }
 };
 
-const findCartUser = async (filter) => {
-    return await cart.find(filter)
+const findOrderUser = async (filter) => {
+    return await Order.find(filter)
 }
 
 const updateItem = async (filter, data) => {
     try {
-        return await cart.findOneAndUpdate(filter, data, { new: true });
+        return await Order.findOneAndUpdate(filter, data, { new: true });
     } catch (error) {
         console.log(error);
         throw error;
     }
 }
 
-const deleteCartItem = async (id) => {
+const deleteMyOrderItem = async (id) => {
     try {
-        return await cart.deleteOne({ _id: id });
+        return await Order.deleteOne({ _id: id });
     } catch (error) {
         console.log(error);
         throw error;
     }
 };
 
-const deleteCart = async (id) => {
+const deleteOrder = async (id) => {
     try {
-        return await cart.deleteMany({ user: id });
+        return await Order.deleteMany({ user: id });
     } catch (error) {
         console.log(error);
         throw error;
     }
 };
 
-const GetAllCartItems = async (id) => {
+const GetAllOrderItemsById = async (id) => {
     try {
-        return await cart.find({ user: id });
+        return await Order.find({ user: id });
     } catch (error) {
         console.log(error);
         throw error;
     }
 };
 
+const GetAllOrderItems = async () => {
+    try {
+        return await Order.find();
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
 module.exports = {
-    addToCartList,
-    findCartUser,
+    addToMyOrderList,
+    findOrderUser,
     updateItem,
-    deleteCartItem,
-    deleteCart,
-    GetAllCartItems
+    deleteMyOrderItem,
+    deleteOrder,
+    GetAllOrderItemsById,
+    GetAllOrderItems
 }

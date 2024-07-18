@@ -160,6 +160,7 @@ class UserService {
         id: userExist._id,
         username: userExist.username,
         email: userExist.email,
+        token: generatedToken,
 
       }, 'refrehhhh')
       return {

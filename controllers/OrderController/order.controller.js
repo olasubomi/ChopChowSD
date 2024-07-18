@@ -1,11 +1,11 @@
-const CartService = require("../../services/cartService");
+const OrderService = require("../../services/orderService");
 const { Response } = require("http-status-codez");
 const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 
 module.exports = {
-    addToCart: async (req, res) => {
+    addToOrderList: async (req, res) => {
         try {
-            const user = await CartService.addToCart(req.body);
+            const user = await OrderService.addToMyOrderList(req.body);
 
             return res
                 .status(Response.HTTP_ACCEPTED)
@@ -19,9 +19,9 @@ module.exports = {
         }
     },
 
-    removeFromCart: async (req, res) => {
+    removeFromMyOrderList: async (req, res) => {
         try {
-            const user = await CartService.removeFromCart(req.body);
+            const user = await OrderService.removeFromMyOrderList(req.body);
 
             return res
                 .status(Response.HTTP_ACCEPTED)
@@ -35,9 +35,9 @@ module.exports = {
         }
     },
 
-    deleteFromCart: async (req, res) => {
+    deleteMyOrders: async (req, res) => {
         try {
-            const user = await CartService.DeleteFromCart(req.body);
+            const user = await OrderService.DeleteMyOrders(req.body);
 
             return res
                 .status(Response.HTTP_ACCEPTED)
@@ -51,25 +51,9 @@ module.exports = {
         }
     },
 
-    deleteCart: async (req, res) => {
+    getMyOrder: async (req, res) => {
         try {
-            const user = await CartService.DeleteCart(req.body);
-
-            return res
-                .status(Response.HTTP_ACCEPTED)
-                .json(new SuccessResponse(user).recordCreated());
-
-        } catch (error) {
-            console.log(error);
-            return res
-                .status(Response.HTTP_INTERNAL_SERVER_ERROR)
-                .json(new ErrorResponse(error));
-        }
-    },
-
-    getCart: async (req, res) => {
-        try {
-            const user = await CartService.GetCart(req.body);
+            const user = await OrderService.GetMyOrder(req.body);
 
             return res
                 .status(Response.HTTP_ACCEPTED)
