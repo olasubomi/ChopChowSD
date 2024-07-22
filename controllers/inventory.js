@@ -38,6 +38,22 @@ module.exports = {
         .json(new ErrorResponse(error));
     }
   },
+  getStoreInventory: async (req, res) => {
+    try {
+      const inventory = await InventoryService.getStoreInventory(
+        { storeId: req?.params?.storeId }
+      );
+      if (inventory) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(inventory));
+      } else {
+        throw inventory;
+      }
+    } catch (error) {
+      return res
+        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
 
   createInventory: async (req, res) => {
     try {

@@ -34,7 +34,7 @@ const getItems = async (page, filter) => {
     .find(query)
     .limit(getPaginate.limit)
     .skip(getPaginate.skip)
-    .populate('item_categories item_description')
+    .populate('item_categories item_description user')
     .populate('store_available')
   return { items: itemResponse, count: getPaginate.docCount };
 
@@ -49,6 +49,7 @@ const getStoreItems = async (filter) => {
 };
 
 const getOneUserItem = async (filter) => {
+  console.log('user from backend')
   try {
     return await Item.find(filter)
       .populate('item_description item_categories');
@@ -107,7 +108,7 @@ const getUserItems = async (data) => {
       user: user,
       ...filterBy
     })
-      .populate("item_categories item_description")
+      .populate("item_categories item_description user")
       .skip(getPaginate.skip)
       .limit(getPaginate.limit)
     return { items: itemResponse, count: getPaginate.docCount };

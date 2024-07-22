@@ -3,8 +3,8 @@ const {
   grocery_list,
   products,
   User,
-  cart,
 } = require("../db/dbMongo/config/db_buildSchema");
+const { cart } = require("../model/cart")
 
 const createUser = async (payload) => {
   const newUser = await User.create(payload);
@@ -47,7 +47,7 @@ const deleteUser = async (id) => {
 
 const findUser = async (filter) => {
   try {
-    return await User.findOne(filter).populate('notifications')
+    return await User.findOne(filter).populate('notifications profile_picture')
   } catch (error) {
     console.log(error);
     throw error;

@@ -9,7 +9,7 @@ const {
   getAllStoresForUser,
   checkStoreAvailability
 } = require("../repository/index");
-const { getAllSupplier } = require("../repository/store");
+const { getAllSupplier, addUserToStoreAdmin, removeUserFromStore } = require("../repository/store");
 
 class StoreService {
   static async createStore(payload, files) {
@@ -147,9 +147,26 @@ class StoreService {
     }
   }
 
+  static async removeUserFromStore(userId, storeId) {
+    try {
+      return await removeUserFromStore(userId, storeId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async getAllUserStore(filter, payload) {
     try {
       return await getAllStoresForUser(filter, payload);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  static async addUserToStore(user, storeId) {
+    try {
+      return await addUserToStoreAdmin(user, storeId);
     } catch (error) {
       throw error;
     }

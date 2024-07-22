@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const ProductController = require("../controllers/productController/product.controller");
 const { upload, transformObject } = require("../utils/middleware");
-const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 
 router.post(
   "/create",

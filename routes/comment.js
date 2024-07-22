@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const CommentController = require("../controllers/commentController");
 const { validatePayload } = require("../utils/middleware/validator")
-const verifyAuthentication = require("../controllers/authentication/2.verifyTokenAuthenticator.js");
+const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const { protect } = require("../utils/middleware/authmiddleware")
 
 router.post("/create", protect, validatePayload("createCommentSchema"), CommentController.createComment);

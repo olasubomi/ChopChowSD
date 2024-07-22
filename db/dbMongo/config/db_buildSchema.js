@@ -15,6 +15,8 @@ const userSchema = new Schema(
 
     profile_picture: { type: String },
 
+
+
     sub_app_admin: { type: Boolean, default: false },
 
     hasSupplierAffiliation: { type: Boolean, default: false },
@@ -34,13 +36,29 @@ const userSchema = new Schema(
     average_rating: { type: Number, required: false, default: 0 },
 
     phone_number: {
-      // country_code: { type: String, required: true },
+
       type: String,
       required: false,
     },
-    is_verified: {
+    phone_number_verified: {
       type: Boolean,
       default: false,
+      required: true,
+    },
+    email_verified: {
+
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    email_token: {
+
+      type: String,
     },
 
     food_preferences: [
@@ -274,26 +292,7 @@ const groceryListSchema = new mongoose.Schema(
 
 exports.grocery_list = mongoose.model("Grocery_list", groceryListSchema);
 
-exports.cart = mongoose.model(
-  "Cart",
-  new Schema(
-    {
-      total: { type: String },
 
-      user: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-      },
-      cart_items: [
-        {
-          type: mongoose.Types.ObjectId,
-          ref: "Order_items",
-        },
-      ],
-    },
-    { timestamps: true }
-  )
-);
 
 exports.products = mongoose.model(
   "Products",
@@ -614,75 +613,9 @@ exports.order_groups = mongoose.model(
   )
 );
 
-exports.Order = mongoose.model(
-  "Order",
-  new Schema(
-    {
-      total_order_price: { type: String },
 
-      order_items: [
-        {
-          type: mongoose.Types.ObjectId,
-          ref: "Order_items",
-        },
-      ],
 
-      user: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-      },
-      pickup_details: { type: {} },
 
-      intermediaries_details: ObjectId, //need more clarifiaction on these
-
-      delivery_details: { type: {} },
-
-      payment_details: { type: {} },
-
-      drivers_id: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-      },
-
-      order_group: Array,
-
-      status: {
-        type: String,
-        required: true,
-        default: "PENDING",
-        enum: ["DELIVERED", "PENDING", "PROCESSED", "PICKEDUP"],
-      },
-    },
-
-    { timestamps: true }
-  )
-);
-
-exports.order_items = mongoose.model(
-  "Order_items",
-  new Schema({
-    item: {
-      type: mongoose.Types.ObjectId,
-      refPath: "item_type",
-      required: true,
-    },
-
-    item_type: {
-      type: String,
-      required: true,
-      enum: ["Meal", "Product"],
-    },
-
-    store: {
-      type: [mongoose.Types.ObjectId],
-      ref: "Supplier",
-    },
-
-    quantity_of_item: { type: String },
-
-    estimated_time_of_arrival: Date,
-  })
-);
 
 exports.regions = mongoose.model(
   "regions",
