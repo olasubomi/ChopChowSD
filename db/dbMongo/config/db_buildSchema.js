@@ -36,7 +36,7 @@ const userSchema = new Schema(
     phone_number: {
       // country_code: { type: String, required: true },
       type: String,
-      required: true,
+      required: false,
     },
     is_verified: {
       type: Boolean,

@@ -9,7 +9,7 @@ const { verifyRefreshToken } = require("../controllers/authentication/2.verifyTo
 
 
 
-router.post("/signup", upload.single(), transformObject, UserController.signUp);
+router.post("/signup", upload.single('profile_picture'), transformObject, UserController.signUp);
 router.post("/signin", UserController.signIn);
 router.get("/refresh-token", verifyRefreshToken, UserController.refreshToken);
 router.post("/forgotpassword", UserController.forgotPassword);

@@ -33,7 +33,6 @@ class UserService {
       }
       const userExist = await findUser({ email: payload.email });
 
-
       if (userExist) {
         throw {
           message: "User already exist",
@@ -50,7 +49,9 @@ class UserService {
 
       console.log("generated Token", generatedToken)
 
-      await signUpEmail(generatedToken, newUser);
+      if (!Object.is(payload?.email_notifications, false)) {
+        await signUpEmail(generatedToken, newUser);
+      }
 
       return {
         user: newUser,
@@ -132,20 +133,26 @@ class UserService {
     }
   }
 
-  static async login(payload) {
+  static async login(payload_) {
     try {
 
+      const payload = {
+        ...payload_,
+        withAuth: payload_.hasOwnProperty('withAuth') ? payload_.withAuth : true
+      }
       const userExist = await findUser({ email: payload.email })
 
       if (!userExist) {
         throw { message: "User does not exist" };
       }
-      const validatePassword = await validatePassWord(
-        payload.email,
-        payload.password
-      );
-      if (!validatePassword) {
-        throw { message: "Invalid user credentials" };
+      if (payload?.withAuth) {
+        const validatePassword = await validatePassWord(
+          payload.email,
+          payload.password
+        );
+        if (!validatePassword) {
+          throw { message: "Invalid user credentials" };
+        }
       }
       const generatedToken = await generateAccessTokens({
         id: userExist._id,
