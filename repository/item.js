@@ -22,6 +22,8 @@ const getItems = async (page, filter) => {
     query.user = filter.user
   }
 
+
+
   if (filter?.type) {
     query.item_type = { $in: filter.type.split(',') }
   }
