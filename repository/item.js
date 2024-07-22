@@ -17,8 +17,10 @@ const createItem = async (payload) => {
 const getItems = async (page, filter) => {
   let getPaginate = await paginate(page, filter);
 
-  let query = {
-    item_type: { $in: filter.type.split(',') },
+  let query = {}
+
+  if (filter?.type) {
+    query.item_type = { $in: filter.type.split(',') }
   }
   if (filter.status !== 'all') {
     query.item_status = {
@@ -205,11 +207,11 @@ const paginate = async (page, filter) => {
   const limit = parseInt(filter.limit) || 10;
   let skip = parseInt(page) === 1 ? 0 : limit * page;
   delete filter.limit;
-  const docCount = await Item.countDocuments(
-    {
-      item_type: { $in: filter.type.split(',') }
-    }
-  );
+  let query = {};
+  if (filter.type) {
+    query.item_type = { $in: filter.type.split(',') || [] }
+  }
+  const docCount = await Item.countDocuments(query);
   if (docCount < skip) {
     skip = (page - 1) * limit;
   }

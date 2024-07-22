@@ -45,6 +45,17 @@ class UserService {
 
       const newUser = await createUser(payload);
 
+      const generatedToken = await generateAccessTokens({
+        id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+      });
+
+      console.log("generated Token", generatedToken)
+
+      if (!Object.is(payload?.email_notifications, false)) {
+        await signUpEmail(generatedToken, newUser);
+      }
 
       return {
         user: newUser,
@@ -125,21 +136,27 @@ class UserService {
     }
   }
 
-  static async login(payload) {
+  static async login(payload_) {
     try {
 
+      const payload = {
+        ...payload_,
+        withAuth: payload_.hasOwnProperty('withAuth') ? payload_.withAuth : true
+      }
       const userExist = await findUser({ email: payload.email })
       console.log("line 144", userExist)
 
       if (!userExist) {
         throw { message: "User does not exist" };
       }
-      const validatePassword = await validatePassWord(
-        payload.email,
-        payload.password
-      );
-      if (!validatePassword) {
-        throw { message: "Invalid user credentials" };
+      if (payload?.withAuth) {
+        const validatePassword = await validatePassWord(
+          payload.email,
+          payload.password
+        );
+        if (!validatePassword) {
+          throw { message: "Invalid user credentials" };
+        }
       }
       if (userExist && !userExist.isVerified) {
 
