@@ -18,11 +18,16 @@ const getItems = async (page, filter) => {
   let getPaginate = await paginate(page, filter);
 
   let query = {}
+  if (filter?.user) {
+    query.user = filter.user
+  }
+
+
 
   if (filter?.type) {
     query.item_type = { $in: filter.type.split(',') }
   }
-  if (filter.status !== 'all') {
+  if (filter.status !== 'all' && Boolean(filter.status)) {
     query.item_status = {
       $elemMatch: {
         status: filter.status
@@ -39,7 +44,6 @@ const getItems = async (page, filter) => {
   return { items: itemResponse, count: getPaginate.docCount };
 
 };
-
 const getStoreItems = async (filter) => {
   try {
     return await Item.find(filter);
@@ -210,6 +214,9 @@ const paginate = async (page, filter) => {
   let query = {};
   if (filter.type) {
     query.item_type = { $in: filter.type.split(',') || [] }
+  }
+  if (filter?.user) {
+    query.user = filter.user
   }
   const docCount = await Item.countDocuments(query);
   if (docCount < skip) {
