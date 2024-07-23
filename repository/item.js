@@ -22,6 +22,20 @@ const getItems = async (page, filter) => {
     query.user = filter.user
   }
 
+  if (filter?.name) {
+    query.item_name = { $regex: filter.name, $options: "i" }
+  }
+
+  let sort = {}
+
+  if (filter?.createdAt) {
+    sort.createdAt = filter.createdAt
+  }
+
+
+  if (filter?.item_name) {
+    sort.item_name = filter.item_name
+  }
 
 
   if (filter?.type) {
@@ -37,6 +51,7 @@ const getItems = async (page, filter) => {
 
   const itemResponse = await Item
     .find(query)
+    .sort(sort)
     .limit(getPaginate.limit)
     .skip(getPaginate.skip)
     .populate('item_categories item_description user')
@@ -215,6 +230,7 @@ const paginate = async (page, filter) => {
   if (filter.type) {
     query.item_type = { $in: filter.type.split(',') || [] }
   }
+
   if (filter?.user) {
     query.user = filter.user
   }
