@@ -32,9 +32,11 @@ const getItems = async (page, filter) => {
     sort.createdAt = filter.createdAt
   }
 
+
   if (filter?.item_name) {
     sort.item_name = filter.item_name
   }
+
 
   if (filter?.type) {
     query.item_type = { $in: filter.type.split(',') }
