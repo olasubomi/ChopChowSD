@@ -213,6 +213,7 @@ const paginate = async (page, filter) => {
   if (filter.type) {
     query.item_type = { $in: filter.type.split(',') || [] }
   }
+
   if (filter?.user) {
     query.user = filter.user
   }
