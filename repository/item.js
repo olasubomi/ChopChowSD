@@ -22,8 +22,6 @@ const getItems = async (page, filter) => {
     query.user = filter.user
   }
 
-
-
   if (filter?.type) {
     query.item_type = { $in: filter.type.split(',') }
   }
@@ -42,7 +40,6 @@ const getItems = async (page, filter) => {
     .populate('item_categories item_description user')
     .populate('store_available')
   return { items: itemResponse, count: getPaginate.docCount };
-
 };
 const getStoreItems = async (filter) => {
   try {
