@@ -39,7 +39,7 @@ const getItems = async (page, filter) => {
     .find(query)
     .limit(getPaginate.limit)
     .skip(getPaginate.skip)
-    .populate('item_categories item_description')
+    .populate('item_categories item_description user')
     .populate('store_available')
   return { items: itemResponse, count: getPaginate.docCount };
 
