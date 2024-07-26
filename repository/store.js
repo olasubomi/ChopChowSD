@@ -92,6 +92,7 @@ const checkStoreAvailability = async (filter) => {
 const getAllStores = async (page, filter) => {
   try {
     if (filter?.withPaginate) {
+      delete filter.withPaginate
       let getPaginate = await paginate(page, filter);
       const allProducts = await Supplier.find(filter || {})
         .limit(getPaginate.limit)
