@@ -173,7 +173,7 @@ function validateItemMeal(item) {
     meal_formatted_instructions: Joi.array().items(
       Joi.object({
         title: Joi.string().required(),
-        instructionSteps: Joi.array().items(Joi.string().required()),
+        instructionSteps: Joi.array().items(Joi.string().optional()),
         dataName: Joi.any().optional()
       })).optional(),
 
@@ -307,7 +307,7 @@ function validateItem(item) {
     item_type: Joi.string().required(),
 
 
-    formatted_instructions: Joi.array().items(Joi.object().required()).optional(),
+    formatted_instructions: Joi.array().items(Joi.object().optional()).optional(),
 
     store_name: Joi.objectId().optional(),
 

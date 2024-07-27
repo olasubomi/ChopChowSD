@@ -179,7 +179,23 @@ class ItemService {
           })
 
         }
-
+        // 
+        if (JSON.parse(payload?.item_data?.kitchen_utensils)) {
+          Promise.all(
+            JSON.parse(payload?.item_data?.kitchen_utensils)?.map(async (ele) => {
+              const checkExist = await Item.findOne({
+                item_name: ele,
+                item_type: 'Utensil'
+              })
+              if (!checkExist) {
+                await createItem({
+                  item_name: ele,
+                  item_type: 'Utensil'
+                })
+              }
+            })
+          )
+        }
 
 
         // payload.item_categories = JSON.parse(payload.item_categories).map(ele => ele.toString())
@@ -190,6 +206,8 @@ class ItemService {
             return res
           })
         payload.item_categories = ele
+
+
 
         delete payload.formatted_instructions;
         delete payload.item_data
