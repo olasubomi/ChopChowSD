@@ -48,6 +48,8 @@ const getItems = async (page, filter) => {
       }
     }
   }
+
+  
   console.log(sort, 'sortt')
   const withPaginate = filter.hasOwnProperty('withPaginage') ? filter.withPaginate === 'false' ? false : true : true
   delete filter.withPaginate

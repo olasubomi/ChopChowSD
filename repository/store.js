@@ -91,15 +91,20 @@ const checkStoreAvailability = async (filter) => {
 
 const getAllStores = async (page, filter) => {
   try {
-    let getPaginate = await paginate(page, filter);
-    const allProducts = await Supplier.find(filter || {})
-      .limit(getPaginate.limit)
-      .skip(getPaginate.skip)
-      .populate("store_account_users"); //sugggested_meals_and_products
-    return {
-      products: allProducts,
-      count: getPaginate.docCount,
-    };
+    if (filter?.withPaginate) {
+      delete filter.withPaginate
+      let getPaginate = await paginate(page, filter);
+      const allProducts = await Supplier.find(filter || {})
+        .limit(getPaginate.limit)
+        .skip(getPaginate.skip)
+        .populate("store_account_users"); //sugggested_meals_and_products
+      return {
+        products: allProducts,
+        count: getPaginate.docCount,
+      };
+    } else {
+      return await Supplier.find()
+    }
   } catch (error) {
     console.log({ error });
     throw {

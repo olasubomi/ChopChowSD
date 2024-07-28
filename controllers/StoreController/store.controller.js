@@ -81,7 +81,11 @@ module.exports = {
 
   getStores: async (req, res) => {
     try {
-      const store = await StoreService.getStores(req.params.page, req.query);
+      const _req = {
+        ...req.query,
+        withPaginate: req.query?.hasOwnProperty('withPaginate') ? req.query.withPaginate === 'false' ? false : true : true
+      }
+      const store = await StoreService.getStores(req.params.page, _req);
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {
