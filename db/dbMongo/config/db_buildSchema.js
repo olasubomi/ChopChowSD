@@ -13,6 +13,11 @@ const userSchema = new Schema(
 
     user_type: { type: String, default: "customer", enum: ['supplier', 'customer', 'admin', 'driver'] },
 
+    // user_type: {
+    //   type: Array, default: ['customer'],
+    //   // enum: ['supplier', 'customer', 'admin', 'driver'] 
+    // },
+
     profile_picture: { type: String },
 
 

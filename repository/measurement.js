@@ -22,14 +22,22 @@ const findMeasurement = async (filter) => {
 
 const getAllMeasurement = async (page, filter) => {
   try {
+    const withPaginate = filter.hasOwnProperty('withPaginate') ? filter.withPaginate === 'false' ? false : true : true
+    delete filter.withPaginate
     let getPaginate = await paginateMesr(page, filter)
 
     const status = filter.status !== 'all' ? { status: filter.status } : {}
 
-    const resp = await Measurement
-      .find(status)
-      .limit(getPaginate.limit)
-      .skip(getPaginate.skip)
+    let resp = []
+    if (withPaginate) {
+      resp = await Measurement
+        .find(status)
+        .limit(getPaginate.limit)
+        .skip(getPaginate.skip)
+    } else {
+      resp = await Measurement
+        .find(status)
+    }
 
     return { measurement: resp, count: getPaginate.docCount };
 

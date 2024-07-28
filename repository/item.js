@@ -29,12 +29,12 @@ const getItems = async (page, filter) => {
   let sort = {}
 
   if (filter?.createdAt) {
-    sort.createdAt = filter.createdAt
+    sort.createdAt = Number(filter.createdAt)
   }
 
 
   if (filter?.item_name) {
-    sort.item_name = filter.item_name
+    sort.item_name = Number(filter.item_name)
   }
 
 
@@ -49,13 +49,23 @@ const getItems = async (page, filter) => {
     }
   }
 
-  const itemResponse = await Item
-    .find(query)
-    .sort(sort)
-    .limit(getPaginate.limit)
-    .skip(getPaginate.skip)
-    .populate('item_categories item_description user')
-    .populate('store_available')
+  
+  console.log(sort, 'sortt')
+  const withPaginate = filter.hasOwnProperty('withPaginage') ? filter.withPaginate === 'false' ? false : true : true
+  delete filter.withPaginate
+  let itemResponse = [];
+  if (withPaginate) {
+    itemResponse = await Item
+      .find(query)
+      .sort(sort)
+      .limit(getPaginate.limit)
+      .skip(getPaginate.skip)
+      .populate('item_categories item_description')
+      .populate('store_available')
+  } else {
+    await Item
+      .find(query)
+  }
   return { items: itemResponse, count: getPaginate.docCount };
 
 };
