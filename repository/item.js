@@ -1,7 +1,7 @@
 const { filter } = require("bluebird");
 const { Item } = require("../model/item");
 const { NotificationService } = require("./notificationService");
-const { item_description, notifications, User } = require("../db/dbMongo/config/db_buildSchema");
+const { item_description, notifications, User, Supplier } = require("../db/dbMongo/config/db_buildSchema");
 
 
 const createItem = async (payload) => {
@@ -32,8 +32,9 @@ const getItems = async (page, filter) => {
     .find(query)
     .limit(getPaginate.limit)
     .skip(getPaginate.skip)
-    .populate('item_categories item_description')
-    .populate('store_available')
+    .populate('item_categories item_description store_available')
+  //const getSupplier = await Supplier.find(itemResponse._id);
+  //console.log("item repo", getSupplier)
   return { items: itemResponse, count: getPaginate.docCount };
 
 };
@@ -49,7 +50,7 @@ const getStoreItems = async (filter) => {
 const getOneUserItem = async (filter) => {
   try {
     return await Item.find(filter)
-      .populate('item_description item_categories');
+      .populate('item_description item_categories store_available');
   } catch (error) {
     console.log(error);
   }

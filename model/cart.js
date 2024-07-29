@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Joi = require("joi");
 
-exports.cart = mongoose.model(
+exports.Cart = mongoose.model(
     "Cart",
     new Schema(
         {
@@ -10,12 +11,12 @@ exports.cart = mongoose.model(
                 type: mongoose.Types.ObjectId,
                 ref: "User",
             },
-            cart_items: [
-                {
-                    type: mongoose.Types.ObjectId,
-                    ref: "Order_items",
-                }, ``
-            ],
+            cart_items:
+            {
+                type: mongoose.Types.ObjectId,
+                ref: "Order_items",
+            },
+
         },
         { timestamps: true }
     )
@@ -27,9 +28,9 @@ exports.cart = mongoose.model(
 function validateCart(cart) {
     const schema = Joi.object({
 
-        user: Joi.object().optional(),
+        user: Joi.string().optional(),
 
-        cart_items: Joi.array().items(Joi.object()).optional(),
+        cart_items: Joi.array().items(Joi.string()).optional(),
     });
 
     return schema.validate(cart);

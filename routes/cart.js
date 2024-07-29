@@ -8,19 +8,19 @@ router.post(
 );
 
 router.post(
-    "/removefromcart/:id", CartController.removeFromCart
+    "/removefromcart/", CartController.removeFromCart
 );
 
-router.get(
+router.post(
     "/cart", CartController.getCart
 );
 
-router.delete(
-    "/deletefromcart/:id", CartController.deleteFromCart
+router.post(
+    "/deletefromcart/", CartController.deleteFromCart
 );
 
-router.delete(
-    "/deletecart", CartController.deleteCart
+router.post(
+    "/deletecart/", CartController.deleteCart
 );
 
 module.exports = router;

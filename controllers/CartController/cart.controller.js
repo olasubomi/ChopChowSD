@@ -5,11 +5,12 @@ const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 module.exports = {
     addToCart: async (req, res) => {
         try {
-            const user = await CartService.addToCart(req.body);
+            console.log(req.body)
+            const data = await CartService.addToCart(req.body);
 
             return res
                 .status(Response.HTTP_ACCEPTED)
-                .json(new SuccessResponse(user).recordCreated());
+                .json(new SuccessResponse(data).recordCreated());
 
         } catch (error) {
             console.log(error);
@@ -22,6 +23,7 @@ module.exports = {
     removeFromCart: async (req, res) => {
         try {
             const user = await CartService.removeFromCart(req.body);
+            console.log("cart controller line 26", user)
 
             return res
                 .status(Response.HTTP_ACCEPTED)
@@ -37,8 +39,9 @@ module.exports = {
 
     deleteFromCart: async (req, res) => {
         try {
+            console.log("cart user", req.body)
             const user = await CartService.DeleteFromCart(req.body);
-
+            console.log("cart user", user)
             return res
                 .status(Response.HTTP_ACCEPTED)
                 .json(new SuccessResponse(user).recordCreated());
@@ -53,6 +56,7 @@ module.exports = {
 
     deleteCart: async (req, res) => {
         try {
+            console.log("line 58", req.body)
             const user = await CartService.DeleteCart(req.body);
 
             return res
@@ -69,6 +73,7 @@ module.exports = {
 
     getCart: async (req, res) => {
         try {
+            console.log("get cart line 76", req.body)
             const user = await CartService.GetCart(req.body);
 
             return res
