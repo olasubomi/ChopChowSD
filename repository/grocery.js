@@ -119,7 +119,7 @@ const addAnItemToAGroceryList = async (payload) => {
     })
 
     return await GroceryList.findOneAndUpdate(
-      { listName: payload.listName },
+      { listName: payload.listName, user: payload.userId },
       {
         $push: {
           groceryItems: {
@@ -316,9 +316,9 @@ const getAllGroceryList = async (userId) => {
   }
 }
 
-const getOneGrocery = async (id) => {
+const getOneGrocery = async (id, user) => {
   try {
-    return await GroceryList.findById({ _id: id })
+    return await GroceryList.findOne({ _id: id, user })
       .populate('user')
       .populate({
         path: 'groceryItems',

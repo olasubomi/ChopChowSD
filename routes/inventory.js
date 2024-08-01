@@ -27,6 +27,10 @@ router.get(
   verifyAuthentication,
   InventoryController.getInventory
 );
+router.get(
+  "/get-store-inventory/:storeId",
+  InventoryController.getStoreInventory
+);
 router.delete(
   "/delete-inventory/:inventoryId",
   verifyAuthentication,

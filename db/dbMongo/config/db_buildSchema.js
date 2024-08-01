@@ -13,7 +13,14 @@ const userSchema = new Schema(
 
     user_type: { type: String, default: "customer", enum: ['supplier', 'customer', 'admin', 'driver'] },
 
+    // user_type: {
+    //   type: Array, default: ['customer'],
+    //   // enum: ['supplier', 'customer', 'admin', 'driver'] 
+    // },
+
     profile_picture: { type: String },
+
+
 
     sub_app_admin: { type: Boolean, default: false },
 
@@ -492,6 +499,11 @@ exports.Supplier = mongoose.model(
 
       average_rating: { type: Number, required: false, default: 0 },
 
+      store_admins: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+      }],
+
       currency: {
         name: {
           type: String,
@@ -565,6 +577,10 @@ exports.Supplier = mongoose.model(
         },
       ],
       sub_app_admin: [{
+        type: mongoose.Types.ObjectId,
+        ref: "User"
+      }],
+      store_sub_admins: [{
         type: mongoose.Types.ObjectId,
         ref: "User"
       }],

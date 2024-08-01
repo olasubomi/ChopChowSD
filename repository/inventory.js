@@ -92,7 +92,20 @@ exports.deleteInventory = async (id, item_id) => {
 
 exports.getInventory = async (filter) => {
   try {
-    const inventoryResponse = await Inventory.findOne(filter).populate("item");
+    const inventoryResponse = await Inventory.findOne(filter).populate("item storeId");
+    return { inventory: inventoryResponse };
+  } catch (error) {
+    throw {
+      error: error,
+
+      messsage: error.message || "Get inventory operation failed",
+      code: 500,
+    };
+  }
+};
+exports.getStoreInventory = async (filter) => {
+  try {
+    const inventoryResponse = await Inventory.find(filter).populate("item storeId");
     return { inventory: inventoryResponse };
   } catch (error) {
     throw {

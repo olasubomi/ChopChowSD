@@ -61,9 +61,31 @@ module.exports = {
     }
   },
 
+  removeUserFromStore: async (req, res) => {
+    try {
+      const store = await StoreService.removeUserFromStore(
+        req.params.userId,
+        req.params.storeId
+      );
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      return res
+        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getStores: async (req, res) => {
     try {
-      const store = await StoreService.getStores(req.params.page, req.query);
+      const _req = {
+        ...req.query,
+        withPaginate: req.query?.hasOwnProperty('withPaginate') ? req.query.withPaginate === 'false' ? false : true : true
+      }
+      const store = await StoreService.getStores(req.params.page, _req);
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {
@@ -130,12 +152,27 @@ module.exports = {
     }
   },
 
+  addUserToStore: async (req, res) => {
+    try {
+      const store = await StoreService.addUserToStore(req.body, req.params.storeId);
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getAllStoresForAuser: async (req, res) => {
     try {
       const store = await StoreService.getAllUserStore({
         $or: [
           { store_owner: req.params.userId },
-          { sub_app_admin: { $in: [req.params.userId] } }
+          { store_sub_admins: { $in: [req.params.userId] } }
         ]
       });
       if (store) {
