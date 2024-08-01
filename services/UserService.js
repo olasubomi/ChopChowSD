@@ -177,6 +177,7 @@ class UserService {
         id: userExist._id,
         username: userExist.username,
         email: userExist.email,
+        token: generatedToken,
 
       }, 'refrehhhh')
       return {
@@ -409,22 +410,22 @@ class UserService {
 
           }
         );
-        const generatedToken = await generateAccessTokens({
-          id: user._id,
-          username: user.username,
-          email: user.email,
-        });
+        // const generatedToken = await generateAccessTokens({
+        //   id: user._id,
+        //   username: user.username,
+        //   email: user.email,
+        // });
 
-        const generatedRefreshToken = await generateRefreshTokens({
-          id: user._id,
-          username: user.username,
-          email: user.email,
-        });
+        // const generatedRefreshToken = await generateRefreshTokens({
+        //   id: user._id,
+        //   username: user.username,
+        //   email: user.email,
+        // });
         return {
           success: true,
           message: "Authentication successful!",
-          token: generatedToken,
-          refreshToken: generatedRefreshToken,
+          // token: generatedToken,
+          // refreshToken: generatedRefreshToken,
           user: user,
         };
       }
@@ -481,22 +482,22 @@ class UserService {
 
           }
         );
-        const generatedToken = await generateAccessTokens({
-          id: user._id,
-          username: user.username,
-          email: user.email,
-        });
+        // const generatedToken = await generateAccessTokens({
+        //   id: user._id,
+        //   username: user.username,
+        //   email: user.email,
+        // });
 
-        const generatedRefreshToken = await generateRefreshTokens({
-          id: user._id,
-          username: user.username,
-          email: user.email,
-        });
+        // const generatedRefreshToken = await generateRefreshTokens({
+        //   id: user._id,
+        //   username: user.username,
+        //   email: user.email,
+        // });
         return {
           success: true,
           message: "Authentication successful!",
-          token: generatedToken,
-          refreshToken: generatedRefreshToken,
+          // token: generatedToken,
+          // refreshToken: generatedRefreshToken,
           user: user,
         };
       }

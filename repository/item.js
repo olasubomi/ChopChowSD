@@ -1,7 +1,7 @@
 const { filter } = require("bluebird");
 const { Item } = require("../model/item");
 const { NotificationService } = require("./notificationService");
-const { item_description, notifications, User } = require("../db/dbMongo/config/db_buildSchema");
+const { item_description, notifications, User, Supplier } = require("../db/dbMongo/config/db_buildSchema");
 
 
 const createItem = async (payload) => {
@@ -48,8 +48,6 @@ const getItems = async (page, filter) => {
       }
     }
   }
-
-  
   console.log(sort, 'sortt')
   const withPaginate = filter.hasOwnProperty('withPaginage') ? filter.withPaginate === 'false' ? false : true : true
   delete filter.withPaginate
@@ -81,7 +79,7 @@ const getOneUserItem = async (filter) => {
   console.log('user from backend')
   try {
     return await Item.find(filter)
-      .populate('item_description item_categories');
+      .populate('item_description item_categories store_available');
   } catch (error) {
     console.log(error);
   }
