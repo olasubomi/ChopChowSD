@@ -5,7 +5,7 @@ const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 module.exports = {
     addToOrderList: async (req, res) => {
         try {
-            const user = await OrderService.addToMyOrderList(req.body);
+            const user = await OrderService.CreateOrder(req.body);
 
             return res
                 .status(Response.HTTP_ACCEPTED)

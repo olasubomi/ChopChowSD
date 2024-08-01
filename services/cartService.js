@@ -40,15 +40,17 @@ class CartService {
                 console.log("confirmUserCart line39", confirmUserCart)
                 if (confirmUserCart.length > 0) {
                     const itemExist = await findOrderList({ item: itemId });
+                    //const itemExist = await findOrderList({ $or: [{ _id: itemId }, { item: itemId }] });
                     console.log("itemExist line39", itemExist)
                     //let itemExist = confirmUserCart.find(x => x.cart_items === payload.item);
 
                     if (itemExist) {
-                        await updateItem({ _id: itemExist._id }, {
+                        let update = await updateItem({ _id: itemExist._id }, {
                             $set: {
                                 quantity_of_item: payload.quantity
                             }
                         });
+                        console.log("update", update)
                     } else {
                         //const getItemType = getProduct({ _id: payload.itemId })
                         item = await addToCartList(payload);

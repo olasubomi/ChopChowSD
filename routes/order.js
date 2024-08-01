@@ -4,7 +4,7 @@ const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthe
 const router = require("express").Router();
 
 router.post(
-    "/addtoorder", OrderController.addToOrderList
+    "/createorder", OrderController.addToOrderList
 );
 
 

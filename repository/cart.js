@@ -110,12 +110,12 @@ const findCartUser = async (filter) => {
 }
 
 const findOrderList = async (filter) => {
-    return await Order_items.findOne(filter).populate('store');
+    return await Order_items.findOne(filter)//.populate('store');
 }
 
 const updateItem = async (filter, data) => {
     try {
-        return await Cart.findByIdAndUpdate(filter, data, { new: true });
+        return await Order_items.findByIdAndUpdate(filter, data, { new: true });
     } catch (error) {
         console.log(error);
         throw error;

@@ -7,18 +7,9 @@ const { findUser } = require("../repository/user");
 
 
 class OrderService {
-    static async addToMyOrderList(payload) {
+    static async CreateOrder(payload) {
         try {
-            //validate input data with joi
-            const validate = validateOrder(payload);
 
-            if (validate.error) {
-                throw {
-                    message: validate.error.details[0].message,
-
-                    path: validate.error.details[0].path[0],
-                };
-            }
             const userExist = await findUser({ _id: payload.userId });
 
 

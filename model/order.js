@@ -21,14 +21,14 @@ exports.Order = mongoose.model(
                 ref: "User",
             },
 
-            payment_transaction_id: ObjectId, //yet to validate
+            payment_transaction_id: { type: String }, //yet to validate
 
-            customer_id: ObjectId, //yet to validate
+            customer_id: { type: String }, //yet to validate
 
 
-            pickup_details: { type: {} }, //yet to validate
+            pickup_details: { type: String }, //yet to validate
 
-            intermediaries_details: ObjectId, //need more clarifiaction on these
+            intermediaries_details: { type: String }, //need more clarifiaction on these
 
             delivery_details: { type: {} }, //yet to validate
 
@@ -87,7 +87,7 @@ function validateOrder(order) {
         payment_details,
         drivers_id: Joi.object().optional(),
         order_group: Joi.array(),
-        Notification_status : Joi.array().items(Joi.object()).optional(),
+        Notification_status: Joi.array().items(Joi.object()).optional(),
         status: Joi.string().optional(),
         customer_confirmation_picture: Joi.string().optional(),
         driver_confirmation_picture: Joi.string().optional(),

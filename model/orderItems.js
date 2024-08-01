@@ -27,7 +27,7 @@ exports.Order_items = mongoose.model(
 
         item_image: { type: String },
 
-        quantity_of_item: { type: String },
+        quantity_of_item: { type: Number },
 
         estimated_time_of_arrival: Date,
     })
