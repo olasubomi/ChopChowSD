@@ -152,9 +152,9 @@ module.exports = {
 
   getOneGroceryList: async (req, res) => {
     try {
-      console.log('req.params.id', req.params.id)
       const groceryList = await GroceryService.getOneGroceryList(
         req.params.id,
+        req.decoded.id
       )
       if (groceryList) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse({

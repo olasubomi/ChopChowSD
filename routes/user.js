@@ -7,7 +7,7 @@ const UserController = require('../controllers/UserController/userController')
 const { verifyRefreshToken } = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 
 
-router.post("/signup", upload.single(), transformObject, UserController.signUp);
+router.post("/signup", upload.single('profile_picture'), transformObject, UserController.signUp);
 router.post("/signin", UserController.signIn);
 router.get("/refresh-token", verifyRefreshToken, UserController.refreshToken);
 router.post("/forgotpassword", UserController.forgotPassword);

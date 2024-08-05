@@ -17,28 +17,56 @@ const createItem = async (payload) => {
 const getItems = async (page, filter) => {
   let getPaginate = await paginate(page, filter);
 
-  let query = {
-    item_type: { $in: filter.type.split(',') },
+  let query = {}
+  if (filter?.user) {
+    query.user = filter.user
   }
-  if (filter.status !== 'all') {
+
+  if (filter?.name) {
+    query.item_name = { $regex: filter.name, $options: "i" }
+  }
+
+  let sort = {}
+
+  if (filter?.createdAt) {
+    sort.createdAt = Number(filter.createdAt)
+  }
+
+
+  if (filter?.item_name) {
+    sort.item_name = Number(filter.item_name)
+  }
+
+
+  if (filter?.type) {
+    query.item_type = { $in: filter.type.split(',') }
+  }
+  if (filter.status !== 'all' && Boolean(filter.status)) {
     query.item_status = {
       $elemMatch: {
         status: filter.status
       }
     }
   }
-
-  const itemResponse = await Item
-    .find(query)
-    .limit(getPaginate.limit)
-    .skip(getPaginate.skip)
-    .populate('item_categories item_description store_available')
-  //const getSupplier = await Supplier.find(itemResponse._id);
-  //console.log("item repo", getSupplier)
+  console.log(sort, 'sortt')
+  const withPaginate = filter.hasOwnProperty('withPaginage') ? filter.withPaginate === 'false' ? false : true : true
+  delete filter.withPaginate
+  let itemResponse = [];
+  if (withPaginate) {
+    itemResponse = await Item
+      .find(query)
+      .sort(sort)
+      .limit(getPaginate.limit)
+      .skip(getPaginate.skip)
+      .populate('item_categories item_description')
+      .populate('store_available')
+  } else {
+    await Item
+      .find(query)
+  }
   return { items: itemResponse, count: getPaginate.docCount };
 
 };
-
 const getStoreItems = async (filter) => {
   try {
     return await Item.find(filter);
@@ -48,6 +76,7 @@ const getStoreItems = async (filter) => {
 };
 
 const getOneUserItem = async (filter) => {
+  console.log('user from backend')
   try {
     return await Item.find(filter)
       .populate('item_description item_categories store_available');
@@ -106,7 +135,7 @@ const getUserItems = async (data) => {
       user: user,
       ...filterBy
     })
-      .populate("item_categories item_description")
+      .populate("item_categories item_description user")
       .skip(getPaginate.skip)
       .limit(getPaginate.limit)
     return { items: itemResponse, count: getPaginate.docCount };
@@ -205,11 +234,15 @@ const paginate = async (page, filter) => {
   const limit = parseInt(filter.limit) || 10;
   let skip = parseInt(page) === 1 ? 0 : limit * page;
   delete filter.limit;
-  const docCount = await Item.countDocuments(
-    {
-      item_type: { $in: filter.type.split(',') }
-    }
-  );
+  let query = {};
+  if (filter.type) {
+    query.item_type = { $in: filter.type.split(',') || [] }
+  }
+
+  if (filter?.user) {
+    query.user = filter.user
+  }
+  const docCount = await Item.countDocuments(query);
   if (docCount < skip) {
     skip = (page - 1) * limit;
   }

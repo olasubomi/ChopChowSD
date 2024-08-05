@@ -33,7 +33,7 @@ module.exports = {
         throw authenticateUser;
       }
     } catch (error) {
-      console.log({ error });
+      console.log({ error }, 'app error');
       return res
         .status(Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
