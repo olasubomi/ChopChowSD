@@ -130,7 +130,7 @@ class UserService {
 
       const userExist = await findUser({ email: payload.email })
       console.log("line 144", userExist)
-
+      console.log("line 144", payload)
       if (!userExist) {
         throw { message: "User does not exist" };
       }
@@ -500,6 +500,31 @@ class UserService {
       console.log('Failed to cancel phone verification', e)
     }
   }
+
+
+  static async confirmAccount(payload) {
+    try {
+      console.log("confirmAccount", payload)
+      const user = await findUser({ email: payload.email });
+      console.log("confirmAccount", user)
+      if (user && user.isVerified) {
+        console.log(user.isVerified)
+        return {
+          user: user,
+          message: "user has been verified successfully"
+        }
+      } else {
+        return {
+          message: "user not verified"
+        }
+      }
+
+
+    } catch (e) {
+      console.log('Failed to cancel phone verification', e)
+    }
+  }
+
 
 }
 
