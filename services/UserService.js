@@ -37,7 +37,7 @@ class UserService {
       const userExist = await findUser({ email: payload.email });
 
 
-      if (userExist) {
+      if (userExist || userExist.isVerified) {
         throw {
           message: "User already exist",
         };
@@ -45,10 +45,21 @@ class UserService {
 
       const newUser = await createUser(payload);
 
+      const generatedToken = await generateAccessTokens({
+        id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+      });
+
+      console.log("generated Token", generatedToken)
+
+      if (!Object.is(payload?.email_notifications, false)) {
+        await signUpEmail(generatedToken, newUser);
+      }
 
       return {
         user: newUser,
-        message: newUser.is_verified ? "User sucessfully registered" : "Verification link sent",
+        message: "User sucessfully registered"
       };
     } catch (error) {
       console.log("caught");
@@ -125,20 +136,31 @@ class UserService {
     }
   }
 
-  static async login(payload) {
+  static async login(payload_) {
     try {
 
+      const payload = {
+        ...payload_,
+        withAuth: payload_.hasOwnProperty('withAuth') ? payload_.withAuth : true
+      }
       const userExist = await findUser({ email: payload.email })
+      console.log("line 144", userExist)
 
       if (!userExist) {
         throw { message: "User does not exist" };
       }
-      const validatePassword = await validatePassWord(
-        payload.email,
-        payload.password
-      );
-      if (!validatePassword) {
-        throw { message: "Invalid user credentials" };
+      if (payload?.withAuth) {
+        const validatePassword = await validatePassWord(
+          payload.email,
+          payload.password
+        );
+        if (!validatePassword) {
+          throw { message: "Invalid user credentials" };
+        }
+      }
+      if (userExist && !userExist.isVerified && payload?.withAuth) {
+
+        throw { message: "User does not exist" };
       }
       const generatedToken = await generateAccessTokens({
         id: userExist._id,
@@ -155,6 +177,7 @@ class UserService {
         id: userExist._id,
         username: userExist.username,
         email: userExist.email,
+
       }, 'refrehhhh')
       return {
         success: true,
@@ -162,6 +185,7 @@ class UserService {
         token: generatedToken,
         refreshToken: generatedRefreshToken,
         user: userExist,
+        isVerified: userExist.isVerified
       };
     } catch (error) {
       throw error;
@@ -375,8 +399,13 @@ class UserService {
 
         await updateUser(
           { _id: user.id },
+
           {
-            phone_number_verified: true,
+            $set: {
+              phone_number_verified: true,
+              isVerified: true
+            }
+
 
           }
         );
@@ -411,6 +440,7 @@ class UserService {
       // confirm verification edge cases,
       const otp = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
       const user = await findUser({ email });
+
       const email_token = await bcrypt.hash(otp.toString(), 10)
       if (!user) throw { message: "User not found" };
       await updateUser(
@@ -419,8 +449,11 @@ class UserService {
           email_token,
         }
       );
+
+
       console.log('req.body.email', otp.toString(), email)
-      await signUpEmail(otp.toString(), { email, user });
+
+      await signUpEmail(otp.toString(), user);
       return;
     } catch (e) {
       throw e;
@@ -439,7 +472,12 @@ class UserService {
         await updateUser(
           { _id: user.id },
           {
-            email_verified: true,
+            $set: {
+              email_verified: true,
+              isVerified: true
+            }
+
+
 
           }
         );
