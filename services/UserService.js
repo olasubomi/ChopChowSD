@@ -25,6 +25,7 @@ class UserService {
   static async userSignup(payload) {
     try {
       // validate input data with joi
+
       const validate = signUpSchema.validate(payload);
 
       if (validate.error) {
@@ -37,14 +38,14 @@ class UserService {
       const userExist = await findUser({ email: payload.email });
 
 
-      if (userExist || userExist.isVerified) {
+      if (userExist && userExist.isVerified) {
         throw {
           message: "User already exist",
         };
       }
 
       const newUser = await createUser(payload);
-
+      console.log("newUser", newUser)
       const generatedToken = await generateAccessTokens({
         id: newUser._id,
         username: newUser.username,
@@ -426,6 +427,7 @@ class UserService {
           message: "Authentication successful!",
           // token: generatedToken,
           // refreshToken: generatedRefreshToken,
+          request: result,
           user: user,
         };
       }
