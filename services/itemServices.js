@@ -174,11 +174,32 @@ class ItemService {
             })
           }
 
-          await createNewIngredient({
-            item_name
-          })
-
+          // await createNewIngredient({
+          //   item_name
+          // })
         }
+        if (payload?.formatted_ingredients) {
+          Promise.all(
+            (payload?.formatted_ingredients || [])?.map(async (ingredient) => {
+              const checkExist = await Item.findOne({
+                item_name: ingredient?.item_name,
+                item_type: 'Product'
+              })
+              if (!checkExist) {
+                await createItem({
+                  item_name: ingredient?.item_name,
+                  item_type: 'Product',
+                  user: payload.user,
+                  item_status: [{
+                    status: "Draft",
+                    status_note: "Pending Approval",
+                  },]
+                })
+              }
+            })
+          )
+        }
+
         // 
         if (JSON.parse(payload?.item_data?.kitchen_utensils)) {
           Promise.all(
@@ -367,10 +388,32 @@ class ItemService {
           }
           payload.ingredeints_in_item.push(obj)
 
-          const abc = await createNewIngredient({
-            item_name
-          })
-          console.log('abe', abc)
+          // const abc = await createNewIngredient({
+          //   item_name
+          // })
+          // console.log('abe', abc)
+        }
+
+        if (payload?.formatted_ingredients) {
+          Promise.all(
+            (payload?.formatted_ingredients || [])?.map(async (ingredient) => {
+              const checkExist = await Item.findOne({
+                item_name: ingredient?.item_name,
+                item_type: 'Product'
+              })
+              if (!checkExist) {
+                await createItem({
+                  item_name: ingredient?.item_name,
+                  item_type: 'Product',
+                  user: payload.user,
+                  item_status: [{
+                    status: "Draft",
+                    status_note: "Pending Approval",
+                  }]
+                })
+              }
+            })
+          )
         }
 
         delete payload.item_data;

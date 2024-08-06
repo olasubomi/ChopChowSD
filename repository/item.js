@@ -15,7 +15,6 @@ const createItem = async (payload) => {
 };
 
 const getItems = async (page, filter) => {
-  let getPaginate = await paginate(page, filter);
 
   let query = {}
   if (filter?.user) {
@@ -48,6 +47,7 @@ const getItems = async (page, filter) => {
       }
     }
   }
+  let getPaginate = await paginate(page, query);
   console.log(sort, 'sortt')
   const withPaginate = filter.hasOwnProperty('withPaginage') ? filter.withPaginate === 'false' ? false : true : true
   delete filter.withPaginate
@@ -230,11 +230,11 @@ const itemUpdate = async (payload, arrayId) => {
     console.log(error);
   }
 };
-const paginate = async (page, filter) => {
+const paginate = async (page, filter = {}) => {
   const limit = parseInt(filter.limit) || 10;
   let skip = parseInt(page) === 1 ? 0 : limit * page;
   delete filter.limit;
-  let query = {};
+  let query = { ...filter };
   if (filter.type) {
     query.item_type = { $in: filter.type.split(',') || [] }
   }
