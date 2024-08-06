@@ -374,7 +374,22 @@ module.exports = {
         .status(Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
+  },
+
+
+  //Confirm User Account
+  confirmAccount: async (req, res) => {
+    try {
+      console.log("verify req body", req.body)
+      return await UserService.confirmAccount(req.body);
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
   }
+
 
 
 };
