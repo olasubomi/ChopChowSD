@@ -38,7 +38,7 @@ class UserService {
       const userExist = await findUser({ email: payload.email });
 
 
-      if (userExist && userExist.isVerified) {
+      if (userExist) {
         throw {
           message: "User already exist",
         };
