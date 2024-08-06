@@ -7,7 +7,7 @@ module.exports = {
   signUp: async (req, res) => {
     try {
       const user = await UserService.userSignup(req.body);
-      console.log("verified email", user.user.isVerified)
+      //console.log("verified email", user.user.isVerified)
 
       return res
         .status(Response.HTTP_ACCEPTED)

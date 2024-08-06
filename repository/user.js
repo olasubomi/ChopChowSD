@@ -7,6 +7,7 @@ const {
 const { cart } = require("../model/cart")
 
 const createUser = async (payload) => {
+  console.log("payload", payload)
   const newUser = await User.create(payload);
 
   try {
