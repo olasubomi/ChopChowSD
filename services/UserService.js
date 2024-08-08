@@ -54,9 +54,9 @@ class UserService {
 
       console.log("generated Token", generatedToken)
 
-      if (!Object.is(payload?.email_notifications, false)) {
-        await signUpEmail(generatedToken, newUser);
-      }
+      // if (!Object.is(payload?.email_notifications, false)) {
+      //   await signUpEmail(generatedToken, newUser);
+      // }
 
       return {
         user: newUser,
