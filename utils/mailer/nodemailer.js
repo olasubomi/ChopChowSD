@@ -31,12 +31,12 @@ function signUpEmail(generatedToken, newUser) {
   return transporter.sendMail({
     from: user, // sender address
     to: newUser.email, // list of receivers
-    subject: "Sign Up successful!, Verify your ChopChow Account", // Subject line
+    subject: "Sign Up successful!, Verify your Chop Chow Account", // Subject line
     html: `
       <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
         <div style="margin:50px auto;width:70%;padding:20px 0">
           <div style="border-bottom:1px solid #eee">
-            <a href="" style="font-size:1.4em;color: #f47900;text-decoration:none;font-weight:600">ChopChow</a>
+            <a href="" style="font-size:1.4em;color: #f47900;text-decoration:none;font-weight:600">Chop Chow</a>
           </div>
           <p style="font-size:1.1em; color: #000000">Hello ${newUser.first_name},</p>
           <p style="color: #000000">Thank you for signing up. Verify your email address to complete your signup so as to login successfully.</p>
@@ -95,7 +95,7 @@ function passwordResetEmail(toEmail) {
   let info = transporter.sendMail({
     from: user, // sender address
     to: toEmail, // list of receivers
-    subject: "ChopChow password reset successfully.", // Subject line
+    subject: "Chop Chow password reset successfully.", // Subject line
     text: "Your password is reset.", // plain text body
     html: "<b>Your password has been reset reset. </b>", // html body
   });
