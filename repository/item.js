@@ -30,7 +30,11 @@ const getItems = async (page, filter) => {
   if (filter?.createdAt) {
     sort.createdAt = Number(filter.createdAt)
   }
-
+  if (filter.average_rating) {
+    query.average_rating = {
+      $gte: filter.average_rating
+    }
+  }
 
   if (filter?.item_name) {
     sort.item_name = Number(filter.item_name)
