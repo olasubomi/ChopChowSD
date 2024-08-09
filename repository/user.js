@@ -7,6 +7,7 @@ const {
 const { cart } = require("../model/cart")
 
 const createUser = async (payload) => {
+  console.log("payload", payload)
   const newUser = await User.create(payload);
 
   try {
@@ -16,10 +17,10 @@ const createUser = async (payload) => {
         products: [],
       });
 
-      await cart.create({
-        user: newUser._id,
-        total: "0",
-      });
+      // await cart.create({
+      //   user: newUser._id,
+      //   total: "0",
+      // });
     }
     return newUser;
   } catch (error) {
@@ -72,6 +73,7 @@ const findUsers = async (filter, page) => {
 const validatePassWord = async (email, password) => {
   try {
     const user = await findUser({ email: email });
+    console.log("line 75", password)
     return await user.comparePassword(password);
   } catch (error) {
     throw error;

@@ -6,13 +6,15 @@ module.exports.verifyNumber = function (req, res, next) {
     });
 
     console.log("Comes in verify file: ");
+    console.log("Comes in verify file: ", req.body.request_id);
+
 
     vonage.verify.check(req.body.request_id, req.body.code)
         .then(resp => {
             console.log("prints response in then ");
             console.log(resp)
-            // return resp;
-            return res.status(200).send(JSON.stringify(resp));
+            return resp;
+            //return res.status(200).send(JSON.stringify(resp));
         })
         .catch(err => {
             console.log("prints err in catch ");

@@ -44,7 +44,7 @@ const itemSchema = new mongoose.Schema(
       required: true
     },
 
-    store_available: { type: mongoose.Types.ObjectId, ref: "Supplier" },
+    store_available: [{ type: mongoose.Types.ObjectId, ref: "Supplier" }],
 
     item_status: [
       {

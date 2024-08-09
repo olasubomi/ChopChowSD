@@ -25,6 +25,7 @@ class UserService {
   static async userSignup(payload) {
     try {
       // validate input data with joi
+
       const validate = signUpSchema.validate(payload);
 
       if (validate.error) {
@@ -37,14 +38,14 @@ class UserService {
       const userExist = await findUser({ email: payload.email });
 
 
-      if (userExist || userExist.isVerified) {
+      if (userExist) {
         throw {
           message: "User already exist",
         };
       }
 
       const newUser = await createUser(payload);
-
+      console.log("newUser", newUser)
       const generatedToken = await generateAccessTokens({
         id: newUser._id,
         username: newUser.username,
@@ -53,9 +54,9 @@ class UserService {
 
       console.log("generated Token", generatedToken)
 
-      if (!Object.is(payload?.email_notifications, false)) {
-        await signUpEmail(generatedToken, newUser);
-      }
+      // if (!Object.is(payload?.email_notifications, false)) {
+      //   await signUpEmail(generatedToken, newUser);
+      // }
 
       return {
         user: newUser,
@@ -145,7 +146,7 @@ class UserService {
       }
       const userExist = await findUser({ email: payload.email })
       console.log("line 144", userExist)
-
+      console.log("line 144", payload)
       if (!userExist) {
         throw { message: "User does not exist" };
       }
@@ -177,6 +178,7 @@ class UserService {
         id: userExist._id,
         username: userExist.username,
         email: userExist.email,
+        token: generatedToken,
 
       }, 'refrehhhh')
       return {
@@ -409,22 +411,23 @@ class UserService {
 
           }
         );
-        const generatedToken = await generateAccessTokens({
-          id: user._id,
-          username: user.username,
-          email: user.email,
-        });
+        // const generatedToken = await generateAccessTokens({
+        //   id: user._id,
+        //   username: user.username,
+        //   email: user.email,
+        // });
 
-        const generatedRefreshToken = await generateRefreshTokens({
-          id: user._id,
-          username: user.username,
-          email: user.email,
-        });
+        // const generatedRefreshToken = await generateRefreshTokens({
+        //   id: user._id,
+        //   username: user.username,
+        //   email: user.email,
+        // });
         return {
           success: true,
           message: "Authentication successful!",
-          token: generatedToken,
-          refreshToken: generatedRefreshToken,
+          // token: generatedToken,
+          // refreshToken: generatedRefreshToken,
+          request: result,
           user: user,
         };
       }
@@ -481,22 +484,22 @@ class UserService {
 
           }
         );
-        const generatedToken = await generateAccessTokens({
-          id: user._id,
-          username: user.username,
-          email: user.email,
-        });
+        // const generatedToken = await generateAccessTokens({
+        //   id: user._id,
+        //   username: user.username,
+        //   email: user.email,
+        // });
 
-        const generatedRefreshToken = await generateRefreshTokens({
-          id: user._id,
-          username: user.username,
-          email: user.email,
-        });
+        // const generatedRefreshToken = await generateRefreshTokens({
+        //   id: user._id,
+        //   username: user.username,
+        //   email: user.email,
+        // });
         return {
           success: true,
           message: "Authentication successful!",
-          token: generatedToken,
-          refreshToken: generatedRefreshToken,
+          // token: generatedToken,
+          // refreshToken: generatedRefreshToken,
           user: user,
         };
       }
@@ -516,6 +519,31 @@ class UserService {
       console.log('Failed to cancel phone verification', e)
     }
   }
+
+
+  static async confirmAccount(payload) {
+    try {
+      console.log("confirmAccount", payload)
+      const user = await findUser({ email: payload.email });
+      console.log("confirmAccount", user)
+      if (user && user.isVerified) {
+        console.log(user.isVerified)
+        return {
+          user: user,
+          message: "user has been verified successfully"
+        }
+      } else {
+        return {
+          message: "user not verified"
+        }
+      }
+
+
+    } catch (e) {
+      console.log('Failed to cancel phone verification', e)
+    }
+  }
+
 
 }
 

@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-exports.order_items = mongoose.model(
+exports.Order_items = mongoose.model(
     "Order_items",
     new Schema({
         item: {
@@ -13,16 +13,21 @@ exports.order_items = mongoose.model(
 
         item_type: {
             type: String,
-            required: true,
-            enum: ["Meal", "Product"],
+            enum: ["Meal", "Product", "Utensil"],
+            default: "Meal"
         },
 
         store: {
             type: [mongoose.Types.ObjectId],
             ref: "Supplier",
         },
+        item_price: { type: String },
 
-        quantity_of_item: { type: String },
+        item_Name: { type: String },
+
+        item_image: { type: String },
+
+        quantity_of_item: { type: Number },
 
         estimated_time_of_arrival: Date,
     })
