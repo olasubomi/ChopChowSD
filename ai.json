@@ -1,0 +1,129 @@
+{
+    "meal_name": "Semolina Fufu",
+    "meal_preparation_summary": "In this video, you'll learn how to make the perfect lump-free semolina fufu. The process involves making a slurry from semolina and water, cooking it to form a smooth base, and then adding more semolina bit by bit while stirring continuously. The fufu is cooked to the desired texture and consistency, ensuring it's neither too hard nor too soft. Finally, hot water is added back to complete the cooking process, resulting in a delicious, smooth semolina fufu.",
+    "meal_preparation_steps": [
+        {
+            "step": 1,
+            "step_title": "Measure Semolina",
+            "step_instruction": [
+                "Measure out one cup of semolina into a bowl.",
+                "Measure out two cups of semolina into a separate bowl."
+            ],
+            "timestamp_start": "00:00:19.24",
+            "timestamp_end": "00:01:02.14"
+        },
+        {
+            "step": 2,
+            "step_title": "Prepare Slurry",
+            "step_instruction": [
+                "Add one cup of water to the bowl with one cup of semolina.",
+                "Mix well to combine and set aside."
+            ],
+            "timestamp_start": "00:00:35.94",
+            "timestamp_end": "00:01:02.14"
+        },
+        {
+            "step": 3,
+            "step_title": "Boil Water",
+            "step_instruction": [
+                "Pour four cups of water into a pot.",
+                "Allow the water to come to a boil."
+            ],
+            "timestamp_start": "00:01:13.93",
+            "timestamp_end": "00:01:33.46"
+        },
+        {
+            "step": 4,
+            "step_title": "Add Slurry",
+            "step_instruction": [
+                "Remove some boiling water and set it aside.",
+                "Pour the slurry into the boiling water.",
+                "Stir well to combine."
+            ],
+            "timestamp_start": "00:01:33.46",
+            "timestamp_end": "00:01:55.76"
+        },
+        {
+            "step": 5,
+            "step_title": "Cook Base",
+            "step_instruction": [
+                "Cover and cook the slurry on medium heat for 5-7 minutes."
+            ],
+            "timestamp_start": "00:01:55.76",
+            "timestamp_end": "00:02:23.91"
+        },
+        {
+            "step": 6,
+            "step_title": "Add Semolina",
+            "step_instruction": [
+                "Stir the cooked base.",
+                "Gradually add the remaining semolina while stirring continuously.",
+                "Increase to high heat while stirring."
+            ],
+            "timestamp_start": "00:02:30.00",
+            "timestamp_end": "00:03:32.36"
+        },
+        {
+            "step": 7,
+            "step_title": "Adjust Texture",
+            "step_instruction": [
+                "Adjust the texture by adding more or less semolina according to preference."
+            ],
+            "timestamp_start": "00:03:32.36",
+            "timestamp_end": "00:03:49.63"
+        },
+        {
+            "step": 8,
+            "step_title": "Add Hot Water",
+            "step_instruction": [
+                "Add the reserved hot water back to the pot.",
+                "Break down the semolina to allow water to penetrate."
+            ],
+            "timestamp_start": "00:04:08.39",
+            "timestamp_end": "00:04:14.90"
+        },
+        {
+            "step": 9,
+            "step_title": "Final Cooking",
+            "step_instruction": [
+                "Cover and cook on low heat for 3-5 minutes.",
+                "Mix well to form a dough."
+            ],
+            "timestamp_start": "00:04:23.22",
+            "timestamp_end": "00:04:39.32"
+        },
+        {
+            "step": 10,
+            "step_title": "Serve",
+            "step_instruction": [
+                "Pair the semolina fufu with any soup of your choice."
+            ],
+            "timestamp_start": "00:05:17.13",
+            "timestamp_end": "00:05:26.46"
+        }
+    ],
+    "ingredients": [
+        {
+            "ingredient_name": "Semolina",
+            "ingredient_measurement": "cup",
+            "ingredient_quantity": "3"
+        },
+        {
+            "ingredient_name": "Water",
+            "ingredient_measurement": "cup",
+            "ingredient_quantity": "5"
+        }
+    ],
+    "kitchen_utensils": [
+        "Bowl",
+        "Pot",
+        "Wooden spoon"
+    ],
+    "meal_categories": [
+        "Main Course",
+        "African Cuisine",
+        "Gluten-Free"
+    ],
+    "prep_time": "10 minutes",
+    "cook_time": "20 minutes"
+}
