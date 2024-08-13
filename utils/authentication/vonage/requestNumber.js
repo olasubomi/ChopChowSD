@@ -1,9 +1,12 @@
-const { Vonage } = require('@vonage/server-sdk');
-module.exports.requestNumber = function (req, res) {
-    const vonage = new Vonage({
+async function loadVonage() {
+    const { Vonage } = await import('@vonage/server-sdk');
+    return new Vonage({
         apiKey: process.env.VONAGE_KEY,
         apiSecret: process.env.VONAGE_SECRET
     });
+}
+module.exports.requestNumber = async function (req, res) {
+    const vonage = await loadVonage()
 
     console.log("Comes in request file: ");
     console.log(req.body.number);

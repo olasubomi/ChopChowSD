@@ -193,12 +193,49 @@ class ItemService {
             })
           }
 
-          await createNewIngredient({
-            item_name
-          })
-
+          // await createNewIngredient({
+          //   item_name
+          // })
+        }
+        if (payload?.formatted_ingredients) {
+          Promise.all(
+            (payload?.formatted_ingredients || [])?.map(async (ingredient) => {
+              const checkExist = await Item.findOne({
+                item_name: ingredient?.item_name,
+                item_type: 'Product'
+              })
+              if (!checkExist) {
+                await createItem({
+                  item_name: ingredient?.item_name,
+                  item_type: 'Product',
+                  user: payload.user,
+                  item_status: [{
+                    status: "Draft",
+                    status_note: "Pending Approval",
+                  },]
+                })
+              }
+            })
+          )
         }
 
+        // 
+        if (JSON.parse(payload?.item_data?.kitchen_utensils)) {
+          Promise.all(
+            JSON.parse(payload?.item_data?.kitchen_utensils)?.map(async (ele) => {
+              const checkExist = await Item.findOne({
+                item_name: ele,
+                item_type: 'Utensil'
+              })
+              if (!checkExist) {
+                await createItem({
+                  item_name: ele,
+                  item_type: 'Utensil'
+                })
+              }
+            })
+          )
+        }
 
 
         // payload.item_categories = JSON.parse(payload.item_categories).map(ele => ele.toString())
@@ -209,6 +246,8 @@ class ItemService {
             return res
           })
         payload.item_categories = ele
+
+
 
         delete payload.formatted_instructions;
         delete payload.item_data
@@ -368,10 +407,32 @@ class ItemService {
           }
           payload.ingredeints_in_item.push(obj)
 
-          const abc = await createNewIngredient({
-            item_name
-          })
-          console.log('abe', abc)
+          // const abc = await createNewIngredient({
+          //   item_name
+          // })
+          // console.log('abe', abc)
+        }
+
+        if (payload?.formatted_ingredients) {
+          Promise.all(
+            (payload?.formatted_ingredients || [])?.map(async (ingredient) => {
+              const checkExist = await Item.findOne({
+                item_name: ingredient?.item_name,
+                item_type: 'Product'
+              })
+              if (!checkExist) {
+                await createItem({
+                  item_name: ingredient?.item_name,
+                  item_type: 'Product',
+                  user: payload.user,
+                  item_status: [{
+                    status: "Draft",
+                    status_note: "Pending Approval",
+                  }]
+                })
+              }
+            })
+          )
         }
 
         delete payload.item_data;

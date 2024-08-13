@@ -6,7 +6,7 @@ const signUpSchema = Joi.object({
     last_name: Joi.string().required(),
     password: Joi.string().required(),
     username: Joi.string().required(),
-    phone_number: Joi.string(),
+    phone_number: Joi.optional(),
     email_notifications: Joi.boolean(),
     profile_picture: Joi.string().optional()
 });

@@ -25,6 +25,7 @@ router.post("/sendemailotp", UserController.sendEmailOTP);
 router.post("/verifyEmailOTP", UserController.verifyEmailOTP);
 router.delete("/cancelnumberverification", UserController.cancelNumberVerification);
 router.get("/hash", hashPassword);
+router.post("/confirmaccount", UserController.confirmAccount);
 // router.get("/logout", authenticationLogout);
 // router.get("/getsuggestedmeals", UserController.getSuggestedMeals);
 router.get("/getUserGroceryList/:userId", verifyAuthentication, UserController.getGroceryList);
