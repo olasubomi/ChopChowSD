@@ -31,7 +31,7 @@ class DescriptionService {
     });
   }
   static async getDescription(req, res) {
-    const descriptions = await getAllDescription();
+    const descriptions = await getAllDescription(req.query ?? {});
 
     return res.json({ status: 200, data: descriptions });
   }

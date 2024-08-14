@@ -91,13 +91,38 @@ const checkStoreAvailability = async (filter) => {
 
 const getAllStores = async (page, filter) => {
   try {
+
+    let query = {}
+
+    let sort = {}
+
+    if (filter?.store_key) {
+      query.store_name = { $regex: filter.store_key, $options: "i" }
+    }
+
+    if (filter?.createdAt) {
+      sort.createdAt = Number(filter.createdAt)
+    }
+
+    if (filter?.store_name) {
+      sort.store_name = Number(filter.store_name)
+    }
+
+    if (filter.status !== 'all' && Boolean(filter.status)) {
+      query.status = filter.status.toUpperCase()
+    }
+
+
     if (filter?.withPaginate) {
       delete filter.withPaginate
-      let getPaginate = await paginate(page, filter);
-      const allProducts = await Supplier.find(filter || {})
+      let getPaginate = await paginate(page, query);
+      const allProducts = await Supplier.find(query || {})
+        .sort(sort)
         .limit(getPaginate.limit)
         .skip(getPaginate.skip)
         .populate("store_account_users"); //sugggested_meals_and_products
+
+
       return {
         products: allProducts,
         count: getPaginate.docCount,
