@@ -34,12 +34,33 @@ const findDescription = async (filter) => {
 
 const getAllDescription = async (page, filter) => {
   try {
-    let getPaginate = await paginateDes(page, filter);
+    let query = {}
 
-    const status = filter.status !== 'all' ? { status: filter.status } : {}
+    let sort = {}
 
+    if (filter?.description_name) {
+      query.description_key = { $regex: filter.description_name, $options: "i" }
+    }
+
+    if (filter?.createdAt) {
+      sort.createdAt = Number(filter.createdAt)
+    }
+
+    if (filter?.description_key) {
+      sort.description_key = Number(filter.description_key)
+    }
+
+    if (filter.status !== 'all' && Boolean(filter.status)) {
+      query.status = filter.status?.pop()
+    }
+
+    let getPaginate = await paginateDes(page, query);
+
+    // const status = filter.status !== 'all' ? { status: filter.status } : {}
+    console.log(query, 'queryy')
     const resp = await item_description
-      .find(status)
+      .find(query)
+      .sort(sort)
       .limit(getPaginate.limit)
       .skip(getPaginate.skip)
     return { description: resp, count: getPaginate.docCount };
