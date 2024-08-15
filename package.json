@@ -11,7 +11,6 @@
     "@aws-sdk/node-http-handler": "^3.40.0",
     "@aws-sdk/util-credentials": "^3.56.0",
     "@deepgram/sdk": "^3.5.0",
-    "@distube/ytdl-core": "^4.13.7",
     "@sasmeee/igdl": "^1.0.0",
     "@vonage/server-client": "^1.12.0",
     "@vonage/server-sdk": "^3.14.0",
@@ -61,7 +60,6 @@
     "react-dom": "^18.2.0",
     "scheduler": "^0.23.0",
     "url": "^0.11.0",
-    "youtube-dl-exec": "^3.0.7",
     "ytdl-core": "^4.11.5"
   },
   "exports": {
