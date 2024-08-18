@@ -789,6 +789,8 @@ class ItemService {
           const videoFile = fs.readFileSync(filePath)
           buffer = videoFile
           // fs.unlinkSync(filePath);
+
+
         } else {
           return res.status(400).json({ error: 'Unsupported video platform' });
         }
@@ -887,7 +889,7 @@ class ItemService {
                 6. Suggested meal categories (returned as meal_categories)
                 7. Prep time (returned as prep_time)
                 8. Cook time (return as cook_time)
-                When generating the Meal preparation steps, I want you to get the start (key should be timestamp_start) and end (key should be timestamp_end) timestamps in this format {hh:mm:ss} of where each step is carried out, I want to use it so split the video.  
+                When generating the Meal preparation steps, I want you to get the start (key should be timestamp_start) and end (key should be timestamp_end) timestamps in this format hh:mm:ss of where each step is carried out, I want to use it so split the video.  
                 `
               }
             ]
