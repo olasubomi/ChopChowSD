@@ -969,8 +969,11 @@ class ItemService {
   static async splitVideos(timestamps, outputDir, filePath) {
     const currentTime = new Date().getTime()
     // const outputDir = `output/${currentTime}`;
+    console.log(!fs.existsSync(outputDir), 'exising dir')
     if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir);
+      fs.mkdirSync(outputDir, {
+        recursive: true
+      });
     }
 
     const promises = timestamps.map((timestamp, index) => {
