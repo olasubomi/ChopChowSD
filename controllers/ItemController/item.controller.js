@@ -22,7 +22,7 @@ module.exports = {
     try {
       const item = await ItemService.processVideo(req, res);
       if (item) {
-        return item
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(item));
       } else {
         throw item;
       }
