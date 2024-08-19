@@ -970,11 +970,12 @@ class ItemService {
     const currentTime = new Date().getTime()
     // const outputDir = `output/${currentTime}`;
     console.log(!fs.existsSync(outputDir), 'exising dir')
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, {
-        recursive: true
-      });
-    }
+    // if (!fs.existsSync(outputDir)) {
+
+    // }
+    fs.mkdirSync(outputDir, {
+      recursive: true
+    });
 
     const promises = timestamps.map((timestamp, index) => {
       return new Promise((resolve, reject) => {
