@@ -764,7 +764,6 @@ class ItemService {
       if (req.file) {
         const { value, error } = videoFileSchema(req.file)
         buffer = req.file.buffer
-        fs.writeFileSync(filePath, req.file.buffer)
       } else if (req.body.url) {
         const { url } = req.body;
         const videoURL = new URL(url);
@@ -795,24 +794,8 @@ class ItemService {
           return res.status(400).json({ error: 'Unsupported video platform' });
         }
       }
-      const outputDir = `output/${new Date().getTime()}`
-      const resp = await this.transcribeFile(buffer, outputDir, filePath)
-      console.log(JSON.stringify(resp.transcription), 'resp')
-      const zip = new AdmZip();
-      zip.addFile("transcription.json", Buffer.from(JSON.stringify(resp.transcription), "utf8"), "comment");
-      zip.addFile("extract.json", Buffer.from(JSON.stringify(resp.data), "utf8"), "comment");
-      fs.readdirSync(outputDir).forEach((file) => {
-        const filePath = path.join(outputDir, file);
-        zip.addLocalFile(filePath);
-      });
-      const zipFileContents = zip.toBuffer();
-      const fileName = 'uploads.zip';
-      const fileType = 'application/zip';
-      res.writeHead(200, {
-        'Content-Disposition': `attachment; filename="${fileName}"`,
-        'Content-Type': fileType,
-      })
-      return res.end(zipFileContents);
+      const resp = await this.transcribeFile(buffer)
+      return resp
 
       // console.log(value, error)
     } catch (e) {
@@ -820,7 +803,7 @@ class ItemService {
     }
   }
 
-  static async transcribeFile(file, outputDir, filePath) {
+  static async transcribeFile(file) {
     const deepgram = createClient(process.env.DEEPGRAM_API_KEY);
     const { result, error } = await deepgram.listen.prerecorded.transcribeFile(
       file,
@@ -850,10 +833,7 @@ class ItemService {
             }
           })
         })
-        console.dir(result, { depth: null })
-        console.dir(ai_, { depth: null })
 
-        await this.splitVideos(ai_.meal_preparation_steps, outputDir, filePath)
         const resp = {
           transcription: obj,
           data: ai_
