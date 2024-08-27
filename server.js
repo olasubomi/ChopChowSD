@@ -28,6 +28,7 @@ const categoryRoutes = require("./routes/category");
 const storeRoutes = require("./routes/store");
 const analyticsRoutes = require("./routes/analytics");
 const inventoryRoutes = require("./routes/inventory");
+const blogRoutes = require("./routes/blog")
 const commentRoutes = require("./routes/comment")
 const cartRoutes = require("./routes/cart")
 const { getDescription } = require("./repository/description");
@@ -39,6 +40,7 @@ app.use(cookie());
 
 const whitelist = [
   "http://localhost:3000",
+  "http://localhost:3002",
   "http://localhost:5000",
   "https://www.chopchow.app",
   "https://cc-next-dev.vercel.app/",
@@ -85,6 +87,7 @@ app.use("/api/inventory", inventoryRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/blog", blogRoutes);
 
 // Test multer logging
 app.use((error, req, res, next) => {
