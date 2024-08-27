@@ -1,4 +1,4 @@
-const { validate, validateItemMeal, validateItemProduct, Item } = require("../model/item");
+const { validate, validateItemMeal, validateItemProduct, Item, videoFileSchema } = require("../model/item");
 
 const {
   createItem,
@@ -16,12 +16,21 @@ const {
   getItemsForAUser,
   updateItem,
 } = require("../repository/item");
-
+const fs = require('fs')
+const OpenAI = require('openai');
 const {
   createProduct
 } = require('../repository/product')
-
+const test_json = require('../test.json')
+const ai = require('../ai.json')
+const { createClient } = require("@deepgram/sdk");
 const { createMeal } = require('../repository/meal')
+const instagramDl = require("@sasmeee/igdl");
+// const youtubedl = require('youtube-dl-exec')
+const ffmpegStatic = require('ffmpeg-static');
+const ffmpeg = require('fluent-ffmpeg');
+const AdmZip = require("adm-zip")
+ffmpeg.setFfmpegPath(ffmpegStatic);
 
 const {
   createCategoriesFromCreateMeal
@@ -31,6 +40,15 @@ const { createNewMeasurment } = require("../repository/measurement");
 const { createNewIngredient, getAllIngredient } = require("../repository/ingredient");
 const GroceryService = require("./groceryService");
 const { capitalize } = require("lodash");
+// const ytdl = require('@distube/ytdl-core');
+const axios = require('axios');
+// const fetch = require('node-fetch');
+const { URL } = require('url');
+const path = require('path');
+const TEMP_DIR = path.join(__dirname, 'temp');
+if (!fs.existsSync(TEMP_DIR)) {
+  fs.mkdirSync(TEMP_DIR);
+}
 
 class ItemService {
   static async createItem(payload, files = [], res, query = { action: 'create', _id: "" }) {
@@ -735,6 +753,242 @@ class ItemService {
       console.log(error);
     }
   }
+
+  static async processVideo(req, res) {
+    try {
+      console.log(req.file, req.body, 'payload')
+      let buffer = ''
+      const file_name = `File-${Math.floor(Math.random() * 1000000)}.mp4`
+      const filePath = path.join(TEMP_DIR, file_name);
+
+      if (req.file) {
+        const { value, error } = videoFileSchema(req.file)
+        buffer = req.file.buffer
+      } else if (req.body.url) {
+        const { url } = req.body;
+        const videoURL = new URL(url);
+
+        if (videoURL.hostname.includes('youtube.com') || videoURL.hostname.includes('youtu.be')) {
+          // if (!ytdl.validateURL(url)) {
+          //   return res.status(400).json({ error: 'Invalid YouTube URL' });
+          // }
+
+          // const promise = await youtubedl(url, { dumpSingleJson: true })
+          // const _url = Array.isArray(promise?.requested_formats) && promise.requested_formats.length >= 1 && promise.requested_formats[1]?.hasOwnProperty("url") && promise.requested_formats[1]?.url;
+          // if (!_url) throw new Error("Unable to extract video from url")
+          // await this.downloadVideo(_url, file_name);
+          // const videoFile = fs.readFileSync(filePath)
+          // buffer = videoFile
+          // fs.unlinkSync(filePath);
+          return res.status(400).json({ error: 'Unsupported video platform' });
+
+        } else if (videoURL.hostname.includes('instagram.com')) {
+          const dataList = await instagramDl(url);
+          await this.downloadVideo(dataList[0]?.download_link, file_name);
+          const videoFile = fs.readFileSync(filePath)
+          buffer = videoFile
+          // fs.unlinkSync(filePath);
+
+
+        } else {
+          return res.status(400).json({ error: 'Unsupported video platform' });
+        }
+      }
+      const resp = await this.transcribeFile(buffer)
+      return resp
+
+      // console.log(value, error)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  static async transcribeFile(file) {
+    const deepgram = createClient(process.env.DEEPGRAM_API_KEY);
+    const { result, error } = await deepgram.listen.prerecorded.transcribeFile(
+      file,
+      {
+        model: "nova-2",
+        paragraphs: true
+      }
+    );
+
+    if (error) throw error;
+    if (!error) {
+      // const result = test_json;
+      const transcript = result.results.channels[0].alternatives[0].transcript;
+      const words = result.results.channels[0].alternatives[0].words;
+      if (!error) {
+        const payload = await this.openAi(transcript);
+        console.dir(payload, { depth: null })
+        const ai_ = JSON.parse(payload);
+        let obj = {};
+        result.results.channels[0].alternatives[0].paragraphs.paragraphs.map((element) => {
+          element.sentences.map((entry) => ({
+            [this.formatSeconds(entry.start)]: entry.text
+          })).forEach((ele) => {
+            obj = {
+              ...obj,
+              ...ele
+            }
+          })
+        })
+
+        const resp = {
+          transcription: obj,
+          data: ai_
+        }
+        // console.dir(obj, { depth: null })
+        return resp
+      }
+
+    }
+  };
+
+  static async openAi(transcription) {
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_KEY
+    });
+
+    try {
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": `Text: ${transcription}
+                Return the following details in pure JSON format without the json tag:
+                1. Meal name (returned as meal_name)
+                2. Meal preparation summary (150 words) (returned as meal_preparation_summary)
+                3. Meal preparation steps (returned as meal_preparation_steps, array of objects like [{ step: 1, step_title: "3-word title", step_instruction: ["instruction1", "instruction2"] }])
+                4. Ingredients used (returned as ingredients, array of objects like [{ ingredient_name: "name", ingredient_measurement: "measurement", ingredient_quantity: "quantity" }])
+                5. Kitchen utensils used (returned as kitchen_utensils, array of strings)
+                6. Suggested meal categories (returned as meal_categories)
+                7. Prep time (returned as prep_time)
+                8. Cook time (return as cook_time)
+                When generating the Meal preparation steps, I want you to get the start (key should be timestamp_start) and end (key should be timestamp_end) timestamps in this format hh:mm:ss of where each step is carried out, I want to use it so split the video.  
+                `
+              }
+            ]
+          },
+        ],
+        temperature: 1.2,
+        max_tokens: 1800,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+      });
+      return response.choices[0].message.content
+    } catch (e) {
+      console.log(e, 'error')
+    }
+
+
+
+  }
+
+  static formatSeconds(seconds) {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = (seconds % 60).toFixed(2);
+    const hrsStr = String(hrs).padStart(2, '0');
+    const minsStr = String(mins).padStart(2, '0');
+    const secsStr = String(secs).padStart(5, '0');
+    return `${hrsStr}:${minsStr}:${secsStr}`;
+  }
+
+  static async divideTranscriptIntoMinutes(transcriptData) {
+    const transcriptByMinute = {};
+    let currentMinute = 1;
+    let currentWords = [];
+
+    for (const item of transcriptData) {
+      const { start, end, word } = item;
+      const startMinute = Math.floor(start / 60) + 1;
+      const endMinute = Math.floor(end / 60) + 1;
+
+      if (startMinute !== endMinute) {
+        const endOfCurrentMinute = (startMinute * 60) - start;
+        currentWords.push(word);
+        transcriptByMinute[`00:${String(currentMinute).padStart(2, '0')}:00`] = currentWords.join(' ');
+
+        currentMinute = endMinute;
+        currentWords = [];
+        currentWords.push(word);
+      } else {
+        if (startMinute > currentMinute) {
+          transcriptByMinute[`00:${String(currentMinute).padStart(2, '0')}:00`] = currentWords.join(' ');
+          currentMinute = startMinute;
+          currentWords = [];
+        }
+        currentWords.push(word);
+      }
+    }
+
+    if (currentWords.length > 0) {
+      transcriptByMinute[`00:${String(currentMinute).padStart(2, '0')}:00`] = currentWords.join(' ');
+    }
+
+    return transcriptByMinute;
+  }
+
+  static async downloadVideo(videoUrl, filename) {
+    const response = await axios.get(videoUrl, { responseType: 'stream' });
+    const filePath = path.join(TEMP_DIR, filename);
+    response.data.pipe(fs.createWriteStream(filePath));
+
+    return new Promise((resolve, reject) => {
+      response.data.on('end', () => resolve(filePath));
+      response.data.on('error', reject);
+    });
+  };
+
+  static async splitVideos(timestamps, outputDir, filePath) {
+    const currentTime = new Date().getTime()
+    // const outputDir = `output/${currentTime}`;
+    console.log(!fs.existsSync(outputDir), 'exising dir')
+    // if (!fs.existsSync(outputDir)) {
+
+    // }
+    fs.mkdirSync(outputDir, {
+      recursive: true
+    });
+
+    const promises = timestamps.map((timestamp, index) => {
+      return new Promise((resolve, reject) => {
+        const outputFilePath = path.join(outputDir, `segment-${index + 1}.mp4`);
+
+        const [startHours, startMinutes, startSeconds] = timestamp.timestamp_start.split(':').map(parseFloat);
+        const [endHours, endMinutes, endSeconds] = timestamp.timestamp_end.split(':').map(parseFloat);
+
+        const startTotalSeconds = (startHours * 3600) + (startMinutes * 60) + startSeconds;
+        const endTotalSeconds = (endHours * 3600) + (endMinutes * 60) + endSeconds;
+
+        const durationSeconds = endTotalSeconds - startTotalSeconds;
+
+        const durationHours = Math.floor(durationSeconds / 3600).toString().padStart(2, '0');
+        const durationMinutes = Math.floor((durationSeconds % 3600) / 60).toString().padStart(2, '0');
+        const durationSecs = (durationSeconds % 60).toFixed(2).padStart(5, '0');
+
+        const duration = `${durationHours}:${durationMinutes}:${durationSecs}`;
+
+        ffmpeg(filePath)
+          .setStartTime(timestamp.timestamp_start)
+          .setDuration(duration)
+          .output(outputFilePath)
+          .on('end', () => resolve(outputFilePath))
+          .on('error', reject)
+          .run();
+      });
+    });
+
+    return Promise.all(promises)
+  }
+
+
 }
 
 module.exports = ItemService;
