@@ -13,7 +13,7 @@
     "@deepgram/sdk": "^3.5.0",
     "@sasmeee/igdl": "^1.0.0",
     "@vonage/server-client": "^1.12.0",
-    "@vonage/server-sdk": "^3.14.0",
+    "@vonage/server-sdk": "3.15.0",
     "adm-zip": "^0.5.15",
     "archiver": "^7.0.1",
     "aws-sdk": "^2.1046.0",
