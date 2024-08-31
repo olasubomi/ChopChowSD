@@ -345,7 +345,10 @@ module.exports = {
   verifyNumber: async (req, res, next) => {
     try {
       console.log("verify req body", req.body)
-      return await UserService.verifyNumber(req, res, next);
+      const data = await UserService.verifyNumber(req, res, next);
+      return res
+        .status(Response.HTTP_ACCEPTED)
+        .json(new SuccessResponse(data));
     }
     catch (error) {
       console.log(error);
