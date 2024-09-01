@@ -3,6 +3,11 @@ const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthe
 const { upload, transformObject } = require("../utils/middleware");
 const express = require("express");
 const router = express.Router();
+const multer = require('multer');
+
+const storage = multer.memoryStorage();
+const upload_ = multer({ storage: storage });
+
 
 router.get("/:page", ItemController.getAllItems);
 
@@ -28,6 +33,8 @@ router.post(
   ),
   ItemController.createItem
 );
+
+router.put('/transcription', upload_.single('video'), ItemController.videoTranscription)
 
 router.get("/store-items/:storeId", ItemController.getStoreItems);
 

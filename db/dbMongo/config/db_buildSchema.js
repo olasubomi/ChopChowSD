@@ -825,6 +825,29 @@ exports.currencies = mongoose.model(
   )
 );
 
+exports.blog = mongoose.model(
+  "blog",
+  new Schema(
+    {
+      title: { type: String, required: true },
+      featured_image: { type: String, required: true },
+      tags: { type: Array, default: [] },
+      meta_description: { type: String },
+      status: { type: String, enum: ["PUBLISHED", 'DRAFT'], default: "PUBLISHED" },
+      url_slug: { type: String },
+      html_template: { type: String, required: true },
+      body_content_text: { type: String, required: true },
+      word_count: { type: String, required: true },
+      comments: { type: Array, default: [] },
+      author: { type: mongoose.Types.ObjectId, ref: "User" }
+    },
+    {
+      timestamps: true
+    }
+  ),
+
+)
+
 exports.validateItemOther = (other) => {
   const schema = Joi.object({
     item_name: Joi.string().required(),
@@ -840,6 +863,19 @@ exports.validateItemDescription = (description) => {
   });
 
   return schema.validate(description);
+}
+
+exports.validateBlog = (payload) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    html_template: Joi.string().required(),
+    body_content_text: Joi.string().required(),
+    word_count: Joi.string().required(),
+    status: Joi.string().optional(),
+    featured_image: Joi.string().required()
+  });
+
+  return schema.validate(payload);
 }
 
 exports.validateStoreInformation = (values) => {
