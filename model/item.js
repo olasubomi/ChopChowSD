@@ -270,7 +270,21 @@ function validateItemProduct(item) {
 }
 
 
+function videoFileSchema(item) {
+  const schema =
+    Joi.object({
+      fieldname: Joi.string().required(),
+      originalname: Joi.string().required(),
+      encoding: Joi.string().required(),
+      mimetype: Joi.string()
+        .valid('video/mp4', 'video/avi', 'video/mkv', 'video/mov', 'video/wmv')
+        .required(),
+      buffer: Joi.binary().required(),
+      size: Joi.number().max(50 * 1024 * 1024).required() // 50MB limit
+    }).required()
 
+  return schema.validate(item)
+}
 
 
 function validateItem(item) {
@@ -365,3 +379,4 @@ exports.Item = Item;
 exports.validate = validateItem;
 exports.validateItemMeal = validateItemMeal
 exports.validateItemProduct = validateItemProduct
+exports.videoFileSchema = videoFileSchema

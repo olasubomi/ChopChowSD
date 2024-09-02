@@ -18,6 +18,21 @@ module.exports = {
     }
   },
 
+  videoTranscription: async (req, res) => {
+    try {
+      const item = await ItemService.processVideo(req, res);
+      if (item) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(item));
+      } else {
+        throw item;
+      }
+    } catch (error) {
+      return res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getAllItems: async (req, res) => {
     try {
       const items = await ItemService.getAllItems(
