@@ -113,16 +113,28 @@ const getAllStores = async (page, filter) => {
     }
 
 
+
     if (filter?.withPaginate) {
       delete filter.withPaginate
       let getPaginate = await paginate(page, query);
-      const allProducts = await Supplier.find(query || {})
+      let allProducts = await Supplier.find(query || {})
         .sort(sort)
         .limit(getPaginate.limit)
         .skip(getPaginate.skip)
         .populate("store_account_users"); //sugggested_meals_and_products
 
-
+      if (filter?.startsWith) {
+        const arr_1 = [];
+        const arr_2 = [];
+        allProducts = allProducts.map((entry) => {
+          if (entry?.store_name.toLowerCase().startsWith(filter?.startsWith.toLowerCase())) {
+            arr_1.push(entry)
+          } else {
+            arr_2.push(entry)
+          }
+        });
+        allProducts = [...arr_1, ...arr_2]
+      }
       return {
         products: allProducts,
         count: getPaginate.docCount,
