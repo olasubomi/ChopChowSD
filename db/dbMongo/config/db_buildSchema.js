@@ -839,7 +839,11 @@ exports.blog = mongoose.model(
       body_content_text: { type: String, required: true },
       word_count: { type: String, required: true },
       comments: { type: Array, default: [] },
-      author: { type: mongoose.Types.ObjectId, ref: "User" }
+      author: { type: mongoose.Types.ObjectId, ref: "User" },
+      category: {
+        type: String,
+        enum: ["MEAL", "INGREDIENTS", "UTENSILS", "KITCHEN TIPS"]
+      }
     },
     {
       timestamps: true
@@ -872,7 +876,8 @@ exports.validateBlog = (payload) => {
     body_content_text: Joi.string().required(),
     word_count: Joi.string().required(),
     status: Joi.string().optional(),
-    featured_image: Joi.string().required()
+    featured_image: Joi.string().required(),
+    category: Joi.string().required()
   });
 
   return schema.validate(payload);
