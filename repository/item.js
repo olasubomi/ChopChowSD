@@ -65,6 +65,19 @@ const getItems = async (page, filter) => {
       .skip(getPaginate.skip)
       .populate('item_categories item_description')
       .populate('store_available')
+
+    if (filter?.startsWith) {
+      const arr_1 = [];
+      const arr_2 = [];
+      itemResponse = itemResponse.map((entry) => {
+        if (entry?.item_name.toLowerCase().startsWith(filter?.startsWith.toLowerCase())) {
+          arr_1.push(entry)
+        } else {
+          arr_2.push(entry)
+        }
+      });
+      itemResponse = [...arr_1, ...arr_2]
+    }
   } else {
     await Item
       .find(query)
