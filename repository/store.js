@@ -3,6 +3,7 @@ const { Item } = require("../model/item");
 const moment = require('moment');
 const { createUser } = require("./user");
 const { createUserEmail } = require("../utils/mailer/nodemailer");
+const { Comment } = require("../model/comment");
 
 
 const createStore = async (payload) => {
@@ -151,6 +152,71 @@ const getAllStores = async (page, filter) => {
     };
   }
 };
+
+const getTopSuppliers = async () => {
+  try {
+    let allComments = await Comment.aggregate([
+      { $sort: { createdAt: 1, up_votes: 1 } },
+      // { $limit: 10 },
+      { $group: { _id: "$item" } },
+      { $project: { item: "$_id", _id: 0 } }
+    ]);
+
+
+    allComments = allComments.map((entry) => entry.item);
+    let supplier = await Item.find({
+      _id: { $in: allComments },
+    })
+      .populate("user")
+      .select("user")
+      .limit(10)
+    console.log(supplier, 'suppliersupplier')
+    return supplier
+
+  } catch (error) {
+    throw {
+      error: error,
+      messsage: error.message || "Get all stores operation failed",
+      code: error.code || 500,
+    };
+  }
+}
+
+const allSupplier = async (page, query) => {
+  try {
+    const limit = parseInt(query.limit) || 10;
+    let skip = parseInt(page) === 1 ? 0 : limit * page;
+    delete query.limit;
+    let docCount = await Item.distinct("user", { ...query, user: { $ne: null } });
+    docCount = docCount.filter((entry) => entry !== null); if (docCount < skip) {
+      skip = (page - 1) * limit;
+    }
+    let allSupplier = await Item.aggregate([
+      { $match: { ...query, user: { $ne: null } } },
+      { $group: { _id: "$user" } },
+      { $skip: skip },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "user"
+        }
+      },
+      { $unwind: "$user" },
+      { $project: { user: 1 } }
+    ]);
+    allSupplier = allSupplier.filter((entry) => !Object.is(entry.user, null))
+    return allSupplier
+  } catch (error) {
+    throw {
+      error: error,
+      messsage: error.message || "Get all stores operation failed",
+      code: error.code || 500,
+    };
+  }
+}
 
 const getAllStoresForUser = async (filter) => {
   try {
@@ -408,5 +474,7 @@ module.exports = {
   getAllStoresForUser,
   checkStoreAvailability,
   addUserToStoreAdmin,
-  removeUserFromStore
+  removeUserFromStore,
+  allSupplier,
+  getTopSuppliers
 };

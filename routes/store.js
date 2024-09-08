@@ -14,6 +14,8 @@ router.post(
 );
 
 router.get("/getstore/:storeId", StoreController.getStore);
+router.get("/all-supplier/:page", StoreController.allSupplier);
+router.get("/top-supplier", StoreController.topSupplier);
 router.get("/getallstores/:page", StoreController.getStores); // sort by location/rating
 router.get("/store/:name", StoreController.queryStore);
 router.post("/list/:address", StoreController.queryStoreByAddress);
