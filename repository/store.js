@@ -164,14 +164,15 @@ const getTopSuppliers = async () => {
 
 
     allComments = allComments.map((entry) => entry.item);
-    let supplier = await Item.find({
+    let supplier = await Item.distinct("user", {
       _id: { $in: allComments },
     })
-      .populate("user")
-      .select("user")
-      .limit(10)
-    console.log(supplier, 'suppliersupplier')
-    return supplier
+    supplier = supplier.map((entry) => entry._id);
+    console.log(supplier, 'top suppliers')
+    const data = await User.find({
+      _id: { $in: supplier },
+    }).limit(10)
+    return data
 
   } catch (error) {
     throw {
