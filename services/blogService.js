@@ -80,11 +80,15 @@ class BlogService {
             if (query?.title) {
                 query.title = { $regex: query.title, $options: "i" }
             }
+
             const page = await this.paginate(query?.page || 1, query)
             for (let entry in query) {
                 if (entry !== 'title') {
                     delete query[entry]
                 }
+            }
+            if (query_?.status) {
+                query.status = query_.status
             }
             const response = await blog.find(query).skip(page.skip).limit(page.limit).populate("author")
             return {
