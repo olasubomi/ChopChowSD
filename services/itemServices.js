@@ -15,6 +15,7 @@ const {
   filterItem,
   getItemsForAUser,
   updateItem,
+  filterStoresByUsername,
 } = require("../repository/item");
 const fs = require('fs')
 const OpenAI = require('openai');
@@ -663,6 +664,14 @@ class ItemService {
   static async getAllStoreItems(filter, res) {
     try {
       return await getStoreItems(filter);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async getStoresByUsername(name) {
+    try {
+      return await filterStoresByUsername(name);
     } catch (error) {
       console.log(error);
     }

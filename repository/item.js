@@ -53,7 +53,7 @@ const getItems = async (page, filter) => {
   }
 
   let getPaginate = await paginate(page, query);
-  console.log(sort, 'sortt')
+
   const withPaginate = filter.hasOwnProperty('withPaginage') ? filter.withPaginate === 'false' ? false : true : true
   delete filter.withPaginate
   let itemResponse = [];
@@ -79,6 +79,51 @@ const getStoreItems = async (filter) => {
     console.log(error);
   }
 };
+
+const filterStoresByUsername = async (name) => {
+  try {
+    const items = await Item.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "userDetails"
+        }
+      },
+      {
+        $unwind: "$userDetails"
+      },
+      {
+        $match: {
+          $or: [
+            { "userDetails.first_name": { $regex: name, $options: "i" } },
+            { "userDetails.last_name": { $regex: name, $options: "i" } }
+          ]
+        }
+      }
+    ])
+
+    let userIds = items.map((entry) => entry.user.toString());
+
+    let uniqueUserIds = [];
+
+    for (let id of userIds) {
+      if (!uniqueUserIds.includes(id)) {
+        uniqueUserIds.push(id);
+      }
+    }
+
+    return await User.find({
+      _id: {
+        $in: uniqueUserIds
+      }
+    }).select("first_name last_name")
+
+  } catch (e) {
+    console.log(e)
+  }
+}
 
 const getOneUserItem = async (filter) => {
   console.log('user from backend')
@@ -323,5 +368,6 @@ module.exports = {
   updateItem,
   filterItem,
   getSimilarItem,
-  getItemsForAUser
+  getItemsForAUser,
+  filterStoresByUsername
 };
