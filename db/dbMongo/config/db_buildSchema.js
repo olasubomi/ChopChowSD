@@ -11,20 +11,17 @@ const userSchema = new Schema(
 
     last_name: { type: String, required: true },
 
-    user_type: { type: String, default: "customer", enum: ['supplier', 'customer', 'admin', 'driver'] },
+    // user_type: { type: String, default: "customer", enum: ['supplier', 'customer', 'admin', 'driver'] },
 
-    // user_type: {
-    //   type: Array, default: ['customer'],
-    //   // enum: ['supplier', 'customer', 'admin', 'driver'] 
-    // },
+    user_type: {
+      type: Array, default: ['customer', 'driver'],
+    },
 
     profile_picture: { type: String },
 
 
 
     sub_app_admin: { type: Boolean, default: false },
-
-    hasSupplierAffiliation: { type: Boolean, default: false },
 
     sub_store_admin: { type: Boolean, default: false },
 

@@ -8,14 +8,17 @@ const { Comment } = require("../model/comment");
 
 const createStore = async (payload) => {
   try {
+    const user = await User.findById(payload?.store_owner || payload?.store_admin)
     if (payload?.store_owner) {
       payload.store_admins = [payload?.store_owner]
-      await User.findByIdAndUpdate({ _id: payload?.store_owner }, { hasSupplierAffiliation: true })
+      user.user_type = ["customer", "supplier", "driver"]
+
     } else if (payload?.store_admin) {
-      await User.findByIdAndUpdate({ _id: payload?.store_admin }, { sub_store_admin: true })
+      user.user_type = ["customer", "supplier", "driver"]
+      user.sub_store_admin = true
       payload.store_sub_admins = [payload.store_admin]
     }
-
+    await user.save()
     return await Supplier.create(payload);
   } catch (error) {
     console.log({ error });

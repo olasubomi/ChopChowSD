@@ -10,7 +10,7 @@ module.exports = {
 
       const store = await StoreService.createStore(req.body, req.files);
       const userId = req.user._id.toString();
-      const user = await UserService.updateUserProfile({ _id: userId }, { user_type: "supplier" })
+      // const user = await UserService.updateUserProfile({ _id: userId }, { user_type: "supplier" })
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {
