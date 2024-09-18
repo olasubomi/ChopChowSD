@@ -87,6 +87,24 @@ module.exports = {
         .json(new ErrorResponse(error));
     }
   },
+  filterUserItemByName: async (req, res) => {
+    try {
+      const storeItems = await ItemService.getStoresByUsername(
+        req.params.name || ""
+      );
+      if (storeItems) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(storeItems));
+      } else {
+        throw storeItems;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
 
   getUserItems: async (req, res) => {
     try {

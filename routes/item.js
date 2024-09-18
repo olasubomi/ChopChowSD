@@ -37,7 +37,7 @@ router.post(
 router.put('/transcription', upload_.single('video'), ItemController.videoTranscription)
 
 router.get("/store-items/:storeId", ItemController.getStoreItems);
-
+router.get("/filterstore/:name", ItemController.filterUserItemByName);
 router.get(
   "/user-items/:page",
   // verifyAuthentication,

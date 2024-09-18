@@ -833,7 +833,7 @@ exports.blog = mongoose.model(
       featured_image: { type: String, required: true },
       tags: { type: Array, default: [] },
       meta_description: { type: String },
-      status: { type: String, enum: ["PUBLISHED", 'DRAFT'], default: "PUBLISHED" },
+      status: { type: String, enum: ["PUBLIC", 'DRAFT'], default: "PUBLIC" },
       url_slug: { type: String },
       html_template: { type: String, required: true },
       body_content_text: { type: String, required: true },
