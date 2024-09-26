@@ -57,9 +57,22 @@ const updateCategory = async (filter, payload) => {
 
 const getAllCategories = async (page, filter) => {
   try {
-    let getPaginate = await paginate(page, filter);
+    let query = {}
+
+    let sort = {}
+    if (filter?.createdAt) {
+      sort.createdAt = Number(filter.createdAt)
+    }
+    if (filter?.category_name) {
+      query.category_name = { $regex: filter.category_name, $options: "i" }
+    }
+    if (filter.status !== 'all' && Boolean(filter.status)) {
+      query.status = filter.status
+    }
+    let getPaginate = await paginate(page, query);
     const allCategories = await categories
-      .find(filter || {})
+      .find(query || {})
+      .sort(sort)
       .limit(getPaginate.limit)
       .skip(getPaginate.skip);
     return {

@@ -396,7 +396,7 @@ class UserService {
 
       if (result) {
 
-        const user = await findUser({ email: result.email });
+        const user = await findUser({ email: req.body.email });
         if (!user) throw { message: "User not found" };
 
         await updateUser(
@@ -411,22 +411,22 @@ class UserService {
 
           }
         );
-        // const generatedToken = await generateAccessTokens({
-        //   id: user._id,
-        //   username: user.username,
-        //   email: user.email,
-        // });
+        const generatedToken = await generateAccessTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
 
-        // const generatedRefreshToken = await generateRefreshTokens({
-        //   id: user._id,
-        //   username: user.username,
-        //   email: user.email,
-        // });
+        const generatedRefreshToken = await generateRefreshTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
         return {
           success: true,
           message: "Authentication successful!",
-          // token: generatedToken,
-          // refreshToken: generatedRefreshToken,
+          token: generatedToken,
+          refreshToken: generatedRefreshToken,
           request: result,
           user: user,
         };
@@ -484,22 +484,22 @@ class UserService {
 
           }
         );
-        // const generatedToken = await generateAccessTokens({
-        //   id: user._id,
-        //   username: user.username,
-        //   email: user.email,
-        // });
+        const generatedToken = await generateAccessTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
 
-        // const generatedRefreshToken = await generateRefreshTokens({
-        //   id: user._id,
-        //   username: user.username,
-        //   email: user.email,
-        // });
+        const generatedRefreshToken = await generateRefreshTokens({
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        });
         return {
           success: true,
           message: "Authentication successful!",
-          // token: generatedToken,
-          // refreshToken: generatedRefreshToken,
+          token: generatedToken,
+          refreshToken: generatedRefreshToken,
           user: user,
         };
       }
@@ -564,25 +564,25 @@ module.exports = UserService;
 
 
 
-  // static async forgotPassword(payload) {
-  //   try {
-  //     const { email } = payload;
-  //     // Check username as well when testing forgot password
-  //     const userExists = await findUser({ email });
-  //     if (!userExists) {
-  //       throw { code: 401, message: "user does not exist" };
-  //     }
-  //     const generatePasswordToken = await generatePasswordResetToken({
-  //       email: userExists.email,
-  //       id: userExists._id,
-  //     });
-  //     let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}`;
-  //     forgotPasswordEmail(userExists.email, resetLink);
-  //     return {
-  //       msg: "Email with reset link has been sent to you.",
-  //       done: true,
-  //     };
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+// static async forgotPassword(payload) {
+//   try {
+//     const { email } = payload;
+//     // Check username as well when testing forgot password
+//     const userExists = await findUser({ email });
+//     if (!userExists) {
+//       throw { code: 401, message: "user does not exist" };
+//     }
+//     const generatePasswordToken = await generatePasswordResetToken({
+//       email: userExists.email,
+//       id: userExists._id,
+//     });
+//     let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}`;
+//     forgotPasswordEmail(userExists.email, resetLink);
+//     return {
+//       msg: "Email with reset link has been sent to you.",
+//       done: true,
+//     };
+//   } catch (error) {
+//     throw error;
+//   }
+// }

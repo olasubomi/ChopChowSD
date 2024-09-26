@@ -63,7 +63,7 @@
     "require": "./es5entry.cjs"
   },
   "scripts": {
-    "build": "npm run build ",
+    "build": "npm run build",
     "server": "NODE_ENV=production node server.js",
     "start": "node server.js",
     "dev": "nodemon server.js"

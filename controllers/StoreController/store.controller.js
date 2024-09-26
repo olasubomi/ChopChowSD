@@ -10,7 +10,7 @@ module.exports = {
 
       const store = await StoreService.createStore(req.body, req.files);
       const userId = req.user._id.toString();
-      const user = await UserService.updateUserProfile({ _id: userId }, { user_type: "supplier" })
+      // const user = await UserService.updateUserProfile({ _id: userId }, { user_type: "supplier" })
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {
@@ -109,6 +109,38 @@ module.exports = {
       }
       console.log('uqery', query)
       const store = await StoreService.getSinglStore(query, req);
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  allSupplier: async (req, res) => {
+    try {
+
+      const store = await StoreService.allSupplier(req.params?.page || 1, req.query || {});
+      if (store) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
+      } else {
+        throw store;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  topSupplier: async (req, res) => {
+    try {
+
+      const store = await StoreService.topSupplierByComment();
       if (store) {
         res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(store));
       } else {
