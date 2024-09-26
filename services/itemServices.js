@@ -26,12 +26,7 @@ const test_json = require('../test.json')
 const ai = require('../ai.json')
 const { createClient } = require("@deepgram/sdk");
 const { createMeal } = require('../repository/meal')
-const instagramDl = require("@sasmeee/igdl");
-// const youtubedl = require('youtube-dl-exec')
-const ffmpegStatic = require('ffmpeg-static');
-const ffmpeg = require('fluent-ffmpeg');
-const AdmZip = require("adm-zip")
-ffmpeg.setFfmpegPath(ffmpegStatic);
+
 
 const {
   createCategoriesFromCreateMeal
@@ -774,32 +769,34 @@ class ItemService {
         const { value, error } = videoFileSchema(req.file)
         buffer = req.file.buffer
       } else if (req.body.url) {
-        const { url } = req.body;
-        const videoURL = new URL(url);
+        // const { url } = req.body;
+        // const videoURL = new URL(url);
 
-        if (videoURL.hostname.includes('youtube.com') || videoURL.hostname.includes('youtu.be')) {
-          // if (!ytdl.validateURL(url)) {
-          //   return res.status(400).json({ error: 'Invalid YouTube URL' });
-          // }
+        // if (videoURL.hostname.includes('youtube.com') || videoURL.hostname.includes('youtu.be')) {
+        //   // if (!ytdl.validateURL(url)) {
+        //   //   return res.status(400).json({ error: 'Invalid YouTube URL' });
+        //   // }
 
-          // const promise = await youtubedl(url, { dumpSingleJson: true })
-          // const _url = Array.isArray(promise?.requested_formats) && promise.requested_formats.length >= 1 && promise.requested_formats[1]?.hasOwnProperty("url") && promise.requested_formats[1]?.url;
-          // if (!_url) throw new Error("Unable to extract video from url")
-          // await this.downloadVideo(_url, file_name);
-          // const videoFile = fs.readFileSync(filePath)
-          // buffer = videoFile
-          // fs.unlinkSync(filePath);
-          return res.status(400).json({ error: 'Unsupported video platform' });
+        //   // const promise = await youtubedl(url, { dumpSingleJson: true })
+        //   // const _url = Array.isArray(promise?.requested_formats) && promise.requested_formats.length >= 1 && promise.requested_formats[1]?.hasOwnProperty("url") && promise.requested_formats[1]?.url;
+        //   // if (!_url) throw new Error("Unable to extract video from url")
+        //   // await this.downloadVideo(_url, file_name);
+        //   // const videoFile = fs.readFileSync(filePath)
+        //   // buffer = videoFile
+        //   // fs.unlinkSync(filePath);
+        //   return res.status(400).json({ error: 'Unsupported video platform' });
 
-        } else if (videoURL.hostname.includes('instagram.com')) {
-          const dataList = await instagramDl(url);
-          await this.downloadVideo(dataList[0]?.download_link, file_name);
-          const videoFile = fs.readFileSync(filePath)
-          buffer = videoFile
-          // fs.unlinkSync(filePath);
+        // } else if (videoURL.hostname.includes('instagram.com')) {
+        //   const dataList = await instagramDl(url);
+        //   await this.downloadVideo(dataList[0]?.download_link, file_name);
+        //   const videoFile = fs.readFileSync(filePath)
+        //   buffer = videoFile
+        //   // fs.unlinkSync(filePath);
 
 
-        } else {
+
+
+        {
           return res.status(400).json({ error: 'Unsupported video platform' });
         }
       }
