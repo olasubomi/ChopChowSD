@@ -63,7 +63,7 @@ const getItems = async (page, filter) => {
       .sort(sort)
       .limit(getPaginate.limit)
       .skip(getPaginate.skip)
-      .populate('item_categories item_description')
+      .populate('item_categories item_description user')
       .populate('store_available')
 
     if (filter?.startsWith) {
@@ -139,7 +139,7 @@ const filterStoresByUsername = async (name) => {
 }
 
 const getOneUserItem = async (filter) => {
-  console.log('user from backend')
+  console.log('user from backend', filter)
   try {
     return await Item.find(filter)
       .populate('item_description item_categories store_available');
