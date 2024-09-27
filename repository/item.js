@@ -131,7 +131,7 @@ const filterStoresByUsername = async (name) => {
       _id: {
         $in: uniqueUserIds
       }
-    }).select("first_name last_name")
+    }).select("first_name last_name username")
 
   } catch (e) {
     console.log(e)
