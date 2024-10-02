@@ -4,8 +4,10 @@ const { Item } = require("../model/item");
 exports.createInventory = async (payload) => {
   console.log(payload, 'pay')
   try {
+    payload.storeId = Array.isArray(payload.storeId) ? payload.storeId : [payload.storeId];
+
     const checkExist = await Inventory.findOne({
-      storeId: payload?.storeId,
+      storeId: { $in: payload?.storeId },
       item: payload?.item,
       item_type: payload?.item_type,
     });
