@@ -143,6 +143,7 @@ module.exports = {
       const categoryItems = await ItemService.getOneItem(
         {
           item_name: req.params.name,
+          ...req.query
         },
         res
       );
