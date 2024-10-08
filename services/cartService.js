@@ -13,20 +13,7 @@ class CartService {
         try {
 
             console.log("cart payload", payload)
-            //validate input data with joi
 
-            //var item;
-            //const validate = validateCart(payload);
-            //
-
-
-            // if (validate.error) {
-            //     throw {
-            //         message: validate.error.details[0].message,
-
-            //         path: validate.error.details[0].path[0],
-            //     };
-            // }
             const userId = new ObjectId(payload.user);
             const itemId = new ObjectId(payload.item);
             const userExist = await findUser({ _id: userId });

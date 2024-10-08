@@ -166,11 +166,10 @@ class UserService {
           throw { message: "Invalid user credentials" };
         }
       }
+      // if (userExist && !userExist.isVerified && payload?.withAuth) {
 
-      if (userExist && !userExist.isVerified && payload?.withAuth) {
-        throw { message: "User is not verified" };
-      }
-
+      //   throw { message: "User does not exist" };
+      // }
       const generatedToken = await generateAccessTokens({
         id: userExist._id,
         username: userExist.username,
