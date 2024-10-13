@@ -19,7 +19,10 @@ const userSchema = new Schema(
 
     profile_picture: { type: String },
 
-
+    email_susbription: {
+      type: Boolean,
+      default: true
+    },
 
     sub_app_admin: { type: Boolean, default: false },
 
