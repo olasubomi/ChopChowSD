@@ -45,7 +45,9 @@ const TEMP_DIR = path.join(__dirname, 'temp');
 if (!fs.existsSync(TEMP_DIR)) {
   fs.mkdirSync(TEMP_DIR);
 }
-
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_KEY
+});
 class ItemService {
   static async createItem(payload, files = [], res, query = { action: 'create', _id: "" }) {
 
@@ -758,6 +760,48 @@ class ItemService {
     }
   }
 
+  static async extractProductImageContent(req, res) {
+    try {
+      console.log(req.file, "Reg")
+      if (!req.file) throw new Error("No image file attached")
+      const base64String = Buffer.from(req.file.buffer).toString('base64');
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "image_url",
+                "image_url": {
+                  "url": `data:image/png;base64,${base64String}`
+                }
+              },
+              {
+                "type": "text",
+                "text": "Extract the following from the image in JSON format. If not available, return empty values (e.g., \"\" for strings, 0 for numbers, [] for arrays):\nproduct_intro: The product introduction.\nsize: As { size: number, msr: string } (e.g., { size: 2, msr: \"kg\" }).\ningredients: As an array of { name: string, qty: number, msr: string }.\nnutritional_info: As an array of { name: string, qty: number, msr: string }.\ncategories: As an array of strings.\n product_name: The name of the product in the image as a string."
+              }
+            ]
+          },
+
+        ],
+        temperature: 1,
+        max_tokens: 2048,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+        response_format: {
+          "type": "json_object"
+        },
+      });
+      return response.choices[0].message.content
+    } catch (error) {
+      console.log(error)
+      throw new Error(error)
+    }
+  }
+
   static async processVideo(req, res) {
     try {
       console.log(req.file, req.body, 'payload')
@@ -852,9 +896,7 @@ class ItemService {
   };
 
   static async openAi(transcription) {
-    const openai = new OpenAI({
-      apiKey: process.env.OPENAI_KEY
-    });
+
 
     try {
       const response = await openai.chat.completions.create({
