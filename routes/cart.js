@@ -3,24 +3,16 @@ const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthe
 
 const router = require("express").Router();
 
-router.post(
-    "/addtocart", CartController.addToCart
-);
+router.post("/addtocart", CartController.addToCart);
 
-router.post(
-    "/removefromcart/", CartController.removeFromCart
-);
+router.post("/addMultipleItemsToCart", CartController.addMultipleToCart);
 
-router.post(
-    "/cart", CartController.getCart
-);
+router.post("/removefromcart/", CartController.removeFromCart);
 
-router.post(
-    "/deletefromcart/", CartController.deleteFromCart
-);
+router.post("/cart", CartController.getCart);
 
-router.post(
-    "/deletecart/", CartController.deleteCart
-);
+router.post("/deletefromcart/", CartController.deleteFromCart);
+
+router.post("/deletecart/", CartController.deleteCart);
 
 module.exports = router;
