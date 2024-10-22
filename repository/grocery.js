@@ -354,9 +354,18 @@ const getOneGrocery = async (id, user) => {
       .populate("user")
       .populate({
         path: "groceryItems",
-        populate: {
-          path: "item measurement itemData.measurement other",
-        },
+        populate: [
+          {
+            path: "item",
+            populate: {
+              path: "inventories",
+              select: "_id in_stock",
+            },
+          },
+          {
+            path: "measurement other",
+          },
+        ],
       });
   } catch (error) {
     throw error;
