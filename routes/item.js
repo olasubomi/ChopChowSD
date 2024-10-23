@@ -35,7 +35,7 @@ router.post(
 );
 
 router.put('/transcription', upload_.single('video'), ItemController.videoTranscription)
-router.put('/content-extraction', upload_.single('image'), ItemController.productImage)
+router.put('/content-extraction', upload_.array('image'), ItemController.productImage)
 router.get("/store-items/:storeId", ItemController.getStoreItems);
 router.get("/filterstore/:name", ItemController.filterUserItemByName);
 router.get(
