@@ -2,11 +2,12 @@ const { filter } = require("bluebird");
 const { Item } = require("../model/item");
 const { NotificationService } = require("./notificationService");
 const {
-  item_description,
   notifications,
   User,
   Supplier,
 } = require("../db/dbMongo/config/db_buildSchema");
+
+const { Inventory } = require("../db/dbMongo/config/inverntory");
 
 const createItem = async (payload) => {
   try {
@@ -94,6 +95,7 @@ const getItems = async (page, filter) => {
   } else {
     await Item.find(query);
   }
+
   return { items: itemResponse, count: getPaginate.docCount };
 };
 const getStoreItems = async (filter) => {
