@@ -1,17 +1,13 @@
 const { User } = require("../db/dbMongo/config/db_buildSchema");
 const { Cart } = require("../model/cart");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Order_items } = require("../model/orderItems");
-
 
 const addToCartList = async (payload) => {
     try {
-
         const storeId = new mongoose.Types.ObjectId(92929898);
         const itemId = new mongoose.Types.ObjectId(payload.item);
         let cart;
-        console.log("line 13 cart repo", itemId)
-        console.log("line 13 cart repo", payload.item)
 
         if (payload.item_type == "" || payload.item_type == null) {
             let order_items = new Order_items({
@@ -21,11 +17,9 @@ const addToCartList = async (payload) => {
                 item_price: payload.item_price,
                 item_Name: payload.item_Name,
                 item_image: payload.item_image,
-                estimated_time_of_arrival: new Date()
-
+                estimated_time_of_arrival: new Date(),
             });
             cart = await order_items.save();
-            console.log("cart line 25 --cart repo", cart)
         } else {
             let order_items = new Order_items({
                 item: itemId,
@@ -35,31 +29,26 @@ const addToCartList = async (payload) => {
                 item_price: payload.item_price,
                 item_Name: payload.item_Name,
                 item_image: payload.item_image,
-                estimated_time_of_arrival: new Date()
-
+                estimated_time_of_arrival: new Date(),
             });
             cart = await order_items.save();
-            console.log("cart line 36 --cart repo", cart)
+            console.log("cart line 36 --cart repo", cart);
         }
         //saving cart list to mongoDb
 
         //console.log("order_items line 21 --cart repo", order_items)
 
-
-
         const cartlist = new Cart({
             user: payload.user,
-            cart_items: cart._id
-        })
+            cart_items: cart._id,
+        });
 
-        console.log("cartlist line 30 --cart repo", cartlist)
+        console.log("cartlist line 30 --cart repo", cartlist);
         return await cartlist.save();
-
     } catch (error) {
         console.log({ error });
     }
 };
-
 
 // async function addToCartList(payload) {
 //     const itemObjectId = new mongoose.Types.ObjectId(payload.itemId);
@@ -103,15 +92,15 @@ const addToCartList = async (payload) => {
 
 const findO = async () => {
     return await Order_items.find();
-}
+};
 
 const findCartUser = async (filter) => {
-    return await Cart.find(filter)
-}
+    return await Cart.find(filter);
+};
 
 const findOrderList = async (filter) => {
-    return await Order_items.findOne(filter)//.populate('store');
-}
+    return await Order_items.findOne(filter); //.populate('store');
+};
 
 const updateItem = async (filter, data) => {
     try {
@@ -120,12 +109,12 @@ const updateItem = async (filter, data) => {
         console.log(error);
         throw error;
     }
-}
+};
 
 const deleteCartItem = async (id) => {
     try {
         //order_items
-        await Order_items.deleteOne({ _id: id })
+        await Order_items.deleteOne({ _id: id });
         return await Cart.deleteOne({ cart_items: id });
     } catch (error) {
         console.log(error);
@@ -135,8 +124,8 @@ const deleteCartItem = async (id) => {
 
 const deleteCart = async (id) => {
     try {
-        let cartItems = await Cart.find({ user: id })
-        cartItems.forEach(element => {
+        let cartItems = await Cart.find({ user: id });
+        cartItems.forEach((element) => {
             Order_items.deleteOne({ _id: element.cart_items });
         });
         return await Cart.deleteMany({ user: id });
@@ -169,20 +158,21 @@ const GetAllCartItems = async (id) => {
         // Use map to create an array of promises
         let orderPromises = cartItems.map(async (element) => {
             // Find the order item and populate the store field
-            let orderlistElement = await Order_items.findById(element.cart_items).populate('store');
+            let orderlistElement = await Order_items.findById(
+                element.cart_items
+            ).populate("store");
             return orderlistElement;
         });
 
         // Wait for all promises to resolve
         arrayOfOrder = await Promise.all(orderPromises);
-        console.log("line 174 cart array", arrayOfOrder)
+        console.log("line 174 cart array", arrayOfOrder);
         // Return the array of order items
         return arrayOfOrder;
     } catch (error) {
         console.log(error);
         throw error;
     }
-
 };
 
 module.exports = {
@@ -193,7 +183,5 @@ module.exports = {
     deleteCart,
     findOrderList,
     GetAllCartItems,
-    findO
-
-
-}
+    findO,
+};
