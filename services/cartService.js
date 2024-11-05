@@ -53,7 +53,6 @@ class CartService {
                 };
             }
         } catch (error) {
-            console.log("caught");
             throw error;
         }
     }
@@ -121,7 +120,6 @@ class CartService {
 
     static async removeFromCart(payload) {
         try {
-            //const itemId = new ObjectId(payload.item);
             const itemId = payload.item;
             const userId = new ObjectId(payload.user._id);
             const userExist = await findUser({ _id: userId });
