@@ -73,7 +73,7 @@ const getItems = async (page, filter) => {
       .populate("store_available")
       .populate({
         path: "inventories",
-        select: "_id in_stock",
+        select: "_id in_stock storeId meal_price",
       });
 
     if (filter?.startsWith) {
@@ -153,7 +153,7 @@ const filterStoresByUsername = async (name) => {
 const getOneUserItem = async (filter) => {
   try {
     return await Item.find(filter).populate(
-      "item_description item_categories store_available"
+      "item_description item_categories store_available inventories"
     );
   } catch (error) {
     console.log(error);
@@ -183,7 +183,7 @@ const filterItem = async (filter, query = {}) => {
           ...query,
         },
       ],
-    }).populate("store_available");
+    }).populate("store_available inventories");
   } catch (error) {
     console.log(error);
   }
@@ -198,7 +198,7 @@ const getUserItems = async (data) => {
       user: user,
       ...filterBy,
     })
-      .populate("item_categories item_description user")
+      .populate("item_categories item_description user inventories")
       .skip(getPaginate.skip)
       .limit(getPaginate.limit);
     return { items: itemResponse, count: getPaginate.docCount };
