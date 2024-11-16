@@ -19,6 +19,11 @@ const userSchema = new Schema(
 
     profile_picture: { type: String },
 
+    newsletter_subscription: {
+      type: Boolean,
+      default: true
+    },
+
     email_susbription: {
       type: Boolean,
       default: true

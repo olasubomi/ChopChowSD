@@ -1,6 +1,9 @@
 "use strict";
 const nodemailer = require("nodemailer");
 require("dotenv").config();
+const ejs = require("ejs");
+const fe = require("fs")
+
 
 let { EMAIL_USER: user, EMAIL_PASSWORD: pass } = process.env;
 let transporter = nodemailer.createTransport({
@@ -53,6 +56,34 @@ function signUpEmail(generatedToken, newUser) {
     `
   });
 
+}
+
+async function sendNewLetterSubscriptionEmail({ email, name, blogs }) {
+  try {
+    ejs.renderFile(__dirname + "/templates/email-subscription.ejs", { name, blogs }, function (err, data) {
+      if (err) {
+        console.log(err);
+      } else {
+        const mailOptions = {
+          from: `info.bankpassport@gmail.com`,
+          to: email,
+          subject: 'ChopChow Newsletter',
+          html: `<h1>Hello</h1>`
+        };
+       
+        transporter.sendMail(mailOptions, function (err, info) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log('Message sent: ' + info.response);
+          }
+        });
+      }
+
+    });
+  } catch (e) {
+    console.log(e, "Error")
+  }
 }
 
 function createUserEmail(newUser) {
@@ -115,4 +146,4 @@ function forgotPasswordEmail(toEmail, resetLink) {
 
 
 //signUpEmail().catch(console.error);
-module.exports = { signUpEmail, forgotPasswordEmail, passwordResetEmail, createUserEmail };
+module.exports = { signUpEmail, forgotPasswordEmail, passwordResetEmail, createUserEmail, sendNewLetterSubscriptionEmail };
