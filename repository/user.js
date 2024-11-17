@@ -30,7 +30,7 @@ const createUser = async (payload) => {
 
 const updateUser = async (filter, data) => {
   try {
-    return await User.findOneAndUpdate(filter, data, { new: true });
+    return await User.findOneAndUpdate(filter, data);
   } catch (error) {
     console.log(error);
     throw error;
