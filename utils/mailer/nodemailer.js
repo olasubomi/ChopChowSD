@@ -65,12 +65,12 @@ async function sendNewLetterSubscriptionEmail({ email, name, blogs }) {
         console.log(err);
       } else {
         const mailOptions = {
-          from: `info.bankpassport@gmail.com`,
+          from: user,
           to: email,
           subject: 'ChopChow Newsletter',
-          html: `<h1>Hello</h1>`
+          html: data
         };
-       
+
         transporter.sendMail(mailOptions, function (err, info) {
           if (err) {
             console.log(err);
