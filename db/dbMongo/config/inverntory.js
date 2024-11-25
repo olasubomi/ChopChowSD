@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 exports.Inventory = mongoose.model(
   "Inventory",
   new mongoose.Schema(
@@ -19,11 +18,13 @@ exports.Inventory = mongoose.model(
 
       prepackagedMeal: { type: Boolean, default: false },
 
-      storeId: {
-        type: mongoose.Types.ObjectId,
-        ref: "Supplier",
-        required: true,
-      },
+      storeId: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Supplier",
+          required: true,
+        }
+      ],
 
       quantityInStock: { type: String },
 
