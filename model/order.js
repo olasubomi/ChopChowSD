@@ -1,4 +1,3 @@
-
 const Joi = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
@@ -25,7 +24,6 @@ exports.Order = mongoose.model(
 
             customer_id: { type: String }, //yet to validate
 
-
             pickup_details: { type: String }, //yet to validate
 
             intermediaries_details: { type: String }, //need more clarifiaction on these
@@ -39,19 +37,24 @@ exports.Order = mongoose.model(
                 ref: "User",
             },
 
+            total: {
+                type: Number,
+                required: true,
+                min: [0, 'Total must be a positive value'],
+            },
+
             order_group: {
                 type: mongoose.Types.ObjectId,
                 ref: "OrderGroup",
             },
 
             pickup_or_delivery: {
-
-                type: String //Need More Clarity
+                type: String, //Need More Clarity
             },
 
             Notification_status: {
                 type: mongoose.Types.ObjectId,
-                ref: "Notification_status",  ///need more clarity
+                ref: "Notification_status", ///need more clarity
             },
             status: {
                 type: String,
@@ -67,6 +70,12 @@ exports.Order = mongoose.model(
             driver_confirmation_picture: { type: String },
 
             customer_confirmation_picture: { type: String },
+
+            subtotal: {
+                type: Number,
+                required: true,
+                min: [0, "Subtotal must be a positive value"],
+            },
         },
 
         { timestamps: true }

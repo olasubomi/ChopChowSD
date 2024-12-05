@@ -1,7 +1,19 @@
-const { getOneGroceryList } = require("../controllers/GroceryController/grocery.controller");
-const { validateItemOther, descriptions } = require("../db/dbMongo/config/db_buildSchema");
-const { validate, validateItemToBeAddedToAGroceryList, vaidateJsonDataToBeAddedToGroceryList } = require("../model/grocery");
-const { validateGroceryList, validateGroceryListUpdate } = require("../model/grocery-list");
+const {
+  getOneGroceryList,
+} = require("../controllers/GroceryController/grocery.controller");
+const {
+  validateItemOther,
+  descriptions,
+} = require("../db/dbMongo/config/db_buildSchema");
+const {
+  validate,
+  validateItemToBeAddedToAGroceryList,
+  vaidateJsonDataToBeAddedToGroceryList,
+} = require("../model/grocery");
+const {
+  validateGroceryList,
+  validateGroceryListUpdate,
+} = require("../model/grocery-list");
 const { Item } = require("../model/item");
 
 const {
@@ -204,21 +216,23 @@ class GroceryService {
     }
   }
 
-
   static async AddNewGroceryList(payload, req, res) {
     try {
       payload.user = req.decoded.id;
       const { error } = validateGroceryList(payload);
       if (error) return res.status(400).send(error.details[0].message);
 
-      const groceryList = await checkIfGroceryListExist({ listName: payload.listName, user: req?.decoded?.id })
+      const groceryList = await checkIfGroceryListExist({
+        listName: payload.listName,
+        user: req?.decoded?.id,
+      });
       if (!groceryList) {
         return await createNewGroceryList(payload);
       } else {
-        throw "Create grocery list operation failed"
+        throw "Create grocery list operation failed";
       }
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -226,16 +240,18 @@ class GroceryService {
     try {
       //validate request body
       const { error, value } = validateItemToBeAddedToAGroceryList(payload);
-      console.log(error, value, 'james')
+      console.log(error, value, "james");
       if (error) return res.status(400).send(error.details[0].message);
 
       // const value = req.body;
       // console.log('value', value)
 
       //check if groceryList exist
-      const checkExist = await checkIfGroceryListExist({ listName: value.groceryList.listName, user: value.userId })
+      const checkExist = await checkIfGroceryListExist({
+        listName: value.groceryList.listName,
+        user: value.userId,
+      });
       if (checkExist) {
-
         //this function checks if an item has been added to a grocery list, if not it adds
 
         return await addAnItemToAGroceryList({
@@ -243,168 +259,166 @@ class GroceryService {
           itemId: value.groceryList.groceryItems.itemId,
           quantity: value.groceryList.groceryItems.quantity,
           measurement: value.groceryList.groceryItems.measurement,
-          userId: value.userId
-        })
+          userId: value.userId,
+        });
       }
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   static async AddNewJsonItemToGroceryList(payload, res) {
     try {
       const { error, value } = vaidateJsonDataToBeAddedToGroceryList(payload);
-      console.log(error, value, 'james')
+      console.log(error, value, "james");
       if (error) return res.status(400).send(error.details[0].message);
 
-      const checkExist = await checkIfGroceryListExist({ listName: value.listName })
+      const checkExist = await checkIfGroceryListExist({
+        listName: value.listName,
+      });
       if (checkExist) {
-        return await addJsonDataToGroceryList({ ...value })
+        return await addJsonDataToGroceryList({ ...value });
       }
       // con
     } catch (e) {
-      throw e
+      throw e;
     }
   }
-
 
   static async AddNewMeasurementToGroceryList(payload, res) {
     try {
       const { error, value } = vaidateJsonDataToBeAddedToGroceryList(payload);
       if (error) return res.status(400).send(error.details[0].message);
 
-      const checkExist = await checkIfGroceryListExist({ listName: value.listName })
+      const checkExist = await checkIfGroceryListExist({
+        listName: value.listName,
+      });
       if (checkExist) {
         const measurement = await createNewMeasurment({
-          measurement_name: value.measurement
-        })
-        return await addJsonDataToGroceryList({ ...value, measurement: measurement?.measurement?._id }, value.measurement)
-
+          measurement_name: value.measurement,
+        });
+        return await addJsonDataToGroceryList(
+          { ...value, measurement: measurement?.measurement?._id },
+          value.measurement
+        );
       }
       // con
     } catch (e) {
-      throw e
+      throw e;
     }
   }
 
   static async AddNewOtherToGroceryList(payload, res) {
     try {
-
       const { error, value } = validateItemOther(payload);
       if (error) return res.status(400).send(error.details[0].message);
 
-      const checkExist = await checkIfGroceryListExist({ listName: value.listName })
+      const checkExist = await checkIfGroceryListExist({
+        listName: value.listName,
+      });
       if (checkExist) {
         return await addOtherGroceryList({
           listName: value.listName,
           item_name: value.item_name,
-          item_image: payload.item_image
-        })
-
+          item_image: payload.item_image,
+        });
       }
       // con
     } catch (e) {
-      throw e
+      throw e;
     }
   }
 
   static async getAllGroceryList(req) {
     const id = req.query?.id || req.decoded.id;
     try {
-      console.log('user id', id)
-      return await getAllGroceryList(id)
+      return await getAllGroceryList(id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
-
-
-
-
 
   static async getOneGroceryList(id, user) {
     try {
       const groceryList = await getOneGrocery(id, user);
 
-      const similar = groceryList.groceryItems.map(async curr => {
-        const arr = curr?.item?.ingredeints_in_item || []
-        const ingredeints_in_item_names = arr.map(element => element.item_name);
-        console.log('ingredeints_in_item_names', ingredeints_in_item_names)
-        const resp = await getSimilarItem(ingredeints_in_item_names)
-        return resp
-      })
+      const similar = groceryList.groceryItems.map(async (curr) => {
+        const arr = curr?.item?.ingredeints_in_item || [];
+        const ingredeints_in_item_names = arr.map(
+          (element) => element.item_name
+        );
+        console.log("ingredeints_in_item_names", ingredeints_in_item_names);
+        const resp = await getSimilarItem(ingredeints_in_item_names);
+        return resp;
+      });
 
-      let promise = await Promise.all(similar)
-      promise = promise.filter(element => element.length)
+      let promise = await Promise.all(similar);
+      promise = promise.filter((element) => element.length);
 
       return {
         similar: promise || [],
-        groceryList
-      }
-
+        groceryList,
+      };
     } catch (error) {
-      throw error
+      throw error;
     }
   }
-
 
   static async removeAnItemFromGrocery(payload) {
     try {
-
       //check if grocery list exist
-      const checkExist = await checkIfGroceryListExist({ _id: payload.groceryListId });
+      const checkExist = await checkIfGroceryListExist({
+        _id: payload.groceryListId,
+      });
       if (checkExist) {
         //check if the item exist on the grocery list
-        const doesExist = checkExist.groceryItems.some(element => element._id.toString() === payload.groceryItemId.toString())
+        const doesExist = checkExist.groceryItems.some(
+          (element) =>
+            element._id.toString() === payload.groceryItemId.toString()
+        );
         if (doesExist) {
-          return await removeAnItemFromGroceryList(payload)
+          return await removeAnItemFromGroceryList(payload);
         } else {
-          throw 'Item does not exist on the grocery list'
+          throw "Item does not exist on the grocery list";
         }
       }
-
     } catch (error) {
-      throw error
+      throw error;
     }
   }
-
 
   static async updateGroceryList(id, payload) {
     try {
       //validate request body;
       const { error, value } = validateGroceryListUpdate({
         ...payload,
-        description: payload.description || ''
+        description: payload.description || "",
       });
-      console.log(error, value, 'valie')
-      if (error) throw `${error.details[0].message}`
+      console.log(error, value, "valie");
+      if (error) throw `${error.details[0].message}`;
       const checkExist = await checkIfGroceryListExist({ _id: id });
       if (checkExist) {
-        return await updateGroceryDetails(id, value)
+        return await updateGroceryDetails(id, value);
       } else {
-        throw 'Grocery list does not exist'
+        throw "Grocery list does not exist";
       }
     } catch (error) {
-      throw error
+      throw error;
     }
   }
-
 
   static async deleteOneGroceryList(id) {
     try {
-
       const checkExist = await checkIfGroceryListExist({ _id: id });
       if (checkExist) {
-        return await deleteGroceryList(id)
+        return await deleteGroceryList(id);
       } else {
-        throw 'Grocery list does not exist'
+        throw "Grocery list does not exist";
       }
     } catch (error) {
-      throw error
+      throw error;
     }
   }
-
-
 }
 
 module.exports = GroceryService;

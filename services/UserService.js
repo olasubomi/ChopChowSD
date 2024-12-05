@@ -36,6 +36,8 @@ class UserService {
           path: validate.error.details[0].path[0],
         };
       }
+      payload.email = payload.email.toLowerCase();
+
       const userExist = await findUser({ email: payload.email });
 
 
@@ -146,17 +148,22 @@ class UserService {
 
   static async login(payload_) {
     try {
-
       const payload = {
         ...payload_,
-        withAuth: payload_.hasOwnProperty('withAuth') ? payload_.withAuth : true
-      }
-      const userExist = await findUser({ email: payload.email })
-      console.log("line 144", userExist)
-      console.log("line 144", payload)
+        withAuth: payload_.hasOwnProperty('withAuth') ? payload_.withAuth : true,
+      };
+
+      // Convert email to lowercase
+      payload.email = payload.email.toLowerCase();
+
+      const userExist = await findUser({ email: payload.email });
+      console.log("line 144", userExist);
+      console.log("line 144", payload);
+
       if (!userExist) {
         throw { message: "User does not exist" };
       }
+
       if (payload?.withAuth) {
         const validatePassword = await validatePassWord(
           payload.email,
@@ -166,10 +173,10 @@ class UserService {
           throw { message: "Invalid user credentials" };
         }
       }
-      if (userExist && !userExist.isVerified && payload?.withAuth) {
+      // if (userExist && !userExist.isVerified && payload?.withAuth) {
 
-        throw { message: "User does not exist" };
-      }
+      //   throw { message: "User does not exist" };
+      // }
       const generatedToken = await generateAccessTokens({
         id: userExist._id,
         username: userExist.username,
@@ -181,20 +188,21 @@ class UserService {
         username: userExist.username,
         email: userExist.email,
       });
+
       console.log({
         id: userExist._id,
         username: userExist.username,
         email: userExist.email,
         token: generatedToken,
+      }, 'refrehhhh');
 
-      }, 'refrehhhh')
       return {
         success: true,
         message: "Authentication successful!",
         token: generatedToken,
         refreshToken: generatedRefreshToken,
         user: userExist,
-        isVerified: userExist.isVerified
+        isVerified: userExist.isVerified,
       };
     } catch (error) {
       throw error;

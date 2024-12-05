@@ -121,6 +121,7 @@ module.exports = {
     }
   },
 
+
   allSupplier: async (req, res) => {
     try {
 

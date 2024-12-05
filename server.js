@@ -28,9 +28,10 @@ const categoryRoutes = require("./routes/category");
 const storeRoutes = require("./routes/store");
 const analyticsRoutes = require("./routes/analytics");
 const inventoryRoutes = require("./routes/inventory");
-const blogRoutes = require("./routes/blog")
-const commentRoutes = require("./routes/comment")
-const cartRoutes = require("./routes/cart")
+const blogRoutes = require("./routes/blog");
+const commentRoutes = require("./routes/comment");
+const cartRoutes = require("./routes/cart");
+const orderRoutes = require("./routes/order");
 const { getDescription } = require("./repository/description");
 
 //----------------------------------------------------------------------------------
@@ -46,11 +47,10 @@ const whitelist = [
   "https://cc-next-dev.vercel.app/",
   "https://chopchow-beeox2y92-chop-chow.vercel.app",
   "https://cc-next-oty3f0zz0-chop-chow.vercel.app",
-  "moz-extension://c228269d-fdaa-4b34-9ce8-2fe9e965a787"
+  "moz-extension://67f7d6b1-d477-4066-9982-dc276a9f3386",
 ];
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log({ origin });
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
@@ -66,13 +66,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Test route to throw an error
-app.get('/error-test', (req, res, next) => {
+app.get("/error-test", (req, res, next) => {
   const err = new Error("Test error!");
   next(err);
 });
 
 //***********************************************************************************
-
+app.use("/api/order", orderRoutes);
 app.use("/facebook", facebook);
 app.use("/api/user", userRoutes);
 app.use("/api/meals", mealRoutes);
