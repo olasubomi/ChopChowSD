@@ -14,11 +14,12 @@ const { signUpSchema, resetPasswordSchema } = require("../utils/validators");
 const { requestNumber, } = require("../utils/authentication/vonage/requestNumber");
 const { verifyNumber, } = require("../utils/authentication/vonage/verifyNumber");
 const { cancelNumberVerification, } = require("../utils/authentication/vonage/cancelNumberVerification");
-const { forgotPasswordEmail, signUpEmail, passwordResetEmail } = require("../utils/mailer/nodemailer");
+const { forgotPasswordEmail, signUpEmail, passwordResetEmail, sendNewLetterSubscriptionEmail, sendUserNewsLetterSubscription } = require("../utils/mailer/nodemailer");
 const { generateRefreshTokens } = require("../repository/user");
-const { User, notifications } = require("../db/dbMongo/config/db_buildSchema");
+const { User, notifications, blog } = require("../db/dbMongo/config/db_buildSchema");
 // const { nofication } = require("../controllers/UserController/userController");
 const bcrypt = require('bcryptjs');
+const { newsLetterSchema } = require("../utils/validators/userInputValidator");
 require('dotenv').config();
 
 class UserService {
@@ -59,6 +60,12 @@ class UserService {
       // if (!Object.is(payload?.email_notifications, false)) {
       //   await signUpEmail(generatedToken, newUser);
       // }
+      const blogs = await blog.find().sort({ createdAt: -1 }).limit(3).populate("author")
+      await sendNewLetterSubscriptionEmail({
+        name: `${newUser.first_name} ${newUser.last_name}`,
+        email: newUser.email,
+        blogs
+      })
 
       return {
         user: newUser,
@@ -225,6 +232,56 @@ class UserService {
     }
   }
 
+  static async subscribeToNewsletter(payload) {
+    try {
+
+      const validate = newsLetterSchema.validate(payload);
+
+      if (validate.error) {
+        throw {
+          message: validate.error.details[0].message,
+
+          path: validate.error.details[0].path[0],
+        };
+      }
+      const user = await findUser(payload);
+      if (user) {
+        if (user.newsletter_subscription) {
+          return "You are already subscribed to our newsletter"
+        } else {
+          return await updateUser(
+            { _id: user._id },
+            {
+              newsletter_subscription: true,
+            }
+          );
+        }
+      } else {
+        const password = Math.floor(Math.random() * 10000000000);
+        const newUser = await createUser({
+          email: payload.email,
+          first_name: "Unnamed",
+          last_name: "User",
+          user_type: "customer",
+          newsletter_subscription: true,
+          email_verified: false,
+          username: payload.email.split("@")[0],
+          password
+        });
+        const blogs = await blog.find().sort({ createdAt: -1 }).limit(3).populate("author")
+        await sendUserNewsLetterSubscription({
+          name: `${newUser.first_name} ${newUser.last_name}`,
+          email: newUser.email,
+          blogs,
+          password
+        })
+        return "Succcessfully subscribed to our newsletter"
+      }
+    } catch (error) {
+      console.log("Error: ", error)
+      throw error
+    }
+  }
 
   static async resetPassword(payload) {
     try {

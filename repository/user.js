@@ -34,15 +34,8 @@ const createUser = async (payload) => {
 const updateUser = async (filter, data) => {
   try {
     const response = await User.findOneAndUpdate(filter, data);
-    if (data?.newsletter_subscription) {
-      const blogs = await blog.find().sort({ createdAt: -1 }).limit(3).populate("author")
-      const user = await User.findById(filter._id)
-      await sendNewLetterSubscriptionEmail({
-        name: `${user.first_name} ${user.last_name}`,
-        email: user.email,
-        blogs
-      })
-    }
+
+    return response
   } catch (error) {
     console.log(error);
     throw error;
