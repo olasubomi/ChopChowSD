@@ -16,6 +16,10 @@ const loginSchema = Joi.object({
     password: Joi.string().required(),
 });
 
+const newsLetterSchema = Joi.object({
+    email: Joi.string().email().required(),
+});
+
 const resetPasswordSchema = Joi.object({
     token: Joi.string().required(),
     password1: Joi.string().required(),
@@ -26,4 +30,5 @@ module.exports = {
     signUpSchema,
     resetPasswordSchema,
     loginSchema,
+    newsLetterSchema
 };

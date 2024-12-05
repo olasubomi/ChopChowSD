@@ -71,15 +71,46 @@ async function sendNewLetterSubscriptionEmail({ email, name, blogs }) {
           html: data
         };
 
-        transporter.sendMail(mailOptions, function (err, info) {
+        return transporter.sendMail(mailOptions, function (err, info) {
           if (err) {
-            console.log(err);
+            console.log("Error: ", err);
+            throw new Error(err)
           } else {
             console.log('Message sent: ' + info.response);
+            return info
           }
         });
       }
+    });
+  } catch (e) {
+    console.log(e, "Error")
+  }
+}
 
+
+async function sendUserNewsLetterSubscription({ email, name, blogs, password }) {
+  try {
+    ejs.renderFile(__dirname + "/templates/news-letter-subscription.ejs", { name, blogs, password }, function (err, data) {
+      if (err) {
+        console.log(err);
+      } else {
+        const mailOptions = {
+          from: user,
+          to: email,
+          subject: 'ChopChow Newsletter',
+          html: data
+        };
+
+        return transporter.sendMail(mailOptions, function (err, info) {
+          if (err) {
+            console.log("Error: ", err);
+            throw new Error(err)
+          } else {
+            console.log('Message sent: ' + info.response);
+            return info
+          }
+        });
+      }
     });
   } catch (e) {
     console.log(e, "Error")
@@ -146,4 +177,4 @@ function forgotPasswordEmail(toEmail, resetLink) {
 
 
 //signUpEmail().catch(console.error);
-module.exports = { signUpEmail, forgotPasswordEmail, passwordResetEmail, createUserEmail, sendNewLetterSubscriptionEmail };
+module.exports = { signUpEmail, forgotPasswordEmail, passwordResetEmail, createUserEmail, sendNewLetterSubscriptionEmail, sendUserNewsLetterSubscription };
