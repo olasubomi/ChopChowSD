@@ -1,13 +1,14 @@
 const router = require("express").Router();
 const MealsController = require("../controllers/MealContoller/meal.controller");
 const { upload, transformArray } = require("../utils/middleware");
+const { uploadToCloudinary } = require('../utils/middleware/multer-s3-middleware.js');
 const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 
 //meal routes
 router.post(
   "/create",
   verifyAuthentication,
-  upload.any(),
+  uploadToCloudinary.any(),
   transformArray,
   // validatePayload("createMealSchema"),
   MealsController.createMeal
@@ -22,7 +23,7 @@ router.delete(
 router.post(
   "/update/:mealId",
   verifyAuthentication,
-  upload.any(),
+  uploadToCloudinary.any(),
   transformArray,
   MealsController.updateMeal
 );

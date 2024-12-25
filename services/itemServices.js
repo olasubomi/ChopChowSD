@@ -59,6 +59,8 @@ class ItemService {
       // files.item_images = [];
       console.log(payload, files)
 
+      // files.item_images = files.map((ele) => ele.fieldname === "item_images")
+
 
       if (payload.item_type === 'Meal') {
         //check if there are just just items in the payload, item_name and item_itye
@@ -77,8 +79,8 @@ class ItemService {
           console.log('item_images', files.item_images)
           if (files?.item_images?.length) {
             for (let i = 0; i < item_images.length; i++) {
-              payload.item_images.push(item_images[i].location)
-              payload[`itemImage${i}`] = item_images[i].location
+              payload.item_images.push(item_images[i].path)
+              payload[`itemImage${i}`] = item_images[i].path
             }
           }
 
@@ -127,12 +129,12 @@ class ItemService {
           if (Array.isArray(files?.item_images)) {
             for (let i = 0; i < item_images.length; i++) {
               payload.item_images = item.item_images
-              payload.item_images.push(item_images[i].location)
+              payload.item_images.push(item_images[i].path)
               if (item.item_images.length) {
-                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].location
+                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].path
 
               } else {
-                payload[`itemImage${i}`] = item_images[i].location
+                payload[`itemImage${i}`] = item_images[i].path
 
               }
             }
@@ -142,7 +144,7 @@ class ItemService {
           for (let i = 1; i < 6; i++) {
             if (files[`image_or_video_content_${i}`] !== undefined) {
               const image = files[`image_or_video_content_${i}`];
-              payload[`meal_image_or_video_content${i}`] = image[0].location
+              payload[`meal_image_or_video_content${i}`] = image[0].path
             }
           }
 
@@ -150,8 +152,8 @@ class ItemService {
 
           if (Array.isArray(files?.item_images)) {
             for (let i = 0; i < item_images.length; i++) {
-              payload.item_images.push(item_images[i].location)
-              payload[`itemImage${i}`] = item_images[i].location
+              payload.item_images.push(item_images[i].path)
+              payload[`itemImage${i}`] = item_images[i].path
             }
 
           }
@@ -159,7 +161,7 @@ class ItemService {
           for (let i = 1; i < 6; i++) {
             if (files[`image_or_video_content_${i}`] !== undefined) {
               const image = files[`image_or_video_content_${i}`];
-              payload[`meal_image_or_video_content${i}`] = image[0].location
+              payload[`meal_image_or_video_content${i}`] = image[0].path
             }
           }
         }
@@ -298,12 +300,12 @@ class ItemService {
           if (files?.item_images?.length) {
             for (let i = 0; i < files?.item_images.length; i++) {
               payload.item_images = item.item_images
-              payload.item_images.push(item_images[i].location)
+              payload.item_images.push(item_images[i].path)
               if (item.item_images.length) {
-                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].location
+                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].path
 
               } else {
-                payload[`itemImage${i}`] = item_images[i].location
+                payload[`itemImage${i}`] = item_images[i].path
 
               }
             }
@@ -312,8 +314,8 @@ class ItemService {
         } else {
           if (files?.item_images?.length) {
             for (let i = 0; i < files?.item_images.length; i++) {
-              payload.item_images.push(item_images[i].location)
-              payload[`itemImage${i}`] = item_images[i].location
+              payload.item_images.push(item_images[i].path)
+              payload[`itemImage${i}`] = item_images[i].path
             }
           }
         }
@@ -468,8 +470,8 @@ class ItemService {
         let obj = {}
         if (files?.item_images?.length) {
           for (let i = 0; i < item_images.length; i++) {
-            obj.item_images.push(item_images[i].location)
-            obj[`itemImage${i}`] = item_images[i].location
+            obj.item_images.push(item_images[i].path)
+            obj[`itemImage${i}`] = item_images[i].path
           }
           obj.item_images = files?.item_images
         }
@@ -508,7 +510,7 @@ class ItemService {
       // const instruction_images = files.instruction_images
 
       // item_images.map((file) => {
-      //   itemImages.push(file.location);
+      //   itemImages.push(file.path);
       // });
 
       // payload.item_images = itemImages;
@@ -580,37 +582,37 @@ class ItemService {
 
       //   if (files.image_or_video_content_1?.length) {
       //     files.image_or_video_content_1.map(files => {
-      //       payload.item_data.image_or_video_content_1 = files.location
+      //       payload.item_data.image_or_video_content_1 = files.path
       //     })
       //   }
 
       //   if (files.image_or_video_content_2?.length) {
       //     files.image_or_video_content_2.map(files => {
-      //       payload.item_data.image_or_video_content_2 = files.location
+      //       payload.item_data.image_or_video_content_2 = files.path
       //     })
       //   }
 
       //   if (files.image_or_video_content_3?.length) {
       //     files.image_or_video_content_3.map(files => {
-      //       payload.item_data.image_or_video_content_3 = files.location
+      //       payload.item_data.image_or_video_content_3 = files.path
       //     })
       //   }
 
       //   if (files.image_or_video_content_4?.length) {
       //     files.image_or_video_content_4.map(files => {
-      //       payload.item_data.image_or_video_content_4 = files.location
+      //       payload.item_data.image_or_video_content_4 = files.path
       //     })
       //   }
 
       //   if (files.image_or_video_content_5?.length) {
       //     files.image_or_video_content_5.map(files => {
-      //       payload.item_data.image_or_video_content_5 = files.location
+      //       payload.item_data.image_or_video_content_5 = files.path
       //     })
       //   }
 
       //   if (files.image_or_video_content_6?.length) {
       //     files.image_or_video_content_6.map(files => {
-      //       payload.item_data.image_or_video_content_6 = files.location
+      //       payload.item_data.image_or_video_content_6 = files.path
       //     })
       //   }
 

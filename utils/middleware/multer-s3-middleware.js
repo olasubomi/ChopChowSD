@@ -1,26 +1,38 @@
-const aws = require("aws-sdk");
+// cloudinaryConfig.js
 const multer = require("multer");
-const multerS3 = require("multer-s3");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
+const dotenv = require("dotenv");
 
-var s3 = new aws.S3({
-    accessKeyId: process.env.CHOPCHOWAPP_USER_AWS_KEY,
-    secretAccessKey: process.env.CHOPCHOWAPP_USER_AWS_SECRET,
+dotenv.config();
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET,
+});
+console.log({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET,
+})
+const cloudinaryStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "Chopchow",
+        // format: (req, file) => {
+        //     const ext = file.mimetype.split('/')[1];
+        //     return ext === 'jpeg' ? 'jpg' : ext;
+        // },
+        // public_id: (req, file) => `${file.originalname.split('.')[0]}_${Date.now()}`,
+    },
 });
 
-exports.upload = multer({
-    storage: multerS3({
-        s3: s3,
-        bucket: process.env.S3_BUCKET,
-        acl: "public-read",
-        filename: function (req, file, cb) {
-            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-            cb(null, file.fieldname + '-' + uniqueSuffix + '-' + file.originalname);
-        },
-        metadata: function (req, file, cb) {
-            cb(null, { fieldName: file.fieldname });
-        },
-        key: function (req, file, cb) {
-            cb(null, Date.now().toString());
-        },
-    }),
+const uploadToCloudinary = multer({
+    storage: cloudinaryStorage,
 });
+
+module.exports = {
+    cloudinary,
+    uploadToCloudinary,
+};

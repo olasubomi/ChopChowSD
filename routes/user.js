@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { upload, transformObject } = require("../utils/middleware");
+const { uploadToCloudinary } = require('../utils/middleware/multer-s3-middleware.js');
 const { hashPassword } = require("../lib/hashPassword");
 // const authenticationLogout = require("../utils/repositpry/authentication/authenticationLogout");
 const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
@@ -7,14 +8,14 @@ const UserController = require('../controllers/UserController/userController')
 const { verifyRefreshToken } = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 
 
-router.post("/signup", upload.single('profile_picture'), transformObject, UserController.signUp);
+router.post("/signup", uploadToCloudinary.single('profile_picture'), transformObject, UserController.signUp);
 router.post("/signin", UserController.signIn);
 router.get("/refresh-token", verifyRefreshToken, UserController.refreshToken);
 router.post("/forgotpassword", UserController.forgotPassword);
 router.post("/resetpassword", UserController.resetPassword);
 router.get("/findUser/:id", UserController.findUser);
 router.get("/findUsers/:page", UserController.findUsers);
-router.put("/updateuserprofile/:userId", verifyAuthentication, upload.single(), transformObject, UserController.updateUserProfile);
+router.put("/updateuserprofile/:userId", verifyAuthentication, uploadToCloudinary.single(), transformObject, UserController.updateUserProfile);
 router.post("/inviteuser", UserController.inviteUser);
 router.post("/notifyuser/", UserController.addNotification);
 router.get("/verifyToken/", verifyAuthentication, UserController.verifyToken);
