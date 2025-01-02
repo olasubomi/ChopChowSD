@@ -1,4 +1,4 @@
-const { upload } = require("./multer-s3-middleware");
+const { upload, storage } = require("./multer-s3-middleware");
 const { validatePayload } = require("./validator");
 const { transformArray, transformObject } = require("./requestTransformer");
 
@@ -7,4 +7,5 @@ module.exports = {
     validatePayload,
     transformArray,
     transformObject,
+    storage
 };

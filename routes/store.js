@@ -3,12 +3,13 @@ const StoreController = require("../controllers/StoreController/store.controller
 const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const { upload } = require("../utils/middleware");
 const { protect } = require('../utils/middleware/authmiddleware')
+const { uploadToCloudinary } = require('../utils/middleware/multer-s3-middleware.js');
 
 //store routes
 router.post(
   "/createstore",
   protect,
-  upload.any(),
+  uploadToCloudinary.any(),
   verifyAuthentication,
   StoreController.createStore
 );
@@ -28,7 +29,7 @@ router.get('/user/:userId', StoreController.getAllStoresForAuser)
 
 router.put(
   "/updatestore/:storeId",
-  upload.any(),
+  uploadToCloudinary.any(),
   verifyAuthentication,
   StoreController.updateStore
 );

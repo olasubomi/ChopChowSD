@@ -2,12 +2,13 @@ const router = require("express").Router();
 const { upload } = require("../utils/middleware");
 const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const BlogController = require("../controllers/blogService")
+const { uploadToCloudinary } = require('../utils/middleware/multer-s3-middleware.js');
 
 
 router.post(
   "/create",
   verifyAuthentication,
-  upload.single("featured_image"),
+  uploadToCloudinary.single("featured_image"),
   BlogController.createBlog
 );
 
@@ -15,7 +16,7 @@ router.post(
 router.post(
   "/update/:id",
   verifyAuthentication,
-  upload.single("featured_image"),
+  uploadToCloudinary.single("featured_image"),
   BlogController.editBlog
 );
 
