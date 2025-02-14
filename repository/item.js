@@ -137,7 +137,7 @@ const filterItem = async (filter, query = {}) => {
         },
       ]
     })
-      .populate('store_available');
+      .populate('store_available user');
 
   } catch (error) {
     console.log(error);
