@@ -148,6 +148,21 @@ module.exports = {
     }
   },
 
+  newsletter: async (req, res) => {
+    try {
+      const response = await UserService.subscribeToNewsletter(req.body);
+      if (response) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(response));
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      return res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   inviteUser: async (req, res) => {
     return res.status(200);
   },
@@ -205,7 +220,7 @@ module.exports = {
     } catch (error) {
       console.log(error);
       return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },

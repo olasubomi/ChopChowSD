@@ -1,7 +1,11 @@
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 const mongoose = require("mongoose");
-const { products, meals, Utensil } = require("../db/dbMongo/config/db_buildSchema");
+const {
+  products,
+  meals,
+  Utensil,
+} = require("../db/dbMongo/config/db_buildSchema");
 
 const itemSchema = new mongoose.Schema(
   {
@@ -23,7 +27,7 @@ const itemSchema = new mongoose.Schema(
 
     rejectionMessage: {
       title: String,
-      message: String
+      message: String,
     },
 
     item_categories: [{ type: mongoose.Types.ObjectId, ref: "Category" }],
@@ -40,8 +44,8 @@ const itemSchema = new mongoose.Schema(
 
     item_type: {
       type: String,
-      enum: ['Meal', 'Product', 'Utensil', 'Other'],
-      required: true
+      enum: ["Meal", "Product", "Utensil", "Other"],
+      required: true,
     },
 
     store_available: [{ type: mongoose.Types.ObjectId, ref: "Supplier" }],
@@ -58,8 +62,9 @@ const itemSchema = new mongoose.Schema(
       },
     ],
 
-    user: { type: mongoose.Types.ObjectId, ref: "User" },
+    inventories: [{ type: mongoose.Types.ObjectId, ref: "Inventory" }],
 
+    user: { type: mongoose.Types.ObjectId, ref: "User" },
 
     comments: [
       {
@@ -81,14 +86,16 @@ const itemSchema = new mongoose.Schema(
       },
     ],
 
-    ingredeints_in_item: [{
-      item_name: String,
-      item_quantity: Number,
-      item_measurement: String,
-      formatted_string_of_item: String,
-      item_price: Number,
-      product_available: Boolean
-    }],
+    ingredeints_in_item: [
+      {
+        item_name: String,
+        item_quantity: Number,
+        item_measurement: String,
+        formatted_string_of_item: String,
+        item_price: Number,
+        product_available: Boolean,
+      },
+    ],
 
     total_rating: { type: Number, default: 0 },
 
@@ -134,20 +141,19 @@ const itemSchema = new mongoose.Schema(
 
     meal_image_or_video_content6: { type: String },
 
-    item_description: [{
-      type: mongoose.Types.ObjectId,
-      ref: 'item_description'
-    }]
-
-  }, { timestamps: true });
+    item_description: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "item_description",
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 const Item = mongoose.model("Item", itemSchema);
 
-
-
-
 function validateItemMeal(item) {
-
   const schema = Joi.object({
     item_name: Joi.string().required(),
 
@@ -161,26 +167,37 @@ function validateItemMeal(item) {
 
     user: Joi.string().required(),
 
-    ingredeints_in_item: Joi.array().items(Joi.object({
-      item_name: Joi.string().required(),
-      item_quantity: Joi.number().optional(),
-      item_measurement: Joi.string().optional(),
-      formatted_string_of_item: Joi.string().required()
-    })).optional(),
+    ingredeints_in_item: Joi.array()
+      .items(
+        Joi.object({
+          item_name: Joi.string().required(),
+          item_quantity: Joi.number().optional(),
+          item_measurement: Joi.string().optional(),
+          formatted_string_of_item: Joi.string().required(),
+        })
+      )
+      .optional(),
 
     item_categories: Joi.array().items(Joi.objectId().required()).optional(),
 
-    meal_formatted_instructions: Joi.array().items(
-      Joi.object({
-        title: Joi.string().required(),
-        instructionSteps: Joi.array().items(Joi.string().optional()),
-        dataName: Joi.any().optional()
-      })).optional(),
+    meal_formatted_instructions: Joi.array()
+      .items(
+        Joi.object({
+          title: Joi.string().required(),
+          instructionSteps: Joi.array().items(Joi.string().optional()),
+          dataName: Joi.any().optional(),
+        })
+      )
+      .optional(),
 
-    item_status: Joi.array().items(Joi.object({
-      status: Joi.string().required(),
-      status_note: Joi.string().required()
-    })).optional(),
+    item_status: Joi.array()
+      .items(
+        Joi.object({
+          status: Joi.string().required(),
+          status_note: Joi.string().required(),
+        })
+      )
+      .optional(),
 
     item_images: Joi.any(),
 
@@ -215,11 +232,9 @@ function validateItemMeal(item) {
     meal_tips: Joi.array().items(Joi.string().required()).optional(),
 
     meal_kitchen_utensils: Joi.array().items(Joi.string()).optional(),
-
-  })
-  return schema.validate(item)
+  });
+  return schema.validate(item);
 }
-
 
 function validateItemProduct(item) {
   const schema = Joi.object({
@@ -233,16 +248,18 @@ function validateItemProduct(item) {
 
     product_size: Joi.string().optional(),
 
-    item_description: Joi.array().items(
-      Joi.objectId().required()
-    ).optional(),
+    item_description: Joi.array().items(Joi.objectId().required()).optional(),
 
-    ingredeints_in_item: Joi.array().items(Joi.object({
-      item_name: Joi.string().required(),
-      item_quantity: Joi.number().optional(),
-      item_measurement: Joi.string().optional(),
-      formatted_string_of_item: Joi.string().required()
-    })).optional(),
+    ingredeints_in_item: Joi.array()
+      .items(
+        Joi.object({
+          item_name: Joi.string().required(),
+          item_quantity: Joi.number().optional(),
+          item_measurement: Joi.string().optional(),
+          formatted_string_of_item: Joi.string().required(),
+        })
+      )
+      .optional(),
 
     user: Joi.objectId().required(),
 
@@ -258,34 +275,36 @@ function validateItemProduct(item) {
 
     itemImage3: Joi.string().optional(),
 
-    item_status: Joi.array().items(Joi.object({
-      status: Joi.string().required(),
-      status_note: Joi.string().required()
-    })).optional(),
+    item_status: Joi.array()
+      .items(
+        Joi.object({
+          status: Joi.string().required(),
+          status_note: Joi.string().required(),
+        })
+      )
+      .optional(),
 
     item_categories: Joi.array().items(Joi.objectId().required()).optional(),
-
-  })
-  return schema.validate(item)
+  });
+  return schema.validate(item);
 }
-
 
 function videoFileSchema(item) {
-  const schema =
-    Joi.object({
-      fieldname: Joi.string().required(),
-      originalname: Joi.string().required(),
-      encoding: Joi.string().required(),
-      mimetype: Joi.string()
-        .valid('video/mp4', 'video/avi', 'video/mkv', 'video/mov', 'video/wmv')
-        .required(),
-      buffer: Joi.binary().required(),
-      size: Joi.number().max(50 * 1024 * 1024).required() // 50MB limit
-    }).required()
+  const schema = Joi.object({
+    fieldname: Joi.string().required(),
+    originalname: Joi.string().required(),
+    encoding: Joi.string().required(),
+    mimetype: Joi.string()
+      .valid("video/mp4", "video/avi", "video/mkv", "video/mov", "video/wmv")
+      .required(),
+    buffer: Joi.binary().required(),
+    size: Joi.number()
+      .max(50 * 1024 * 1024)
+      .required(), // 50MB limit
+  }).required();
 
-  return schema.validate(item)
+  return schema.validate(item);
 }
-
 
 function validateItem(item) {
   const schema = Joi.object({
@@ -317,11 +336,11 @@ function validateItem(item) {
 
     image_or_video_content_6: Joi.string().optional(),
 
-
     item_type: Joi.string().required(),
 
-
-    formatted_instructions: Joi.array().items(Joi.object().optional()).optional(),
+    formatted_instructions: Joi.array()
+      .items(Joi.object().optional())
+      .optional(),
 
     store_name: Joi.objectId().optional(),
 
@@ -361,10 +380,7 @@ function validateItem(item) {
       })
     ),
 
-    item_description: Joi.array().items(
-
-      Joi.objectId().required()
-    ),
+    item_description: Joi.array().items(Joi.objectId().required()),
 
     item_categories: Joi.array().items(Joi.objectId().required()).required(),
 
@@ -377,6 +393,6 @@ function validateItem(item) {
 exports.itemSchema = itemSchema;
 exports.Item = Item;
 exports.validate = validateItem;
-exports.validateItemMeal = validateItemMeal
-exports.validateItemProduct = validateItemProduct
-exports.videoFileSchema = videoFileSchema
+exports.validateItemMeal = validateItemMeal;
+exports.validateItemProduct = validateItemProduct;
+exports.videoFileSchema = videoFileSchema;

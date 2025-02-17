@@ -3,8 +3,11 @@ const {
   grocery_list,
   products,
   User,
+  blog,
 } = require("../db/dbMongo/config/db_buildSchema");
-const { cart } = require("../model/cart")
+const { cart } = require("../model/cart");
+const { sendNewLetterSubscriptionEmail } = require("../utils/mailer/nodemailer");
+const BlogService = require("../services/blogService");
 
 const createUser = async (payload) => {
   console.log("payload", payload)
@@ -24,13 +27,15 @@ const createUser = async (payload) => {
     }
     return newUser;
   } catch (error) {
-    throw error;
+    throw erropr;
   }
 };
 
 const updateUser = async (filter, data) => {
   try {
-    return await User.findOneAndUpdate(filter, data);
+    const response = await User.findOneAndUpdate(filter, data);
+
+    return response
   } catch (error) {
     console.log(error);
     throw error;

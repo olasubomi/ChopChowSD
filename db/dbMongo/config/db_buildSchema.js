@@ -19,7 +19,15 @@ const userSchema = new Schema(
 
     profile_picture: { type: String },
 
+    newsletter_subscription: {
+      type: Boolean,
+      default: true
+    },
 
+    email_susbription: {
+      type: Boolean,
+      default: true
+    },
 
     sub_app_admin: { type: Boolean, default: false },
 
@@ -830,13 +838,17 @@ exports.blog = mongoose.model(
       featured_image: { type: String, required: true },
       tags: { type: Array, default: [] },
       meta_description: { type: String },
-      status: { type: String, enum: ["PUBLISHED", 'DRAFT'], default: "PUBLISHED" },
+      status: { type: String, enum: ["PUBLIC", 'DRAFT'], default: "PUBLIC" },
       url_slug: { type: String },
       html_template: { type: String, required: true },
       body_content_text: { type: String, required: true },
       word_count: { type: String, required: true },
       comments: { type: Array, default: [] },
-      author: { type: mongoose.Types.ObjectId, ref: "User" }
+      author: { type: mongoose.Types.ObjectId, ref: "User" },
+      category: {
+        type: String,
+        enum: ["MEAL", "INGREDIENTS", "UTENSILS", "KITCHEN TIPS"]
+      }
     },
     {
       timestamps: true
@@ -869,7 +881,8 @@ exports.validateBlog = (payload) => {
     body_content_text: Joi.string().required(),
     word_count: Joi.string().required(),
     status: Joi.string().optional(),
-    featured_image: Joi.string().required()
+    featured_image: Joi.string().required(),
+    category: Joi.string().required()
   });
 
   return schema.validate(payload);

@@ -43,7 +43,13 @@ const validateGroceryUser = async (userId) => {
 
 const findAllUserGroceryList = async (filter) => {
   try {
-    return await Grocery.find(filter);
+    return await Grocery.find(filter).populate({
+      path: "groceryItems.item",
+      populate: {
+        path: "inventories",
+        select: "_id in_stock",
+      },
+    });
   } catch (error) {
     console.log({ error });
   }
@@ -85,7 +91,13 @@ const createNewList = async (filter, payload) => {
 
 const getGroceryList = async (filter) => {
   try {
-    return await Grocery.find(filter);
+    return await Grocery.find(filter).populate({
+      path: "groceryItems.item",
+      populate: {
+        path: "inventories",
+        select: "_id in_stock",
+      },
+    });
   } catch (error) {
     console.log({ error });
     throw {
@@ -101,22 +113,21 @@ const createNewGroceryList = async (payload) => {
     const groceryList = new GroceryList(payload);
     return await groceryList.save();
   } catch (error) {
-    console.log(error, 'rrr')
+    console.log(error, "rrr");
     throw {
       error: error,
       message: error.message || "Create grocery list operation failed",
       code: error.code || 500,
     };
   }
-}
+};
 
 const addAnItemToAGroceryList = async (payload) => {
   try {
-
     await checkIfItemAlreadyExistInAGroceryList({
       listName: payload.listName,
-      itemId: payload.itemId
-    })
+      itemId: payload.itemId,
+    });
 
     return await GroceryList.findOneAndUpdate(
       { listName: payload.listName, user: payload.userId },
@@ -125,11 +136,11 @@ const addAnItemToAGroceryList = async (payload) => {
           groceryItems: {
             item: payload.itemId,
             quantity: payload.quantity,
-            measurement: payload.measurement
-          }
-        }
+            measurement: payload.measurement,
+          },
+        },
       }
-    )
+    );
   } catch (error) {
     throw {
       error: error,
@@ -137,158 +148,172 @@ const addAnItemToAGroceryList = async (payload) => {
       code: error.code || 500,
     };
   }
-}
+};
 
 const addOtherGroceryList = async (payload) => {
   try {
     if (payload.item_name) {
       await checkIfOtherHasBeenAdded({
         listName: payload.listName,
-        item_name: payload.item_name
-      })
+        item_name: payload.item_name,
+      });
     }
 
     const data = await createGroceryListOther({
       item_image: payload.item_image,
       item_name: payload.item_name,
-    })
+    });
 
     return await GroceryList.findOneAndUpdate(
       { listName: payload.listName },
       {
         $push: {
           groceryItems: {
-            other: data
-          }
-        }
+            other: data,
+          },
+        },
       }
-    )
-
+    );
   } catch (error) {
-    console.log('error', error)
+    console.log("error", error);
   }
-}
+};
 
 const addJsonDataToGroceryList = async (payload, measurement_name) => {
   try {
     if (payload.item_name) {
       await checkIfJsonDataHasAlready({
         listName: payload.listName,
-        item_name: payload.item_name
-      })
+        item_name: payload.item_name,
+      });
     }
 
     if (measurement_name) {
       await checkIfMeasurementDataHasAlready({
         listName: payload.listName,
-        measurement_name: measurement_name
-      })
+        measurement_name: measurement_name,
+      });
     }
 
     const data = {
       id: Math.floor(Math.random() * 1000000000000),
       createdAt: new Date(),
-      ...payload
-    }
+      ...payload,
+    };
 
     return await GroceryList.findOneAndUpdate(
       { listName: payload.listName },
       {
         $push: {
           groceryItems: {
-            itemData: data
-          }
-        }
+            itemData: data,
+          },
+        },
       }
-    )
+    );
   } catch (error) {
-    console.log('errr', error)
+    console.log("errr", error);
     throw {
       error: error,
       message: error.message || "Add item grocery list operation failed",
       code: error.code || 500,
     };
   }
-}
-
+};
 
 const checkIfItemAlreadyExistInAGroceryList = async (payload) => {
   try {
-    const groceryList = await checkIfGroceryListExist({ listName: payload.listName });
-    console.log('present grocery', groceryList.groceryItems, payload.itemId.toString())
-    const doesExist = groceryList.groceryItems.some(element => element?.item?.toString() === payload.itemId.toString());
+    const groceryList = await checkIfGroceryListExist({
+      listName: payload.listName,
+    });
+    console.log(
+      "present grocery",
+      groceryList.groceryItems,
+      payload.itemId.toString()
+    );
+    const doesExist = groceryList.groceryItems.some(
+      (element) => element?.item?.toString() === payload.itemId.toString()
+    );
     if (doesExist) {
-      throw "Item already exist on grocery list"
+      throw "Item already exist on grocery list";
     }
   } catch (error) {
-    throw "Check operation failed"
+    throw "Check operation failed";
   }
-}
+};
 
 const checkIfJsonDataHasAlready = async (payload) => {
   try {
-    const groceryList = await checkIfGroceryListExist({ listName: payload.listName });
-    const doesExist = groceryList.groceryItems.some(element => element.itemData.item_name?.toString() === payload.item_name);
+    const groceryList = await checkIfGroceryListExist({
+      listName: payload.listName,
+    });
+    const doesExist = groceryList.groceryItems.some(
+      (element) => element.itemData.item_name?.toString() === payload.item_name
+    );
     if (doesExist) {
-      throw "Item already exist on grocery list"
+      throw "Item already exist on grocery list";
     }
   } catch (e) {
-    throw "Check operation failed"
-
+    throw "Check operation failed";
   }
-}
+};
 
 const checkIfOtherHasBeenAdded = async (payload) => {
-  console.log('check payload', payload)
+  console.log("check payload", payload);
   try {
-    const groceryList = await checkIfGroceryListExist({ listName: payload.listName });
-    const doesExist = groceryList.groceryItems.some(element => element?.other?.item_name?.toString() === payload?.item_name);
-    console.log(doesExist, 'doesExist')
+    const groceryList = await checkIfGroceryListExist({
+      listName: payload.listName,
+    });
+    const doesExist = groceryList.groceryItems.some(
+      (element) => element?.other?.item_name?.toString() === payload?.item_name
+    );
+    console.log(doesExist, "doesExist");
     if (doesExist) {
-      throw "Other already exist on grocery list"
+      throw "Other already exist on grocery list";
     }
   } catch (e) {
-    console.log('e', e)
-    throw "Check operation failed"
+    console.log("e", e);
+    throw "Check operation failed";
   }
-}
+};
 
 const createGroceryListOther = async (payload) => {
   const newOther = new Other(payload);
   await newOther.save();
-  return newOther
-}
-
+  return newOther;
+};
 
 const checkIfMeasurementDataHasAlready = async (payload) => {
   try {
-    const groceryList = await checkIfGroceryListExist({ listName: payload.listName });
-    console.log(groceryList.groceryItems, 'groceryList')
-    groceryList.groceryItems.map(eleme => {
-      console.log(eleme.itemData.measurement)
-    })
-    const doesExist = groceryList.groceryItems.some(element => element.itemData?.measurement?.measurement_name.toString() === payload.measurement_name);
+    const groceryList = await checkIfGroceryListExist({
+      listName: payload.listName,
+    });
+    console.log(groceryList.groceryItems, "groceryList");
+    groceryList.groceryItems.map((eleme) => {
+      console.log(eleme.itemData.measurement);
+    });
+    const doesExist = groceryList.groceryItems.some(
+      (element) =>
+        element.itemData?.measurement?.measurement_name.toString() ===
+        payload.measurement_name
+    );
     if (doesExist) {
-      throw "Meausurement already exist on grocery list"
+      throw "Meausurement already exist on grocery list";
     }
   } catch (e) {
-    console.log(e, 'eelele')
-    throw "Check operation failed"
-
+    console.log(e, "eelele");
+    throw "Check operation failed";
   }
-}
-
-
+};
 
 const checkIfGroceryListExist = async (filter) => {
   try {
-    return await GroceryList.findOne(filter).
-      populate({
-        path: 'groceryItems',
-        populate: {
-          path: 'item measurement itemData.measurement other'
-        }
-      })
+    return await GroceryList.findOne(filter).populate({
+      path: "groceryItems",
+      populate: {
+        path: "item measurement itemData.measurement other",
+      },
+    });
   } catch (error) {
     throw {
       error: error,
@@ -296,43 +321,56 @@ const checkIfGroceryListExist = async (filter) => {
       code: error.code || 500,
     };
   }
-}
-
+};
 
 const getAllGroceryList = async (userId) => {
   try {
+    console.log("getting all inventories");
     return await GroceryList.find({ user: userId.toString() })
-      .populate('user')
+      .populate("user")
       .populate({
-        path: 'groceryItems',
-        populate: {
-          path: 'item measurement other'
-        }
-      })
-
-
+        path: "groceryItems",
+        populate: [
+          {
+            path: "item",
+            populate: {
+              path: "inventories",
+              select: "_id in_stock",
+            },
+          },
+          {
+            path: "measurement other",
+          },
+        ],
+      });
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};
 
 const getOneGrocery = async (id, user) => {
   try {
     return await GroceryList.findOne({ _id: id, user })
-      .populate('user')
+      .populate("user")
       .populate({
-        path: 'groceryItems',
-        populate: {
-          path: 'item measurement itemData.measurement other'
-        }
-      })
+        path: "groceryItems",
+        populate: [
+          {
+            path: "item",
+            populate: {
+              path: "inventories",
+              select: "_id in_stock",
+            },
+          },
+          {
+            path: "measurement other",
+          },
+        ],
+      });
   } catch (error) {
-    throw error
+    throw error;
   }
-}
-
-
-
+};
 
 const removeAnItemFromGroceryList = async (filter) => {
   try {
@@ -341,36 +379,31 @@ const removeAnItemFromGroceryList = async (filter) => {
       {
         $pull: {
           groceryItems: {
-            _id: filter.groceryItemId
-          }
-        }
+            _id: filter.groceryItemId,
+          },
+        },
       }
-    )
+    );
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};
 
 const updateGroceryDetails = async (id, payload) => {
   try {
-    return await GroceryList.findByIdAndUpdate(
-      { _id: id },
-      { ...payload }
-    )
+    return await GroceryList.findByIdAndUpdate({ _id: id }, { ...payload });
   } catch (error) {
-    throw error
+    throw error;
   }
-}
-
+};
 
 const deleteGroceryList = async (id) => {
   try {
-    return await GroceryList.findByIdAndDelete({ _id: id })
+    return await GroceryList.findByIdAndDelete({ _id: id });
   } catch (error) {
-    throw error
+    throw error;
   }
-}
-
+};
 
 module.exports = {
   createGroceryList,
@@ -392,5 +425,5 @@ module.exports = {
   addJsonDataToGroceryList,
   checkIfMeasurementDataHasAlready,
   checkIfOtherHasBeenAdded,
-  addOtherGroceryList
+  addOtherGroceryList,
 };
