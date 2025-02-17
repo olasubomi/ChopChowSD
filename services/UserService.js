@@ -47,7 +47,10 @@ class UserService {
         };
       }
 
-      const newUser = await createUser(payload);
+      const newUser = await createUser({
+        ...payload,
+        newsletter_subscription: payload?.isSubscribed
+      });
       console.log("newUser", newUser)
       const generatedToken = await generateAccessTokens({
         id: newUser._id,
@@ -55,17 +58,18 @@ class UserService {
         email: newUser.email,
       });
 
-      console.log("generated Token", generatedToken)
-
       // if (!Object.is(payload?.email_notifications, false)) {
       //   await signUpEmail(generatedToken, newUser);
       // }
-      const blogs = await blog.find().sort({ createdAt: -1 }).limit(3).populate("author")
-      await sendNewLetterSubscriptionEmail({
-        name: `${newUser.first_name} ${newUser.last_name}`,
-        email: newUser.email,
-        blogs
-      })
+      if (payload?.isSubscribed) {
+        const blogs = await blog.find().sort({ createdAt: -1 }).limit(3).populate("author")
+        await sendNewLetterSubscriptionEmail({
+          name: `${newUser.first_name} ${newUser.last_name}`,
+          email: newUser.email,
+          blogs
+        })
+      }
+
 
       return {
         user: newUser,
