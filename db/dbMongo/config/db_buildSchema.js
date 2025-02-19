@@ -24,11 +24,6 @@ const userSchema = new Schema(
       default: true
     },
 
-    email_susbription: {
-      type: Boolean,
-      default: true
-    },
-
     sub_app_admin: { type: Boolean, default: false },
 
     sub_store_admin: { type: Boolean, default: false },
