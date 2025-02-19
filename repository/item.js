@@ -182,8 +182,10 @@ const filterItem = async (filter, query = {}) => {
           },
           ...query,
         },
-      ],
-    }).populate("store_available inventories");
+      ]
+    })
+      .populate('store_available user inventories');
+
   } catch (error) {
     console.log(error);
   }
