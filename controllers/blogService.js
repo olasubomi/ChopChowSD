@@ -9,7 +9,7 @@ module.exports = {
         try {
             const { error, value } = validateBlog({
                 ...req.body,
-                featured_image: req.file.location,
+                featured_image: req.file.path,
             })
             if (error) return res.status(400).send(error.details[0].message);
             const blog = await BlogService.createBlog({
@@ -77,7 +77,7 @@ module.exports = {
         try {
             const { error, value } = validateBlog({
                 ...req.body,
-                featured_image: req.file?.location ? req.file.location : req.body.featured_image
+                featured_image: req.file?.path ? req.file.path : req.body.featured_image
             })
             if (error) return res.status(400).send(error.details[0].message);
 
