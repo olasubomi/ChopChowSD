@@ -116,6 +116,10 @@ const getAllStores = async (page, filter) => {
       query.status = filter.status.toUpperCase()
     }
 
+    if (filter?.store_owner) {
+      query.store_owner = filter?.store_owner
+    }
+
 
 
     if (filter?.withPaginate) {
