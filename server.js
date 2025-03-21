@@ -41,7 +41,7 @@ app.use(cookie());
 
 const whitelist = [
   "http://localhost:3000",
-  "http://localhost:3002",
+  "http://localhost:3001",
   "http://localhost:5000",
   "https://www.chopchow.app",
   "https://cc-next-dev.vercel.app/",
