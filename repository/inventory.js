@@ -41,7 +41,9 @@ exports.createInventory = async (payload) => {
       { _id: payload?.item },
       {
         $set: {
-          item_price: Number(payload?.meal_price),
+          item_price: Array.isArray(payload?.meal_price)
+            ? Number(payload.meal_price[0]?.price || 0)
+            : Number(payload?.meal_price),
           item_available: payload?.in_stock,
           meal_prep_time: payload?.estimated_preparation_time,
           ingredeints_in_item: arr,

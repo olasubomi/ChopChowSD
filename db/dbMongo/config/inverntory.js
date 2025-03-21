@@ -32,7 +32,14 @@ exports.Inventory = mongoose.model(
 
       estimatedPreparationTime: { type: String },
 
-      meal_price: { type: String },
+      // meal_price: { type: String },
+      meal_price: [
+        {
+          store_id: { type: mongoose.Types.ObjectId, ref: "Supplier" },
+          currency: { type: String },
+          price: { type: Number },
+        }
+      ],
 
       ingredients: [
         {
