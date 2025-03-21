@@ -1,3 +1,4 @@
+const { Supplier } = require("../db/dbMongo/config/db_buildSchema");
 const { Inventory } = require("../db/dbMongo/config/inverntory");
 const { Item } = require("../model/item");
 const mongoose = require("mongoose");
@@ -66,14 +67,33 @@ exports.createInventory = async (payload) => {
   }
 };
 
+function normalizeArray(arr) {
+  const uniqueSet = new Set();
+
+  arr.forEach(item => {
+    item.split(",").forEach(id => uniqueSet.add(id.trim()));
+  });
+
+  return Array.from(uniqueSet);
+}
 exports.getInventories = async (page, filter) => {
   try {
     let getPaginate = await paginate(page, filter);
     const inventoriesResponse = await Inventory.find(filter)
-      .limit(getPaginate.limit)
-      .skip(getPaginate.skip);
+    const storeIds = inventoriesResponse
+      .filter((inventory) => Boolean(inventory.storeId))
+      .map((inventory) => inventory.storeId.toString())
+    const arr = normalizeArray(storeIds)
 
-    return { inventory: inventoriesResponse, count: getPaginate.docCount };
+    const response = await Supplier.find({
+      _id: {
+        $in: arr
+      }
+    })
+    // .limit(getPaginate.limit)
+    // .skip(getPaginate.skip)
+
+    return { inventory: response, count: getPaginate.docCount };
   } catch (error) {
     throw {
       error: error,
