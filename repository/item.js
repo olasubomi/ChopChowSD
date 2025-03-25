@@ -25,6 +25,8 @@ const getItems = async (page, filter) => {
     query.user = filter.user;
   }
 
+
+
   if (filter?.name) {
     query.item_name = { $regex: filter.name, $options: "i" };
   }
@@ -44,6 +46,16 @@ const getItems = async (page, filter) => {
     sort.item_name = Number(filter.item_name);
   }
 
+  if (filter?.item_price === "1") {
+    query.item_price = {
+      $gte: 0
+    }
+  } else if (filter?.item_price === '0') {
+    query.item_price = { $exists: false }
+  } else if (filter?.item_price === "All") {
+
+  }
+
   if (filter?.type) {
     query.item_type = { $in: filter.type.split(",") };
   }
@@ -54,8 +66,12 @@ const getItems = async (page, filter) => {
       },
     };
   }
+  console.log(page, "Page")
 
-  let getPaginate = await paginate(page, query);
+  let getPaginate = await paginate(page, {
+    ...query,
+    limit: filter.limit ? filter.limit : 10
+  });
 
   const withPaginate = filter.hasOwnProperty("withPaginage")
     ? filter.withPaginate === "false"
@@ -309,9 +325,9 @@ const paginate = async (page, filter = {}) => {
     query.user = filter.user;
   }
   const docCount = await Item.countDocuments(query);
-  if (docCount < skip) {
-    skip = (page - 1) * limit;
-  }
+  // if (docCount < skip) {
+  skip = (page - 1) * limit;
+  // }
   return { skip, limit, docCount };
 };
 
