@@ -45,9 +45,16 @@ exports.Inventory = mongoose.model(
         {
           item_name: { type: String },
 
-          set_price: {
-            type: String,
-          },
+          // set_price: {
+          //   type: String,
+          // },
+          set_prices: [
+            {
+              store_id: { type: mongoose.Types.ObjectId, ref: "Supplier" },
+              currency: { type: String },
+              price: { type: Number },
+            }
+          ],
           item_quantity: { type: String },
 
           product_available: Boolean,

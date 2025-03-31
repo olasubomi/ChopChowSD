@@ -24,8 +24,19 @@ exports.createInventory = async (payload) => {
       const current = payload?.ingredients?.find(
         (ele) => ele?.item_name === element?.item_name
       );
+      console.log("Checking ingredient:", element?.item_name); // Debugging the ingredient
+      console.log("Matched ingredient:", current || "No match found"); // Debugging match status
+      console.log("Processing set_prices:", current?.set_prices || "No set_prices found");
+
       arr.push({
-        item_price: Number(current?.set_price),
+        // item_price: Number(current?.set_price),
+        item_price: Array.isArray(current?.set_prices)
+          ? current?.set_prices.map((price) => ({
+            store_id: price.store_id,
+            currency: price.currency,
+            price: Number(price.price),
+          }))
+          : [],
         product_available: current?.product_available,
         item_quantity: current?.item_quantity,
         item_name: element?.item_name,
@@ -34,6 +45,7 @@ exports.createInventory = async (payload) => {
         _id: element._id,
       });
     });
+    console.log("Final Inventory Payload:", JSON.stringify(payload, null, 2));
 
     const newInventory = await Inventory.create(payload);
 
@@ -46,7 +58,20 @@ exports.createInventory = async (payload) => {
             : Number(payload?.meal_price),
           item_available: payload?.in_stock,
           meal_prep_time: payload?.estimated_preparation_time,
-          ingredeints_in_item: arr,
+          ingredeints_in_item: arr.map((ingredient) => ({
+            ...ingredient,
+            item_price: Array.isArray(ingredient.set_prices) && ingredient.set_prices.length > 0
+              ? Number(ingredient.set_prices[0].price)
+              : 0,
+            set_prices: Array.isArray(ingredient.set_prices)
+              ? ingredient.set_prices.map((p) => ({
+                store_id: mongoose.Types.ObjectId(p.store_id),
+                currency: p.currency,
+                price: Number(p.price),
+              }))
+              : [],
+          })),
+
           stores_available: payload?.storeId?.map((storeId) =>
             mongoose.Types.ObjectId(storeId)
           ),
