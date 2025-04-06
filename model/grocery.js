@@ -20,6 +20,7 @@ const grocerySchema = new mongoose.Schema({
           item: {
             type: Item.schema,
           },
+          dateAdded: Date,
           quantity: {
             type: Number,
             required: true,

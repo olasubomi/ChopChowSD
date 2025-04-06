@@ -30,6 +30,7 @@ const GroceryListSchema = new Schema({
         quantity: {
             type: String,
         },
+        dateAdded: Date,
         itemData: {
             id: String,
             item_name: String,
