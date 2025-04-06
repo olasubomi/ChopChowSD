@@ -136,7 +136,6 @@ const addAnItemToAGroceryList = async (payload) => {
           groceryItems: {
             item: payload.itemId,
             quantity: payload.quantity,
-            dateAdded: new Date(),
             measurement: payload.measurement,
           },
         },
