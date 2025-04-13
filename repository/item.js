@@ -48,7 +48,7 @@ const getItems = async (page, filter) => {
 
   if (filter?.item_price === "1") {
     query.item_price = {
-      $gte: 0
+      $gte: 1
     }
   } else if (filter?.item_price === '0') {
     query.item_price = { $exists: false }
@@ -66,7 +66,6 @@ const getItems = async (page, filter) => {
       },
     };
   }
-  console.log(page, "Page")
 
   let getPaginate = await paginate(page, {
     ...query,
