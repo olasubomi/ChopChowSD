@@ -101,8 +101,12 @@ function normalizeArray(arr) {
 
   return Array.from(uniqueSet);
 }
-exports.getInventories = async (page, filter) => {
+exports.getInventories = async (page, filter_) => {
   try {
+    let filter = { ...filter_ };
+    if (filter.country) {
+      delete filter.country
+    }
     let getPaginate = await paginate(page, filter);
     const inventoriesResponse = await Inventory.find(filter)
     const storeIds = inventoriesResponse
@@ -110,10 +114,14 @@ exports.getInventories = async (page, filter) => {
       .map((inventory) => inventory.storeId.toString())
     const arr = normalizeArray(storeIds)
 
+    const country_filter = filter_?.country
+      ? { 'supplier_address.country': filter_.country }
+      : {};
     const response = await Supplier.find({
       _id: {
         $in: arr
-      }
+      },
+      ...country_filter
     })
     // .limit(getPaginate.limit)
     // .skip(getPaginate.skip)
