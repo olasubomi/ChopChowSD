@@ -18,6 +18,36 @@ module.exports = {
     }
   },
 
+  videoTranscription: async (req, res) => {
+    try {
+      const item = await ItemService.processVideo(req, res);
+      if (item) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(item));
+      } else {
+        throw item;
+      }
+    } catch (error) {
+      return res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
+  productImage: async (req, res) => {
+    try {
+      const item = await ItemService.extractProductImageContent(req, res);
+      if (item) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(item));
+      } else {
+        throw item;
+      }
+    } catch (error) {
+      return res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   getAllItems: async (req, res) => {
     try {
       const items = await ItemService.getAllItems(
@@ -58,6 +88,24 @@ module.exports = {
           store_available: req.query.storeId,
         },
         res
+      );
+      if (storeItems) {
+        res
+          .status(Response.HTTP_ACCEPTED)
+          .json(new SuccessResponse(storeItems));
+      } else {
+        throw storeItems;
+      }
+    } catch (error) {
+      res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+  filterUserItemByName: async (req, res) => {
+    try {
+      const storeItems = await ItemService.getStoresByUsername(
+        req.params.name || ""
       );
       if (storeItems) {
         res
@@ -128,6 +176,7 @@ module.exports = {
       const categoryItems = await ItemService.getOneItem(
         {
           item_name: req.params.name,
+          ...req.query
         },
         res
       );

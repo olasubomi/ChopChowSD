@@ -7,16 +7,12 @@ module.exports = {
   signUp: async (req, res) => {
     try {
       const user = await UserService.userSignup(req.body);
-      console.log("verified email", user.user.is_verified)
-      if (user.user.is_verified) {
-        return res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(user).recordCreated());
-      } else {
-        return res
-          .status(Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(user).recordCreated());
-      }
+      //console.log("verified email", user.user.isVerified)
+
+      return res
+        .status(Response.HTTP_ACCEPTED)
+        .json(new SuccessResponse(user).recordCreated());
+
     } catch (error) {
       console.log(error);
       return res
@@ -152,6 +148,21 @@ module.exports = {
     }
   },
 
+  newsletter: async (req, res) => {
+    try {
+      const response = await UserService.subscribeToNewsletter(req.body);
+      if (response) {
+        res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse(response));
+      } else {
+        throw response;
+      }
+    } catch (error) {
+      return res
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
+  },
+
   inviteUser: async (req, res) => {
     return res.status(200);
   },
@@ -209,7 +220,7 @@ module.exports = {
     } catch (error) {
       console.log(error);
       return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
+        .status(error?.code || Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
   },
@@ -323,6 +334,7 @@ module.exports = {
   },
   verifyEmailOTP: async (req, res) => {
     try {
+      console.log("verify email line 320", req.body.email)
       const result = await UserService.verifyEmailOTP(req.body.email, req.body.otp)
       return res
         .status(Response.HTTP_ACCEPTED)
@@ -348,7 +360,10 @@ module.exports = {
   verifyNumber: async (req, res, next) => {
     try {
       console.log("verify req body", req.body)
-      return await UserService.verifyNumber(req, res, next);
+      const data = await UserService.verifyNumber(req, res, next);
+      return res
+        .status(Response.HTTP_ACCEPTED)
+        .json(new SuccessResponse(data));
     }
     catch (error) {
       console.log(error);
@@ -377,7 +392,22 @@ module.exports = {
         .status(Response.HTTP_INTERNAL_SERVER_ERROR)
         .json(new ErrorResponse(error));
     }
+  },
+
+
+  //Confirm User Account
+  confirmAccount: async (req, res) => {
+    try {
+      console.log("verify req body", req.body)
+      return await UserService.confirmAccount(req.body);
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
+        .json(new ErrorResponse(error));
+    }
   }
+
 
 
 };

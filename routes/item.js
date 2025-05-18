@@ -1,8 +1,18 @@
 const ItemController = require("../controllers/ItemController/item.controller");
 const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
-const { upload, transformObject } = require("../utils/middleware");
+const { transformObject, storage } = require("../utils/middleware");
 const express = require("express");
 const router = express.Router();
+const multer = require('multer');
+const { uploadToCloudinary } = require('../utils/middleware/multer-s3-middleware.js');
+
+
+const upload = multer({ storage })
+
+// const storage = multer.memoryStorage();
+const memoryStorage = multer.memoryStorage();
+const upload_ = multer({ storage: memoryStorage });
+
 
 router.get("/:page", ItemController.getAllItems);
 
@@ -17,10 +27,10 @@ router.get('/search/get', ItemController.searchItems)
 router.post(
   "/",
   verifyAuthentication,
-  upload.fields(
+  uploadToCloudinary.fields(
     [
       { name: "item_images", maxCount: 4 },
-      // { name: 'instruction_images', maxCount: 6 },
+      { name: 'instruction_images', maxCount: 6 },
       { name: 'image_or_video_content_1', maxCount: 1 },
       { name: 'image_or_video_content_2', maxCount: 1 },
       { name: 'image_or_video_content_3', maxCount: 1 },
@@ -32,8 +42,10 @@ router.post(
   ItemController.createItem
 );
 
+router.put('/transcription', upload_.single('video'), ItemController.videoTranscription)
+router.put('/content-extraction', upload_.array('image'), ItemController.productImage)
 router.get("/store-items/:storeId", ItemController.getStoreItems);
-
+router.get("/filterstore/:name", ItemController.filterUserItemByName);
 router.get(
   "/user-items/:page",
   // verifyAuthentication,
@@ -52,5 +64,6 @@ router.delete("/delete/:itemId", verifyAuthentication, ItemController.deleteItem
 router.post("/comments", verifyAuthentication, ItemController.updateComment);
 
 router.get("/suggested-meal/:id", verifyAuthentication)
+
 
 module.exports = router;

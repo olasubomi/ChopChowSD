@@ -3,18 +3,22 @@ const { Item } = require("../model/item");
 const moment = require('moment');
 const { createUser } = require("./user");
 const { createUserEmail } = require("../utils/mailer/nodemailer");
+const { Comment } = require("../model/comment");
 
 
 const createStore = async (payload) => {
   try {
+    const user = await User.findById(payload?.store_owner || payload?.store_admin)
     if (payload?.store_owner) {
       payload.store_admins = [payload?.store_owner]
-      await User.findByIdAndUpdate({ _id: payload?.store_owner }, { hasSupplierAffiliation: true })
+      user.user_type = ["customer", "supplier", "driver"]
+
     } else if (payload?.store_admin) {
-      await User.findByIdAndUpdate({ _id: payload?.store_admin }, { sub_store_admin: true })
+      user.user_type = ["customer", "supplier", "driver"]
+      user.sub_store_admin = true
       payload.store_sub_admins = [payload.store_admin]
     }
-
+    await user.save()
     return await Supplier.create(payload);
   } catch (error) {
     console.log({ error });
@@ -91,15 +95,61 @@ const checkStoreAvailability = async (filter) => {
 
 const getAllStores = async (page, filter) => {
   try {
-    let getPaginate = await paginate(page, filter);
-    const allProducts = await Supplier.find(filter || {})
-      .limit(getPaginate.limit)
-      .skip(getPaginate.skip)
-      .populate("store_account_users"); //sugggested_meals_and_products
-    return {
-      products: allProducts,
-      count: getPaginate.docCount,
-    };
+
+    let query = {}
+
+    let sort = {}
+
+    if (filter?.store_key) {
+      query.store_name = { $regex: filter.store_key, $options: "i" }
+    }
+
+    if (filter?.createdAt) {
+      sort.createdAt = Number(filter.createdAt)
+    }
+
+    if (filter?.store_name) {
+      sort.store_name = Number(filter.store_name)
+    }
+
+    if (filter.status !== 'all' && Boolean(filter.status)) {
+      query.status = filter.status.toUpperCase()
+    }
+
+    if (filter?.store_owner) {
+      query.store_owner = filter?.store_owner
+    }
+
+
+
+    if (filter?.withPaginate) {
+      delete filter.withPaginate
+      let getPaginate = await paginate(page, query);
+      let allProducts = await Supplier.find(query || {})
+        .sort(sort)
+        .limit(getPaginate.limit)
+        .skip(getPaginate.skip)
+        .populate("store_account_users"); //sugggested_meals_and_products
+
+      if (filter?.startsWith) {
+        const arr_1 = [];
+        const arr_2 = [];
+        allProducts = allProducts.map((entry) => {
+          if (entry?.store_name.toLowerCase().startsWith(filter?.startsWith.toLowerCase())) {
+            arr_1.push(entry)
+          } else {
+            arr_2.push(entry)
+          }
+        });
+        allProducts = [...arr_1, ...arr_2]
+      }
+      return {
+        products: allProducts,
+        count: getPaginate.docCount,
+      };
+    } else {
+      return await Supplier.find()
+    }
   } catch (error) {
     console.log({ error });
     throw {
@@ -109,6 +159,72 @@ const getAllStores = async (page, filter) => {
     };
   }
 };
+
+const getTopSuppliers = async () => {
+  try {
+    let allComments = await Comment.aggregate([
+      { $sort: { createdAt: 1, up_votes: 1 } },
+      // { $limit: 10 },
+      { $group: { _id: "$item" } },
+      { $project: { item: "$_id", _id: 0 } }
+    ]);
+
+
+    allComments = allComments.map((entry) => entry.item);
+    let supplier = await Item.distinct("user", {
+      _id: { $in: allComments },
+    })
+    supplier = supplier.map((entry) => entry._id);
+    console.log(supplier, 'top suppliers')
+    const data = await User.find({
+      _id: { $in: supplier },
+    }).limit(10)
+    return data
+
+  } catch (error) {
+    throw {
+      error: error,
+      messsage: error.message || "Get all stores operation failed",
+      code: error.code || 500,
+    };
+  }
+}
+
+const allSupplier = async (page, query) => {
+  try {
+    const limit = parseInt(query.limit) || 10;
+    let skip = parseInt(page) === 1 ? 0 : limit * page;
+    delete query.limit;
+    let docCount = await Item.distinct("user", { ...query, user: { $ne: null } });
+    docCount = docCount.filter((entry) => entry !== null); if (docCount < skip) {
+      skip = (page - 1) * limit;
+    }
+    let allSupplier = await Item.aggregate([
+      { $match: { ...query, user: { $ne: null } } },
+      { $group: { _id: "$user" } },
+      { $skip: skip },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "user"
+        }
+      },
+      { $unwind: "$user" },
+      { $project: { user: 1 } }
+    ]);
+    allSupplier = allSupplier.filter((entry) => !Object.is(entry.user, null))
+    return allSupplier
+  } catch (error) {
+    throw {
+      error: error,
+      messsage: error.message || "Get all stores operation failed",
+      code: error.code || 500,
+    };
+  }
+}
 
 const getAllStoresForUser = async (filter) => {
   try {
@@ -366,5 +482,7 @@ module.exports = {
   getAllStoresForUser,
   checkStoreAvailability,
   addUserToStoreAdmin,
-  removeUserFromStore
+  removeUserFromStore,
+  allSupplier,
+  getTopSuppliers
 };

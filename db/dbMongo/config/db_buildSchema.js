@@ -11,15 +11,20 @@ const userSchema = new Schema(
 
     last_name: { type: String, required: true },
 
-    user_type: { type: String, default: "customer", enum: ['supplier', 'customer', 'admin', 'driver'] },
+    // user_type: { type: String, default: "customer", enum: ['supplier', 'customer', 'admin', 'driver'] },
+
+    user_type: {
+      type: Array, default: ['customer', 'driver'],
+    },
 
     profile_picture: { type: String },
 
-
+    newsletter_subscription: {
+      type: Boolean,
+      default: true
+    },
 
     sub_app_admin: { type: Boolean, default: false },
-
-    hasSupplierAffiliation: { type: Boolean, default: false },
 
     sub_store_admin: { type: Boolean, default: false },
 
@@ -38,16 +43,23 @@ const userSchema = new Schema(
     phone_number: {
 
       type: String,
-      required: true,
+      required: false,
     },
     phone_number_verified: {
       type: Boolean,
+      default: false,
       required: false,
     },
     email_verified: {
 
       type: Boolean,
-      required: false,
+      default: false,
+      required: true,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+      required: true,
     },
     email_token: {
 
@@ -80,10 +92,10 @@ const userSchema = new Schema(
       type: mongoose.Types.ObjectId,
       ref: "Grocery_list",
     },
-    cart: {
+    cart: [{
       type: mongoose.Types.ObjectId,
       ref: "Cart",
-    },
+    }],
 
     orders: [
       {
@@ -285,26 +297,7 @@ const groceryListSchema = new mongoose.Schema(
 
 exports.grocery_list = mongoose.model("Grocery_list", groceryListSchema);
 
-exports.cart = mongoose.model(
-  "Cart",
-  new Schema(
-    {
-      total: { type: String },
 
-      user: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-      },
-      cart_items: [
-        {
-          type: mongoose.Types.ObjectId,
-          ref: "Order_items",
-        },
-      ],
-    },
-    { timestamps: true }
-  )
-);
 
 exports.products = mongoose.model(
   "Products",
@@ -601,99 +594,11 @@ exports.Supplier = mongoose.model(
   )
 );
 
-exports.order_groups = mongoose.model(
-  "order_groups",
-  new Schema(
-    {
-      pickup_region: { type: String },
 
-      dropoff_regions: { type: String },
 
-      orders: [
-        {
-          type: mongoose.Types.ObjectId,
-          ref: "Order",
-        },
-      ],
 
-      number_of_drivers_currently_visibly_available: { type: String },
 
-      sub_order_groups: ObjectId, //need more explanation on this
-    },
 
-    { timestamps: true }
-  )
-);
-
-exports.Order = mongoose.model(
-  "Order",
-  new Schema(
-    {
-      total_order_price: { type: String },
-
-      order_items: [
-        {
-          type: mongoose.Types.ObjectId,
-          ref: "Order_items",
-        },
-      ],
-
-      user: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-      },
-      pickup_details: { type: {} },
-
-      intermediaries_details: ObjectId, //need more clarifiaction on these
-
-      delivery_details: { type: {} },
-
-      payment_details: { type: {} },
-
-      drivers_id: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-      },
-
-      order_group: Array,
-
-      status: {
-        type: String,
-        required: true,
-        default: "PENDING",
-        enum: ["DELIVERED", "PENDING", "PROCESSED", "PICKEDUP"],
-      },
-    },
-
-    { timestamps: true }
-  )
-);
-
-exports.order_items = mongoose.model(
-  "Order_items",
-  new Schema({
-    item: {
-      type: mongoose.Types.ObjectId,
-      refPath: "item_type",
-      required: true,
-    },
-
-    item_type: {
-      type: String,
-      required: true,
-      enum: ["Meal", "Product"],
-    },
-
-    store: {
-      type: [mongoose.Types.ObjectId],
-      ref: "Supplier",
-    },
-
-    quantity_of_item: { type: String },
-
-    estimated_time_of_arrival: Date,
-  })
-);
 
 exports.regions = mongoose.model(
   "regions",
@@ -920,6 +825,33 @@ exports.currencies = mongoose.model(
   )
 );
 
+exports.blog = mongoose.model(
+  "blog",
+  new Schema(
+    {
+      title: { type: String, required: true },
+      featured_image: { type: String, required: true },
+      tags: { type: Array, default: [] },
+      meta_description: { type: String },
+      status: { type: String, enum: ["PUBLIC", 'DRAFT'], default: "PUBLIC" },
+      url_slug: { type: String },
+      html_template: { type: String, required: true },
+      body_content_text: { type: String, required: true },
+      word_count: { type: String, required: true },
+      comments: { type: Array, default: [] },
+      author: { type: mongoose.Types.ObjectId, ref: "User" },
+      category: {
+        type: String,
+        enum: ["MEAL", "INGREDIENTS", "UTENSILS", "KITCHEN TIPS"]
+      }
+    },
+    {
+      timestamps: true
+    }
+  ),
+
+)
+
 exports.validateItemOther = (other) => {
   const schema = Joi.object({
     item_name: Joi.string().required(),
@@ -935,6 +867,20 @@ exports.validateItemDescription = (description) => {
   });
 
   return schema.validate(description);
+}
+
+exports.validateBlog = (payload) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    html_template: Joi.string().required(),
+    body_content_text: Joi.string().required(),
+    word_count: Joi.string().required(),
+    status: Joi.string().optional(),
+    featured_image: Joi.string().required(),
+    category: Joi.string().required()
+  });
+
+  return schema.validate(payload);
 }
 
 exports.validateStoreInformation = (values) => {

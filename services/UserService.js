@@ -14,17 +14,19 @@ const { signUpSchema, resetPasswordSchema } = require("../utils/validators");
 const { requestNumber, } = require("../utils/authentication/vonage/requestNumber");
 const { verifyNumber, } = require("../utils/authentication/vonage/verifyNumber");
 const { cancelNumberVerification, } = require("../utils/authentication/vonage/cancelNumberVerification");
-const { forgotPasswordEmail, signUpEmail, passwordResetEmail } = require("../utils/mailer/nodemailer");
+const { forgotPasswordEmail, signUpEmail, passwordResetEmail, sendNewLetterSubscriptionEmail, sendUserNewsLetterSubscription } = require("../utils/mailer/nodemailer");
 const { generateRefreshTokens } = require("../repository/user");
-const { User, notifications } = require("../db/dbMongo/config/db_buildSchema");
+const { User, notifications, blog } = require("../db/dbMongo/config/db_buildSchema");
 // const { nofication } = require("../controllers/UserController/userController");
 const bcrypt = require('bcryptjs');
+const { newsLetterSchema } = require("../utils/validators/userInputValidator");
 require('dotenv').config();
 
 class UserService {
   static async userSignup(payload) {
     try {
       // validate input data with joi
+
       const validate = signUpSchema.validate(payload);
 
       if (validate.error) {
@@ -34,6 +36,8 @@ class UserService {
           path: validate.error.details[0].path[0],
         };
       }
+      payload.email = payload.email.toLowerCase();
+
       const userExist = await findUser({ email: payload.email });
 
 
@@ -43,12 +47,33 @@ class UserService {
         };
       }
 
-      const newUser = await createUser(payload);
+      const newUser = await createUser({
+        ...payload,
+        newsletter_subscription: payload?.isSubscribed
+      });
+      console.log("newUser", newUser)
+      const generatedToken = await generateAccessTokens({
+        id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+      });
+
+      // if (!Object.is(payload?.email_notifications, false)) {
+      //   await signUpEmail(generatedToken, newUser);
+      // }
+      if (payload?.isSubscribed) {
+        const blogs = await blog.find().sort({ createdAt: -1 }).limit(3).populate("author")
+        await sendNewLetterSubscriptionEmail({
+          name: `${newUser.first_name} ${newUser.last_name}`,
+          email: newUser.email,
+          blogs
+        })
+      }
 
 
       return {
         user: newUser,
-        message: newUser.is_verified ? "User sucessfully registered" : "Verification link sent",
+        message: "User sucessfully registered"
       };
     } catch (error) {
       console.log("caught");
@@ -125,21 +150,37 @@ class UserService {
     }
   }
 
-  static async login(payload) {
+  static async login(payload_) {
     try {
+      const payload = {
+        ...payload_,
+        withAuth: payload_.hasOwnProperty('withAuth') ? payload_.withAuth : true,
+      };
 
-      const userExist = await findUser({ email: payload.email })
+      // Convert email to lowercase
+      payload.email = payload.email.toLowerCase();
+
+      const userExist = await findUser({ email: payload.email });
+      console.log("line 144", userExist);
+      console.log("line 144", payload);
 
       if (!userExist) {
         throw { message: "User does not exist" };
       }
-      const validatePassword = await validatePassWord(
-        payload.email,
-        payload.password
-      );
-      if (!validatePassword) {
-        throw { message: "Invalid user credentials" };
+
+      if (payload?.withAuth) {
+        const validatePassword = await validatePassWord(
+          payload.email,
+          payload.password
+        );
+        if (!validatePassword) {
+          throw { message: "Invalid user credentials" };
+        }
       }
+      // if (userExist && !userExist.isVerified && payload?.withAuth) {
+
+      //   throw { message: "User does not exist" };
+      // }
       const generatedToken = await generateAccessTokens({
         id: userExist._id,
         username: userExist.username,
@@ -151,17 +192,21 @@ class UserService {
         username: userExist.username,
         email: userExist.email,
       });
+
       console.log({
         id: userExist._id,
         username: userExist.username,
         email: userExist.email,
-      }, 'refrehhhh')
+        token: generatedToken,
+      }, 'refrehhhh');
+
       return {
         success: true,
         message: "Authentication successful!",
         token: generatedToken,
         refreshToken: generatedRefreshToken,
         user: userExist,
+        isVerified: userExist.isVerified,
       };
     } catch (error) {
       throw error;
@@ -191,6 +236,56 @@ class UserService {
     }
   }
 
+  static async subscribeToNewsletter(payload) {
+    try {
+
+      const validate = newsLetterSchema.validate(payload);
+
+      if (validate.error) {
+        throw {
+          message: validate.error.details[0].message,
+
+          path: validate.error.details[0].path[0],
+        };
+      }
+      const user = await findUser(payload);
+      if (user) {
+        if (user.newsletter_subscription) {
+          return "You are already subscribed to our newsletter"
+        } else {
+          return await updateUser(
+            { _id: user._id },
+            {
+              newsletter_subscription: true,
+            }
+          );
+        }
+      } else {
+        const password = Math.floor(Math.random() * 10000000000);
+        const newUser = await createUser({
+          email: payload.email,
+          first_name: "Unnamed",
+          last_name: "User",
+          user_type: "customer",
+          newsletter_subscription: true,
+          email_verified: false,
+          username: payload.email.split("@")[0],
+          password
+        });
+        const blogs = await blog.find().sort({ createdAt: -1 }).limit(3).populate("author")
+        await sendUserNewsLetterSubscription({
+          name: `${newUser.first_name} ${newUser.last_name}`,
+          email: newUser.email,
+          blogs,
+          password
+        })
+        return "Succcessfully subscribed to our newsletter"
+      }
+    } catch (error) {
+      console.log("Error: ", error)
+      throw error
+    }
+  }
 
   static async resetPassword(payload) {
     try {
@@ -370,13 +465,18 @@ class UserService {
 
       if (result) {
 
-        const user = await findUser({ email: result.email });
+        const user = await findUser({ email: req.body.email });
         if (!user) throw { message: "User not found" };
 
         await updateUser(
           { _id: user.id },
+
           {
-            phone_number_verified: true,
+            $set: {
+              phone_number_verified: true,
+              isVerified: true
+            }
+
 
           }
         );
@@ -396,6 +496,7 @@ class UserService {
           message: "Authentication successful!",
           token: generatedToken,
           refreshToken: generatedRefreshToken,
+          request: result,
           user: user,
         };
       }
@@ -411,6 +512,7 @@ class UserService {
       // confirm verification edge cases,
       const otp = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
       const user = await findUser({ email });
+
       const email_token = await bcrypt.hash(otp.toString(), 10)
       if (!user) throw { message: "User not found" };
       await updateUser(
@@ -419,8 +521,11 @@ class UserService {
           email_token,
         }
       );
+
+
       console.log('req.body.email', otp.toString(), email)
-      await signUpEmail(otp.toString(), { email, user });
+
+      await signUpEmail(otp.toString(), user);
       return;
     } catch (e) {
       throw e;
@@ -439,7 +544,12 @@ class UserService {
         await updateUser(
           { _id: user.id },
           {
-            email_verified: true,
+            $set: {
+              email_verified: true,
+              isVerified: true
+            }
+
+
 
           }
         );
@@ -479,6 +589,31 @@ class UserService {
     }
   }
 
+
+  static async confirmAccount(payload) {
+    try {
+      console.log("confirmAccount", payload)
+      const user = await findUser({ email: payload.email });
+      console.log("confirmAccount", user)
+      if (user && user.isVerified) {
+        console.log(user.isVerified)
+        return {
+          user: user,
+          message: "user has been verified successfully"
+        }
+      } else {
+        return {
+          message: "user not verified"
+        }
+      }
+
+
+    } catch (e) {
+      console.log('Failed to cancel phone verification', e)
+    }
+  }
+
+
 }
 
 
@@ -498,25 +633,25 @@ module.exports = UserService;
 
 
 
-  // static async forgotPassword(payload) {
-  //   try {
-  //     const { email } = payload;
-  //     // Check username as well when testing forgot password
-  //     const userExists = await findUser({ email });
-  //     if (!userExists) {
-  //       throw { code: 401, message: "user does not exist" };
-  //     }
-  //     const generatePasswordToken = await generatePasswordResetToken({
-  //       email: userExists.email,
-  //       id: userExists._id,
-  //     });
-  //     let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}`;
-  //     forgotPasswordEmail(userExists.email, resetLink);
-  //     return {
-  //       msg: "Email with reset link has been sent to you.",
-  //       done: true,
-  //     };
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+// static async forgotPassword(payload) {
+//   try {
+//     const { email } = payload;
+//     // Check username as well when testing forgot password
+//     const userExists = await findUser({ email });
+//     if (!userExists) {
+//       throw { code: 401, message: "user does not exist" };
+//     }
+//     const generatePasswordToken = await generatePasswordResetToken({
+//       email: userExists.email,
+//       id: userExists._id,
+//     });
+//     let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}`;
+//     forgotPasswordEmail(userExists.email, resetLink);
+//     return {
+//       msg: "Email with reset link has been sent to you.",
+//       done: true,
+//     };
+//   } catch (error) {
+//     throw error;
+//   }
+// }

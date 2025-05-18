@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 exports.Inventory = mongoose.model(
   "Inventory",
   new mongoose.Schema(
@@ -19,11 +18,13 @@ exports.Inventory = mongoose.model(
 
       prepackagedMeal: { type: Boolean, default: false },
 
-      storeId: {
-        type: mongoose.Types.ObjectId,
-        ref: "Supplier",
-        required: true,
-      },
+      storeId: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Supplier",
+          required: true,
+        }
+      ],
 
       quantityInStock: { type: String },
 
@@ -31,15 +32,31 @@ exports.Inventory = mongoose.model(
 
       estimatedPreparationTime: { type: String },
 
-      meal_price: { type: String },
+      // meal_price: { type: String },
+      meal_price: [
+        {
+          store_id: { type: mongoose.Types.ObjectId, ref: "Supplier" },
+          currency: { type: String },
+          price: { type: Number },
+        }
+      ],
+      item_price: { type: Number },
+
 
       ingredients: [
         {
           item_name: { type: String },
 
-          set_price: {
-            type: String,
-          },
+          // set_price: {
+          //   type: String,
+          // },
+          set_prices: [
+            {
+              store_id: { type: mongoose.Types.ObjectId, ref: "Supplier" },
+              currency: { type: String },
+              price: { type: Number },
+            }
+          ],
           item_quantity: { type: String },
 
           product_available: Boolean,

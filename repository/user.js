@@ -3,10 +3,14 @@ const {
   grocery_list,
   products,
   User,
-  cart,
+  blog,
 } = require("../db/dbMongo/config/db_buildSchema");
+const { cart } = require("../model/cart");
+const { sendNewLetterSubscriptionEmail } = require("../utils/mailer/nodemailer");
+const BlogService = require("../services/blogService");
 
 const createUser = async (payload) => {
+  console.log("payload", payload)
   const newUser = await User.create(payload);
 
   try {
@@ -16,20 +20,22 @@ const createUser = async (payload) => {
         products: [],
       });
 
-      await cart.create({
-        user: newUser._id,
-        total: "0",
-      });
+      // await cart.create({
+      //   user: newUser._id,
+      //   total: "0",
+      // });
     }
     return newUser;
   } catch (error) {
-    throw error;
+    throw erropr;
   }
 };
 
 const updateUser = async (filter, data) => {
   try {
-    return await User.findOneAndUpdate(filter, data, { new: true });
+    const response = await User.findOneAndUpdate(filter, data);
+
+    return response
   } catch (error) {
     console.log(error);
     throw error;
@@ -72,6 +78,7 @@ const findUsers = async (filter, page) => {
 const validatePassWord = async (email, password) => {
   try {
     const user = await findUser({ email: email });
+    console.log("line 75", password)
     return await user.comparePassword(password);
   } catch (error) {
     throw error;

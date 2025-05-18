@@ -3,6 +3,7 @@ const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthe
 const express = require("express");
 const router = express.Router();
 const { upload } = require("../utils/middleware");
+const { uploadToCloudinary } = require('../utils/middleware/multer-s3-middleware.js');
 
 
 router.get("/list", verifyAuthentication, GroceryController.getAllGroceryListForAUser)
@@ -17,7 +18,7 @@ router.post('/grocery-item', verifyAuthentication, GroceryController.addNewJsonD
 
 router.post('/grocery-measurement', verifyAuthentication, GroceryController.addNewMeasurementToGroceryList)
 
-router.post('/grocery-other', verifyAuthentication, upload.single('item_image'), GroceryController.addNewOtherToGroceryList)
+router.post('/grocery-other', verifyAuthentication, uploadToCloudinary.single('item_image'), GroceryController.addNewOtherToGroceryList)
 
 router.patch('/remove/:groceryListId/:groceryItemId', verifyAuthentication, GroceryController.removeItemFromGroceryList)
 

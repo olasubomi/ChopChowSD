@@ -2,17 +2,18 @@ const router = require("express").Router();
 const ProductController = require("../controllers/productController/product.controller");
 const { upload, transformObject } = require("../utils/middleware");
 const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
+const { uploadToCloudinary } = require('../utils/middleware/multer-s3-middleware.js');
 
 router.post(
   "/create",
   verifyAuthentication,
-  upload.array("product_images"),
+  uploadToCloudinary.array("product_images"),
   ProductController.createProduct
 );
 router.post(
   "/update/:productId",
   verifyAuthentication,
-  upload.array("product_images"),
+  uploadToCloudinary.array("product_images"),
   transformObject,
   ProductController.updateProduct
 );

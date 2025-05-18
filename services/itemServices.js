@@ -1,4 +1,4 @@
-const { validate, validateItemMeal, validateItemProduct, Item } = require("../model/item");
+const { validate, validateItemMeal, validateItemProduct, Item, videoFileSchema } = require("../model/item");
 
 const {
   createItem,
@@ -15,14 +15,18 @@ const {
   filterItem,
   getItemsForAUser,
   updateItem,
-  searchItem,
+  filterStoresByUsername,
 } = require("../repository/item");
-
+const fs = require('fs')
+const OpenAI = require('openai');
 const {
   createProduct
 } = require('../repository/product')
-
+const test_json = require('../test.json')
+const ai = require('../ai.json')
+const { createClient } = require("@deepgram/sdk");
 const { createMeal } = require('../repository/meal')
+
 
 const {
   createCategoriesFromCreateMeal
@@ -32,7 +36,18 @@ const { createNewMeasurment } = require("../repository/measurement");
 const { createNewIngredient, getAllIngredient } = require("../repository/ingredient");
 const GroceryService = require("./groceryService");
 const { capitalize } = require("lodash");
-
+// const ytdl = require('@distube/ytdl-core');
+const axios = require('axios');
+// const fetch = require('node-fetch');
+const { URL } = require('url');
+const path = require('path');
+const TEMP_DIR = path.join(__dirname, 'temp');
+if (!fs.existsSync(TEMP_DIR)) {
+  fs.mkdirSync(TEMP_DIR);
+}
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_KEY
+});
 class ItemService {
   static async createItem(payload, files = [], res, query = { action: 'create', _id: "" }) {
 
@@ -41,6 +56,8 @@ class ItemService {
 
       // files.item_images = [];
       console.log(payload, files)
+
+      // files.item_images = files.map((ele) => ele.fieldname === "item_images")
 
 
       if (payload.item_type === 'Meal') {
@@ -61,8 +78,8 @@ class ItemService {
           console.log('item_images', files.item_images)
           if (files?.item_images?.length) {
             for (let i = 0; i < item_images.length; i++) {
-              payload.item_images.push(item_images[i].location)
-              payload[`itemImage${i}`] = item_images[i].location
+              payload.item_images.push(item_images[i].path)
+              payload[`itemImage${i}`] = item_images[i].path
             }
           }
 
@@ -111,12 +128,12 @@ class ItemService {
           if (Array.isArray(files?.item_images)) {
             for (let i = 0; i < item_images.length; i++) {
               payload.item_images = item.item_images
-              payload.item_images.push(item_images[i].location)
+              payload.item_images.push(item_images[i].path)
               if (item.item_images.length) {
-                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].location
+                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].path
 
               } else {
-                payload[`itemImage${i}`] = item_images[i].location
+                payload[`itemImage${i}`] = item_images[i].path
 
               }
             }
@@ -126,7 +143,7 @@ class ItemService {
           for (let i = 1; i < 6; i++) {
             if (files[`image_or_video_content_${i}`] !== undefined) {
               const image = files[`image_or_video_content_${i}`];
-              payload[`meal_image_or_video_content${i}`] = image[0].location
+              payload[`meal_image_or_video_content${i}`] = image[0].path
             }
           }
 
@@ -134,8 +151,8 @@ class ItemService {
 
           if (Array.isArray(files?.item_images)) {
             for (let i = 0; i < item_images.length; i++) {
-              payload.item_images.push(item_images[i].location)
-              payload[`itemImage${i}`] = item_images[i].location
+              payload.item_images.push(item_images[i].path)
+              payload[`itemImage${i}`] = item_images[i].path
             }
 
           }
@@ -144,7 +161,7 @@ class ItemService {
           for (let i = 1; i < 6; i++) {
             if (files[`image_or_video_content_${i}`] !== undefined) {
               const image = files[`image_or_video_content_${i}`];
-              payload[`meal_image_or_video_content${i}`] = image[0].location
+              payload[`meal_image_or_video_content${i}`] = image[0].path
             }
           }
         }
@@ -197,15 +214,51 @@ class ItemService {
               measurement_name: item_measurement
             })
           }
-          console.log('action 5')
-          await createNewIngredient({
-            item_name
-          })
 
+          // await createNewIngredient({
+          //   item_name
+          // })
+        }
+        if (payload?.formatted_ingredients) {
+          Promise.all(
+            (payload?.formatted_ingredients || [])?.map(async (ingredient) => {
+              const checkExist = await Item.findOne({
+                item_name: ingredient?.item_name,
+                item_type: 'Product'
+              })
+              if (!checkExist) {
+                await createItem({
+                  item_name: ingredient?.item_name,
+                  item_type: 'Product',
+                  user: payload.user,
+                  item_status: [{
+                    status: "Draft",
+                    status_note: "Pending Approval",
+                  },]
+                })
+              }
+            })
+          )
         }
         console.log('action 6')
 
-
+        // 
+        if (JSON.parse(payload?.item_data?.kitchen_utensils)) {
+          Promise.all(
+            JSON.parse(payload?.item_data?.kitchen_utensils)?.map(async (ele) => {
+              const checkExist = await Item.findOne({
+                item_name: ele,
+                item_type: 'Utensil'
+              })
+              if (!checkExist) {
+                await createItem({
+                  item_name: ele,
+                  item_type: 'Utensil'
+                })
+              }
+            })
+          )
+        }
 
         // payload.item_categories = JSON.parse(payload.item_categories).map(ele => ele.toString())
         console.log('action 7')
@@ -215,6 +268,8 @@ class ItemService {
             return res
           })
         payload.item_categories = ele
+
+
 
         delete payload.formatted_instructions;
         delete payload.item_data
@@ -267,12 +322,12 @@ class ItemService {
           if (files?.item_images?.length) {
             for (let i = 0; i < files?.item_images.length; i++) {
               payload.item_images = item.item_images
-              payload.item_images.push(item_images[i].location)
+              payload.item_images.push(item_images[i].path)
               if (item.item_images.length) {
-                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].location
+                payload[`itemImage${i + item.item_images.length - 1}`] = item_images[i].path
 
               } else {
-                payload[`itemImage${i}`] = item_images[i].location
+                payload[`itemImage${i}`] = item_images[i].path
 
               }
             }
@@ -281,8 +336,8 @@ class ItemService {
         } else {
           if (files?.item_images?.length) {
             for (let i = 0; i < files?.item_images.length; i++) {
-              payload.item_images.push(item_images[i].location)
-              payload[`itemImage${i}`] = item_images[i].location
+              payload.item_images.push(item_images[i].path)
+              payload[`itemImage${i}`] = item_images[i].path
             }
           }
         }
@@ -396,10 +451,32 @@ class ItemService {
           }
           payload.ingredeints_in_item.push(obj)
 
-          const abc = await createNewIngredient({
-            item_name
-          })
-          console.log('abe', abc)
+          // const abc = await createNewIngredient({
+          //   item_name
+          // })
+          // console.log('abe', abc)
+        }
+
+        if (payload?.formatted_ingredients) {
+          Promise.all(
+            (payload?.formatted_ingredients || [])?.map(async (ingredient) => {
+              const checkExist = await Item.findOne({
+                item_name: ingredient?.item_name,
+                item_type: 'Product'
+              })
+              if (!checkExist) {
+                await createItem({
+                  item_name: ingredient?.item_name,
+                  item_type: 'Product',
+                  user: payload.user,
+                  item_status: [{
+                    status: "Draft",
+                    status_note: "Pending Approval",
+                  }]
+                })
+              }
+            })
+          )
         }
 
         delete payload.item_data;
@@ -436,8 +513,8 @@ class ItemService {
         let obj = {}
         if (files?.item_images?.length) {
           for (let i = 0; i < item_images.length; i++) {
-            obj.item_images.push(item_images[i].location)
-            obj[`itemImage${i}`] = item_images[i].location
+            obj.item_images.push(item_images[i].path)
+            obj[`itemImage${i}`] = item_images[i].path
           }
           obj.item_images = files?.item_images
         }
@@ -476,7 +553,7 @@ class ItemService {
       // const instruction_images = files.instruction_images
 
       // item_images.map((file) => {
-      //   itemImages.push(file.location);
+      //   itemImages.push(file.path);
       // });
 
       // payload.item_images = itemImages;
@@ -548,37 +625,37 @@ class ItemService {
 
       //   if (files.image_or_video_content_1?.length) {
       //     files.image_or_video_content_1.map(files => {
-      //       payload.item_data.image_or_video_content_1 = files.location
+      //       payload.item_data.image_or_video_content_1 = files.path
       //     })
       //   }
 
       //   if (files.image_or_video_content_2?.length) {
       //     files.image_or_video_content_2.map(files => {
-      //       payload.item_data.image_or_video_content_2 = files.location
+      //       payload.item_data.image_or_video_content_2 = files.path
       //     })
       //   }
 
       //   if (files.image_or_video_content_3?.length) {
       //     files.image_or_video_content_3.map(files => {
-      //       payload.item_data.image_or_video_content_3 = files.location
+      //       payload.item_data.image_or_video_content_3 = files.path
       //     })
       //   }
 
       //   if (files.image_or_video_content_4?.length) {
       //     files.image_or_video_content_4.map(files => {
-      //       payload.item_data.image_or_video_content_4 = files.location
+      //       payload.item_data.image_or_video_content_4 = files.path
       //     })
       //   }
 
       //   if (files.image_or_video_content_5?.length) {
       //     files.image_or_video_content_5.map(files => {
-      //       payload.item_data.image_or_video_content_5 = files.location
+      //       payload.item_data.image_or_video_content_5 = files.path
       //     })
       //   }
 
       //   if (files.image_or_video_content_6?.length) {
       //     files.image_or_video_content_6.map(files => {
-      //       payload.item_data.image_or_video_content_6 = files.location
+      //       payload.item_data.image_or_video_content_6 = files.path
       //     })
       //   }
 
@@ -631,6 +708,14 @@ class ItemService {
   static async getAllStoreItems(filter, res) {
     try {
       return await getStoreItems(filter);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async getStoresByUsername(name) {
+    try {
+      return await filterStoresByUsername(name);
     } catch (error) {
       console.log(error);
     }
@@ -721,6 +806,289 @@ class ItemService {
       console.log(error);
     }
   }
+
+  static async extractProductImageContent(req, res) {
+    try {
+      if (!req.files.length) throw new Error("No image file attached")
+
+      const arr = [];
+      req.files.map((entry) => {
+        const base64String = Buffer.from(entry.buffer).toString('base64');
+        arr.push({
+          "type": "image_url",
+          "image_url": {
+            "url": `data:image/png;base64,${base64String}`
+          }
+        })
+      })
+
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            "role": "user",
+            "content": [
+              ...arr,
+              {
+                "type": "text",
+                "text": "Extract the following from the image in JSON format. If not available, return empty values (e.g., \"\" for strings, 0 for numbers, [] for arrays):\nproduct_intro: The product introduction.\nsize: As { size: number, msr: string } (e.g., { size: 2, msr: \"kg\" }).\ningredients: As an array of { name: string, qty: number, msr: string }.\nnutritional_info: As an array of { name: string, qty: number, msr: string }.\ncategories: As an array of strings.\n product_name: The name of the product in the image as a string."
+              }
+            ]
+          },
+
+        ],
+        temperature: 1,
+        max_tokens: 2048,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+        response_format: {
+          "type": "json_object"
+        },
+      });
+      return response.choices[0].message.content
+    } catch (error) {
+      console.log(error)
+      throw new Error(error)
+    }
+  }
+
+  static async processVideo(req, res) {
+    try {
+      console.log(req.file, req.body, 'payload')
+      let buffer = ''
+      const file_name = `File-${Math.floor(Math.random() * 1000000)}.mp4`
+      const filePath = path.join(TEMP_DIR, file_name);
+
+      if (req.file) {
+        const { value, error } = videoFileSchema(req.file)
+        buffer = req.file.buffer
+      } else if (req.body.url) {
+        // const { url } = req.body;
+        // const videoURL = new URL(url);
+
+        // if (videoURL.hostname.includes('youtube.com') || videoURL.hostname.includes('youtu.be')) {
+        //   // if (!ytdl.validateURL(url)) {
+        //   //   return res.status(400).json({ error: 'Invalid YouTube URL' });
+        //   // }
+
+        //   // const promise = await youtubedl(url, { dumpSingleJson: true })
+        //   // const _url = Array.isArray(promise?.requested_formats) && promise.requested_formats.length >= 1 && promise.requested_formats[1]?.hasOwnProperty("url") && promise.requested_formats[1]?.url;
+        //   // if (!_url) throw new Error("Unable to extract video from url")
+        //   // await this.downloadVideo(_url, file_name);
+        //   // const videoFile = fs.readFileSync(filePath)
+        //   // buffer = videoFile
+        //   // fs.unlinkSync(filePath);
+        //   return res.status(400).json({ error: 'Unsupported video platform' });
+
+        // } else if (videoURL.hostname.includes('instagram.com')) {
+        //   const dataList = await instagramDl(url);
+        //   await this.downloadVideo(dataList[0]?.download_link, file_name);
+        //   const videoFile = fs.readFileSync(filePath)
+        //   buffer = videoFile
+        //   // fs.unlinkSync(filePath);
+
+
+
+
+        {
+          return res.status(400).json({ error: 'Unsupported video platform' });
+        }
+      }
+      const resp = await this.transcribeFile(buffer)
+      return resp
+
+      // console.log(value, error)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  static async transcribeFile(file) {
+    const deepgram = createClient(process.env.DEEPGRAM_API_KEY);
+    const { result, error } = await deepgram.listen.prerecorded.transcribeFile(
+      file,
+      {
+        model: "nova-2",
+        paragraphs: true
+      }
+    );
+
+    if (error) throw error;
+    if (!error) {
+      // const result = test_json;
+      const transcript = result.results.channels[0].alternatives[0].transcript;
+      const words = result.results.channels[0].alternatives[0].words;
+      if (!error) {
+        const payload = await this.openAi(transcript);
+        console.dir(payload, { depth: null })
+        const ai_ = JSON.parse(payload);
+        let obj = {};
+        result.results.channels[0].alternatives[0].paragraphs.paragraphs.map((element) => {
+          element.sentences.map((entry) => ({
+            [this.formatSeconds(entry.start)]: entry.text
+          })).forEach((ele) => {
+            obj = {
+              ...obj,
+              ...ele
+            }
+          })
+        })
+
+        const resp = {
+          transcription: obj,
+          data: ai_
+        }
+        // console.dir(obj, { depth: null })
+        return resp
+      }
+
+    }
+  };
+
+  static async openAi(transcription) {
+
+
+    try {
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": `Text: ${transcription}
+                Return the following details in pure JSON format without the json tag:
+                1. Meal name (returned as meal_name)
+                2. Meal preparation summary (150 words) (returned as meal_preparation_summary)
+                3. Meal preparation steps (returned as meal_preparation_steps, array of objects like [{ step: 1, step_title: "3-word title", step_instruction: ["instruction1", "instruction2"] }])
+                4. Ingredients used (returned as ingredients, array of objects like [{ ingredient_name: "name", ingredient_measurement: "measurement", ingredient_quantity: "quantity" }])
+                5. Kitchen utensils used (returned as kitchen_utensils, array of strings)
+                6. Suggested meal categories (returned as meal_categories)
+                7. Prep time (returned as prep_time)
+                8. Cook time (return as cook_time)
+                When generating the Meal preparation steps, I want you to get the start (key should be timestamp_start) and end (key should be timestamp_end) timestamps in this format hh:mm:ss of where each step is carried out, I want to use it so split the video.  
+                `
+              }
+            ]
+          },
+        ],
+        temperature: 1.2,
+        max_tokens: 1800,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+      });
+      return response.choices[0].message.content
+    } catch (e) {
+      console.log(e, 'error')
+    }
+
+
+
+  }
+
+  static formatSeconds(seconds) {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = (seconds % 60).toFixed(2);
+    const hrsStr = String(hrs).padStart(2, '0');
+    const minsStr = String(mins).padStart(2, '0');
+    const secsStr = String(secs).padStart(5, '0');
+    return `${hrsStr}:${minsStr}:${secsStr}`;
+  }
+
+  static async divideTranscriptIntoMinutes(transcriptData) {
+    const transcriptByMinute = {};
+    let currentMinute = 1;
+    let currentWords = [];
+
+    for (const item of transcriptData) {
+      const { start, end, word } = item;
+      const startMinute = Math.floor(start / 60) + 1;
+      const endMinute = Math.floor(end / 60) + 1;
+
+      if (startMinute !== endMinute) {
+        const endOfCurrentMinute = (startMinute * 60) - start;
+        currentWords.push(word);
+        transcriptByMinute[`00:${String(currentMinute).padStart(2, '0')}:00`] = currentWords.join(' ');
+
+        currentMinute = endMinute;
+        currentWords = [];
+        currentWords.push(word);
+      } else {
+        if (startMinute > currentMinute) {
+          transcriptByMinute[`00:${String(currentMinute).padStart(2, '0')}:00`] = currentWords.join(' ');
+          currentMinute = startMinute;
+          currentWords = [];
+        }
+        currentWords.push(word);
+      }
+    }
+
+    if (currentWords.length > 0) {
+      transcriptByMinute[`00:${String(currentMinute).padStart(2, '0')}:00`] = currentWords.join(' ');
+    }
+
+    return transcriptByMinute;
+  }
+
+  static async downloadVideo(videoUrl, filename) {
+    const response = await axios.get(videoUrl, { responseType: 'stream' });
+    const filePath = path.join(TEMP_DIR, filename);
+    response.data.pipe(fs.createWriteStream(filePath));
+
+    return new Promise((resolve, reject) => {
+      response.data.on('end', () => resolve(filePath));
+      response.data.on('error', reject);
+    });
+  };
+
+  static async splitVideos(timestamps, outputDir, filePath) {
+    const currentTime = new Date().getTime()
+    // const outputDir = `output/${currentTime}`;
+    console.log(!fs.existsSync(outputDir), 'exising dir')
+    // if (!fs.existsSync(outputDir)) {
+
+    // }
+    fs.mkdirSync(outputDir, {
+      recursive: true
+    });
+
+    const promises = timestamps.map((timestamp, index) => {
+      return new Promise((resolve, reject) => {
+        const outputFilePath = path.join(outputDir, `segment-${index + 1}.mp4`);
+
+        const [startHours, startMinutes, startSeconds] = timestamp.timestamp_start.split(':').map(parseFloat);
+        const [endHours, endMinutes, endSeconds] = timestamp.timestamp_end.split(':').map(parseFloat);
+
+        const startTotalSeconds = (startHours * 3600) + (startMinutes * 60) + startSeconds;
+        const endTotalSeconds = (endHours * 3600) + (endMinutes * 60) + endSeconds;
+
+        const durationSeconds = endTotalSeconds - startTotalSeconds;
+
+        const durationHours = Math.floor(durationSeconds / 3600).toString().padStart(2, '0');
+        const durationMinutes = Math.floor((durationSeconds % 3600) / 60).toString().padStart(2, '0');
+        const durationSecs = (durationSeconds % 60).toFixed(2).padStart(5, '0');
+
+        const duration = `${durationHours}:${durationMinutes}:${durationSecs}`;
+
+        ffmpeg(filePath)
+          .setStartTime(timestamp.timestamp_start)
+          .setDuration(duration)
+          .output(outputFilePath)
+          .on('end', () => resolve(outputFilePath))
+          .on('error', reject)
+          .run();
+      });
+    });
+
+    return Promise.all(promises)
+  }
+
+
 }
 
 module.exports = ItemService;

@@ -22,14 +22,42 @@ const findMeasurement = async (filter) => {
 
 const getAllMeasurement = async (page, filter) => {
   try {
-    let getPaginate = await paginateMesr(page, filter)
 
-    const status = filter.status !== 'all' ? { status: filter.status } : {}
+    let query = {}
 
-    const resp = await Measurement
-      .find(status)
-      .limit(getPaginate.limit)
-      .skip(getPaginate.skip)
+    let sort = {}
+
+    if (filter?.measurement_key) {
+      query.measurement_name = { $regex: filter.measurement_key, $options: "i" }
+    }
+    if (filter?.createdAt) {
+      sort.createdAt = Number(filter.createdAt)
+    }
+    if (filter?.measurement_name) {
+      sort.measurement_name = Number(filter.measurement_name)
+    }
+
+    if (filter.status !== 'all' && Boolean(filter.status)) {
+      query.status = filter.status?.pop()
+    }
+
+    const withPaginate = filter.hasOwnProperty('withPaginate') ? filter.withPaginate === 'false' ? false : true : true
+    delete filter.withPaginate
+    let getPaginate = await paginateMesr(page, query)
+
+    // const status = filter.status !== 'all' ? { status: filter.status } : {}
+
+    let resp = []
+    if (withPaginate) {
+      resp = await Measurement
+        .find(query)
+        .sort(sort)
+        .limit(getPaginate.limit)
+        .skip(getPaginate.skip)
+    } else {
+      resp = await Measurement
+        .find(status)
+    }
 
     return { measurement: resp, count: getPaginate.docCount };
 

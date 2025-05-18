@@ -8,11 +8,13 @@ module.exports = (req, res, next) => {
     token = token.slice(7, token.length);
   }
 
+
   if (token) {
     verify(token, secret, (err, decoded) => {
       console.log(err, 'ereoopppppp')
       if (err) {
         // lets also check cookie..
+
         console.log("Error when veryfiying authentication token");
         console.log(err);
         return res.status(401).json({

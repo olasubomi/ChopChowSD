@@ -19,7 +19,6 @@ router.get(
 )
 router.get(
   "/get-all-inentories/:page",
-  verifyAuthentication,
   InventoryController.getInventories
 );
 router.get(
