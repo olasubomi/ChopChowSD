@@ -99,48 +99,51 @@ exports.createInventory = async (payload) => {
     payload.storeId = Array.isArray(payload.storeId)
       ? payload.storeId
       : [payload.storeId];
-    console.dir(payload, {
-      depth: null
-    })
+
+    console.dir(payload, { depth: null });
     console.log('Processing inventory for stores:', payload.storeId);
 
-    const checkExist = await Inventory.findOne({
-      storeId: { $in: payload.storeId },
-      item: payload.item,
-      item_type: payload.item_type,
-    });
+    // Handle prepackaged meal (i.e., main item exists)
+    if (payload.item_type !== "non packaged") {
+      const checkExist = await Inventory.findOne({
+        storeId: { $in: payload.storeId },
+        item: payload.item,
+        item_type: payload.item_type,
+      });
 
-    if (checkExist) {
-      throw new Error("Item already exists in store inventory");
-    }
+      if (checkExist) {
+        throw new Error("Item already exists in store inventory");
+      }
 
-    const item = await Item.findById(payload.item);
-    if (!item) {
-      throw new Error("Main item not found");
-    }
-    console.log('Found main item:', item.name);
+      const item = await Item.findById(payload.item);
+      if (!item) {
+        throw new Error("Main item not found");
+      }
+      console.log('Found main item:', item.name);
 
-    const newInventory = await Inventory.create(payload);
-    console.log('Created main inventory:', newInventory._id);
+      const newInventory = await Inventory.create(payload);
+      console.log('Created main inventory:', newInventory._id);
 
-    await Item.findByIdAndUpdate(
-      payload.item,
-      {
-        $set: {
-          item_price: Array.isArray(payload.meal_price)
-            ? Number(payload.meal_price[0]?.price || 0)
-            : Number(payload.meal_price),
-          item_available: payload.in_stock,
-          meal_prep_time: payload.estimated_preparation_time,
-          stores_available: payload.storeId.map(storeId =>
-            mongoose.Types.ObjectId(storeId)
-          ),
+      await Item.findByIdAndUpdate(
+        payload.item,
+        {
+          $set: {
+            item_price: Array.isArray(payload.meal_price)
+              ? Number(payload.meal_price[0]?.price || 0)
+              : Number(payload.meal_price),
+            item_available: payload.in_stock,
+            meal_prep_time: payload.estimated_preparation_time,
+            stores_available: payload.storeId.map(storeId =>
+              mongoose.Types.ObjectId(storeId)
+            ),
+          },
+          $addToSet: { inventories: newInventory._id },
         },
-        $addToSet: { inventories: newInventory._id },
-      },
-      { new: true }
-    );
+        { new: true }
+      );
+    }
 
+    // ✅ Process ingredients for both meal types
     if (Array.isArray(payload.ingredients) && payload.ingredients.length > 0) {
       console.log('Processing ingredients:', payload.ingredients.length);
 
@@ -150,7 +153,6 @@ exports.createInventory = async (payload) => {
 
           const ingredientItem = await Item.findOne({
             item_name: ingredient.item_name,
-            // item_type: "Product"
           });
 
           if (!ingredientItem) {
@@ -181,10 +183,11 @@ exports.createInventory = async (payload) => {
             item_price: Array.isArray(ingredient.set_prices) && ingredient.set_prices.length > 0
               ? Number(ingredient.set_prices[0].price)
               : 0,
-
             in_stock: ingredient.product_available ?? true,
           };
-          console.log(ingredientInventory, 'ingredientinventory')
+
+          console.log(ingredientInventory, 'ingredientinventory');
+
           const createdIngredientInventory = await Inventory.create(ingredientInventory);
           console.log('Created ingredient inventory:', createdIngredientInventory._id);
 
@@ -196,7 +199,7 @@ exports.createInventory = async (payload) => {
       console.log('No ingredients to process');
     }
 
-    return newInventory;
+    return { message: "Inventory created successfully" };
 
   } catch (error) {
     console.error("Error in createInventory:", error);
@@ -207,6 +210,7 @@ exports.createInventory = async (payload) => {
     };
   }
 };
+
 
 function normalizeArray(arr) {
   const uniqueSet = new Set();
