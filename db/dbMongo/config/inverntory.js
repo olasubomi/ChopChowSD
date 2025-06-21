@@ -11,6 +11,10 @@ exports.Inventory = mongoose.model(
         ref: "Item",
         required: true,
       },
+      is_private: {
+        type: Boolean,
+        default: false
+      },
       user: {
         type: mongoose.Types.ObjectId,
         ref: "User"
