@@ -25,6 +25,25 @@ const checkoutGroupSchema = new Schema({
   orders: [{ type: Schema.Types.ObjectId, ref: "Order" }]
 }, { timestamps: true });
 
+checkoutGroupSchema.pre("validate", function (next) {
+  const monetaryFields = ["item_subtotal_cents", "delivery_cents",
+    "tax_cents", "discount_cents", "total_cents"];
+  for (const field of monetaryFields) {
+    const amount = this[field];
+    if (!Number.isSafeInteger(amount) || amount < 0) {
+      this.invalidate(field, field + " must be non-negative integer minor units");
+    }
+  }
+  if (monetaryFields.every(field => Number.isSafeInteger(this[field]))) {
+    const due = this.item_subtotal_cents + this.delivery_cents +
+      this.tax_cents - this.discount_cents;
+    if (!Number.isSafeInteger(due) || due < 0 || this.total_cents !== due) {
+      this.invalidate("total_cents", "Checkout amounts must reconcile");
+    }
+  }
+  next();
+});
+
 checkoutGroupSchema.index({ payment_provider: 1, payment_reference: 1 },
   { unique: true, partialFilterExpression: { payment_reference: { $type: "string" } } });
 
