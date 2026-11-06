@@ -80,8 +80,8 @@ orderSchema.pre("validate", function (next) {
     if (this.subtotal_cents !== undefined && this.total_cents !== undefined &&
         (!Number.isSafeInteger(this.subtotal_cents) ||
          !Number.isSafeInteger(this.total_cents) ||
-         this.total_cents < this.subtotal_cents)) {
-        this.invalidate("total_cents", "Total must include at least item subtotal in integer minor units");
+         this.subtotal_cents < 0 || this.total_cents < 0)) {
+        this.invalidate("total_cents", "Amounts must be non-negative integer minor units");
     }
     if (Array.isArray(this.line_items) && this.subtotal_cents !== undefined) {
         const sum = this.line_items.reduce((n, line) => n + (line.subtotal_cents || 0), 0);
