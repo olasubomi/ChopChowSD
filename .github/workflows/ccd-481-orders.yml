@@ -1,0 +1,31 @@
+name: CCD-481 order foundations
+
+on:
+  push:
+    branches:
+      - feature/ccd-481-multisupplier-orders
+  pull_request:
+    paths:
+      - 'services/checkoutGrouping.js'
+      - 'model/order.js'
+      - 'model/orderGroup.js'
+      - 'model/checkoutGroup.js'
+      - 'test/checkoutGrouping.test.js'
+      - '.github/workflows/ccd-481-orders.yml'
+
+jobs:
+  checkout-foundations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check source syntax
+        run: |
+          node --check services/checkoutGrouping.js
+          node --check model/order.js
+          node --check model/orderGroup.js
+          node --check model/checkoutGroup.js
+      - name: Run offline supplier grouping tests
+        run: node --test test/checkoutGrouping.test.js
