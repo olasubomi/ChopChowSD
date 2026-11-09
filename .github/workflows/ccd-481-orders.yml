@@ -12,6 +12,9 @@ on:
       - 'model/checkoutGroup.js'
       - 'test/checkoutGrouping.test.js'
       - 'services/inventoryMigrationPlan.js'
+      - 'services/inventoryAvailability.js'
+      - 'model/storeInventoryV2.js'
+      - 'test/inventoryAvailability.test.js'
       - 'test/inventoryMigrationPlan.test.js'
       - 'scripts/auditInventoryReadOnly.js'
       - 'docs/ccd-481-live-inventory-audit.md'
@@ -29,9 +32,11 @@ jobs:
         run: |
           node --check services/checkoutGrouping.js
           node --check services/inventoryMigrationPlan.js
+          node --check services/inventoryAvailability.js
+          node --check model/storeInventoryV2.js
           node --check scripts/auditInventoryReadOnly.js
           node --check model/order.js
           node --check model/orderGroup.js
           node --check model/checkoutGroup.js
       - name: Run offline supplier grouping tests
-        run: node --test test/checkoutGrouping.test.js test/inventoryMigrationPlan.test.js
+        run: node --test test/checkoutGrouping.test.js test/inventoryMigrationPlan.test.js test/inventoryAvailability.test.js
