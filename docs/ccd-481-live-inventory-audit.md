@@ -24,6 +24,18 @@
 - Checkout MUST quote actual store inventory and verify availability/price on the server. Do not use `items.item_price` as an authoritative checkout price.
 - Keep the four historical development-test orders out of the new paid-order flow. Preserve records.
 
+## Live-document classification (read-only in-memory dry-run)
+
+The Atlas integration read all **101 inventories, 428 item IDs, 29 suppliers, 62 legacy meal IDs and 132 legacy product IDs** with limited field projections. An independent in-memory classification of each proposed item–store row yielded:
+
+- **135 proposed store-specific rows** from 101 existing inventory documents, comprising 119 distinct item–store pairs.
+- **4 provisionally usable rows** with a resolvable canonical item and supplier, numeric price, ISO currency, known numeric stock quantity, and `in_stock: true` (and not the later occurrence of a duplicate pair). This is **NOT** approval to list or activate these products: region, address, stock concurrency and checkout taxes/fees are not yet verified.
+- **131 rows require review**, with multiple overlapping reasons per row.
+- Review reason occurrences: missing supplier 37; unverified currency 85; missing stock policy 131; shared ambiguous multi-store price 31; missing/invalid price 40; unresolved item 33; legacy-product item 1; not marked in stock 13; duplicate later-occurrence item–store 16.
+- Only four candidate associations have explicitly known convertible `quantityInStock` values. Most inventory requires a stock-tracking vs made-to-order decision, not a default conversion to zero.
+
+This live classification was performed in memory using a read-only Atlas connection and independently implemented checks, while `services/inventoryMigrationPlan.js` provides the reusable equivalent policy for the repository and offline tests. The separate `scripts/auditInventoryReadOnly.js` command has **not** been executed against Atlas from GitHub Actions. Its counts should be compared with these baseline values when securely run against a read-only snapshot.
+
 ## Migration safety and blockers
 - **DO NOT auto-fix broken references.** Inventory records without a canonical item or a valid supplier remain in review; no fictitious catalog entries.
 - **DO NOT blindly assign shared prices** where a legacy row with multiple stores has only one string price. Require explicit per-store price verification.
