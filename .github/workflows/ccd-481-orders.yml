@@ -28,6 +28,7 @@ on:
       - 'repository/store.js'
       - 'test/storeAccess.test.js'
       - 'test/safeManagementUpdates.test.js'
+      - 'controllers/StoreController/inventoryV2.controller.js'
       - '.github/workflows/ccd-481-orders.yml'
 
 jobs:
@@ -56,5 +57,6 @@ jobs:
           node --check controllers/StoreController/store.controller.js
           node --check controllers/UserController/userController.js
           node --check repository/store.js
+          node --check controllers/StoreController/inventoryV2.controller.js
       - name: Run offline supplier grouping tests
         run: node --test test/checkoutGrouping.test.js test/inventoryMigrationPlan.test.js test/inventoryAvailability.test.js test/storeAccess.test.js test/safeManagementUpdates.test.js
