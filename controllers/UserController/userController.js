@@ -206,9 +206,17 @@ module.exports = {
 
   updateUserProfile: async (req, res) => {
     try {
+      // Profile updates must never be able to assign app/store roles or
+      // change verification, account ownership, or credentials.
+      const editable = [
+        "first_name", "last_name", "username", "phone_number",
+        "profile_picture", "newsletter_subscription", "date_of_birth"
+      ];
+      const safeProfile = Object.fromEntries(Object.entries(req.body || {})
+        .filter(([key]) => editable.includes(key)));
       const updatedProfile = await UserService.updateUserProfile(
         { _id: req.params.userId },
-        req.body
+        safeProfile
       );
       if (updatedProfile) {
         res
