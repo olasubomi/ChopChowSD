@@ -3,7 +3,7 @@ const StoreController = require("../controllers/StoreController/store.controller
 const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const { upload } = require("../utils/middleware");
 const { protect } = require('../utils/middleware/authmiddleware')
-const { requireStoreAccess, requireOwnUserOrPlatformAdmin } = require("../utils/storeAccessMiddleware")
+const { requireStoreAccess, requireOwnUserOrPlatformAdmin, requirePlatformAdmin } = require("../utils/storeAccessMiddleware")
 const { uploadToCloudinary } = require('../utils/middleware/multer-s3-middleware.js');
 
 //store routes
@@ -22,7 +22,8 @@ router.get("/getallstores/:page", StoreController.getStores); // sort by locatio
 router.get("/store/:name", StoreController.queryStore);
 router.post("/list/:address", StoreController.queryStoreByAddress);
 router.post("/add-user/:storeId", protect, requireStoreAccess("manage_admins"), StoreController.addUserToStore);
-router.patch('/claimstore/:id', protect, StoreController.claimStore)
+// Legacy claim endpoint writes directly to store records; restrict until a pending-claim workflow is built.
+router.patch('/claimstore/:id', protect, requirePlatformAdmin, StoreController.claimStore)
 router.delete('/removeuser/:userId/:storeId', protect, requireStoreAccess('manage_admins'), StoreController.removeUserFromStore)
 
 
