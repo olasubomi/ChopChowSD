@@ -1,3 +1,4 @@
+const { pickSafeProfileUpdate } = require("../../services/safeManagementUpdates");
 const UserService = require("../../services/UserService");
 const { Response } = require("http-status-codez");
 const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
@@ -208,12 +209,7 @@ module.exports = {
     try {
       // Profile updates must never be able to assign app/store roles or
       // change verification, account ownership, or credentials.
-      const editable = [
-        "first_name", "last_name", "username", "phone_number",
-        "profile_picture", "newsletter_subscription", "date_of_birth"
-      ];
-      const safeProfile = Object.fromEntries(Object.entries(req.body || {})
-        .filter(([key]) => editable.includes(key)));
+      const safeProfile = pickSafeProfileUpdate(req.body);
       const updatedProfile = await UserService.updateUserProfile(
         { _id: req.params.userId },
         safeProfile
