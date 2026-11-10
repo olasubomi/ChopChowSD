@@ -2,6 +2,8 @@ const router = require('express').Router();
 const { upload, transformObject } = require("../utils/middleware");
 const { uploadToCloudinary } = require('../utils/middleware/multer-s3-middleware.js');
 const { hashPassword } = require("../lib/hashPassword");
+const { protect } = require("../utils/middleware/authmiddleware");
+const { requireOwnUserOrPlatformAdmin } = require("../utils/storeAccessMiddleware");
 // const authenticationLogout = require("../utils/repositpry/authentication/authenticationLogout");
 const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const UserController = require('../controllers/UserController/userController')
@@ -15,7 +17,7 @@ router.post("/forgotpassword", UserController.forgotPassword);
 router.post("/resetpassword", UserController.resetPassword);
 router.get("/findUser/:id", UserController.findUser);
 router.get("/findUsers/:page", UserController.findUsers);
-router.put("/updateuserprofile/:userId", verifyAuthentication, uploadToCloudinary.single(), transformObject, UserController.updateUserProfile);
+router.put("/updateuserprofile/:userId", protect, requireOwnUserOrPlatformAdmin, uploadToCloudinary.single(), transformObject, UserController.updateUserProfile);
 router.post("/inviteuser", UserController.inviteUser);
 router.post("/notifyuser/", UserController.addNotification);
 router.get("/verifyToken/", verifyAuthentication, UserController.verifyToken);
