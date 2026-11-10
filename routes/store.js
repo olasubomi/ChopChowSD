@@ -3,6 +3,7 @@ const StoreController = require("../controllers/StoreController/store.controller
 const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const { upload } = require("../utils/middleware");
 const { protect } = require('../utils/middleware/authmiddleware')
+const { requireStoreAccess, requireOwnUserOrPlatformAdmin } = require("../utils/storeAccessMiddleware")
 const { uploadToCloudinary } = require('../utils/middleware/multer-s3-middleware.js');
 
 //store routes
@@ -20,23 +21,25 @@ router.get("/top-supplier", StoreController.topSupplier);
 router.get("/getallstores/:page", StoreController.getStores); // sort by location/rating
 router.get("/store/:name", StoreController.queryStore);
 router.post("/list/:address", StoreController.queryStoreByAddress);
-router.post("/add-user/:storeId", StoreController.addUserToStore);
-router.patch('/claimstore/:id', StoreController.claimStore)
-router.delete('/removeuser/:userId/:storeId', StoreController.removeUserFromStore)
+router.post("/add-user/:storeId", protect, requireStoreAccess("manage_admins"), StoreController.addUserToStore);
+router.patch('/claimstore/:id', protect, StoreController.claimStore)
+router.delete('/removeuser/:userId/:storeId', protect, requireStoreAccess('manage_admins'), StoreController.removeUserFromStore)
 
 
-router.get('/user/:userId', StoreController.getAllStoresForAuser)
+router.get('/user/:userId', protect, requireOwnUserOrPlatformAdmin, StoreController.getAllStoresForAuser)
 
 router.put(
   "/updatestore/:storeId",
+  protect,
+  requireStoreAccess("update_store"),
   uploadToCloudinary.any(),
-  verifyAuthentication,
   StoreController.updateStore
 );
 
 router.delete(
   "/deletestore/:storeId",
-  verifyAuthentication,
+  protect,
+  requireStoreAccess("delete_store"),
   StoreController.deleteStore
 );
 
