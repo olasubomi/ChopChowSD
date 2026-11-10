@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const StoreController = require("../controllers/StoreController/store.controller");
+const InventoryV2Controller = require("../controllers/StoreController/inventoryV2.controller");
 const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const { upload } = require("../utils/middleware");
 const { protect } = require('../utils/middleware/authmiddleware')
@@ -43,5 +44,13 @@ router.delete(
   requireStoreAccess("delete_store"),
   StoreController.deleteStore
 );
+
+/*
+ * V2 store-specific inventory management. These endpoints are authenticated,
+ * scoped to the store, and never write the legacy inventories collection.
+ */
+router.get("/:storeId/inventory-v2", protect, requireStoreAccess("manage_inventory"), InventoryV2Controller.list);
+router.post("/:storeId/inventory-v2", protect, requireStoreAccess("manage_inventory"), InventoryV2Controller.create);
+router.patch("/:storeId/inventory-v2/:inventoryId", protect, requireStoreAccess("manage_inventory"), InventoryV2Controller.update);
 
 module.exports = router;
