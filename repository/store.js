@@ -4,23 +4,25 @@ const moment = require('moment');
 const { Comment } = require("../model/comment");
 
 
-const createStore = async (payload) => {
-  try {
-    const user = await User.findById(payload?.store_owner || payload?.store_admin)
-    if (payload?.store_owner) {
-      payload.store_admins = [payload?.store_owner]
-      user.user_type = ["customer", "supplier", "driver"]
-
-    } else if (payload?.store_admin) {
-      user.user_type = ["customer", "supplier", "driver"]
-      user.sub_store_admin = true
-      payload.store_sub_admins = [payload.store_admin]
-    }
-    await user.save()
-    return await Supplier.create(payload);
-  } catch (error) {
-    console.log({ error });
+const createStore = async payload => {
+  const ownerId = payload?.store_owner;
+  const user = await User.findById(ownerId);
+  if (!user) {
+    const error = new Error("Store owner account not found");
+    error.code = 404;
+    throw error;
   }
+  // Preserve existing app roles, especially platform administrators.
+  const types = Array.isArray(user.user_type) ? user.user_type : [];
+  if (!types.includes("supplier")) {
+    user.user_type = [...types, "supplier"];
+    await user.save();
+  }
+  return await Supplier.create({
+    ...payload,
+    store_owner: user._id,
+    store_admins: [user._id]
+  });
 };
 
 const updateStore = async (filter, payload) => {
