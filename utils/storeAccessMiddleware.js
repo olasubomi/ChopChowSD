@@ -37,4 +37,14 @@ const requireOwnUserOrPlatformAdmin = (req, res, next) => {
   return res.status(403).json({ success: false, message: "Insufficient permissions" });
 };
 
-module.exports = { requireStoreAccess, requireOwnUserOrPlatformAdmin };
+const requirePlatformAdmin = (req, res, next) => {
+  if (!req.user || !req.user._id) {
+    return res.status(401).json({ success: false, message: "Authentication required" });
+  }
+  if (!isPlatformAdmin(req.user)) {
+    return res.status(403).json({ success: false, message: "Platform administrator required" });
+  }
+  next();
+};
+
+module.exports = { requireStoreAccess, requireOwnUserOrPlatformAdmin, requirePlatformAdmin };
