@@ -1,3 +1,4 @@
+const { pickSafeStoreUpdate } = require("../../services/safeManagementUpdates");
 const { isPlatformAdmin } = require("../../services/storeAccess");
 const { Response } = require("http-status-codez");
 const StoreService = require("../../services/storeService");
@@ -38,12 +39,7 @@ module.exports = {
     try {
       // Allow only profile fields; privileged owner/admin/status changes must
       // go through separately authorized operations, never mass assignment.
-      const editable = [
-        "store_name", "phone_number", "description", "email",
-        "supplier_address", "hours", "currency"
-      ];
-      const payload = Object.fromEntries(Object.entries(req.body || {})
-        .filter(([key]) => editable.includes(key)));
+      const payload = pickSafeStoreUpdate(req.body);
       const store = await StoreService.updateStore(
         { _id: req.params.storeId },
         payload,
