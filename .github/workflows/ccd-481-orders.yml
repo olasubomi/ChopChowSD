@@ -18,6 +18,16 @@ on:
       - 'test/inventoryMigrationPlan.test.js'
       - 'scripts/auditInventoryReadOnly.js'
       - 'docs/ccd-481-live-inventory-audit.md'
+      - 'services/storeAccess.js'
+      - 'services/safeManagementUpdates.js'
+      - 'utils/storeAccessMiddleware.js'
+      - 'routes/store.js'
+      - 'routes/user.js'
+      - 'controllers/StoreController/store.controller.js'
+      - 'controllers/UserController/userController.js'
+      - 'repository/store.js'
+      - 'test/storeAccess.test.js'
+      - 'test/safeManagementUpdates.test.js'
       - '.github/workflows/ccd-481-orders.yml'
 
 jobs:
@@ -38,5 +48,13 @@ jobs:
           node --check model/order.js
           node --check model/orderGroup.js
           node --check model/checkoutGroup.js
+          node --check services/storeAccess.js
+          node --check services/safeManagementUpdates.js
+          node --check utils/storeAccessMiddleware.js
+          node --check routes/store.js
+          node --check routes/user.js
+          node --check controllers/StoreController/store.controller.js
+          node --check controllers/UserController/userController.js
+          node --check repository/store.js
       - name: Run offline supplier grouping tests
-        run: node --test test/checkoutGrouping.test.js test/inventoryMigrationPlan.test.js test/inventoryAvailability.test.js
+        run: node --test test/checkoutGrouping.test.js test/inventoryMigrationPlan.test.js test/inventoryAvailability.test.js test/storeAccess.test.js test/safeManagementUpdates.test.js
