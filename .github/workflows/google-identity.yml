@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '20'
       - name: Install locked dependencies
-        run: npm ci --ignore-scripts
+        run: npm ci --ignore-scripts --legacy-peer-deps
       - name: Check syntax
         run: |
           node --check services/googleIdentity.js
