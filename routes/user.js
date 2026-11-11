@@ -5,11 +5,15 @@ const { hashPassword } = require("../lib/hashPassword");
 // const authenticationLogout = require("../utils/repositpry/authentication/authenticationLogout");
 const verifyAuthentication = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 const UserController = require('../controllers/UserController/userController')
+const GoogleAuthController = require("../controllers/UserController/googleAuth.controller");
+const { protect } = require("../utils/middleware/authmiddleware");
 const { verifyRefreshToken } = require("../utils/authentication/2.verifyTokenAuthenticator.js");
 
 
 router.post("/signup", uploadToCloudinary.single('profile_picture'), transformObject, UserController.signUp);
 router.post("/signin", UserController.signIn);
+router.post("/google/signin", GoogleAuthController.googleSignIn);
+router.post("/google/link", protect, GoogleAuthController.linkGoogle);
 router.get("/refresh-token", verifyRefreshToken, UserController.refreshToken);
 router.post("/forgotpassword", UserController.forgotPassword);
 router.post("/resetpassword", UserController.resetPassword);
