@@ -24,5 +24,8 @@ jobs:
         run: |
           node --check services/googleIdentity.js
           node --check test/googleIdentity.test.js
+          node --check model/authIdentity.js
+          node --check controllers/UserController/googleAuth.controller.js
+          node --check routes/user.js
       - name: Run offline Google identity tests
         run: node --test test/googleIdentity.test.js
