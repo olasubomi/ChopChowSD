@@ -1,0 +1,28 @@
+name: Verified Google Identity
+
+on:
+  push:
+    branches:
+      - feature/ccd-487-verified-google-login
+  pull_request:
+    paths:
+      - 'services/googleIdentity.js'
+      - 'test/googleIdentity.test.js'
+      - '.github/workflows/google-identity.yml'
+
+jobs:
+  google-identity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+      - name: Check syntax
+        run: |
+          node --check services/googleIdentity.js
+          node --check test/googleIdentity.test.js
+      - name: Run offline Google identity tests
+        run: node --test test/googleIdentity.test.js
