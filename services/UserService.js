@@ -156,7 +156,7 @@ class UserService {
     // withAuth=false or an email-only login, even for social accounts.
     const { email, password } = requirePasswordCredentials(payload);
     const user = await findUser({ email });
-    if (!user || !(await validatePassWord(email, password))) {
+    if (!user || typeof user.password !== "string" || !(await validatePassWord(email, password))) {
       const error = new Error("Invalid email or password");
       error.code = 401;
       throw error;
