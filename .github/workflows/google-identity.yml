@@ -18,8 +18,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install locked dependencies
-        run: npm ci --ignore-scripts --legacy-peer-deps
+      # The legacy backend lockfile is currently out of sync with package.json.
+      # Isolate this pure verifier test from unrelated app dependencies.
+      - name: Install verifier test dependency
+        run: npm install --prefix "$RUNNER_TEMP/google-auth-test" --no-save --ignore-scripts --no-package-lock jsonwebtoken@9.0.0
       - name: Check syntax
         run: |
           node --check services/googleIdentity.js
@@ -28,4 +30,4 @@ jobs:
           node --check controllers/UserController/googleAuth.controller.js
           node --check routes/user.js
       - name: Run offline Google identity tests
-        run: node --test test/googleIdentity.test.js
+        run: NODE_PATH="$RUNNER_TEMP/google-auth-test/node_modules" node --test test/googleIdentity.test.js
