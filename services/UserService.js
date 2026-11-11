@@ -1,3 +1,4 @@
+const { requirePasswordCredentials } = require("./credentialLogin");
 const {
   getCustomerGroceryList,
   findUser,
@@ -150,67 +151,31 @@ class UserService {
     }
   }
 
-  static async login(payload_) {
-    try {
-      const payload = {
-        ...payload_,
-        withAuth: payload_.hasOwnProperty('withAuth') ? payload_.withAuth : true,
-      };
-
-      // Convert email to lowercase
-      payload.email = payload.email.toLowerCase();
-
-      const userExist = await findUser({ email: payload.email });
-      console.log("line 144", userExist);
-      console.log("line 144", payload);
-
-      if (!userExist) {
-        throw { message: "User does not exist" };
-      }
-
-      if (payload?.withAuth) {
-        const validatePassword = await validatePassWord(
-          payload.email,
-          payload.password
-        );
-        if (!validatePassword) {
-          throw { message: "Invalid user credentials" };
-        }
-      }
-      // if (userExist && !userExist.isVerified && payload?.withAuth) {
-
-      //   throw { message: "User does not exist" };
-      // }
-      const generatedToken = await generateAccessTokens({
-        id: userExist._id,
-        username: userExist.username,
-        email: userExist.email,
-      });
-
-      const generatedRefreshToken = await generateRefreshTokens({
-        id: userExist._id,
-        username: userExist.username,
-        email: userExist.email,
-      });
-
-      console.log({
-        id: userExist._id,
-        username: userExist.username,
-        email: userExist.email,
-        token: generatedToken,
-      }, 'refrehhhh');
-
-      return {
-        success: true,
-        message: "Authentication successful!",
-        token: generatedToken,
-        refreshToken: generatedRefreshToken,
-        user: userExist,
-        isVerified: userExist.isVerified,
-      };
-    } catch (error) {
+  static async login(payload) {
+    // The public /signin route is strictly password-based. Never accept
+    // withAuth=false or an email-only login, even for social accounts.
+    const { email, password } = requirePasswordCredentials(payload);
+    const user = await findUser({ email });
+    if (!user || typeof user.password !== "string" || !(await validatePassWord(email, password))) {
+      const error = new Error("Invalid email or password");
+      error.code = 401;
       throw error;
     }
+    const tokenPayload = {
+      id: user._id,
+      username: user.username,
+      email: user.email
+    };
+    const token = await generateAccessTokens(tokenPayload);
+    const refreshToken = await generateRefreshTokens(tokenPayload);
+    return {
+      success: true,
+      message: "Authentication successful!",
+      token,
+      refreshToken,
+      user,
+      isVerified: user.isVerified
+    };
   }
   static async forgotPassword(payload) {
     try {

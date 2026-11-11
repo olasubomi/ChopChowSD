@@ -23,23 +23,16 @@ module.exports = {
 
   signIn: async (req, res) => {
     try {
-      console.log(req.body);
-      const authenticateUser = await UserService.login(req.body);
-      if (authenticateUser) {
-        res
-          .status(authenticateUser.code || Response.HTTP_ACCEPTED)
-          .json(new SuccessResponse(authenticateUser));
-      } else {
-        throw authenticateUser;
-      }
+      const authenticated = await UserService.login(req.body);
+      return res.status(200).json(new SuccessResponse(authenticated));
     } catch (error) {
-      console.log({ error }, 'app error');
-      return res
-        .status(Response.HTTP_INTERNAL_SERVER_ERROR)
-        .json(new ErrorResponse(error));
+      if (error.code === 401) {
+        return res.status(401).json({ success: false, message: "Invalid email or password" });
+      }
+      console.error("Sign-in failed:", error?.message);
+      return res.status(500).json({ success: false, message: "Sign-in temporarily unavailable" });
     }
   },
-
 
   manageNotification: async (req, res) => {
     try {
