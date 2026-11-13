@@ -1,0 +1,33 @@
+name: Verified Google Identity
+
+on:
+  push:
+    branches:
+      - feature/ccd-487-verified-google-login
+  pull_request:
+    paths:
+      - 'services/googleIdentity.js'
+      - 'test/googleIdentity.test.js'
+      - '.github/workflows/google-identity.yml'
+
+jobs:
+  google-identity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # The legacy backend lockfile is currently out of sync with package.json.
+      # Isolate this pure verifier test from unrelated app dependencies.
+      - name: Install verifier test dependency
+        run: npm install --prefix "$RUNNER_TEMP/google-auth-test" --no-save --ignore-scripts --no-package-lock jsonwebtoken@9.0.0
+      - name: Check syntax
+        run: |
+          node --check services/googleIdentity.js
+          node --check test/googleIdentity.test.js
+          node --check model/authIdentity.js
+          node --check controllers/UserController/googleAuth.controller.js
+          node --check routes/user.js
+      - name: Run offline Google identity tests
+        run: NODE_PATH="$RUNNER_TEMP/google-auth-test/node_modules" node --test test/googleIdentity.test.js
