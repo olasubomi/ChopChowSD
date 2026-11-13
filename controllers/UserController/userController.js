@@ -1,3 +1,4 @@
+const { pickSafeProfileUpdate } = require("../../services/safeManagementUpdates");
 const UserService = require("../../services/UserService");
 const { Response } = require("http-status-codez");
 const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
@@ -199,9 +200,12 @@ module.exports = {
 
   updateUserProfile: async (req, res) => {
     try {
+      // Profile updates must never be able to assign app/store roles or
+      // change verification, account ownership, or credentials.
+      const safeProfile = pickSafeProfileUpdate(req.body);
       const updatedProfile = await UserService.updateUserProfile(
         { _id: req.params.userId },
-        req.body
+        safeProfile
       );
       if (updatedProfile) {
         res

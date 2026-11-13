@@ -1,28 +1,28 @@
 const { Supplier, StoreClaim, User } = require("../db/dbMongo/config/db_buildSchema");
 const { Item } = require("../model/item");
 const moment = require('moment');
-const { createUser } = require("./user");
-const { createUserEmail } = require("../utils/mailer/nodemailer");
 const { Comment } = require("../model/comment");
 
 
-const createStore = async (payload) => {
-  try {
-    const user = await User.findById(payload?.store_owner || payload?.store_admin)
-    if (payload?.store_owner) {
-      payload.store_admins = [payload?.store_owner]
-      user.user_type = ["customer", "supplier", "driver"]
-
-    } else if (payload?.store_admin) {
-      user.user_type = ["customer", "supplier", "driver"]
-      user.sub_store_admin = true
-      payload.store_sub_admins = [payload.store_admin]
-    }
-    await user.save()
-    return await Supplier.create(payload);
-  } catch (error) {
-    console.log({ error });
+const createStore = async payload => {
+  const ownerId = payload?.store_owner;
+  const user = await User.findById(ownerId);
+  if (!user) {
+    const error = new Error("Store owner account not found");
+    error.code = 404;
+    throw error;
   }
+  // Preserve existing app roles, especially platform administrators.
+  const types = Array.isArray(user.user_type) ? user.user_type : [];
+  if (!types.includes("supplier")) {
+    user.user_type = [...types, "supplier"];
+    await user.save();
+  }
+  return await Supplier.create({
+    ...payload,
+    store_owner: user._id,
+    store_admins: [user._id]
+  });
 };
 
 const updateStore = async (filter, payload) => {
@@ -240,73 +240,75 @@ const getAllStoresForUser = async (filter) => {
   }
 };
 
+// Assign existing accounts only. New-user invitations must use a separate,
+// verified, expiring invitation flow; never generate/email plaintext passwords.
 const removeUserFromStore = async (userId, storeId) => {
-  try {
-    const user = await User.findById(userId);
-    if (!user) throw new Error("User does not exist");
-    const store = await Supplier.findOne({
-      _id: storeId
-    })
-
-    const store_admins = store.store_sub_admins.map((ele) => ele?._id.toString());
-    console.log(store_admins)
-    if (store_admins.includes(userId)) {
-      let store_sub_admins = [...store_admins];
-      store_sub_admins.splice(store_admins.indexOf(userId), 1)
-      store.store_sub_admins = store_sub_admins;
-      return await store.save();
-    } else {
-      throw new Error("This user has aleady been removed from this store as a store sub admin")
-    }
-  } catch (e) {
-    console.log(e)
+  const user = await User.findById(userId);
+  if (!user) {
+    const error = new Error("User does not exist");
+    error.code = 404;
+    throw error;
   }
-}
+  const store = await Supplier.findById(storeId);
+  if (!store) {
+    const error = new Error("Store not found");
+    error.code = 404;
+    throw error;
+  }
+  if (String(store.store_owner) === String(userId)) {
+    const error = new Error("Cannot remove store owner");
+    error.code = 403;
+    throw error;
+  }
+  const result = await Supplier.findOneAndUpdate(
+    { _id: storeId, store_sub_admins: userId },
+    { $pull: { store_sub_admins: userId } },
+    { new: true, runValidators: true }
+  );
+  if (!result) {
+    const error = new Error("User is not a store sub-admin");
+    error.code = 404;
+    throw error;
+  }
+  return result;
+};
 
 const addUserToStoreAdmin = async (user, storeId) => {
-  try {
-    let app_user = await User.findOne({
-      email: user.email
-    })
-
-    if (!app_user) {
-      // const created_user = await
-      console.log(user)
-      const password = Math.floor(Math.random() * 10000000)
-      app_user = await createUser({
-        ...user, password, phone_number: user.number,
-        username: user.first_name
-      });
-      createUserEmail({
-        email: user.email,
-        password,
-        first_name: user.first_name,
-      })
-    }
-    const store = await Supplier.findOne({
-      _id: storeId
-    })
-
-    const store_admins = store.store_sub_admins.map((ele) => ele?._id.toString());
-    if (!store_admins.includes(app_user?._id.toString())) {
-      store.store_sub_admins.push(app_user);
-      return await store.save()
-    } else {
-      throw {
-        messsage: "User has already been added to the store as a sub-admin",
-      };
-    }
-
-
-  } catch (error) {
-    throw {
-      error: error,
-      messsage: error.message || "User has already been added to the store as a sub-admin",
-      code: error.code || 500,
-    };
+  const email = typeof user?.email === "string" ? user.email.trim().toLowerCase() : "";
+  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    const error = new Error("Valid existing account email required");
+    error.code = 400;
+    throw error;
   }
-}
-
+  const escapedEmail = email.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+  const appUser = await User.findOne({ email: new RegExp("^" + escapedEmail + "$", "i") });
+  if (!appUser) {
+    const error = new Error("Account not found. Secure invitation flow is not yet available; ask the user to register first.");
+    error.code = 409;
+    throw error;
+  }
+  const store = await Supplier.findById(storeId);
+  if (!store) {
+    const error = new Error("Store not found");
+    error.code = 404;
+    throw error;
+  }
+  if (String(store.store_owner) === String(appUser._id)) {
+    const error = new Error("Store owner already has access");
+    error.code = 409;
+    throw error;
+  }
+  if (store.store_sub_admins.some(id => String(id) === String(appUser._id))) {
+    const error = new Error("User is already a store sub-admin");
+    error.code = 409;
+    throw error;
+  }
+  return await Supplier.findByIdAndUpdate(
+    storeId,
+    { $addToSet: { store_sub_admins: appUser._id } },
+    { new: true, runValidators: true }
+  );
+};
 
 const getStore = async (filter, req) => {
   try {

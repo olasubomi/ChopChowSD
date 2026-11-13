@@ -1,3 +1,5 @@
+const { pickSafeStoreUpdate } = require("../../services/safeManagementUpdates");
+const { isPlatformAdmin } = require("../../services/storeAccess");
 const { Response } = require("http-status-codez");
 const StoreService = require("../../services/storeService");
 const UserService = require('../../services/UserService')
@@ -6,9 +8,19 @@ const { ErrorResponse, SuccessResponse } = require("../../lib/appResponse");
 module.exports = {
   createStore: async (req, res) => {
     try {
-      // req.body.store_owner = req.decoded.id;
-
-      const store = await StoreService.createStore(req.body, req.files);
+      // A customer cannot create a store on behalf of another account.
+      // Only an authenticated platform admin may designate a different owner.
+      const requestedOwner = req.body.store_owner;
+      const owner = isPlatformAdmin(req.user) && requestedOwner
+        ? requestedOwner : req.user._id.toString();
+      const payload = { ...req.body, store_owner: owner };
+      delete payload.store_admin;
+      delete payload.store_admins;
+      delete payload.store_sub_admins;
+      delete payload.store_account_users;
+      delete payload.inventory;
+      delete payload.status;
+      const store = await StoreService.createStore(payload, req.files);
       const userId = req.user._id.toString();
       // const user = await UserService.updateUserProfile({ _id: userId }, { user_type: "supplier" })
       if (store) {
@@ -25,9 +37,12 @@ module.exports = {
 
   updateStore: async (req, res) => {
     try {
+      // Allow only profile fields; privileged owner/admin/status changes must
+      // go through separately authorized operations, never mass assignment.
+      const payload = pickSafeStoreUpdate(req.body);
       const store = await StoreService.updateStore(
-        { _id: req.params.storeId, ...req.query },
-        req.body,
+        { _id: req.params.storeId },
+        payload,
         req.files || req.file || null
       );
       if (store) {
