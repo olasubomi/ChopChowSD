@@ -40,6 +40,13 @@ async function googleSignIn(req, res) {
 async function linkGoogle(req, res) {
   if (!req.user?._id) return fail(res, 401, "Sign in before linking Google");
   try {
+    // Linking a login method is a sensitive account change. A bearer token
+    // alone is insufficient; confirm the existing account password first.
+    const password = req.body?.password;
+    if (typeof password !== "string" || !password.trim() || password.length > 1024 ||
+        !req.user.password || !(await req.user.comparePassword(password))) {
+      return fail(res, 401, "Confirm your Chop Chow password before linking Google");
+    }
     const google = await verifyGoogleIdToken(req.body?.credential);
     // Simple, safe MVP: only link a verified Google identity with the same
     // email as the account authenticated by password.
