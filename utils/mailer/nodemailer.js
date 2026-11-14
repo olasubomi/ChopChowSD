@@ -1,24 +1,12 @@
 "use strict";
-const nodemailer = require("nodemailer");
+const transporter = require("./gmailApiTransport");
 require("dotenv").config();
 const ejs = require("ejs");
 const fe = require("fs")
 
 
-let { EMAIL_USER: user, EMAIL_PASSWORD: pass } = process.env;
-let transporter = nodemailer.createTransport({
-  service: "Gmail",
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 15000,
-  auth: {
-    user: process.env.NODE_MAILER_EMAIL,
-    pass: process.env.NODE_MAILER_PASSWORD,
-  },
-});
+// Sender is enforced by gmailApiTransport using GMAIL_SENDER_EMAIL.
+const user = process.env.GMAIL_SENDER_EMAIL;
 
 //var currentURL = `https://${process.env.APP_HOST}`
 var currentURL = "https://chopchow.app/"
@@ -58,62 +46,21 @@ function signUpEmail(generatedToken, newUser) {
 }
 
 async function sendNewLetterSubscriptionEmail({ email, name, blogs }) {
-  try {
-    ejs.renderFile(__dirname + "/templates/email-subscription.ejs", { name, blogs }, function (err, data) {
-      if (err) {
-        console.log(err);
-      } else {
-        const mailOptions = {
-          from: user,
-          to: email,
-          subject: 'ChopChow Newsletter',
-          html: data
-        };
-
-        return transporter.sendMail(mailOptions, function (err, info) {
-          if (err) {
-            console.log("Error: ", err);
-            throw new Error(err)
-          } else {
-            console.log('Message sent: ' + info.response);
-            return info
-          }
-        });
-      }
-    });
-  } catch (e) {
-    console.log(e, "Error")
-  }
+  const html = await ejs.renderFile(__dirname + "/templates/email-subscription.ejs", { name, blogs });
+  return transporter.sendMail({
+    to: email,
+    subject: "ChopChow Newsletter",
+    html,
+  });
 }
 
-
 async function sendUserNewsLetterSubscription({ email, name, blogs, password }) {
-  try {
-    ejs.renderFile(__dirname + "/templates/news-letter-subscription.ejs", { name, blogs, password }, function (err, data) {
-      if (err) {
-        console.log(err);
-      } else {
-        const mailOptions = {
-          from: user,
-          to: email,
-          subject: 'ChopChow Newsletter',
-          html: data
-        };
-
-        return transporter.sendMail(mailOptions, function (err, info) {
-          if (err) {
-            console.log("Error: ", err);
-            throw new Error(err)
-          } else {
-            console.log('Message sent: ' + info.response);
-            return info
-          }
-        });
-      }
-    });
-  } catch (e) {
-    console.log(e, "Error")
-  }
+  const html = await ejs.renderFile(__dirname + "/templates/news-letter-subscription.ejs", { name, blogs, password });
+  return transporter.sendMail({
+    to: email,
+    subject: "ChopChow Newsletter",
+    html,
+  });
 }
 
 function createUserEmail(newUser) {
@@ -153,7 +100,7 @@ function createUserEmail(newUser) {
 
 
 function passwordResetEmail(toEmail) {
-  let info = transporter.sendMail({
+  return transporter.sendMail({
     from: user, // sender address
     to: toEmail, // list of receivers
     subject: "Chop Chow password reset successfully.", // Subject line

@@ -282,18 +282,21 @@ class UserService {
           code: 400,
         };
       }
+      // Consume the reset token atomically so a link cannot be reused,
+      // including by two concurrent reset requests.
+      if (String(decodeToken.id) !== String(tokenExist._id)) {
+        throw { message: "Invalid reset token", code: 400 };
+      }
       const newPassword = await tokenExist.hashPassword(payload.password);
-      const resetPassword = await updateUser(
-        { _id: decodeToken.id },
+      const resetResult = await User.updateOne(
+        { _id: tokenExist._id, "tokens.passwordResetToken": payload.token },
         {
-          password: newPassword,
+          $set: { password: newPassword },
+          $unset: { "tokens.passwordResetToken": "" },
         }
       );
-      if (!resetPassword) {
-        throw {
-          message: "password reset failed",
-          code: 500,
-        };
+      if (resetResult.matchedCount !== 1) {
+        throw { message: "Reset link has already been used", code: 400 };
       }
       await passwordResetEmail(tokenExist.email)
       return { message: "password reset successful" };

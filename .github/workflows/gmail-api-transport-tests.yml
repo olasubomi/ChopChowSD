@@ -1,0 +1,27 @@
+name: Gmail API transport tests
+
+on:
+  pull_request:
+    paths:
+      - "utils/mailer/gmailApiTransport.js"
+      - "utils/mailer/nodemailer.js"
+      - "tests/gmailApiTransport.test.js"
+      - ".github/workflows/gmail-api-transport-tests.yml"
+  push:
+    branches:
+      - "feature/ccd-490-gmail-api"
+
+jobs:
+  gmail-api-transport:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install dependencies
+        run: npm install --force --ignore-scripts --no-audit --no-fund
+      - name: Test Gmail API transport
+        run: node --test tests/gmailApiTransport.test.js
