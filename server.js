@@ -11,6 +11,28 @@ exports.randomString = function (size = 15) {
   return Crypto.randomBytes(size).toString("base64").slice(0, size);
 };
 
+// Staging must fail closed before opening any database connection.
+if (process.env.STAGING_MODE !== "true") {
+  throw new Error("Staging deployment blocked: STAGING_MODE must be true");
+}
+const stagingUri = process.env.MONGO_URI_DEV || "";
+let stagingDbUrl;
+try {
+  stagingDbUrl = new URL(stagingUri);
+} catch {
+  throw new Error("Staging deployment blocked: invalid MONGO_URI_DEV");
+}
+if (
+  !["mongodb:", "mongodb+srv:"].includes(stagingDbUrl.protocol) ||
+  decodeURIComponent(stagingDbUrl.pathname) !== "/chopchow_staging" ||
+  decodeURIComponent(stagingDbUrl.username) !== "chopchow_staging_mailer"
+) {
+  throw new Error("Staging deployment blocked: database URI must use scoped staging credentials and chopchow_staging");
+}
+if (process.env.STAGING_ALLOWED_EMAIL !== "olasubomiawokoya@gmail.com") {
+  throw new Error("Staging deployment blocked: test recipient must be configured");
+}
+
 require("./db/dbMongo/config/db_connection");
 
 const app = express();
