@@ -86,6 +86,16 @@ async function getAccessToken() {
 }
 
 async function sendViaGmailApi(options) {
+  // This branch is only for isolated staging. Never send to real customers.
+  const allowed = requiredEnv("STAGING_ALLOWED_EMAIL").toLowerCase();
+  const recipients = [options.to, options.cc, options.bcc].filter(Boolean);
+  if (
+    recipients.length !== 1 ||
+    typeof options.to !== "string" ||
+    options.to.trim().toLowerCase() !== allowed
+  ) {
+    throw new Error("Staging mail blocked: recipient is not allowlisted");
+  }
   const sender = requiredEnv("GMAIL_SENDER_EMAIL");
   // Never allow a caller to substitute an unverified From address.
   const mail = await mimeTransport.sendMail({
