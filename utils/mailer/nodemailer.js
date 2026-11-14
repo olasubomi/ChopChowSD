@@ -10,11 +10,7 @@ let transporter = nodemailer.createTransport({
   service: "Gmail",
   host: "smtp.gmail.com",
   port: 465,
-  secure: false,
-
-  tls: {
-    rejectUnauthorized: false,
-  },
+  secure: true,
   auth: {
     user: process.env.NODE_MAILER_EMAIL,
     pass: process.env.NODE_MAILER_PASSWORD,
@@ -164,15 +160,14 @@ function passwordResetEmail(toEmail) {
 }
 
 function forgotPasswordEmail(toEmail, resetLink) {
-  console.log("Comes in forgot password func");
-  let info = transporter.sendMail({
+  return transporter.sendMail({
     from: user, // sender address
     to: toEmail, // list of receivers
     subject: "Please reset your password.", // Subject line
     text: "Use link below to reset your password. " + resetLink, // plain text body
     html: "<b>Use link below to reset your password. </b>" + resetLink, // html body
 
-  }).then((data) => { }).catch(error => { console.log({ error }) })
+  });
 }
 
 
