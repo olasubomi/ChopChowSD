@@ -1,24 +1,12 @@
 "use strict";
-const nodemailer = require("nodemailer");
+const transporter = require("./gmailApiTransport");
 require("dotenv").config();
 const ejs = require("ejs");
 const fe = require("fs")
 
 
-let { EMAIL_USER: user, EMAIL_PASSWORD: pass } = process.env;
-let transporter = nodemailer.createTransport({
-  service: "Gmail",
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 15000,
-  auth: {
-    user: process.env.NODE_MAILER_EMAIL,
-    pass: process.env.NODE_MAILER_PASSWORD,
-  },
-});
+// Sender is enforced by gmailApiTransport using GMAIL_SENDER_EMAIL.
+const user = process.env.GMAIL_SENDER_EMAIL;
 
 //var currentURL = `https://${process.env.APP_HOST}`
 var currentURL = "https://chopchow.app/"
@@ -153,7 +141,7 @@ function createUserEmail(newUser) {
 
 
 function passwordResetEmail(toEmail) {
-  let info = transporter.sendMail({
+  return transporter.sendMail({
     from: user, // sender address
     to: toEmail, // list of receivers
     subject: "Chop Chow password reset successfully.", // Subject line
