@@ -190,8 +190,8 @@ class UserService {
         id: userExists._id,
       });
       //let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}&email=${userExists.email}`;
-      let resetLink = `http://${process.env.APP_HOST}/resetpassword?token=${generatePasswordToken}&email=${userExists.email}`;
-      forgotPasswordEmail(userExists.email, resetLink);
+      let resetLink = `https://${process.env.APP_HOST}/resetpassword?token=${encodeURIComponent(generatePasswordToken)}&email=${encodeURIComponent(userExists.email)}`;
+      await forgotPasswordEmail(userExists.email, resetLink);
       return {
         msg: "Email with reset link has been sent to you.",
         done: true,

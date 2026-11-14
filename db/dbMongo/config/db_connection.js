@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
-mongoose.set("debug", true);
+mongoose.set("debug", process.env.NODE_ENV !== "production" && process.env.MONGOOSE_DEBUG === "true");
 mongoose.set('strictQuery', false);
 mongoose.Promise = require("bluebird");
 
