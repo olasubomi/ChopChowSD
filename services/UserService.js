@@ -52,7 +52,6 @@ class UserService {
         ...payload,
         newsletter_subscription: payload?.isSubscribed
       });
-      console.log("newUser", newUser)
       const generatedToken = await generateAccessTokens({
         id: newUser._id,
         username: newUser.username,
