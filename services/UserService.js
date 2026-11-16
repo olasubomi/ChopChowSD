@@ -255,7 +255,16 @@ class UserService {
   static async resetPassword(payload) {
     try {
 
-      const validation = resetPasswordSchema.validate(payload);
+      // The current CCNext client sends { token, password }.
+      // Also accept the legacy { token, password1, password2 } contract.
+      const password = typeof payload.password === "string"
+        ? payload.password
+        : payload.password1;
+      const validation = resetPasswordSchema.validate(
+        typeof payload.password === "string"
+          ? { token: payload.token, password1: password, password2: password }
+          : payload
+      );
       if (validation.error) {
         throw { message: "Invalid password reset request", code: 400 };
       }
@@ -283,7 +292,7 @@ class UserService {
       if (String(decodeToken.id) !== String(tokenExist._id)) {
         throw { message: "Invalid reset token", code: 400 };
       }
-      const newPassword = await tokenExist.hashPassword(payload.password1);
+      const newPassword = await tokenExist.hashPassword(password);
       const resetResult = await User.updateOne(
         { _id: tokenExist._id, "tokens.passwordResetToken": payload.token },
         {
