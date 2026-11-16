@@ -255,13 +255,9 @@ class UserService {
   static async resetPassword(payload) {
     try {
 
-      const validatepayload = resetPasswordSchema.validate(payload);
-      if (!validatepayload) {
-        throw {
-          message: validatepayload.error.details[0].message,
-
-          path: validatepayload.error.details[0].path[0],
-        };
+      const validation = resetPasswordSchema.validate(payload);
+      if (validation.error) {
+        throw { message: "Invalid password reset request", code: 400 };
       }
       const tokenExist = await findUser({
         "tokens.passwordResetToken": payload.token,
@@ -287,7 +283,7 @@ class UserService {
       if (String(decodeToken.id) !== String(tokenExist._id)) {
         throw { message: "Invalid reset token", code: 400 };
       }
-      const newPassword = await tokenExist.hashPassword(payload.password);
+      const newPassword = await tokenExist.hashPassword(payload.password1);
       const resetResult = await User.updateOne(
         { _id: tokenExist._id, "tokens.passwordResetToken": payload.token },
         {
