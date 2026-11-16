@@ -33,6 +33,14 @@ if (process.env.STAGING_ALLOWED_EMAIL !== "olasubomiawokoya@gmail.com") {
   throw new Error("Staging deployment blocked: test recipient must be configured");
 }
 
+// Log only configuration presence, never credential values.
+console.log("Staging Gmail API configuration:", [
+  "GMAIL_OAUTH_CLIENT_ID",
+  "GMAIL_OAUTH_CLIENT_SECRET",
+  "GMAIL_OAUTH_REFRESH_TOKEN",
+  "GMAIL_SENDER_EMAIL",
+].every((key) => Boolean(process.env[key])) ? "present" : "incomplete");
+
 require("./db/dbMongo/config/db_connection");
 
 const app = express();
