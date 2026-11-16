@@ -189,7 +189,17 @@ class UserService {
         id: userExists._id,
       });
       //let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}&email=${userExists.email}`;
-      let resetLink = `https://${process.env.APP_HOST}/resetpassword?token=${encodeURIComponent(generatePasswordToken)}&email=${encodeURIComponent(userExists.email)}`;
+      const appUrl = process.env.APP_URL;
+      if (!appUrl) {
+        throw { code: 500, message: "Password reset frontend URL is not configured" };
+      }
+      const resetLinkUrl = new URL("/resetpassword", appUrl);
+      if (resetLinkUrl.protocol !== "https:") {
+        throw { code: 500, message: "Password reset frontend URL must use HTTPS" };
+      }
+      resetLinkUrl.searchParams.set("token", generatePasswordToken);
+      resetLinkUrl.searchParams.set("email", userExists.email);
+      const resetLink = resetLinkUrl.toString();
       await forgotPasswordEmail(userExists.email, resetLink);
       return {
         msg: "Email with reset link has been sent to you.",
