@@ -32,6 +32,19 @@ if (
 if (process.env.STAGING_ALLOWED_EMAIL !== "olasubomiawokoya@gmail.com") {
   throw new Error("Staging deployment blocked: test recipient must be configured");
 }
+const stagingAppUrl = process.env.APP_URL || "";
+let stagingAppOrigin;
+try {
+  const parsed = new URL(stagingAppUrl);
+  if (parsed.protocol !== "https:" ||
+      !((parsed.hostname === "staging.chopchow.app") ||
+        (parsed.hostname.endsWith(".vercel.app") && parsed.hostname !== "chopchow.vercel.app"))) {
+    throw new Error("Staging frontend URL must be a staging-only HTTPS hostname");
+  }
+  stagingAppOrigin = parsed.origin;
+} catch {
+  throw new Error("Staging deployment blocked: APP_URL must be a staging-only HTTPS URL");
+}
 
 // Log only configuration presence, never credential values.
 console.log("Staging Gmail API configuration:", [
@@ -70,6 +83,8 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cookie());
 
 const whitelist = [
+  stagingAppOrigin,
+  "https://staging.chopchow.app",
   "https://cc-next-7hwfm3jk5-olasubomis-projects-078efd3e.vercel.app",
   "http://localhost:3000",
   "http://localhost:3001",
