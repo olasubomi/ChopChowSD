@@ -70,6 +70,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cookie());
 
 const whitelist = [
+  "https://cc-next-7hwfm3jk5-olasubomis-projects-078efd3e.vercel.app",
   "http://localhost:3000",
   "http://localhost:3001",
   "http://localhost:5000",
