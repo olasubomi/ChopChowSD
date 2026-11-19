@@ -52,7 +52,6 @@ class UserService {
         ...payload,
         newsletter_subscription: payload?.isSubscribed
       });
-      console.log("newUser", newUser)
       const generatedToken = await generateAccessTokens({
         id: newUser._id,
         username: newUser.username,
@@ -190,7 +189,17 @@ class UserService {
         id: userExists._id,
       });
       //let resetLink = `https://${process.env.APP_HOST}/resetpass?token=${generatePasswordToken}&email=${userExists.email}`;
-      let resetLink = `https://${process.env.APP_HOST}/resetpassword?token=${encodeURIComponent(generatePasswordToken)}&email=${encodeURIComponent(userExists.email)}`;
+      const appUrl = process.env.APP_URL;
+      if (!appUrl) {
+        throw { code: 500, message: "Password reset frontend URL is not configured" };
+      }
+      const resetLinkUrl = new URL("/resetpassword", appUrl);
+      if (resetLinkUrl.protocol !== "https:") {
+        throw { code: 500, message: "Password reset frontend URL must use HTTPS" };
+      }
+      resetLinkUrl.searchParams.set("token", generatePasswordToken);
+      resetLinkUrl.searchParams.set("email", userExists.email);
+      const resetLink = resetLinkUrl.toString();
       await forgotPasswordEmail(userExists.email, resetLink);
       return {
         msg: "Email with reset link has been sent to you.",
@@ -255,13 +264,18 @@ class UserService {
   static async resetPassword(payload) {
     try {
 
-      const validatepayload = resetPasswordSchema.validate(payload);
-      if (!validatepayload) {
-        throw {
-          message: validatepayload.error.details[0].message,
-
-          path: validatepayload.error.details[0].path[0],
-        };
+      // The current CCNext client sends { token, password }.
+      // Also accept the legacy { token, password1, password2 } contract.
+      const password = typeof payload.password === "string"
+        ? payload.password
+        : payload.password1;
+      const validation = resetPasswordSchema.validate(
+        typeof payload.password === "string"
+          ? { token: payload.token, password1: password, password2: password }
+          : payload
+      );
+      if (validation.error) {
+        throw { message: "Invalid password reset request", code: 400 };
       }
       const tokenExist = await findUser({
         "tokens.passwordResetToken": payload.token,
@@ -282,18 +296,21 @@ class UserService {
           code: 400,
         };
       }
-      const newPassword = await tokenExist.hashPassword(payload.password);
-      const resetPassword = await updateUser(
-        { _id: decodeToken.id },
+      // Consume the reset token atomically so a link cannot be reused,
+      // including by two concurrent reset requests.
+      if (String(decodeToken.id) !== String(tokenExist._id)) {
+        throw { message: "Invalid reset token", code: 400 };
+      }
+      const newPassword = await tokenExist.hashPassword(password);
+      const resetResult = await User.updateOne(
+        { _id: tokenExist._id, "tokens.passwordResetToken": payload.token },
         {
-          password: newPassword,
+          $set: { password: newPassword },
+          $unset: { "tokens.passwordResetToken": "" },
         }
       );
-      if (!resetPassword) {
-        throw {
-          message: "password reset failed",
-          code: 500,
-        };
+      if (resetResult.matchedCount !== 1) {
+        throw { message: "Reset link has already been used", code: 400 };
       }
       await passwordResetEmail(tokenExist.email)
       return { message: "password reset successful" };

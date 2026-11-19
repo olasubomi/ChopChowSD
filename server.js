@@ -39,7 +39,17 @@ app.set("view engine", "ejs");
 app.use(express.json({ limit: "50mb" }));
 app.use(cookie());
 
+// CORS follows the frontend URL configured for this deployment.
+const configuredAppOrigin = (() => {
+  if (!process.env.APP_URL) return null;
+  const parsed = new URL(process.env.APP_URL);
+  if (parsed.protocol !== "https:") {
+    throw new Error("APP_URL must use HTTPS");
+  }
+  return parsed.origin;
+})();
 const whitelist = [
+  ...(configuredAppOrigin ? [configuredAppOrigin] : []),
   "http://localhost:3000",
   "http://localhost:3001",
   "http://localhost:5000",
