@@ -255,9 +255,13 @@ userSchema.methods.generateRefreshTokens = async function (payload) {
 userSchema.methods.generatePasswordResetToken = async function (payload) {
   let user = this;
 
-  const passwordResetToken = await sign(payload, process.env.SECRET, {
-    expiresIn: "8h",
-  });
+  // Each request must produce a distinct token, even within the same second.
+  // Persisting only the newest token invalidates earlier reset links.
+  const passwordResetToken = await sign(
+    { ...payload, jti: require("crypto").randomUUID() },
+    process.env.SECRET,
+    { expiresIn: "30m" }
+  );
 
   user.tokens.passwordResetToken = passwordResetToken;
 
