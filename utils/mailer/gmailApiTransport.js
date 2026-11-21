@@ -86,15 +86,11 @@ async function getAccessToken() {
 }
 
 async function sendViaGmailApi(options) {
-  // This branch is only for isolated staging. Never send to real customers.
-  const allowed = requiredEnv("STAGING_ALLOWED_EMAIL").toLowerCase();
-  const recipients = [options.to, options.cc, options.bcc].filter(Boolean);
-  if (
-    recipients.length !== 1 ||
-    typeof options.to !== "string" ||
-    options.to.trim().toLowerCase() !== allowed
-  ) {
-    throw new Error("Staging mail blocked: recipient is not allowlisted");
+  // Only the application's authenticated/account-validated workflows decide
+  // which registered account receives transactional mail. Do not restrict
+  // staging to one hardcoded email address.
+  if (typeof options.to !== "string" || !options.to.trim() || options.cc || options.bcc) {
+    throw new Error("Transactional mail requires exactly one To recipient");
   }
   const sender = requiredEnv("GMAIL_SENDER_EMAIL");
   // Never allow a caller to substitute an unverified From address.
