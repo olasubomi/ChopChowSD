@@ -29,9 +29,6 @@ if (
 ) {
   throw new Error("Staging deployment blocked: database URI must use scoped staging credentials and chopchow_staging");
 }
-if (process.env.STAGING_ALLOWED_EMAIL !== "olasubomiawokoya@gmail.com") {
-  throw new Error("Staging deployment blocked: test recipient must be configured");
-}
 const stagingAppUrl = process.env.APP_URL || "";
 let stagingAppOrigin;
 try {

@@ -119,9 +119,11 @@ module.exports = {
         throw response;
       }
     } catch (error) {
-      return res
-        .status(error.code || Response.HTTP_INTERNAL_SERVER_ERROR)
-        .json(new ErrorResponse(error));
+      // Do not expose whether a registered address exists or email delivery failed.
+      console.error("Password reset request failed", { status: error.code || 500 });
+      return res.status(Response.HTTP_ACCEPTED).json(new SuccessResponse({
+        msg: "If an account exists for this email, a reset link will be sent.", done: true
+      }));
     }
   },
 

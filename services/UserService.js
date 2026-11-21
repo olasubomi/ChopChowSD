@@ -182,7 +182,7 @@ class UserService {
       // Check username as well when testing forgot password
       const userExists = await findUser({ email });
       if (!userExists) {
-        throw { code: 401, message: "user does not exist" };
+        return { msg: "If an account exists for this email, a reset link will be sent.", done: true };
       }
       const generatePasswordToken = await generatePasswordResetToken({
         email: userExists.email,
@@ -202,7 +202,7 @@ class UserService {
       const resetLink = resetLinkUrl.toString();
       await forgotPasswordEmail(userExists.email, resetLink);
       return {
-        msg: "Email with reset link has been sent to you.",
+        msg: "If an account exists for this email, a reset link will be sent.",
         done: true,
       };
     } catch (error) {
