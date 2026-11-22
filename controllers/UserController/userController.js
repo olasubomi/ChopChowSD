@@ -198,6 +198,15 @@ module.exports = {
     }
   },
 
+  changePassword: async (req, res) => {
+    try {
+      await UserService.changePassword(req.decoded?.id, req.body);
+      return res.status(200).json({ success: true, message: "Password changed successfully" });
+    } catch (error) {
+      return res.status(error.code || 500).json({ success: false, message: error.code === 401 ? "Current password is incorrect" : error.code === 400 ? error.message : "Unable to change password" });
+    }
+  },
+
   updateUserProfile: async (req, res) => {
     try {
       const updatedProfile = await UserService.updateUserProfile(
