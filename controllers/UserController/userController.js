@@ -209,6 +209,10 @@ module.exports = {
 
   updateUserProfile: async (req, res) => {
     try {
+      // Password changes must go through the current-password verification endpoint.
+      if (req.body && (Object.prototype.hasOwnProperty.call(req.body, "password") || Object.prototype.hasOwnProperty.call(req.body, "tokens"))) {
+        return res.status(400).json({ success: false, message: "Use the dedicated password change flow" });
+      }
       const updatedProfile = await UserService.updateUserProfile(
         { _id: req.params.userId },
         req.body
