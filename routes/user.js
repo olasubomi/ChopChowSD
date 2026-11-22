@@ -11,7 +11,26 @@ const { verifyRefreshToken } = require("../utils/authentication/2.verifyTokenAut
 router.post("/signup", uploadToCloudinary.single('profile_picture'), transformObject, UserController.signUp);
 router.post("/signin", UserController.signIn);
 router.get("/refresh-token", verifyRefreshToken, UserController.refreshToken);
-router.post("/forgotpassword", UserController.forgotPassword);
+// Basic per-instance throttling; use a shared store for multi-instance deployments.
+const resetAttempts = new Map();
+function throttlePasswordReset(req, res, next) {
+  const now = Date.now();
+  const key = req.ip;
+  const prior = resetAttempts.get(key) || [];
+  const recent = prior.filter((time) => now - time < 15 * 60 * 1000);
+  if (recent.length >= 5) {
+    return res.status(429).json({ message: "Too many reset requests. Please try again later." });
+  }
+  recent.push(now);
+  resetAttempts.set(key, recent);
+  if (resetAttempts.size > 10000) {
+    for (const [ip, times] of resetAttempts) {
+      if (times.every((time) => now - time >= 15 * 60 * 1000)) resetAttempts.delete(ip);
+    }
+  }
+  next();
+}
+router.post("/forgotpassword", throttlePasswordReset, UserController.forgotPassword);
 router.post("/resetpassword", UserController.resetPassword);
 router.get("/findUser/:id", UserController.findUser);
 router.get("/findUsers/:page", UserController.findUsers);
