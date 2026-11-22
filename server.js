@@ -83,6 +83,7 @@ const whitelist = [
   stagingAppOrigin,
   "https://staging.chopchow.app",
   "https://cc-next-7hwfm3jk5-olasubomis-projects-078efd3e.vercel.app",
+  "https://chopchow-8jr548t3s-olasubomis-projects-078efd3e.vercel.app",
   "http://localhost:3000",
   "http://localhost:3001",
   "http://localhost:5000",
