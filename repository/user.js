@@ -10,7 +10,6 @@ const { sendNewLetterSubscriptionEmail } = require("../utils/mailer/nodemailer")
 const BlogService = require("../services/blogService");
 
 const createUser = async (payload) => {
-  console.log("payload", payload)
   const newUser = await User.create(payload);
 
   try {
