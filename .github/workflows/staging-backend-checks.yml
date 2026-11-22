@@ -1,0 +1,27 @@
+name: Staging backend checks
+
+on:
+  push:
+    branches: [staging-main]
+  pull_request:
+    branches: [staging-main]
+
+permissions:
+  contents: read
+
+jobs:
+  gmail-transport-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73e27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --force --ignore-scripts
+      - name: Test Gmail API transport with mocked network
+        run: node --test tests/gmailApiTransport.test.js
