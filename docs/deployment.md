@@ -2,7 +2,7 @@
 
 ## Deployment workflow
 
-- Backend source: [ChopChowSD](https://github.com/olasubomi/ChopChowSD). Render `chopchowsd` auto-deploys commits on `master`; `chopchowserver2` auto-deploys commits on `staging/ccd-490-password-reset`.
+- Backend source: [ChopChowSD](https://github.com/olasubomi/ChopChowSD). Render `chopchowsd` auto-deploys commits on `master`; `chopchowserver2` auto-deploys commits on `staging-main` (verified live in Render on 2026-11-23).
 - Frontend source: [CCNext](https://github.com/olasubomi/CCNext). Vercel project `chopchow` serves `www.chopchow.app`; verify production branch in Vercel before releases.
 - Extra backend Vercel project `chopchowserver` exists. Its role is unconfirmed; **do not deploy there as a replacement for Render** without an architecture decision.
 - Documentation-only changes should use a PR. Backend branches with auto-deploy must be treated as deploy triggers.
@@ -10,7 +10,7 @@
 ## Before staging QA
 
 1. Verify the staging Render API URL, health, branch and database isolation.
-2. Configure frontend Preview `NEXT_PUBLIC_API_URL` to the approved staging API URL. It is currently Production-only, causing `NEXT_PUBLIC_API_URL must be set for deployed environments` at build time.
+2. Confirm frontend Preview `NEXT_PUBLIC_API_URL` points to `https://chopchowserver2.onrender.com/api` (verified general Preview setting on 2026-11-23); check branch-specific overrides and rebuild if values change.
 3. Resolve Axios `get` import warnings in `pages/marketplace/index.js` and `src/components/public-market/input.jsx`.
 4. Redeploy Preview; Next.js `NEXT_PUBLIC_*` variables are embedded at build time.
 5. Test customer, supplier and admin manual login; Google ID-token verification; forgot/reset password (single-use and expiry); store-admin invites; failed and unauthorized cases.
@@ -30,11 +30,11 @@
 
 ## Branch naming and service ownership
 
-**Current deployment branches (verified on Render, 2026-11-21):**
+**Current deployment branches (verified on Render, 2026-11-23):**
 
 | Render service | Current deployment branch | Intended role | Proposed long-lived branch (not created) |
 |---|---|---|---|
-| `chopchowsd` | `master` | Production candidate | `deploy/render-chopchowsd-production` |
-| `chopchowserver2` | `staging/ccd-490-password-reset` | Staging candidate | `deploy/render-chopchowserver2-staging` |
+| `chopchowsd` | `master` | Production | No migration planned |
+| `chopchowserver2` | `staging-main` | Staging | No migration planned |
 
-The proposed names identify **provider, exact service, and environment**. Do not interpret them as active branches. Keep feature work separate (for example, `fix/ccd-490-password-reset`) and merge through reviewed PRs into the appropriate long-lived deployment branch. Before renaming or switching any Render branch, confirm live API routing, branch protections, database isolation and auto-deploy configuration; update Render and these docs together. Frontend Vercel production/preview branches are a separate mapping that still needs verification.
+The old `staging/ccd-490-password-reset` branch is not Render's current staging deployment branch. Treat `staging-main` as the active long-lived staging branch. Keep feature work separate and merge reviewed staging PRs into `staging-main`; promote to `master` only following explicit production review and approval. See the [current release workflow](https://github.com/olasubomi/ChopChowSD/blob/staging-main/docs/deployment-workflow.md). Before switching service branches, verify database isolation, branch protections, and deployment settings. Frontend Vercel production and preview remain separate mappings.
