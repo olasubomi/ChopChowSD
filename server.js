@@ -44,14 +44,19 @@ const whitelist = [
   "http://localhost:3001",
   "http://localhost:5000",
   "https://www.chopchow.app",
-  "https://cc-next-dev.vercel.app/",
+  "https://chopchow.app",
+  "https://cc-next-dev.vercel.app",
   "https://chopchow-beeox2y92-chop-chow.vercel.app",
   "https://cc-next-oty3f0zz0-chop-chow.vercel.app",
   "moz-extension://67f7d6b1-d477-4066-9982-dc276a9f3386",
 ];
+// Preview domains are generated for each Vercel deployment. Restrict access to
+// Chop Chow deployments in our own Vercel project, not arbitrary .vercel.app sites.
+const chopChowPreviewOrigin = /^https:\/\/chopchow-(?:git-[a-z0-9-]+|[a-z0-9]+)-olasubomis-projects-078efd3e\.vercel\.app$/;
+
 const corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
+    if (!origin || whitelist.includes(origin) || chopChowPreviewOrigin.test(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
