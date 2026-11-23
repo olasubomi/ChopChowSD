@@ -93,9 +93,13 @@ const whitelist = [
   "https://cc-next-oty3f0zz0-chop-chow.vercel.app",
   "moz-extension://67f7d6b1-d477-4066-9982-dc276a9f3386",
 ];
+// Allow Vercel preview deployments from the Chop Chow frontend project only.
+// Keep staging database and auth protections enforced independently of CORS.
+const trustedChopChowPreview = /^https:\/\/chopchow-(?:git-[a-z0-9-]+|[a-z0-9]+)-olasubomis-projects-078efd3e\.vercel\.app$/;
+
 const corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
+    if (!origin || whitelist.includes(origin) || trustedChopChowPreview.test(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
