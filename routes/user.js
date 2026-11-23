@@ -32,7 +32,13 @@ function throttlePasswordReset(req, res, next) {
 }
 router.post("/forgotpassword", throttlePasswordReset, UserController.forgotPassword);
 router.post("/resetpassword", UserController.resetPassword);
-router.post("/changepassword", verifyAuthentication, UserController.changePassword);
+router.post("/changepassword", (req, res, next) => {
+  const token = req.headers.authorization || req.headers["x-access-token"];
+  if (typeof token !== "string" || !token.trim()) {
+    return res.status(401).json({ success: false, message: "Authentication required" });
+  }
+  next();
+}, verifyAuthentication, UserController.changePassword);
 router.get("/findUser/:id", UserController.findUser);
 router.get("/findUsers/:page", UserController.findUsers);
 router.put("/updateuserprofile/:userId", verifyAuthentication, uploadToCloudinary.single(), transformObject, UserController.updateUserProfile);
