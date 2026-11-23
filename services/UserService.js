@@ -340,6 +340,26 @@ class UserService {
     }
   }
 
+  static async changePassword(userId, payload) {
+    const currentPassword = payload?.currentPassword;
+    const newPassword = payload?.newPassword;
+    if (!userId) throw { code: 401, message: "Authentication required" };
+    if (typeof currentPassword !== "string" || !currentPassword || typeof newPassword !== "string" || newPassword.length < 8 || newPassword.length > 128) {
+      throw { code: 400, message: "Enter your current password and a new password of 8–128 characters" };
+    }
+    const user = await User.findById(userId);
+    if (!user || !(await user.comparePassword(currentPassword))) {
+      throw { code: 401, message: "Current password is incorrect" };
+    }
+    if (await user.comparePassword(newPassword)) {
+      throw { code: 400, message: "New password must be different from current password" };
+    }
+    user.password = newPassword;
+    if (user.tokens) user.tokens.passwordResetToken = undefined;
+    await user.save(); // user schema pre-save hook hashes modified passwords
+    return true;
+  }
+
   static async updateUserProfile(userId, payload) {
     try {
       return await updateUser(userId, payload);
