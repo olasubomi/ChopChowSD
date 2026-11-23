@@ -32,6 +32,7 @@ function throttlePasswordReset(req, res, next) {
 }
 router.post("/forgotpassword", throttlePasswordReset, UserController.forgotPassword);
 router.post("/resetpassword", UserController.resetPassword);
+router.post("/changepassword", verifyAuthentication, UserController.changePassword);
 router.get("/findUser/:id", UserController.findUser);
 router.get("/findUsers/:page", UserController.findUsers);
 router.put("/updateuserprofile/:userId", verifyAuthentication, uploadToCloudinary.single(), transformObject, UserController.updateUserProfile);
