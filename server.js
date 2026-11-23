@@ -82,6 +82,7 @@ app.use(cookie());
 const whitelist = [
   stagingAppOrigin,
   "https://staging.chopchow.app",
+  "https://chopchow-92897seyl-olasubomis-projects-078efd3e.vercel.app",
   "https://cc-next-7hwfm3jk5-olasubomis-projects-078efd3e.vercel.app",
   "https://chopchow-8jr548t3s-olasubomis-projects-078efd3e.vercel.app",
   "http://localhost:3000",
