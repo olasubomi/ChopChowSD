@@ -209,6 +209,10 @@ module.exports = {
 
   updateUserProfile: async (req, res) => {
     try {
+      // Never allow a signed-in user to modify another account's profile.
+      if (!req.decoded?.id || String(req.decoded.id) !== String(req.params.userId)) {
+        return res.status(403).json({ success: false, message: "Not authorized to update this profile" });
+      }
       // Password changes must go through the current-password verification endpoint.
       if (req.body && (Object.prototype.hasOwnProperty.call(req.body, "password") || Object.prototype.hasOwnProperty.call(req.body, "tokens"))) {
         return res.status(400).json({ success: false, message: "Use the dedicated password change flow" });
