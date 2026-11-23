@@ -198,8 +198,25 @@ module.exports = {
     }
   },
 
+  changePassword: async (req, res) => {
+    try {
+      await UserService.changePassword(req.decoded?.id, req.body);
+      return res.status(200).json({ success: true, message: "Password changed successfully" });
+    } catch (error) {
+      return res.status(error.code || 500).json({ success: false, message: error.code === 401 ? "Current password is incorrect" : error.code === 400 ? error.message : "Unable to change password" });
+    }
+  },
+
   updateUserProfile: async (req, res) => {
     try {
+      // Never allow a signed-in user to modify another account's profile.
+      if (!req.decoded?.id || String(req.decoded.id) !== String(req.params.userId)) {
+        return res.status(403).json({ success: false, message: "Not authorized to update this profile" });
+      }
+      // Password changes must go through the current-password verification endpoint.
+      if (req.body && (Object.prototype.hasOwnProperty.call(req.body, "password") || Object.prototype.hasOwnProperty.call(req.body, "tokens"))) {
+        return res.status(400).json({ success: false, message: "Use the dedicated password change flow" });
+      }
       const updatedProfile = await UserService.updateUserProfile(
         { _id: req.params.userId },
         req.body
