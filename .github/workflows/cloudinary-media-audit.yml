@@ -1,0 +1,36 @@
+name: Cloudinary Media Audit
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cloudinary-media-audit
+  cancel-in-progress: false
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install isolated audit dependency
+        run: |
+          mkdir -p "$RUNNER_TEMP/media-audit"
+          npm install --prefix "$RUNNER_TEMP/media-audit" --ignore-scripts --no-audit --no-fund cloudinary@2.5.1
+      - name: Inventory Cloudinary assets
+        env:
+          NODE_PATH: ${{ runner.temp }}/media-audit/node_modules
+          MEDIA_AUDIT_READ_ONLY: 'true'
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_KEY: ${{ secrets.CLOUDINARY_KEY }}
+          CLOUDINARY_SECRET: ${{ secrets.CLOUDINARY_SECRET }}
+        run: node scripts/cloudinary-image-audit.js
+      - name: Save inventory report
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloudinary-inventory
+          path: cloudinary-inventory.json
+          if-no-files-found: error
+          retention-days: 3
